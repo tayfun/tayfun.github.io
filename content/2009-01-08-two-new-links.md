@@ -1,0 +1,6 @@
+name: two-new-links
+layout: post
+title: Two New Links
+time: 2009-01-08 21:59:00 +02:00
+
+I've just added two new links to the column on the right. Both of the links broadcast interviews/talks with people that are influential. I really like listening how people do what they do and hopefully I'll be inspired by them. The first link is to a show that I like, <a href="http://en.wikipedia.org/wiki/Charlie_Rose_(talk_show)">Charlie Rose Show</a>, you can watch interviews with famous people <a href="http://www.charlierose.com/">here</a>. Check out the interview with John Grisham at <a href="http://www.charlierose.com/view/clip/9507">http://www.charlierose.com/view/clip/9507</a>.<br /><br />The other link is to <a href="http://en.wikipedia.org/wiki/Ted_talks">TED Talks</a>, they give annual prizes to people who have made some difference to humanity, in a good way. They have many important people who gave talks and you can watch freely from <a href="http://www.ted.com/">their website</a>. Check out an interesting <a href="http://www.ted.com/index.php/talks/paul_koontz_shares_his_pix_of_north_korea.html">talk about North Korea</a>, with some interesting photos.<br /><br />I am going to check these two websites from time to time to see if they put on interesting videos. Have fun!

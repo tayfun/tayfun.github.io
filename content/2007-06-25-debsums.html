@@ -1,5 +1,0 @@
-name: debsums
-layout: post
-title: Debsums
-time: 2007-06-25 09:53:00 +03:00
-Debsums ile Debian sisteminizde kurulu olan programların gerçekten istenilen programlar olup olmadığına bakabiliyorsunuz. Bu bir seviye güvenlik sağlıyor size, mesela bir sorun sonrası dosyaların bozuk olup olmadığını kontrol edebilirsiniz ve bazı düşük profilli saldırılarda, sisteminize sızmalarda yardımcı olabilir. Dosyaların doğru olup olmadığını anlamak için MD5 toplamlarını dpkg veritabanındaki (/var/lib/dpkg/info/*.md5sums dosyaları) listelerle karşılaştırıyor. Dolayısıyla eğer sisteminize sızan kişi bu listeyi değiştirirse sızmaları farketmenizin pek imkanı yok.<br /><br /># aptitude install debsums<br /># debsums -s<br /><br /><br />Buna benzer başka bir program da tripwire. O da başka bir yazımıza artık. Herkese güvenli günler :)

@@ -3,6 +3,7 @@ layout: post
 title: "Başkalarının Kelimeleri"
 time: 2014-12-18T01:53:45+01:00
 tags: [life]
+
 Beni tanıyanlar bilir, İngilizcem mükemmel olmasa da iyidir. Yurt dışında yaşamaya başlayınca gerçek seviyemi farketmeye başladım. Bu durum aynı zamanda doğal diller konusunda çokça düşünmeme de yol açtı.
 
 Hollanda'da hemen hemen herkes İngilizce konuşuyor. Birçoğu gerçekten çok çok iyiler. Booking'te İK'dan Valerie'ye "Amerika'dan mısın" diye sormuşluğum var ilk gün, bazıları o derece iyiler (hayır, kendisi Hollandalı :). Kelime dağarcıkları, günlük konuşma dilleri (buna <a href="http://en.wikipedia.org/wiki/Colloquialism">"colloquial language"</a> deniyor) ve deyimlere hakimiyetleri çok iyi. Türkiye'de biz cümlenin gramerini, zaman kiplerini düşünürken buradakiler cümle kalıplarını seçip doğal bir şekilde konuşuyorlar. Bir süre sonra sen de alışıyorsun, ilk duyduğunda şaşırdığın kalıplar doğal gelmeye başlıyorlar.

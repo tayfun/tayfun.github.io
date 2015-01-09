@@ -1,0 +1,6 @@
+name: senenin-ozeti
+layout: post
+title: "Son 1 senenin Özeti"
+time: 2009-02-02 03:27:00 +02:00
+
+<blockquote>Şöyle bir paradox var: MPI ile çok hesaplama gücü ama az iletişim gerektiren problemleri en iyi çözeriz. Ama çoğu problemde hesaplama ile ortaya çıkan ara çözümler hesaplama miktarı ile doğru orantılı olarak artıyorlar. Bunun bir nedeni hesaplamayı arttırmanın paralelleştirmeye uygun en iyi/kolay yolu işlenecek veri miktarının arttırmanın olması. Bu veri madenciliğinin de ana prensiplerinden aslında, veri çok büyüktür (ve Bilgi-İşlem, internet, bilgisayarlaşma ile daha da büyüyecektir) ve biz bu devasa veriden anlamlı kalıplar, bilgiler çıkarmaya çalışıyoruz.<br /><br />Dolayısıyla veri büyüdükçe ve hesaplama arttıkça insan paralel kazancın artmasını bekliyor ama bu böyle olmuyor. Veri ve hesaplama büyüdükçe uçların birbirine iletmesi gereken ara çözüm miktarları da artıyor. Bu sistemin verimliliğini düşüren bir olay.<br /><br />Bilgisayarla ilgili herşeyde olduğu gibi burada da bir trade-off var. Optimum bir paralel işlemci sayısında paralel hesaplama ile elde edilen kazanç ve ara çözümlerin iletişimiyle oluşan kayıplar dengelenecektir.</blockquote><br /><br />Gece gece not defterime düştüğüm satırlar. Birşey anlamadıysanız endişelenmeyin, benim de üzerinde birazcık daha çalışmam gerekiyor zaten :)

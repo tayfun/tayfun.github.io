@@ -1,0 +1,6 @@
+name: krk-dkkannda
+layout: post
+title: "Kürkçü Dükkanında"
+time: 2008-02-15 15:16:00 +02:00
+
+Sonunda Ankara'dayım. Yaklaşık 8 saatlik bir yolculuktan sonra ODTÜ'ye ulaştım. 6 senedir halen eve çıkamamış olduğumdan dolayı (kendi beceriksizliğim)  yurda kayıt yaptırmam gerekti. Bürokrasi başıma biraz bela oldu ama sonunda hallettim. Yurda kayıt yaptırabilmem için (aslında Danimarka'ya giderken dondurmuştum ama tekrar kayıt yaptırmam gerekiyormuş) öğrenci belgesi istendi (ODTÜ yurdu ODTÜ öğrencisi olup olmadığımı bilmiyor, benden öğrenci belgesi istiyor!), öğrenci belgesi almak için öğrenci işlerine gittiğimde derslere kayıt yaptırıp danışman onayı almam gerektiğini söylediler, danışmanımı bulmak için bölüme gittim. Danışmanım yurt dışına gittiğinden dolayı asistan arkadaş aracılığı ile onay yaptırıp öğrenci işlerine tekrar gittim. Ertesi gün değil hemen belgemi almak için biraz tartıştıktan sonra belgeyi aldım ve yurt müdürlüğüne geri döndüm, sonra bankaya gidip yurt ücretini yatırdım ve odama yerleşebildim. Tabii tüm bu zamanda valizleri bir arkadaşa emanet etmiştim, bu sayede daha rahat bir şekilde koşturdum etrafta :) Sonuç olarak akşama doğru dinlenme zamanı buldum. Bürokrasinin ne menem birşey olduğunu unutmuşum uzaklarda.

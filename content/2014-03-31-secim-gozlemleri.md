@@ -4,7 +4,6 @@ title: "Seçim Gözlemleri"
 time: 2014-03-31T16:40:48+03:00
 tags: ["rants"]
 
-
 Dün yapılan 2014 yerel seçimlerinde [Oy ve Ötesi](http://www.oyveotesi.org/) gönüllüsü olarak sandık müşahitliği yaptım. Aynı zamanda okulda bulunan 18 sandık için 18 ayrı gönüllü bulduk ve koordine ettik. Seçim sonuçları her ne kadar bir çok arkadaşım için biraz hayal kırıklığı olsa da ben kısa sürede iyimserliğe geri döndüm.
 
 Milletimize tüm haklar istenmeden, önceden verildi. O yüzden değerini bilemedik. Şimdi ihtiyacımız oldukça anlıyoruz ve haklarımızı kullanmaya zorluyoruz. Siyasilerin aslında birer memur olduklarını ve hesap verebilir olmaları gerektiğini anlıyoruz. Yargının neden bağımsız olması gerektiğini anlıyoruz. Siyasilerin hesap vermelerini bekliyoruz. Bütün bunlar orta vadede daha yaşanabilir bir ülke olmamızı sağlayacaktır.

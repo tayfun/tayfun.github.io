@@ -1,0 +1,6 @@
+name: ime-suyunda-arsenik
+layout: post
+title: "İçme Suyunda Arsenik"
+time: 2008-08-31 00:22:00 +03:00
+
+<a href="http://www.ntvmsnbc.com/news/449660.asp">Ankara</a> ve <a href="http://www.ntvmsnbc.com/news/457790.asp">İzmir</a>'den sonra <a href="http://ntvmsnbc.com/news/457880.asp">Van</a>'da da sudaki arsenik miktarının çok yüksek olduğu ortaya çıktı. <br /><br />Anlayamıyorum. Dünya Sağlık Örgütünün önerisinin 15 katı arsenik varmış Van'daki kuyularda. Ki araştırmalara göre arseniğin <a href="http://en.wikipedia.org/wiki/Arsenic#Arsenic_in_drinking_water">10 mikrogramı bile zararlıymış</a>.<br /><br />Arsenik <a href="http://en.wikipedia.org/wiki/List_of_IARC_Group_1_carcinogens">Uluslararası Kanser Araştırmaları örgütünün listesinde 1. tip kanserojenlerden</a>, yani kanser yapıcılığı çok büyük oranda kanıtlanmış bir madde. Zararı bu kadar kanıtlanmış bir zehir içtiğimiz sularda bulunuyor. <br /><br />Suyun doğru düzgün yönetilmemesi, geleceğe yönelik planlar yerine günün kurtarılmaya çalışılması, sığ saçma sapan tartışmalarla günü geçirmek, insanların su tasarrufu konusunda bilinçlendirilmemesi. Siyasetçilerin basiretsizlikleri. <br /><br />Bu ülke insanlarına sağlıklı içme suyu sağlayamıyorsa neden burada yaşamakta ısrar edilir bilmiyorum.

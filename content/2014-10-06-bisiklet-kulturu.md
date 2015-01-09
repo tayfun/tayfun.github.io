@@ -3,6 +3,7 @@ layout: post
 title: "Bisiklet Kültürü"
 time: 2014-10-06T00:39:25+02:00
 tags: [rants]
+
 Dün fotoğrafsız, sade bir yazı ile Hollanda'ya taşınma hikayemi anlatmıştım. Bugün fotoğraflarla birlikte buranın en sevdiğim özelliğinden bahsedeceğim: Bisiklet kültürü :)
 
 "Herkes bisiklete biniyor" dediğimde gerçekten kafanızda doğru bir imaj oluşuyor mu merak ediyorum. Sabah işe giderken bisiklet trafiği oluşuyor ve sanki bisiklet otobanından geçiyorum. İstanbul'da da mümkün olduğunca bisiklete binen birisi olarak her yolculuk bana oyun gibi geliyor. Ve bazen güneş, yağmur veya sis öyle güzel görüntüler oluşturuyorlar ki, sadece tadını çıkarıyorum!

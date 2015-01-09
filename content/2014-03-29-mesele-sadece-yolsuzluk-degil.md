@@ -3,6 +3,7 @@ layout: post
 title: "Mesele sadece yolsuzluk değil"
 time: 2014-03-29T10:08:02+02:00
 tags: []
+
 AKP'ci arkadaşların genel olarak kullandığı argümanlardan biri bu: Mesele sadece yolsuzluk mu sanıyorsun? İşin içinde tabii ki ABD var, Rusya var, Suriye'si de var İran'ı da. Savaş teypinde de dinlediğimiz üzere Türkiye Suriye toprakları üzerinde nasıl stratejiler geliştiriyorsa diğer ülkeler de bizim ülkemizin egemenliği ve gücü üzerinde stratejiler ve yöntemler geliştiriyorlar.
 
 Ama mesele sadece yolsuzluk değil gerçekten.
