@@ -8,13 +8,13 @@ from __future__ import unicode_literals
 import os
 import sys
 sys.path.append(os.curdir)
-from pelicanconf import *
+from pelicanconf import *  # NOQA
 
 SITEURL = 'http://blog.tayfunsen.com'
 RELATIVE_URLS = False
 
-FEED_ALL_ATOM = 'feeds/all.atom.xml'
-CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
+FEED_ALL_ATOM = 'feeds/posts/default'
+CATEGORY_FEED_ATOM = ''
 
 DELETE_OUTPUT_DIRECTORY = True
 
