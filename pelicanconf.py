@@ -41,15 +41,26 @@ ARTICLE_LANG_SAVE_AS = DRAFT_LANG_SAVE_AS = PAGE_LANG_SAVE_AS = \
 # TAG_SAVE_AS = ''
 
 # TODO(tayfun): Remove this line for making it faster.
-# LOAD_CONTENT_CACHE = False
+LOAD_CONTENT_CACHE = False
 ARTICLE_URL = ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{slug}.html'
 # ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{slug}.html'
 
-# EXTRA_PATH_METADATA = {
-#     'source/cv.html': {
-#         'path': 'cv.html',
-#     }
-# }
-
 THEME = 'themes/amsterdam'
 THEME_STATIC_DIR = ''
+
+
+# STATIC_PATHS = ["others", ]
+PAGE_SAVE_AS = '{slug}.html'
+STATIC_PATHS = [
+    'others/cv.html',
+]
+EXTRA_PATH_METADATA = {
+    'others/cv.html': {
+        'path': 'cv.html',
+    }
+}
+
+# This is so that any pre-generated HTML files are not processed again.
+# For example cv.html file. See:
+# https://github.com/getpelican/pelican/issues/1046
+READERS = {"html": None}
