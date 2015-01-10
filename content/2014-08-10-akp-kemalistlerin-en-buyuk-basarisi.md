@@ -2,7 +2,7 @@ name: akp-kemalistlerin-en-buyuk-basarisi
 layout: post
 title: AKP, Kemalistlerin En Büyük Başarısı
 time: 2014-08-10T14:33:52+02:00
-tags: ["rants"]
+tags: rants
 
 Kızıyoruz, hepimiz sinirleniyoruz. Niye bu kadar cahiliz? Niye bu kadar kolay kanıyoruz? Tayyip "başörtülü bacımın üzerine işediler" deyince inanan, 14 yaşında katledilen çocuğun ailesine iftira atınca yuhalayan insanlara kızıyoruz. Niye eleştiremiyoruz, neden "ya yalansa?" diyemiyoruz?
 

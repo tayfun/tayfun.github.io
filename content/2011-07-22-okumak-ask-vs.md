@@ -2,7 +2,7 @@ name: Okumak, Aşk vs.
 layout: post
 title: Okumak, Aşk vs.
 time: 2011-07-22 21:31 +03:00
-tags: [edebiyat]
+tags: edebiyat
 
 <blockquote>
 Bugün aşk dediğiniz parlak ambalajlı bir ürün, alınıp satılıyor, her yerde ama hiçbir yerde. Bunca rekabetin, hesap kitabın, kar hırsının, ağır mesainin, mezardan farksız evin, azap gibi okulun-kışlanın, cehennemden beter fabrikanın ortasında aşka mecali kalan varsa tebrik ederim.

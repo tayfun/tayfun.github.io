@@ -2,7 +2,7 @@ name: bilimsel-gelisme
 layout: post
 title: Bilimsel Gelisme
 time: 2012-09-22T23:27:11+03:00
-tags: ['fikir']
+tags: fikir
 
 <p>Bir arkadasimin <a href="http://skeptoid.com/episodes/4316">skeptoid podcastinden bir linki</a> paylasmasiyla benim ilgim tekrar bilimsel gelisim konularina dondu. 
 Baglantidaki makalede Islam dunyasindaki geri kalmisligin nedeni klasik teoriden farkli olarak savaslar gosteriliyor. Klasik anlayistan uzaklasinca ben de bildiklerimi tekrar hatirlama geregi duydum.</p>

@@ -2,7 +2,7 @@ name: yeni-bir-sayfa
 layout: post
 title: Yeni Bir Sayfa
 time: 2011-07-01 11:36 +03:00
-tags: []
+tags: 
 
 <p>Yeni tasarım ile merhaba! Çok uzun bir zamandır yapmak isteyip bir türlü gerçekleştiremediğim yeniden tasarım işini bitirdim. Blog sayfamın ilk zamanlarından beri blogger altyapısını kullanıyordum, ve doğrusu benim işimi iyi görüyordu. Ama HTML5 etiketlerini desteklemiyordu ve kaynak kodunu çok gereksiz yere dolduruyordu. Otomatik kaynak kodu üreten yazılımların en iyi temsilcisi Mikisoft'un Frontpage'ini anınsatıyordu ve onun ürettiği kod tam bir felaket. </p>
 

@@ -2,7 +2,7 @@ name: bir-senenin-ardindan
 layout: post
 title: Bir Senenin Ardindan
 time: 2011-08-24T16:46:34+03:00
-tags: []
+tags: 
 
 <a href="http://www.flickr.com/photos/typhoon476/6028543593/" title="It's over by Tayfun Sen, on Flickr"><img src="http://farm7.static.flickr.com/6070/6028543593_58218c7e66_m.jpg" alt="It's over" align="left" style="margin: 2em;"></a>
 

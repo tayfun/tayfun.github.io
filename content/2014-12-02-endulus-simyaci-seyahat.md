@@ -1,7 +1,7 @@
 layout: post
 title: Endülüs, Simyacı ve Seyahat Hakkında
 time: 2014-12-02T19:48:57+01:00
-tags: [travel, photography]
+tags: travel, photography
 
 İlk kez Ryanair ile uçacaktım. Ucuz havayolu olmasının avantajı belki de buydu, uçakta kasıntı, burnu havada insanlar değil, öğrenciler ve paradan daha değerli şeylerin olduğunu bilen birçok insan vardı. Yan koltukta oturan İspanyol kızla anlaşmaya çalışırken Endülüs hakkında çok da bir şey bilmediğimi anladım. Kızın memleketi Cadiz ('kadif' gibi okunuyor, sondaki z için dilinizi üst damağınıza yapıştırın ama dudaklarınız açık kalsın :)) bile bana bir şey ifade etmiyordu. <a href="http://visnekiraz.com/tag/endulus/">Vişne'nin yazısını</a> okumuştum bir ara ama işte hafızam beni yarı yolda bırakmıştı.
 

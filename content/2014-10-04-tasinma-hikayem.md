@@ -2,7 +2,7 @@ name: tasinma-hikayem
 layout: post
 title: Taşınma Hikayem
 time: 2014-10-04T22:43:58+02:00
-tags: [rants]
+tags: rants
 
 Hollanda'ya taşınalı neredeyse 6 ay oluyor ama oturup da deneyimlerimi yazmaya bir türlü elim varmadı. Geç kalınmış bir telafi olsun istedim bu yazının, kim bilir, belki daha devamı da gelir.
 

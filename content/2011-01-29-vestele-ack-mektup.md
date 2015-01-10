@@ -2,7 +2,7 @@ name: vestele-ack-mektup
 layout: post
 title: Vestel'e Açık Mektup
 time: 2011-01-29 20:31:00 +02:00
-tags: [turkiye]
+tags: turkiye
 
 Vestel'in web sayfasına girdiğimde kötü bir sürprizle karşılaştım ve bunu onlara bildirme ihtiyacı duydum. Eleştirmek ve eleştirildiğimizde bunu olgun bir şekilde karşılamak çok önemli özelliklerden bence, bu yüzden gönderdiğim mesajı aşağıya ekliyorum:
 <!-- -**-END-**- -->

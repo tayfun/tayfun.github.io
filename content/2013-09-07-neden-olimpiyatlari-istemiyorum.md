@@ -2,7 +2,7 @@ name: neden-olimpiyatlari-istemiyorum
 layout: post
 title: Neden Olimpiyatlari Istemiyorum
 time: 2013-09-07T23:05:05+03:00
-tags: ["rants"]
+tags: rants
 
 <p>
 Milletçe gösterişe o kadar önem veriyoruz ki... Olimpiyatlara da bu gözle bakıyorum ben. Sorsan spor şöyle önemli, spor böyle önemli diye ahkam kesilir memleketimin insanı, ama yaptığı tek spor futbol takımlarının transfer dedikodularını yapmaktır. Yollarımız bisikletliler için çok tehlikeli, halka açık spor tesisleri çok yetersiz ama insanımız olimpiyatları almaya çok istekli. Bu nasıl köylülüktür ve gösteriş merakıdır anlamıyorum.

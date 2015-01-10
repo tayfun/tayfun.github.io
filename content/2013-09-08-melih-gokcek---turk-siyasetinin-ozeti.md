@@ -2,7 +2,7 @@ name: melih-gokcek---turk-siyasetinin-ozeti
 layout: post
 title: Melih Gokcek - Turk Siyasetinin Ozeti
 time: 2013-09-08T11:09:54+03:00
-tags: []
+tags: 
 
 <p>
 Melih Gökçek fenomenine Türkiye'de yapılan siyasetin özeti olarak bakabiliriz. 20 yıldır başkentin belediye başkanlığını yapan bu zatın en büyük hizmeti postmodern sanat eseri konumuna yükselen ilginç mimarideki üst geçitleri ve araçların bir girip bir çıktıkları alt geçitlerdir.

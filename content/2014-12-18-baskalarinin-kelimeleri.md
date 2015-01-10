@@ -2,7 +2,7 @@ name: baskalarinin-kelimeleri
 layout: post
 title: Başkalarının Kelimeleri
 time: 2014-12-18T01:53:45+01:00
-tags: [life]
+tags: life
 
 Beni tanıyanlar bilir, İngilizcem mükemmel olmasa da iyidir. Yurt dışında yaşamaya başlayınca gerçek seviyemi farketmeye başladım. Bu durum aynı zamanda doğal diller konusunda çokça düşünmeme de yol açtı.
 

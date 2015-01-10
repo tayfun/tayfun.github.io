@@ -2,7 +2,7 @@ name: dont-miss-in-istanbul
 layout: post
 title: Don't Miss in Istanbul
 time: 2014-10-23T09:50:45+02:00
-tags: [travel, photography]
+tags: travel, photography
 
 I have several friends visiting Istanbul next week (yes, I'm looking at you Pablo, Yeokyung and Gizem :) and I have been getting a lot of requests for suggestions and places to visit there. Since I had lived in Istanbul and explored quite a bit to take photos, I already had a list of my favorite places in my head. This was a perfect excuse to write them down.
 

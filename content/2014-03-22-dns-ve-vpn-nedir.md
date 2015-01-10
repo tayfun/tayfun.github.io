@@ -2,7 +2,7 @@ name: dns-ve-vpn-nedir?
 layout: post
 title: DNS, DPI ve VPN nedir?
 time: 2014-03-22T20:30:36+02:00
-tags: ["teknoloji"]
+tags: teknoloji
 
 AKP, pislikler ortaya saçılmasın diye twitter'ı yasaklamaya çalışıyor. Öyle görünüyor ki seçimlerden sonra da özgürlüklere baskı devam edecek. Ülkemizdeki herkes birer ağ uzmanı oldu neredeyse, ama gerçekte DNS, VPN ne anlama geliyor? Hükümetin son sansür yasası ile hazırlıklarını bitirdiği Deep Packet Inspection, yani DPI, neler getiriyor?
 

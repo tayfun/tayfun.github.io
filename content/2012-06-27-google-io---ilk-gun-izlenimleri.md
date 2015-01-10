@@ -2,7 +2,7 @@ name: google-io---ilk-gun-izlenimleri
 layout: post
 title: Google IO - ilk gun izlenimleri
 time: 2012-06-27T23:41:25-07:00
-tags: []
+tags: 
 
 <p>iki sene once <a href="http://blog.tayfunsen.com/2010/06/google-io-ve-mobil-gelecek.html">geldigim ve cok begendigim</a> dunyanin en onemli teknoloji konferanslarindan biri olan <a href="https://developers.google.com/events/io/">Google IO</a>'ya bu sene de katilmak kismet oldu :)</p>
 

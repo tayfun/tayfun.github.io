@@ -2,7 +2,7 @@ name: bisiklet-kulturu
 layout: post
 title: Bisiklet Kültürü
 time: 2014-10-06T00:39:25+02:00
-tags: [rants]
+tags: rants
 
 Dün fotoğrafsız, sade bir yazı ile Hollanda'ya taşınma hikayemi anlatmıştım. Bugün fotoğraflarla birlikte buranın en sevdiğim özelliğinden bahsedeceğim: Bisiklet kültürü :)
 

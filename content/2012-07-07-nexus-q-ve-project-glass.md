@@ -2,7 +2,7 @@ name: nexus-q-ve-project-glass
 layout: post
 title: Nexus Q ve Project Glass
 time: 2012-07-07T12:51:40+03:00
-tags: ["io12"]
+tags: io12
 
 <p>Google IO'nun ilk gunu baya da bir heyecanla (sanirim parasutle atlamalar filan beni cok heyecanlandirdi :)) <a href="http://blog.tayfunsen.com/2012/06/google-io---ilk-gun-izlenimleri.html">ilk gun izlenimlerimi</a> yazdiktan sonra ozellikle Project Glass ile ilgili bir makale yazmak istemistim. Ancak konferans beni o kadar cok yordu ki fazla bir gucum kalmamisti ve Turkiye'ye donus yolculugu vs. derken yazi yazacak firsat bulamadim. Dun Nexus Q ile biraz ugrastim ve bu iki urunu de inceledigim bir yazi yazma fikri boylece tekrar canlanmis oldu.</p>
 

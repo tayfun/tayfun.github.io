@@ -2,7 +2,7 @@ name: erdek-ocaklar-fotograflari
 layout: post
 title: Erdek-Ocaklar Fotograflari
 time: 2010-08-07 16:09:00 +03:00
-tags: [gezi, photography]
+tags: gezi, photography
 
 San Francisco donusu is arkadaslariyla birlikte Balikesir-Erdek'teki Ocaklar beldesine gitmis, dag ve denizin keyfini cikarmistik. Bu fotograflari bir suredir yayinlama dusuncesindeydim, Nexus One'da Kibris seyahatinin fotograflari da birikince en azindan bunlari paylasmak istedim :)<br /><br />Ocaklar kucuk ve sakin bir sahil kasabasi. Emeklilikte tadini cikarabileceginiz bir yer gibi geliyor bana, yoksa gencken daha dinamik bir yerlerde yasamak daha mantikli. Tabii ara sira sehir karmasasindan kacmak icin de dusunulebilir.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/TF1UDiiyuOI/AAAAAAAABhw/hZHgOezamtA/s1600/P6010442_1.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="240" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/TF1UDiiyuOI/AAAAAAAABhw/hZHgOezamtA/s320/P6010442_1.JPG" width="320" /></a></div>Taytanik, Erdek'te!<br />
 <!-- -**-END-**- -->
