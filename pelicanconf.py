@@ -37,8 +37,19 @@ FILENAME_METADATA = '(?P<date>\d{4}-\d{2}-\d{2})-(?P<slug>.*)'
 OUTPUT_RETENTION = ('.git')
 
 ARTICLE_LANG_SAVE_AS = DRAFT_LANG_SAVE_AS = PAGE_LANG_SAVE_AS = \
-    CATEGORY_SAVE_AS = TAG_SAVE_AS = AUTHOR_SAVE_AS = ''
+    CATEGORY_SAVE_AS = AUTHOR_SAVE_AS = ''
+# TAG_SAVE_AS = ''
 
-LOAD_CONTENT_CACHE = False
+# TODO(tayfun): Remove this line for making it faster.
+# LOAD_CONTENT_CACHE = False
 ARTICLE_URL = ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{slug}.html'
 # ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{slug}.html'
+
+# EXTRA_PATH_METADATA = {
+#     'source/cv.html': {
+#         'path': 'cv.html',
+#     }
+# }
+
+THEME = 'themes/amsterdam'
+THEME_STATIC_DIR = ''
