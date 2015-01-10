@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title|striptags }} | Tayfun Sen{% endblock %}
+{% block content %}
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            {{ article.title }}
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="{{ article.date }}" pubdate title="on {{ article.locale_date }}">on {{ article.locale_date }}</time>{% if article.tags %}, and filed under {% for tag in article.tags %}<a class="posttag" href="{{ tag.url }}">{{ tag | escape }}</a>{% if not loop.last %}, &nbsp;{% endif %}{% endfor %}{% endif %}.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        {{ article.content }}
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+{% endblock content %}
