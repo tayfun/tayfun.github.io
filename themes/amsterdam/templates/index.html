@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+{% for article in articles_page.object_list %}
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="{{ article.url }}">
+            {{ article.title }}
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="{{ article.date }}" pubdate title="on {{ article.locale_date }}">on {{ article.locale_date }}</time>{% if article.tags %}, and filed under {% for tag in article.tags %}<a class="posttag" href="{{ tag.url }}">{{ tag | escape }}</a>{% if not loop.last %}, &nbsp;{% endif %}{% endfor %}{% endif %}.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        {{ article.summary }}
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+{% endfor %}
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+{% endblock content %}
