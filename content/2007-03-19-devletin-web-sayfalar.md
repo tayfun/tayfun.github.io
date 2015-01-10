@@ -1,6 +1,6 @@
 name: devletin-web-sayfalar
 layout: post
-title: "Devletin web sayfaları"
+title: Devletin web sayfaları
 time: 2007-03-19 17:58:00 +02:00
 tags: []
 

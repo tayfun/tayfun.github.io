@@ -1,6 +1,6 @@
 name: merhaba-dnya
 layout: post
-title: "Merhaba dünya!"
+title: Merhaba dünya!
 time: 2007-03-14 01:30:00 +02:00
 tags: [merhaba]
 

@@ -1,6 +1,6 @@
 name: roman-sanati-uzerine
 layout: post
-title: "Roman Sanati Uzerine"
+title: Roman Sanati Uzerine
 time: 2012-04-28T09:39:19+03:00
 tags: ["kitap"]
 

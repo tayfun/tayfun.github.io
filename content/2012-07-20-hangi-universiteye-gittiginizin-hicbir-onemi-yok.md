@@ -1,6 +1,6 @@
 name: hangi-universiteye-gittiginizin-hicbir-onemi-yok
 layout: post
-title: "Hangi Universiteye Gittiginizin Hicbir Onemi Yok"
+title: Hangi Universiteye Gittiginizin Hicbir Onemi Yok
 time: 2012-07-20T05:03:59+03:00
 tags: []
 

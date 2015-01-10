@@ -1,6 +1,6 @@
 name: ozgurlukler-bizi-bozar-m
 layout: post
-title: "Özgürlükler bizi bozar mı?"
+title: Özgürlükler bizi bozar mı?
 time: 2011-03-31 13:06:00 +03:00
 tags: [turkiye]
 

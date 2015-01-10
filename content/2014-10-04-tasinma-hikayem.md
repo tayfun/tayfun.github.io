@@ -1,6 +1,6 @@
 name: tasinma-hikayem
 layout: post
-title: "Taşınma Hikayem"
+title: Taşınma Hikayem
 time: 2014-10-04T22:43:58+02:00
 tags: [rants]
 

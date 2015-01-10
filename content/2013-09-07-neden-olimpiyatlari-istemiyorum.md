@@ -1,6 +1,6 @@
 name: neden-olimpiyatlari-istemiyorum
 layout: post
-title: "Neden Olimpiyatlari Istemiyorum"
+title: Neden Olimpiyatlari Istemiyorum
 time: 2013-09-07T23:05:05+03:00
 tags: ["rants"]
 

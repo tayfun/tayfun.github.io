@@ -1,6 +1,6 @@
 name: secim-gozlemleri
 layout: post
-title: "Seçim Gözlemleri"
+title: Seçim Gözlemleri
 time: 2014-03-31T16:40:48+03:00
 tags: ["rants"]
 

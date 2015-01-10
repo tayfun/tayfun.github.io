@@ -1,6 +1,6 @@
 name: turkiyenin-yonetim-sistemi
 layout: post
-title: "Türkiye'nin Yönetim Sistemi"
+title: Türkiye'nin Yönetim Sistemi
 time: 2009-11-08 14:15:00 +02:00
 tags: []
 

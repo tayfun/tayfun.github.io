@@ -1,6 +1,6 @@
 name: uzun-bir-zaman-sonra-fotograf-yeniden
 layout: post
-title: "Uzun bir zaman sonra, fotoğraf. Yeniden."
+title: Uzun bir zaman sonra, fotoğraf. Yeniden.
 time: 2009-10-17 02:13:00 +03:00
 tags: [photography]
 

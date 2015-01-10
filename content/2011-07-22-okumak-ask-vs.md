@@ -1,6 +1,6 @@
 name: Okumak, Aşk vs.
 layout: post
-title: "Okumak, Aşk vs."
+title: Okumak, Aşk vs.
 time: 2011-07-22 21:31 +03:00
 tags: [edebiyat]
 

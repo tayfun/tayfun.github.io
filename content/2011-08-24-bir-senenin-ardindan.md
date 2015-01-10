@@ -1,6 +1,6 @@
 name: bir-senenin-ardindan
 layout: post
-title: "Bir Senenin Ardindan"
+title: Bir Senenin Ardindan
 time: 2011-08-24T16:46:34+03:00
 tags: []
 

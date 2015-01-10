@@ -1,6 +1,6 @@
 name: php-warning-module-x-already-loaded
 layout: post
-title: "PHP Warning:  Module X already loaded"
+title: PHP Warning:  Module X already loaded
 time: 2009-10-01 12:22:00 +03:00
 tags: [programming]
 

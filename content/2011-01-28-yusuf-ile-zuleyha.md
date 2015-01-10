@@ -1,6 +1,6 @@
 name: yusuf-ile-zuleyha
 layout: post
-title: "Yusuf ile Züleyha"
+title: Yusuf ile Züleyha
 time: 2011-01-28 20:33:00 +02:00
 tags: [edebiyat]
 

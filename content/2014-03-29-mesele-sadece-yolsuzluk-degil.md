@@ -1,6 +1,6 @@
 name: mesele-sadece-yolsuzluk-degil
 layout: post
-title: "Mesele sadece yolsuzluk değil"
+title: Mesele sadece yolsuzluk değil
 time: 2014-03-29T10:08:02+02:00
 tags: []
 

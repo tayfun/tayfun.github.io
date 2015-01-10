@@ -1,6 +1,6 @@
 name: bilimsel-gelisme
 layout: post
-title: "Bilimsel Gelisme"
+title: Bilimsel Gelisme
 time: 2012-09-22T23:27:11+03:00
 tags: ['fikir']
 

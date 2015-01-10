@@ -1,6 +1,6 @@
 name: bir-yazlm-ussu-nasl-olmal
 layout: post
-title: "Bir Yazılım Üssü Nasıl Olmalı?"
+title: Bir Yazılım Üssü Nasıl Olmalı?
 time: 2009-10-08 21:20:00 +03:00
 tags: [teknoloji]
 

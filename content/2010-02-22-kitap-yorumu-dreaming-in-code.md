@@ -1,6 +1,6 @@
 name: kitap-yorumu-dreaming-in-code
 layout: post
-title: "Kitap Yorumu: Dreaming in Code"
+title: Kitap Yorumu: Dreaming in Code
 time: 2010-02-22 23:17:00 +02:00
 tags: [teknoloji,  kitap]
 

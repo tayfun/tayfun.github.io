@@ -1,6 +1,6 @@
 name: dont-miss-in-istanbul
 layout: post
-title: "Don't Miss in Istanbul"
+title: Don't Miss in Istanbul
 time: 2014-10-23T09:50:45+02:00
 tags: [travel, photography]
 

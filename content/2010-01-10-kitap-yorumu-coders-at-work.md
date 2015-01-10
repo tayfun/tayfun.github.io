@@ -1,6 +1,6 @@
 name: kitap-yorumu-coders-at-work
 layout: post
-title: "Kitap Yorumu: Coders At Work"
+title: Kitap Yorumu: Coders At Work
 time: 2010-01-10 14:01:00 +02:00
 tags: [kitap]
 

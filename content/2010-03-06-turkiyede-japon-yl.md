@@ -1,6 +1,6 @@
 name: turkiyede-japon-yl
 layout: post
-title: "2010 Türkiye'de Japon Yılı"
+title: 2010 Türkiye'de Japon Yılı
 time: 2010-03-06 10:18:00 +02:00
 tags: [sanat, photography]
 

@@ -1,6 +1,6 @@
 name: google-chromeda-arama-ksayollar
 layout: post
-title: "Google Chrome'da Arama Kısayolları"
+title: Google Chrome'da Arama Kısayolları
 time: 2010-02-27 13:58:00 +02:00
 tags: [teknoloji]
 

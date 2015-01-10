@@ -1,6 +1,6 @@
 name: vestele-ack-mektup
 layout: post
-title: "Vestel'e Açık Mektup"
+title: Vestel'e Açık Mektup
 time: 2011-01-29 20:31:00 +02:00
 tags: [turkiye]
 

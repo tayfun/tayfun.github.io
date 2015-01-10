@@ -1,6 +1,6 @@
 name: dns-ve-vpn-nedir?
 layout: post
-title: "DNS, DPI ve VPN nedir?"
+title: DNS, DPI ve VPN nedir?
 time: 2014-03-22T20:30:36+02:00
 tags: ["teknoloji"]
 

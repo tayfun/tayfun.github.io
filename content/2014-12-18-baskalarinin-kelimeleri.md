@@ -1,6 +1,6 @@
 name: baskalarinin-kelimeleri
 layout: post
-title: "Başkalarının Kelimeleri"
+title: Başkalarının Kelimeleri
 time: 2014-12-18T01:53:45+01:00
 tags: [life]
 

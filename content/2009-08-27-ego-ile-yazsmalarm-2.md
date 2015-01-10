@@ -1,6 +1,6 @@
 name: ego-ile-yazsmalarm-2
 layout: post
-title: "EGO ile Yazışmalarım #2"
+title: EGO ile Yazışmalarım #2
 time: 2009-08-27 04:33:00 +03:00
 tags: [dirdir]
 

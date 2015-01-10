@@ -1,6 +1,6 @@
 name: demokrasi-ve-modernlik-uzerine
 layout: post
-title: "Demokrasi ve Modernlik Üzerine"
+title: Demokrasi ve Modernlik Üzerine
 time: 2009-08-07 09:51:00 +03:00
 tags: [edebiyat]
 

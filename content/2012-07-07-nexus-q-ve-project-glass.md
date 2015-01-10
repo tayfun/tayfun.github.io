@@ -1,6 +1,6 @@
 name: nexus-q-ve-project-glass
 layout: post
-title: "Nexus Q ve Project Glass"
+title: Nexus Q ve Project Glass
 time: 2012-07-07T12:51:40+03:00
 tags: ["io12"]
 

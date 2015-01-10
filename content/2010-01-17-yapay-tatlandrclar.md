@@ -1,6 +1,6 @@
 name: yapay-tatlandrclar
 layout: post
-title: "Yapay Tatlandırıcılar"
+title: Yapay Tatlandırıcılar
 time: 2010-01-17 17:47:00 +02:00
 tags: [edebiyat]
 

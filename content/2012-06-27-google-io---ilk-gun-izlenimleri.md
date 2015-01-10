@@ -1,6 +1,6 @@
 name: google-io---ilk-gun-izlenimleri
 layout: post
-title: "Google IO - ilk gun izlenimleri"
+title: Google IO - ilk gun izlenimleri
 time: 2012-06-27T23:41:25-07:00
 tags: []
 

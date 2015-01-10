@@ -1,5 +1,5 @@
 layout: post
-title: "Endülüs, Simyacı ve Seyahat Hakkında"
+title: Endülüs, Simyacı ve Seyahat Hakkında
 time: 2014-12-02T19:48:57+01:00
 tags: [travel, photography]
 

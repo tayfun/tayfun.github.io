@@ -1,6 +1,6 @@
 name: basarl-olmann-laneti
 layout: post
-title: "Başarılı Olmanın Laneti?"
+title: Başarılı Olmanın Laneti?
 time: 2010-01-02 19:46:00 +02:00
 tags: []
 

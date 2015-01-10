@@ -1,6 +1,6 @@
 name: hacettepe-universitesi-saka-m
 layout: post
-title: "Hacettepe Üniversitesi Şaka mı?"
+title: Hacettepe Üniversitesi Şaka mı?
 time: 2010-02-12 13:58:00 +02:00
 tags: []
 

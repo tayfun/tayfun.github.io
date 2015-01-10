@@ -1,6 +1,6 @@
 name: bisiklet-kulturu
 layout: post
-title: "Bisiklet Kültürü"
+title: Bisiklet Kültürü
 time: 2014-10-06T00:39:25+02:00
 tags: [rants]
 

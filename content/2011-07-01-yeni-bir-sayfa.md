@@ -1,6 +1,6 @@
 name: yeni-bir-sayfa
 layout: post
-title: "Yeni Bir Sayfa"
+title: Yeni Bir Sayfa
 time: 2011-07-01 11:36 +03:00
 tags: []
 

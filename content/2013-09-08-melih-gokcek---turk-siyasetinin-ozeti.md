@@ -1,6 +1,6 @@
 name: melih-gokcek---turk-siyasetinin-ozeti
 layout: post
-title: "Melih Gokcek - Turk Siyasetinin Ozeti"
+title: Melih Gokcek - Turk Siyasetinin Ozeti
 time: 2013-09-08T11:09:54+03:00
 tags: []
 

@@ -1,6 +1,6 @@
 name: linux-consoleda-trke-karakterler
 layout: post
-title: "Linux Console'da Türkçe karakterler"
+title: Linux Console'da Türkçe karakterler
 time: 2008-12-16 16:02:00 +02:00
 
 Yeni bir Debian kurulumu yaptım. X.Org pencere sistemini çok gerekli görmediğim için onu kurmadım, işlerimi console'dan (burada console'dan kastım sanal terminaller, yani /dev/tty[1-7]) halledecektim. Kurulumu biraz kurcaladıktan sonra Türkçe karakterlerin bir kısmının düzgün gösterilmediğini (ş, ı gibi) farkettim. Biraz araştırdıktan sonra hem Türkçe karakterlerin bulunduğu yazı tiplerini (font) indirip kurdum hem de gözü daha az yoran görünüm (glyph) seçtim. Yaptıklarım şunlar:<br /><br /><code># aptitude install console-setup </code><br /><br />Bu paket hem çeşitli fontları kuruyor (bağımlılık sayesinde) hem de console karakter desteğini ve fontları seçebilmenizi sağlayan bir program getiriyor. Bunu kurduktan sonra <br /><br /><code># dpkg-reconfigure console-setup </code> <br /><br />komutunu kullanın, ekranı izleyin ve Türkçe'yi seçin. Eğer fontlardan Terminus-Bold seçerseniz biraz daha kalın, rahat okunur Türkçe karakterleri kullanabilirsiniz.<br /><br />Bonus olarak da şu komutu vereyim:<br /><br /><code># showcfont </code><br /><br />Bu komutla kullanmakta olduğunuz yazı tipinin gösterebildiği karakterleri ekranda görebilirsiniz. <br /><br />Kolay gelsin.

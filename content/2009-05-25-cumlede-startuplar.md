@@ -1,6 +1,6 @@
 name: cumlede-startuplar
 layout: post
-title: "13 Cümlede Startup'lar"
+title: 13 Cümlede Startup'lar
 time: 2009-05-25 01:39:00 +03:00
 permalink: "/2009/05/13-cumlede-startuplar.html"
 

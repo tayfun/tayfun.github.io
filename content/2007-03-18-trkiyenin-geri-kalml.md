@@ -1,6 +1,6 @@
 name: trkiyenin-geri-kalml
 layout: post
-title: "Türkiye'nin Geri Kalmışlığı"
+title: Türkiye'nin Geri Kalmışlığı
 time: 2007-03-18 13:54:00 +02:00
 tags: [ekonomi]
 

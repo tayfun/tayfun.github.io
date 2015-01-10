@@ -1,6 +1,6 @@
 name: akp-kemalistlerin-en-buyuk-basarisi
 layout: post
-title: "AKP, Kemalistlerin En Büyük Başarısı"
+title: AKP, Kemalistlerin En Büyük Başarısı
 time: 2014-08-10T14:33:52+02:00
 tags: ["rants"]
 

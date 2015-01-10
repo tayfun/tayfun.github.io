@@ -1,6 +1,6 @@
 name: yeni-yla-giris
 layout: post
-title: "Yeni Yıla Giriş"
+title: Yeni Yıla Giriş
 time: 2010-01-01 17:31:00 +02:00
 tags: [photography]
 
