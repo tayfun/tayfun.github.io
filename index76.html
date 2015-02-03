@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/03/code-corrupted-insert-fresh-copy.html">
+            Code corrupted. Insert fresh copy.
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-03-14 00:00:00+01:00" pubdate title="on Wed 14 March 2007">on Wed 14 March 2007</time>, and filed under <a class="posttag" href="tag/javascript.html">javascript</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I recently started blogging again. One of the first things I did, I inserted some javascript code in the usual template that blogger provides. I saved the template and I got a bundle of errors. The first few errors were related to XML parsing, the new blogger engine couldn't parse my code. Apparently this is because of using "&amp;" directly instead of "&amp;amp;", OK my fault. I fix these issues and then when I think that all should be well, I refresh my page to see <blockquote>"Code corrupted. Insert fresh copy." </blockquote>in the place where I inserted the code. After looking at the generated code, I see that my code is not in the place it should be, because the javascript code is actually inside html quotation characters (namely &lt;!-- and --&gt;) so the blogger engine didn't think it was any use and left them out of the generated code. I removed the quotes and voila, it works.<br /><br />Hope this helps someone.<br /><br />--<br /><br />Bloggerda yeni sayılırım, bir javascript kodu eklemeye çalıştığımda çıkan hataları anlatacağım. İlk olarak, şablonu kaydet butonuna tıklayınca blogger amcam ben bunu parse edemiyorum sen bunu XML yap öyle gel dedi. Hemen "&amp;" işaretlerini "&amp;amp;" yaparak isteğini yerine getirdim. Daha sonra şablonu kaydettim. Sevinçle tarayıcımın "yenile" düğmesine basmıştım ki kodun olduğu bölümde <blockquote>"Code corrupted. Insert fresh copy." </blockquote> yazısını gördüm. Blogger amcamın oluşturduğu koda direk sayfadan bakınca eklediğim kodun yerinde yeller estiğini gördüm. Neymiş, blogger amcam javascript kodunun yorum kodları arasında (&lt;!-- ve --&gt;) olduğunu görünce gereksiz olduğunu sanarak oluşturduğu koda eklememiş. Kodu yorumlardan kurtarınca mutlu mesut hayatımıza devam edebiliriz.<br /><br />Umarım birilerine yardımı dokunur.<br /><br />--<br /><br />tayfun</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/03/grid-hesaplama.html">
+            Grid Hesaplama
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-03-14 00:00:00+01:00" pubdate title="on Wed 14 March 2007">on Wed 14 March 2007</time>, and filed under <a class="posttag" href="tag/teknoloji.html">teknoloji</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Bilgisayarımda Globus toolkiti derlenirken günlüğüme bir yazı daha yazayım dedim. Grid hesaplama dersi alıyorum bu dönem ve yarına bir ödevim var. Yumurta teorisine uyarak son güne kadar bekledim. Bakalım yetiştirebilecek miyim.<br /><br />Şimdi temel bilgilere geçelim. Grid hesaplama temel olarak bir sürü bilgisayarı tek bir iş için çalıştırmak demek. Biraz "Küme Hesaplama" (Cluster Computing) kavramına benziyor ama Grid Hesaplama aslında kümelerin kümesi biraz da. Bu ne demek, bu Grid Hesaplama uçlarının her birinin dağıtık olarak dünyanın farklı yerlerinde bulunabilmesi anlamına geliyor. Yani Grid Hesaplama kullanarak işinizin bir bölümünü Türkiye'de, bir bölümünü dünyanın diğer ucu olan Japonya'da yaptırabilirsiniz. Bunun ne önemi var demeyin, hesaplama gücünüz çok büyük oranda artıyor. Bu da birçok bilimcinin istediği bir şey. Öyle algoritmalar varki tek bilgisayarda aylarca sürecekken grid ile tahammül edilebilir bir zamanda bitiriliyor.<br /><br />Peki bir işiniz var, Grid üzerinde çalıştırmak istiyorsunuz, ne yapmanız gerekiyor? Öncelikle algoritmanızı kontrol edip paralel çalışabilir şekilde değiştirmeniz gerekiyor. Algoritmanızı paralel hale getirdikten sonra MPI veya paralel çalışma için geliştirilmiş kütüphane yardımı ile programınızı paralelleştirmelisiniz. Bundan sonrası bürokrasi oluyor, Ulakbim Grid takımına başvurup kullanıcı adı ve şifre alıyorsunuz ve canavar bir işlem gücünü kullanmaya başlıyorsunuz. Grid'e başvururken yapmak istediklerinizin birtakım kriterlere uyması gerektiğini söylememe gerek yok sanırım.<br /><br />Daha fazla bilgi için <a href="http://www.grid.org.tr">Tübitak Grid Sayfası</a></p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/03/merhaba-dnya.html">
+            Merhaba dünya!
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-03-14 00:00:00+01:00" pubdate title="on Wed 14 March 2007">on Wed 14 March 2007</time>, and filed under <a class="posttag" href="tag/merhaba.html">merhaba</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Bu ilk mesajım olduğuna göre teamüllere uygun davranarak bir merhaba dünya mesajı yazmak istedim. Yine teamüller yüzünden kendimi tanıtsam iyi olacak galiba.<br /><br />Merhaba, ben Tayfun. Bu sitenin tek yazarı. Şu anda iyi bir okulun iyi bir bölümünde yüksek lisans yapmaktayım. Ankara'da kalıyorum ve büyük bir kurumun (50000+ kullanıcı) bilgi-işlem merkezinde sistem yöneticisi olarak çalışıyorum. Sistem yöneticisi ne yapar diye merak ediyorsanız, sistemleri yönetir diyeceğim ama bu size ne kadar anlam ifade eder bilmiyorum. En iyisi zaman geçtikçe yazdığım yazılara bakarak ne olduğunu anlamanız.<br /><br />Daha önce de günlüklerim olmuştu ama genelde tembellik yüzünden ve fazla konuşkan birisi olmadığımdan dolayı devam ettirememiştim. Şimdi tekrar başlıyorum, umarım bu sefer devamı gelir. Günlükte her konuda yazmayı düşünüyorum. Linux, sistem yönetimi gibi teknik konular da olabilir, siyaset veya edebiyat da. Kafama ne gelirse karalayacağım. Bu şuna benziyor, hani eski zamanlarda geçen bir hikaye vardır, adam kafasını kurcalayan birşey olduğunda ağaçta bir oyuk açar ve içine kafasındakileri fısıldar. Artık tek sırdaşı o ağaç olur. Bu da öyle bir şey (nasıl da dramatize ediyorum ama). Yani bir anlamda sırdaşım oluyorsunuz. O yüzden bana iyi davranın :P<br /><br />Neyse, benden şimdilik bu kadar.<br /><br />Esen kalın :P</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

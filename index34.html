@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/12/debianda-srmler-ve-paket-ynetimi.html">
+            Debian'da sürümler ve paket yönetimi
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-12-15 00:00:00+01:00" pubdate title="on Mon 15 December 2008">on Mon 15 December 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Debian bir zamanlar paket yönetim sistemi ile gerçekten öne çıkan bir linux dağıtımıydı. Daha sonra Debian temelli Ubuntu ile birlikte işler çok daha kolay hale geldi ama sistem yöneticisinin en sevdiği dağıtım sağlamlığı ile halen Debian. Çoğu sunucu işleri için bu dağıtım tercih ediliyor. Paket yöneticisi olan APT, aptitude programı ile veya apt-get ile çalıştırılır, peki programların veritabanları nereden elde ediliyor? Bunun için sources.list isimli bir dosya kullanılır. Varsayılan olarak bu dosya /etc/apt/sources.list adresindedir ve her "aptitude update" deyişimizde bu dosyadaki yansılar kontrol edilerek yeni paketlerin listesi alınır. Daha sonra "aptitude upgrade" dediğimizde sistemimizde bulunan programlar yeni sürümleri varsa güncellenir veya "aptitude search" ile bir paket aradığımızda varlığı bu listeden kontrol edilir.<br /><br />En hızlı yansıyı bu listeye yazmanız sizin için bir avantaj çünkü büyük miktarlı güncellemeler özellikle yavaş internet hızına da sahipseniz uzun zaman alabilir. Hangi yansının daha hızlı olduğunu bulmak biraz zahmetli bir araştırma gerektiriyor, neyse ki küçük bir program yardımıyla bunu otomatikleştirebiliriz. Programın adı "netselect-apt" bu programı aptitude ile kuruyoruz:<br /><br /><code># aptitude install netselect-apt</code><br /><br />Ve çalıştırıyoruz:<br /><br /><code># netselect-apt <br />Using distribution stable.<br />mirrors_full has been found.<br />I'll use that, rather than downloading it again.<br /><br />Choosing a main Debian mirror using netselect.<br />netselect: unknown host debian.planetmirror.com             <br />netselect: 227 (24 active) nameserver request(s)...   <br />...<br />...............................................................................<br />The fastest server seems to be:<br />        http://ftp.tr.debian.org/debian/<br /><br />Writing sources.list.<br />Done.<br /></code><br /><br />Program önce yansı listesini indiriyor (veya daha önceden çalıştırılmışsa ve güncel liste varsa onu kullanıyor) ve listedeki yansıların hızını ölçüyor. Bir süre sonra bu ölçüm bitiyor ve çalıştığınız klasöre sources.list dosyasını oluşturmuş oluyor. Eğer bu dosyayı /etc/apt/sources.list olarak taşırsanız en hızlı yansıyı kullanmaya başladınız demektir. Daha detaylı bilgi için ve Debian'ın hangi sürümünü istediğinizi vs. belirtmek için "man netselect-apt" veya "netselect-apt -h" çıktılarına bakmanız gerekiyor.<br /><br />Debian'ın hangi sürümünü kullanıyorsunuz peki? Bunu sources.list dosyasına bakarak anlayabilirsiniz. <br /><br /><code>deb http://ftp.tr.debian.org/debian/ stable main contrib</code><br /><br />gibi satırlarınız olacak, buradaki 3. kelime sürümünüzü belirtiyor. Burada stable denilmiş.<br /><br /><code>deb ftp://ftp.tr.debian.org/debian/ lenny main contrib non-free</code><br /><br />satırına benzer bir satır varsa lenny kullanılıyor demektir (lenny şu anda testing aşamasında). Debian'daki sürümler arasındaki farklar konusunda <a href="http://www.debian.org/releases/">şu sayfaya</a> ve bu konudaki <a href="http://www.debian.org/doc/FAQ/ch-choosing.en.html">daha detaylı açıklamalar ve APT bilgileri için şu sayfaya</a> bakın.<br /><br />Debian'da bir sürümden ötekine nasıl geçebilirsiniz? Sürüm yükseltmek için aslında yapmanız gerekenler çok basit, az önce gösterdiğim sources.list dosyasındaki 3. kelimeyi istediğiniz sürüm ismi ile değiştirmek. Bunun için stable, testing, unstable gibi geliştirme isimlerini kullanabileceğiniz gibi etch, lenny veya sid gibi özel sürüm isimlerini de kullanabilirsiniz. Bu yazının yazıldığı tarihte etch kararlı (stable), lenny daha az kararlı olan testing sürümünü, sid ise kararsız olan unstable sürümlerinin özel isimleri. Örneğin sources.list dosyasındaki stable kelimelerini testing'e çevirirsek bir sonraki APT güncellemesinde testing'e geçeceğiz demektir. <br /><br /><code># aptitude update<br /># aptitude upgrade </code><br /><br />Sonrası sisteminiz yeni sürüm için gerekli paketleri yüklemiş olacaktır.<br /><br />Yeni sürüme geçmek için aslında başka yollar da var. Bunlardan biri olan "apt-get dist-upgrade" yardımı ile otomatik olarak bir üst sürüme geçebilirsiniz. Bununla APT bazı ayarlar yaparak paketlerin sürüm/bağımlılık bilgilerini de güncelleyecektir. Daha fazla bilgi için "man apt-get" ve Debian.org dökümantasyonunu inceleyebilirsiniz (bir nevi RTFM yapıyorum, biliyorum :)).<br /><br />Kolay gelsin.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/12/yaml-makefile-vs.html">
+            YAML, Makefile vs.
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-12-15 00:00:00+01:00" pubdate title="on Mon 15 December 2008">on Mon 15 December 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><a href="http://en.wikipedia.org/wiki/YAML">YAML</a> formatını Ruby on Rails günlerimden biliyorum. Şimdi Symfony deniyorum ve onun da varsayılan olarak bu dosya formatını ayarlar için kullandığını gördüm. <a href="http://en.wikipedia.org/wiki/XML">XML</a> ilk çıktığında ikili (binary) dosyalar yerine ASCII kullanarak bilgi saklamayı sağlamak amacındaydı, yani insanlar tarafından okunabilir olması (human readable) en büyük avantajlarından sayılıyordu. Ama XML'in genişletilebilir olması yüzünden (veya sayesinde?) onlarca ek etiketler ve bunları açıklayan bir sürü döküman ortaya çıktı. Sonuç olarak pratikte XML'in binary dosyalardan çok farkı kalmadı, okunabilirliği ortadan kalktı. YAML bu boşluğu doldurmaya çalışan bir format. Ama benim C/C++ projeleri için çok kullandığım Makefile'lar ve daha birçok başka formatta olduğu gibi boşluklar önemli. Ben ise boşlukların önemli olduğu durumlardan nefret ediyorum. Symfony'nin <a href="http://www.symfony-project.org/book/1_2/05-Configuring-Symfony">çevrimiçi kitabında</a> "Help, a YAML File Killed My App!" başlıklı bir bölüm var ki olabilecek kazaları bir sayfa boyunca anlatıyor. Bu hoşuma gitmiyor. Yok şuraya boşluk koy, yok tab kullanma onun yerine iki boşluk kullan, yok satır atlama... Bunlar yazılımcının bence kolayca hataya düşmesine yol açabilecek olaylar ve gereksizler. Daha güzel bir dil arıyorum.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/12/youtubea-erime-yollar.html">
+            YouTube'a erişme yolları
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-12-12 00:00:00+01:00" pubdate title="on Fri 12 December 2008">on Fri 12 December 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Şimdi Türkiye'deki bazı sivri zekalı insanlar (bkz. <a href="http://www.ntvmsnbc.com/news/468087.asp">ntvmsnbc'deki Bakan Yıldırım haberi</a>) interneti kısıtlayabileceklerini düşünüyorlar. <a href="http://www.ntvmsnbc.com/news/466693.asp">Başbakan bile "ben yutub'a giriyorum siz de girin" diyebiliyor</a>. Şimdi bu durumda başbakan'ın sözüne uyarak biz de yutub'a girme rehberi hazırladık. Windows ve Linux için ayrı ayrı yapılması gerekenler var. Her iki işletim sistemi için de hosts dosyasına yutub için IP girmeniz gerekiyor. Yalnız bu dosyaların yerleri farklı. Vindovz için:<br /><br />C (veya D):\Windows\system32\drivers\etc\hosts dosyasının içine şu satırları ekleyin:<br /><br /><code>208.117.236.70 www.youtube.com<br /><br />208.117.236.70 youtube.com<br /></code><br /><br />Benim dosyamın son hali şöyle:<br /><br /><code>127.0.0.1       localhost<br /><br />208.117.236.70 www.youtube.com<br /><br />208.117.236.70 youtube.com</code><br /><br />Linux içinse bu dosyanın yeri /etc/hosts . Buna da aynı satırları ekledikten sonra yutub'a girebilirsiniz. Eğer bir iPhone veya PDA tarzı bir cihazınız varsa yine hosts dosyasını bulmanız gerekiyor. Bu dosyaların yerleri <a href="http://en.wikipedia.org/wiki/Hosts_file">vikipedi makalesinde</a> ayrıntılı olarak açıklanmış. Tek yapmanız gereken bu dosyaları değiştirmek.<br /><br />Şimdi ne yaptığımızı da şöyle açıklayayım: YouTube Google'a bağlı bir firma ve yüzlerce sunucusu bulunmakta, ve her gün yeni sunucular ekliyorlar. Bizim eklediğimiz IP yeni sunuculardan birinin IP'si ve henüz sansürcü sansarlar tarafından bilinmiyorlar. Bu sayede biz sansürden etkilenmemiş oluyoruz.<br /><br />İnternette özgürlüğün keyfini çıkarın.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/12/postgresql-tsheadline-not-working.html">
+            PostgreSQL ts_headline not working?
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-12-04 00:00:00+01:00" pubdate title="on Thu 04 December 2008">on Thu 04 December 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I was trying some examples on <a href="http://www.postgresql.org/docs/8.3/interactive/textsearch-controls.html">PosgreSQL documentation</a> about highlighting search terms in a text. I would like to do full-text search on documents and have them highlighted by PostgreSQL automatically so that I could show them right away on a web page. The trouble was, the examples were not working out correctly for me. Here's the correct running:<br /><br /><code>SELECT ts_headline('english', 'The most common type of search<br />is to find all documents containing given query terms<br />and return them in order of their similarity to the<br />query.', to_tsquery('query &amp; similarity'));<br />                     ts_headline                      <br />------------------------------------------------------------<br />given &lt;b&gt;query&lt;/b&gt; terms<br />and return them in order of their &lt;b&gt;similarity&lt;/b&gt; to the<br />&lt;b&gt;query&lt;/b&gt;.<br /></code><br /><br />But here's what I was getting:<br /><br /><code>SELECT ts_headline('english', 'The most common type of search is to find all documents containing given query terms and return them in order of their similarity to the  query.', to_tsquery('query &amp; similarity'));<br />                                     ts_headline                                      <br />--------------------------------------------------------------------------------------<br /> The most common type of search is to find all documents containing given query terms<br />(1 row)<br /></code><br /><br />After googling it for some time I found the reason. It is because of the default search configuration I was using. Since it is not "english", the to_tsquery function does not work as expected.<br /><br /><code>=&gt; show default_text_search_config;<br /> default_text_search_config <br />----------------------------<br /> pg_catalog.turkish<br />(1 row)<br /><br />=&gt; select to_tsquery('query &amp; similarity');<br />       to_tsquery       <br />------------------------<br /> 'query' &amp; 'similarity'<br />(1 row)<br /><br />=&gt; select to_tsquery('english', 'query &amp; similarity');<br />     to_tsquery      <br />---------------------<br /> 'queri' &amp; 'similar'<br />(1 row)<br /></code><br /><br />Aha. Now we can retry:<br /><br /><code>SELECT ts_headline('english', 'The most common type of search is to find all documents containing given query terms and return them in order of their similarity to the  query.', to_tsquery('english', 'query &amp; similarity'));<br />                                            ts_headline                                             <br />----------------------------------------------------------------------------------------------------<br />given &lt;b&gt;query&lt;/b&gt; terms<br />and return them in order of their &lt;b&gt;similarity&lt;/b&gt; to the<br />&lt;b&gt;query&lt;/b&gt;.<br />(1 row)<br /></code><br /><br />Now that's better.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/12/postgresql-ve-locale-hakknda.html">
+            PostgreSQL ve locale hakkında
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-12-02 00:00:00+01:00" pubdate title="on Tue 02 December 2008">on Tue 02 December 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Şu aralar PostgreSQL veritabanında tam yazı arama (<a href="http://en.wikipedia.org/wiki/Full_text_search">full-text search</a>) uygulamalarını araştırıyorum. 8.3.5 Sürümü ile birlikte <a href="http://www.postgresql.org/docs/8.3/interactive/textsearch-intro.html">gelişmiş arama özelliklerinin</a> geldiğini bilmiyordum, bu konuda fikir sahibi olmak için dökümantasyonu bir gözden geçirin derim. Şimdiki sorunum locale'ler ve özellikle de Türkçe arama konusundaki bir takım gereklilikler. Aradığım özelliklerden en önemlisi "kirmizi" gibi bir kelime arandığında dökümanda "kırmızı" olsa bile bunu geri dönmesi. Bir anlamda Türkçe'ye özgü karakterlerin latin karşılıklarının olduğunun varsayılması. Konuyla ilgili anahtar kelimelerden birisi "collation".<br /><br />PostgreSQL'de bir veritabanı kümesi yarattıktan sonra değiştiremeyeceğiniz bazı yerelleştirme özellikleri var. Ve kullanabildiğiniz yerelleştirme özellikleri de kullandığınız sisteme bağlı aynı zamanda. Bu durumda sisteminize gerekli dil özelliklerini yüklemelisiniz. Debian için yaptıklarım şunlar:<br /><br /><code># vim /etc/locale.gen </code><br /><br />bu dosyayı açtıktan sonra şu iki satırın başındaki yorum işaretlerini (#) silin.<br /><br /><blockquote>tr_TR ISO-8859-9<br />tr_TR.UTF-8 UTF-8</blockquote><br />Ve sonra dil özelliklerinin tekrar derlenmesi için:<br /><br /><code># locale-gen </code><br /><br />dedikten sonra <br /><br /><code># locale -a<br />C<br />en_US.utf8<br />POSIX<br />tr_TR<br />tr_TR.iso88599<br />tr_TR.utf8<br />turkish<br /></code><br /><br />komutunun çıktısı yukarıdaki gibiyse dil özellikleriniz yüklenmiş demektir.<br /><br />Şimdi tekrar veritabanını kurcalamaya devam edebiliriz.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

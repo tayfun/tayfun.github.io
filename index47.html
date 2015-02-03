@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/05/rails-tip-deleting-unneeded-files.html">
+            Rails tip - Deleting unneeded files
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-06 00:00:00+02:00" pubdate title="on Tue 06 May 2008">on Tue 06 May 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>If you want to remove all files associated with a model of yours, that is removing the controller, migration, tests etc. than you can use the script/destroy command to do just that. The argument to remove all the files is "scaffold" so that:<br /><code>ruby script/destroy scaffold pages</code><br />would do.<br />Run destroy with -p flag to see which files would be affected.<br /><br />Note that if you already have set up an application than you would need a little more work to reconfigure your database. You would have a lot of data in your other tables so you cannot drop the database and re-migrate it again. In that case, it's better to connect to the database directly and drop the unneeded table.<br /><br />[UPDATE: It seems that sometimes destroy script is unable to delete the related line in routes.rb file. In that case, you'll notice it because your application won't work, edit the file and put it in correct form.]</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/05/otomobil-mi-insan-m.html">
+            Otomobil mi, insan mı?
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-05 00:00:00+02:00" pubdate title="on Mon 05 May 2008">on Mon 05 May 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><a href="http://econ.worldbank.org/WBSITE/EXTERNAL/EXTDEC/EXTRESEARCH/EXTWDRS/EXTWDR2008/0,,menuPK:2795178~pagePK:64167702~piPK:64167676~theSitePK:2795143,00.html">Dünya Bankasının 2008 Dünya Gelişim Raporuna</a> göre 4 çekerli bir aracın deposunu biyoyakıtla doldurmak için gereken mısır bir insanı bir sene boyunca doyurabilir:<br /><br /><blockquote>The 2008 World Development Report “Agriculture for Development” provides a compelling example of the food-for-fuel debate: over 240 kilograms (or 528 pounds) of corn – enough to feed one person for a whole year – is required to produce the 26 gallons, or 100 liters of ethanol needed to fill the gas tank of a modern sports utility vehicle.</blockquote><br />[<a href="http://web.worldbank.org/WBSITE/EXTERNAL/COUNTRIES/AFRICAEXT/0,,contentMDK:21727859~menuPK:258657~pagePK:2865106~piPK:2865128~theSitePK:258644,00.html">Raporun özeti</a>]<br /><br />Afrika'daki insanları bir düşünsenize. <br /><br />Otomobillere daha fazla önem verildiği için insanlar ölüyor.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/05/harika-bir-konuma.html">
+            Harika bir konuşma
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-04 00:00:00+02:00" pubdate title="on Sun 04 May 2008">on Sun 04 May 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Türkiye ile de şimdilerde çok ilgili bir konuşma. İnternetin en sevdiğim yanlarından biri alanının en iyilerine ulaşabilmek, bazen dünyanın diğer tarafında olsalar bile odandan çıkmadan düşüncelerini dinleyebilmek. Sudan'lı Prof. Abdullahi Ahmed An-Na'im'in ABD'deki en iyi üniversitelerden University of İllinois'daki konuşması:<br /><br /><a href="http://www.cgs.uiuc.edu/resources/webvideo/an_naim.html">http://www.cgs.uiuc.edu/resources/webvideo/an_naim.html</a><br /><br />Kendi içinde çok tutarlı. Güzel bir konuşma.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/05/routing-error-in-rails.html">
+            Routing Error in Rails
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-01 00:00:00+02:00" pubdate title="on Thu 01 May 2008">on Thu 01 May 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I have been struggling with a Routing Error over the last few hours and I finally got to understand and solve it. Even though it seems that my routing configuration is correct and that the URI I access for testing should be recognized, I get a Routing Error saying that no routes matched. I have an UploadsController and in the routes.rb file I created a named path with something along the lines:<br /><br /><code>map.request_upload '/indir/:random_id/:filename', :controller =&gt; 'uploads', :action =&gt; 'request_file'</code><br /><br />When I try to visit the URI http://localhost/indir/3454353/.bashrc though, I get a Routing Error. It seemed as though Rails was missing the line, it is as if Rails is not reading it at all. I've went through all the information I could find on the Internet, even started re-reading the Routing chapter from Fernandez' book, but to no avail. Then while trying to solve this problem I requested http://localhost/indir/3454353/bashrc, that is a file without a dot in the name, and bingo, it was recognized.<br /><br />So what's the result? I am not sure why or how but when wildcard components (or receptors as sometimes called) include a dot, something goes wrong. I think it is not matched with the receptor and thus the route is not recognized. It is an interesting bug (or a feature?).</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/04/ile-firefox-sorunsal.html">
+            Ubuntu 8.04 ile Firefox sorunsalı
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-04-29 00:00:00+02:00" pubdate title="on Tue 29 April 2008">on Tue 29 April 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Birkaç gün önce Ubuntu'nun 8.04 sürümü çıktı. Zaten beklediğim bir sürüm olduğu için ben de hemen sistemimi yükselttim. Yeni Ubuntu ile gelen tarayıcı Firefox'un 3 beta 5 sürümü. Görünüşe göre Canonical ekibi yeni güvenlik güncellemeleri içermesi sebebiyle Firefox'un bu sürümünü sisteme eklemeye karar vermişler, beta olmasına rağmen. Firefox'un kararlı bir 3.0 sürümünün ise ne zaman çıkacağı belli değil. <br /><br />Yükseltme ile birlikte Firefox'un 3b5 sürümünü kullanmaya başladım, görünüş olarak iyi ve birkaç güzel özelliği de yok değil ama eklentilerim olmadan yaşayamam diyerek eklentilerimi etkinleştirmeye çalıştım. Ancak pek çok eklenti 3 sürümü ile uyumlu değildi. Sürüm uygunluk kontrolünü Configuration Maniac eklentisini kurcalayarak kapattım ve uyumlu olmadığı söylenen eklentileri de etkinleştirdim. Buna rağmen bazı eklentiler çalışmadı ve ben de gerisin geriye Firefox'un 2 sürümüne geri dönmek için kolları sıvadım. Ubuntu paketleri arasına firefox-2 isimli paket benim gibiler için bırakılmış. Bu paketi kurarak eski sürüme geri döndüm. Ancak eklentiler yine çalışmadı. Nedenini anlayamadım ama sanırım 3 sürümü profilde bazı değişiklikler yaptı ve bunlar 2 sürümünün kafasını karıştırdı. Herşeyi varsayılan profile koymanın zararını böylece görmüş oldum. Varsayılan profili az önce uçurdum (bkz. "rm -rf <em>") ve şimdi eklentilerimi yeniden kuracağım. Şimdi bu güncellemeden öğrendiğimiz Firefox dersleri:<br /><br /></em> Varsayılan Firefox profiline eklenti vs. kurma!<br />* Her büyük (major, yani ilk sürüm numarası büyüyen) sürüm için ayrı bir profil kullan. Firefox'u profil yöneticisi ile başlatmak için: <br /><br /><code># firefox -ProfileManager</code><br /><br />demek gerekiyor.<br /><br />Bir musibet bin nasihatten iyidir derler ya, bu da bana iyi bir ders oldu sanırım. En iyi uygulamalara (best practices) doğru gidiyorum :)</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

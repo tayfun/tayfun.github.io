@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/10/php-warning-module-x-already-loaded.html">
+            PHP Warning:  Module X already loaded
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-10-01 00:00:00+02:00" pubdate title="on Thu 01 October 2009">on Thu 01 October 2009</time>, and filed under <a class="posttag" href="tag/programming.html">programming</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I just found the reason for this annoying message. Every time I run PHP, it used to throw me a bunch of errors of the form:<br /><code><br />PHP Warning:  Module 'mysql' already loaded in Unknown on line 0<br /><br />Warning: Module 'mysql' already loaded in Unknown on line 0<br />PHP Warning:  Module 'mysqli' already loaded in Unknown on line 0<br /><br />Warning: Module 'mysqli' already loaded in Unknown on line 0<br />PHP Warning:  Module 'pdo_mysql' already loaded in Unknown on line 0<br /><br />Warning: Module 'pdo_mysql' already loaded in Unknown on line 0<br /></code><br />It was very irritating because I checked and re-checked my php.ini file to see if I was including the aforementioned modules more than once. So, if you are receiving these kinds of errors check to see if your php.ini file has something like<br /><code><br />extension=mysql.so<br />extension=mysqli.so<br />extension=pdo_mysql.so<br /></code><br />more than once. The trouble with PHP is that you could have many php.ini files on your system that you didn't know about. PHP <abbr title="Command Line Interface">CLI</abbr> uses a different file than <abbr title="Common Gateway Interface">CGI</abbr> and I also have many other PHP installations, for example those that came with Aptana IDE.<br /><br />To find the .ini file you are interested in, the best you can do is to run "$ php -i" which basically calls phpinfo() and echoes the output. This will print out the .ini file it is using, allowing you to find the file causing trouble. Here's what I found:<br /><code><br />Configuration File (php.ini) Path =&gt; /opt/local/etc/php5<br />Loaded Configuration File =&gt; /opt/local/etc/php5/php.ini<br />Scan this dir for additional .ini files =&gt; /opt/local/var/db/php5<br />Additional .ini files parsed =&gt; /opt/local/var/db/php5/apc.ini,<br />/opt/local/var/db/php5/curl.ini,<br />/opt/local/var/db/php5/mysql.ini,<br />/opt/local/var/db/php5/imagick.ini,<br />/opt/local/var/db/php5/memcache.ini,<br />/opt/local/var/db/php5/pecl_http.ini,<br />/opt/local/var/db/php5/readline.ini,<br />/opt/local/var/db/php5/tidy.ini,<br />/opt/local/var/db/php5/xdebug.ini,<br />/opt/local/var/db/php5/zlib.ini<br /></code><br />Aha! So there's all the other .ini files that are included. I didn't know about this. So for my problem, the simple fix is removing the mysql.ini file from that directory. Everything is fine now. Enjoy :-)</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/09/installing-php-extensions-step-by-step.html">
+            Installing PHP Extensions - A Step by Step Guide
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-09-25 00:00:00+02:00" pubdate title="on Fri 25 September 2009">on Fri 25 September 2009</time>, and filed under <a class="posttag" href="tag/programming.html">programming</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I recently installed APC (Alternative PHP Cache) on one of our servers and I want to provide a step by step guide so that others can benefit from my experience. We had both php4 and php5 installed in the server and I wanted to install the accelerator for php4 specifically. When I used pecl to install the extension, it ended up in the php5 modules directory. <br /><code><br />$ sudo pecl install apc<br />downloading APC-3.0.19.tgz ...<br />Starting to download APC-3.0.19.tgz (115,735 bytes)<br />.....................done: 115,735 bytes<br />47 source files, building<br />running: phpize<br />Configuring for:<br />PHP Api Version:         20041225<br />Zend Module Api No:      20060613<br />Zend Extension Api No:   220060519<br />[some more output]<br />...<br />install ok: channel://pecl.php.net/APC-3.0.19<br />You should add "extension=apc.so" to php.ini<br /></code><br />Since I wanted to have install APC for php4, I went down the manual way:<br /><span style="font-weight:bold;">Step1:</span> Download and unzip APC<br /><code><br />$ wget http://pecl.php.net/get/APC-3.0.19.tgz<br />$ tar xvzf APC-3.0.19.tgz <br />$ cd APC-3.0.19/<br /></code><br /><span style="font-weight:bold;">Step2:</span> Use phpize to prepare the source code. If you do not have phpize, you can get it from php4-dev (or php5-dev if you are using php5) package on Debian.<br /><code><br />$ phpize<br /></code><br /><span style="font-weight:bold;">Step3:</span> Use ./configure to create library settings etc. Make sure correct php-config is on your path. Then do make. You will have the apc.so module file in the modules directory in the current path. You can copy that to your php modules directory or ask make install to do it.<br /><code><br />$ ./configure<br />$ make<br />$ make install<br /></code><br /><span style="font-weight:bold;">Step4:</span> Ensure that the module is copied to the correct place. As a final step, you need to edit your php.ini file so that the module is loaded:<br /><code><br />extension=apc.so<br /></code><br />That's all, enjoy your new bytecode optimizations. I'll write another post detailing what speedup I was able to observe.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/09/state-of-union.html">
+            State of the Union
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-09-13 00:00:00+02:00" pubdate title="on Sun 13 September 2009">on Sun 13 September 2009</time>, and filed under <a class="posttag" href="tag/dirdir.html">dirdir</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>[ Bu uzun yazıyı gerçekten okumak istiyor musun :) İstersen yan taraftan <a href="http://blog.tayfunsen.com/search/label/foto%C4%9Fraf">fotoğraflar</a> etiketine tıkla ]<br /><br />Bir süredir günlük yazılarını aksatmaya başladım. Nedenlerim var, buradan durumumu açıklayayım dedim. Efenim, 3 senedir işkence halini alan yüksek lisans olayını bitirdim (çapkın değilim, yüksek mühendisim!), odtü'den taşındım (sonunda!) ve bir işe girdim (bu da biraz karambole oldu).<br /><br />En son nerede kalmıştık? A evet, temmuz sonuna doğru Ankara'ya diplomayı alıp eve dönmek için geldim. Diploma işleri baya uzun sürmeye başladı, yaz olduğu için herkes tatilde olunca imzaları toplamak mümkün olmadı ve benim param tükenmeye başladı. Bunun üzerine bir işe başvurdum ve birkaç gün sonra başladım :) Durum böyle olunca evlerinde kaldığım arkadaşlardan ayrıldım ve bir eve çıktım.<br /><br />Yeni başladığım şirket küçük bir startup (meali: girişim şirketi), ismi Interlogy. Belki JotForm isimli ürünlerini kullanmışsınızdır eğer kendi web sitenize form eklemek istemişseniz. Şimdilerde JotForm'un 3. sürümünü geliştiriyoruz, şirketteki kod adı Optimus Prime :) Yani zamamınım büyük bölümü artık odtü'de değil Hacettepe Üniversitesinde geçiyor. Çalışma ortamı harika, zeki <a href="http://atank.interlogy.com/blog/">iş</a> <a href="http://serkanyersen.blogspot.com/">arkadaşları</a> var ve ofiste çıplak ayaklarla dolaşabiliyorum :) Türkiye'den tek başvurduğum yer burasıydı ve burada çalışmaktan mutluyum. Aselsan, Havelsan gibi yerleri direk torpil olayından dolayı eledim, devlet dairelerine ise hem torpilden hem de üstünün büyük olasılıkla senden daha salak olacağını düşündüğümden dolayı başvurmadım. Aselsan'da torpil döndüğünü nereden biliyorsun diye sorarsanız (aslında sektördeki herkes biliyor da, siz bu sektörde değilseniz) kendim de torpil yaptırıp staj ayarlamıştım. Üniversite 2. sınıfta staj yeri bulamayıp (ortalama 3.34 ve ben odtü bilgisayar müh. öğrencisiydim :)) Deniz Bilimleri Enstitüsünde staj yapınca (gerçi beklediğimden çok daha iyi geçmişti) ben de herkes gibi torpil ayarlayıp bir sonraki sene işi şansa bırakmamıştım. 3. sınıfta yaptığım iki stajdan birisi İş Bankasında, diğeri de Aselsan'daydı.<br /><br />Yeni evim Öveçlerde. Her yere uzak ama kirası oldukça uygun. 100. Yıldaki berbat evlerden çok daha güzel ve kirası da daha iyi. O kadar sene odtü'de yaşamanın getirdiği avantajları şimdi farkediyorum. Mesela Melih Gökçek'in gazabından baya bir korunmuş oluyormuşuz. Kızılay'ın hali ne öyle ya, kaldırımlar delik deşik olmuş, hiç yürünmüyor. Eğer oruç kişinin duaları daha bir makbulsa Melih Gökçek'in başına yakın zamanda birşeyler gelmeli, baya bir beddua ettim çünkü. Geçen cuma Hacettepe'deki camide çok güzel bir hadis anlatıldı, yine Melih Gökçek'i yad ettim. Olay şöyle geçiyor, bir cenaze sırasında işte ölüyü gömüyorlar, üstüne toprak örtüyorlar. Peygamberimiz küçük bir çukuru göstererek şuraya da toprak atın diyor. Bunun üzerine yanında bulunanlardan biri "bu çukurun ne ölüye zararı var ne de diriye. Bunun kime ne zararı var?" diye peygamber efendimize soruyor. Peygamber efendimizin cevabı şu: "hayattakilerin gözüne zararı var". Burada Melih Gökçek'in yaptığı saçma sapan yollar, köprüler, Milli Kütüphane önündeki gibi abidik gubidik yapılar geliyor. Herhalde Tayyip Erdoğan'ın Ankara'ya yaptığı en büyük kötülük Melih Gökçek'i aday göstermesi olmuştur. Danimarka'nın en özlediğim yanı <a href="http://blog.tayfunsen.com/2007/11/ehirler-ve-insanlar.html">insan odaklı şehirleri</a> oluyor, burada ise Melih Gökçek sağolsun otomobillerin daha fazla önceliği var. Bu arada odtü'deki camide konuşan bir din kültürü hocası vardı, onun sohbetlerini de çok özlüyorum. Çok güzel şiir alıntıları ve harika benzetmeleri vardı. İnsan kaybedince daha fazla anlıyor bazı şeylerin değerini.<br /><br />Benden bu kadar. Önemli gelişmeler bunlardı sanırım. Şimdi biraz kitap okumam gerekiyor :)</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/08/borges-on-writing.html">
+            Borges on Writing
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-08-30 00:00:00+02:00" pubdate title="on Sun 30 August 2009">on Sun 30 August 2009</time>, and filed under <a class="posttag" href="tag/literature.html">literature</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <blockquote>[...] when I began writing, I thought that everything should be defined by the writer. For example, to say "the moon" was strictly forbidden; that one had to find an adjective, an epithet for the moon. (Of course, I'm simplifying things. I know it because many times I have written <span style="font-style:italic;">la luna</span>, but this is a kind of symbol of what I was doing.) Well, I thought everything had to be defined and that no common turns of phrase should be used. I would never have said, So-and-so came in and sat down, because that was far too simple and far too easy. I thought I had to find out some fancy way of saying it. Now I find out that those things are generally annoyances to the reader. But I think the whole root of the matter lies in the fact that when a writer is young he feels somewhat that what he is going to say is rather silly or obvious or commonplace, and then he tries to hide it under baroque ornament, under words taken from the seventeenth-century writers; or, if not, and he sets out to be modern, then he does the contrary: he's inventing words all the time, or alluding to airplanes, railway trains, or the telegraph and telephone because he's doing his best to be modern.<br /></blockquote>
+
+<p><br />Jorge Luis Borges, The Paris Review. Issue 40, 1967.<br />Taken from "The Paris Review Interviews, vol. I".<br /><br />I can identify with this feeling. I believe it is similar when one is a novice in programming, in photography or any other creative stuff. I remember when I first built my website, or coded my first few homeworks. There was always some flashy things, clever tricks (or so I thought) here and there. I wanted to surprise the "other" somehow, and it really didn't matter to me how that would be. It's the same in <a href="http://blog.tayfunsen.com/search/label/foto%C4%9Fraf">photography</a>, I know it because I think I'm still living my novice period there.<br /><br />Here's to simplicity and quality!</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/08/ego-ile-yazsmalarm-2.html">
+            EGO ile Yazışmalarım #2
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-08-27 00:00:00+02:00" pubdate title="on Thu 27 August 2009">on Thu 27 August 2009</time>, and filed under <a class="posttag" href="tag/dirdir.html">dirdir</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Herşey birkaç hafta önce dönem arkadaşım Kaan ile sohbet sırasında başladı. İkimiz de Avrupa'da çeşitli yerlere gitmiştik ve sohbet sırasında geçen "Avrupa'da ilk defa gittiğim kırsal bir şehirde bile bir yerden bir yere giderken 7 yıldır yaşadığım Ankara'daki kadar zorlanmıyorum" sözü beni <a href="http://blog.tayfunsen.com/2009/08/ego-muduru-ne-is-yapar.html">EGO'ya sitem dolu bir e-posta</a> atmama neden oldu. EGO internet sitesinde bulabildigim tüm e-posta adreslerine o mesajı yolladığım için (aslında <a href="http://web.ego.gov.tr/parts/egoziyaretcidefteri.asp">ziyaretçi defterine</a> de yolladım ama yayınlanmadı tabii, sansür kurulu sadece övgülere yer veriyor sanırım) 3 tane farklı e-posta aldım. Bunlardan en detaylı olanının tamamını cevap hakkı olduğu için aşağıya ekliyorum:<br /><blockquote><br />Kuruluşumuzca  durakta ve durağa gelmeden, gitmek istediğiniz hattın  otobüs sefer saatlerini,Bulunduğunuz durağın hangi hatlara hizmet verdiğini otobüsün durağa geliş saati ile duraktan en son hangi hatta ait otobüsün  geçtiğini ve daha fazla bilgi edinilebilecek bir sistemin alınması için çalışmalarını sürdürmektedir.Bu konuda daha önce çıkılan ihalemize isteklerimizi karşılayacak teklif verilmediğinden iptal edilmiş ve yeniden ihaleye çıkılmak üzere çalışmalar sürdürülmektedir.Kurum olarak bizde daha fazla hizmet ve yolcularımıza en fazla kolaylığı sağlamak için çalışıyoruz.Ancak kamuda hizmet arz etmek ve arz ettiklerinizi korumak ve güncel tutmak oldukça zor  duraklara konulan haritalar  anında imha ediliyor.Durakların camları kırılıyor.Hasta ve yaşlı yolcularımızın otobüs beklerken  oturabilmeleri için konulan oturaklar yerinden sökülüp alınıyor.Yani sizler gibi gerçekten bu hizmetlere ihtiyacı olanlara yönelik girişimler maalesef bazıları için hiçbir anlam taşımıyor ve zarar veriyorlar.Almayı düşündüğümüz yeni sistemde en çok düşündüğümüz ve para yatırılacak konuların başında ihdas edilecek aparatların korunması gelmektedir.<br /></blockquote><br />Tabii ki böyle bahaneleri yutacak birisi değilim. Şöyle bir düşündüğümde bu kadar okul bitirmenin, bana insanların vergileriyle yapılan "yatırımın" bir sorumluluğu var, toplum için birşeyler yapmakla sorumlu hissediyorum kendimi. Bugün bu e-postaya yazdığım cevap şu:<br /><blockquote><br />Sayin Mustafa Ilican ve Omer Koca,<br /><br />Sizler "Bahane Uretme Birimi"nde mi calisiyorsunuz, merak ediyorum? 7 senedir Ankara'dayim ve duraklara harita ve zaman tablosu konuldugunu hic hatirlamiyorum. Diger taraftan istanbul gibi bir sehirde bu haritalar sokulmeden duraklarda durabiliyorlarsa Ankara'da hayli hayli durabilirler diye dusunuyorum. Eger haritalar surekli sokuluyorsa uyarilar asilabilir, zor sokulebilen sistemler getirilebilir veya sadece Kizilay gibi merkezi yerlerdeki duraklara bu haritalar konulabilir. Bunlar su an aklima gelen fikirler, herhalde sizlerin de bunlari dusunmesi zor degildir (yoksa zor mu??)<br /><br />Eger insanlar dediginiz gibi haritalari sokuyorlarsa sizin ihaleye girdiginiz elektronik aletleri sokmeyecekleri ne malum? Bu konuda bir calisma yaptiniz mi, yoksa Turkiye'de herseyde oldugu gibi bodoslama atladiniz mi?<br /><br />Bilginin bu kadar ozgurce aktigi cagimizda Ataturk'un baskentinde bu kadar geri bir toplu tasima sistemi yaratmak bence zoru basarmak demek. Bu yuzden sizleri kutluyorum. Lutfen bu kutlamami diger calisanlara da iletiniz. Eger kendi otomobilleriniz yerine toplu tasimayi kullaniyor olsaydiniz zamaninda gelmeyen otobuslerden, nereden gectigi belli olmayan araçlardan, kaba soforlerden siz de payiniza duseni alir ve gercekleri gorebilirdiniz. <br /><br />Turkiye gercek bir Bati tarzi demokrasi olsaydi su ana kadar coktan yerlerinizden edilmis olurdunuz ama heyhat burasi Turkiye, sehirlesme ve modernlesmeye birkac yuzyil gec baslamis bir ulke. Diger taraftan Turkiye'de yasiyor olmamiz sizlerin sorumluluklarinizi azaltmiyor -belki daha da artiriyor hatta- ve bu yuzden ben ve bu sorunlari yasayan bir suru arkadasim sizlerden razi degil. Bunu da bilmenizi istiyorum.<br /><br /><br />Saygilarimla,<br /></blockquote><br />Birşey değişecek mi derseniz, hiç sanmam. "Böyle gelmiş böyle gider" bence. Modern demokrasilerde var olan denetlemeler/düzenlemeler ve sivil hareket bizde olmadığı için tek yapabildiğim bu tür şikayetler. Ama bunların herhangi bir yaptırımı yok tabii ki ve tek faydası içimi dökmem ve razı olmadığımı göstermem oluyor.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

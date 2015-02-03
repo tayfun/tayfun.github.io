@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ubuntu'da X Forwarding | Tayfun Sen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            Ubuntu'da X Forwarding
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-05-22 00:00:00+02:00" pubdate title="on Tue 22 May 2007">on Tue 22 May 2007</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Uzaktaki bir sunucudaki programı kendi makinenizdeymişcesine çalıştırmak istiyorsanız ne yaparsınız?<br /><br />Bunun için iki yöntem var:<br /><br />1. Yol: Eğer uzaktaki makinenizde X11 forwarding açıksa, yani ayar dosyanızda (bu büyük bir olasılıkla /etc/ssh/sshd_config dosyası) "X11Forwarding yes" yazılı ise, <br /><code># ssh -X kullaniciAdi@makineAdi</code><br />komutu ile bağlanmak yeterli.<br /><br />Eğer bu ayar dosyasını değiştirme hakkınız varsa, uzaktaki makinedeki ayar dosyasına "X11Forwarding yes" satırını ekleyin ve ssh sunucusunu tekrar başlatın.<br /><code># /etc/init.d/ssh restart</code><br />Eğer ayar dosyasını değiştirme hakkınız yoksa 2. yola bakın:<br /><br />2. Yol: Eğer karşı makinede X11 forwarding açık değilse, kendi yerel makinenizdeki X11 sunucusuna bağlantı yapabiliyor olmanız gerekiyor. Bunun için Ubuntu'da izlenmesi gereken adımlar:<br /><br />a) System -&gt; Administration -&gt; Login Window tıklanır, açılan pencerede Security sekmesine gidilir, "Deny TCP connections to XServer" yazısının yanındaki "tick" kaldırılır. Bunu yaptıktan sonra X sunucunuzun 6000. porttan dinlemeye başlaması gerekiyor. Benim makinemde bunu yapması için X sunucusunu öldürüp tekrar kaldırmam gerekti. Yani Ctrl-Alt-Backspace ile çıkıp tekrar girdim.<br /><br />b) Bir terminal açılır, <br /><code># xhost +uzaktakiMakineninIPsi</code><br />çalıştırılır. Burada uzaktaki makinenin IPsinden X bağlantılarını kabul edeceğimizi söylemiş oluyoruz.<br /><br />c) Uzaktaki makineye ssh ile bağlanılır:<br /><code>ssh kullanıcıAdım@makineAdım</code><br />ve display ortamı bizim bilgisayara ayarlanır:<br /><code># set DISPLAY=yerelMakineminIPsi:0.0</code><br />veya başka bir kabuk kullanıyorsanız<br /><code># export DISPLAY=yerelMakineminIPsi:0.0</code><br /><br />------<br /><br />Artık programlarınızı çalıştırabiliyor olmanız lazım:<br /><code># xclock &amp;</code><br />dediğinizde yerel bilgisayarınızda analog bir saat çıkmalı.<br /><br /><br />Güvenlik notları: 2. yöntemin çalışabilmesi için yerel makinenizdeki 6000. porta bağlantıların güvenlik duvarı tarafından kesilmemesi gerekiyor. Bunun yanında uzaktaki makine ile yerel makine arasında gidip gelen veriler ağda gidip gelirken dinlenebilir (yani şifreleme yok). Ayrıca her iki yöntemde de uzaktaki makinede root yetkileri olan birisi sizin X sunucunuzda işlemler yapabilir (bu konuda Gökdeniz'in yalancısıyım :)).<br /><br />iyi çalışmalar :)<br /><br /><span style="font-weight:bold;">düzenleme: Gökdeniz'e yanlış bilgilerimi düzelttiği için teşekkürler. Yorumunu kaybettim sanırım. Blogger'a daha yeniyim, yazıyı düzenle dedim ve yorumun gitti :(</span></p>
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

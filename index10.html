@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/02/hacettepe-universitesi-saka-m.html">
+            Hacettepe Üniversitesi Şaka mı?
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-02-12 00:00:00+01:00" pubdate title="on Fri 12 February 2010">on Fri 12 February 2010</time>, and filed under <a class="posttag" href="tag/.html"></a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Bugün iş arkadaşlarıyla her zamankinden çok da farklı olmayan bir şekilde teknokent yemekhanesine gittik. Cumaları geç gittiğimizden ve yemek şirketi (Bilintur Catering) fazla yemek getirmediğinden yemekler bitmiş. Biz de ofise indik ve yemeksepeti'nden yemek istedik. <br /><br />Bir 45 dakika sonra yemek şirketinden aradılar (şirket Sushico bu arada), bize yemek getiren elemanı üniversite kapısından içeri sokmamışlar. Böyle saçmalık ancak Türkiye'de olur sanırım. Kapıdaki görevlileri arayıp içeri almaları için konuştuk ama yarım saat sonra halen yemeğimiz yok. Sanırım az sonra rektörlüğe gidip baya bir küfür edeceğim. <br /><br />Kampüs içerisindeki alışveriş merkezlerinin dışarıdan yemek getirilmesini engellemek istemesi çok normal. Asıl aptallık, buna izin veren ve devletin maaş verdiği güvenlik görevlilerini bu iş için kullanan rektörlükte. Bu nasıl bir iştir anlamakta güçlük çekiyorum. Sanki Çin'de yaşıyoruz, istediğimiz yemeği yemek için izin almamız gerekiyor. Aslında Çin'de bile artık bu tür saçmalıklar yok, ama gel gör ki Türkiye Cumhuriyeti'nde 21. yüzyılda halen varlar.<br /><br />Hiçbir üniversite yönetiminin mantıklı bir şekilde bu türden bir karar alabileceğini düşünmüyorum. Savcıların üniversite yönetiminde olup bu kararı alanları araştırmaları gerekiyor bence. Acaba kampüsteki yemek satan kurumlarda sahiplik payları var mı? Veya rüşvet almış olabilirler mi? Bu saçma kararın tek mantıklı açıklaması bu türden yasal olmayan ilişkiler gibi geliyor.<br /><br />Çok sinirliyim.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/02/locate-database-on-mac-os-x.html">
+            Locate Database on Mac OS X
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-02-11 00:00:00+01:00" pubdate title="on Thu 11 February 2010">on Thu 11 February 2010</time>, and filed under <a class="posttag" href="tag/rants.html">rants</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>OK, I'm here for a quick tip. I use <code>locate</code> to find files and folders a lot, especially when I'm using a system I'm not very familiar with. Mac OS X is one such system, since I've only been using it for the last few months. The problem is, Mac's have everything scattered around, and in places where a regular Linux user would not look. Take <code>updatedb</code> command for example, it is found on most Linux distributions and can be invoked quite easily on the command line. For the Mac OS X, it is hidden in the directory <code>/usr/libexec/</code> which is not even in the root path! And to compound that, its name is <code>locate.updatedb</code>, oh thanks Apple! <br /><br />How on earth am I supposed to find this program like that? [ I bet you didn't think about that eh, Steve Jobs? Just kidding :) ]<br /><br />Anyhow, here's some commands to make your life easier:<br /><code><br />$ sudo ln -s  /usr/libexec/locate.updatedb /usr/bin/updatedb<br />$ sudo updatedb<br /></code><br />Now you can run <code>updatedb</code> like you would on a Linux box.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/01/yapay-tatlandrclar.html">
+            Yapay Tatlandırıcılar
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-01-17 00:00:00+01:00" pubdate title="on Sun 17 January 2010">on Sun 17 January 2010</time>, and filed under <a class="posttag" href="tag/edebiyat.html">edebiyat</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <blockquote><br />Zaman zaman çeşitli nedenlerle ortaya atılan kimi görüşler çevresinde birilerinin kısa yoldan gündem oluşturma gayretlerine tanık oluruz. Çoğu kez sorunları ele alış yeteneğinden, olguları kavrayış derinliğinden yoksun "taklit" kişilerin önemli biriymiş gibi yapmak, kısa yoldan ün sahibi olmak, ortalıklarda görünmek, biraz daha gündemde kalmak ve benzeri nedenlerle kalkıştıkları bu çeşit sivri çıkışlar, cakalı sataşmalar günün konusuymuş sanılır.<br /><br /><span style="font-style:italic;">Sahici boşlukların sahte gündemlerle yamanmaya çalışıldığı bir ortamda</span> derin ve önemli oldukları izlenimi verilmeye çalışılan bu fosforlu söylemlerin çoğunlukla ciddi bir karşılığı yoktur; herhangi bir tartışma değeri taşımaz, ama <span style="font-style:italic;">emeksiz fikrin dolaşımda olduğu her toplumda</span> görüldüğü gibi çeşitli kişilerin katkısıyla zihinler bulandırılır, ortalıkta dolanan mikrofonlar konuyla ilgili olduğu varsayılan kişilerin ağzına uzatılıp onların ne düşünmüş oldukları takibe alınarak gürültü çeşitlendirilir.<br /><br />Oysa siz bu konuda bir şey demiyorsunuzdur. Zaten böyle bir konu yoktur; hatta hiç olmamalıdır. Bu tür kof tartışmalar, beyhude soruşturmalar <span style="font-style:italic;">toplum çoğunluğunun zihinsel diyette olduğu bir kültürel iklimde</span> yapay tatlandırıcılar gibidir. Pek çok kişinin işini hakkıyla yapmadığı, bilir bilmez her konuda söz aldığı bir ülkede, okuma yazmayı yeterince sökemeden multi-medya görselliğinin taarruzuyla sersemlemiş, zihnini toplamakta güçlük çeken bir toplumda, çağın sersemletici hızında, yüzeydeliğin yedeğinde üç gün sonra kimsenin hatırlamayacağı bu kuru gürültüler, yaşamın, toplumun, politikanın, kültürün, sanatın sorunlarını tartışmak sanılır.<br /><br />Her seferinde ağzınızda kötü bir tatla kalırsınız.<br /></blockquote>
+
+<p><br />Murathan Mungan, Milliyet Sanat Ocak Sayısından.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/01/apache-address-already-in-use.html">
+            Apache "Address already in use"
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-01-13 00:00:00+01:00" pubdate title="on Wed 13 January 2010">on Wed 13 January 2010</time>, and filed under <a class="posttag" href="tag/linux.html">linux</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Say you are configuring SSL for your website and after <a href="http://www.debian-administration.org/article/Setting_up_an_SSL_server_with_Apache2">enabling mod_ssl</a>, <a href="http://httpd.apache.org/docs/2.0/ssl/ssl_faq.html#selfcert">creating self signed certificates</a> and adding necessary configuration options to your virtual host definition you are still getting errors of the sort:<br /><code><br />(98)Address already in use: make_sock: could not bind to address 0.0.0.0:443<br />no listening sockets available, shutting down<br />Unable to open logs<br /></code><br />in your logs, what do you do? You check who is using the port of course, <br /><code><br />$ sudo lsof -i :443<br />$<br /></code><br />But that doesn't lead you anywhere because, guess what, nobody is using port 443. <br /><br />So what is the problem? It might be because there multiple definitions of the same type. In my case it was because of this line:<br /><code><br />Listen 443<br /></code><br />which got executed twice. One problem of Apache is that the configuration files are all over the place. It used to be that many configuration options were in the same apache.conf file before but there's a restructuring going on and newer releases emphasize this. You might find old articles and when you use them you can get in these kinds of troubles. <br /><br />Luckily these problems are not that hard to solve. Just be on the lookout for extra definitions and try to understand which declaration is where and does what. You'll avoid most problems by doing that.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/01/kitap-yorumu-coders-at-work.html">
+            Kitap Yorumu: Coders At Work
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-01-10 00:00:00+01:00" pubdate title="on Sun 10 January 2010">on Sun 10 January 2010</time>, and filed under <a class="posttag" href="tag/kitap.html">kitap</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Eylül 2009'da Apress tarafından basılmış bir kitap, <a href="http://www.amazon.com/Coders-at-Work-Peter-Seibel/dp/1430219483">Coders at Work</a>. İzlediğim çeşitli sitelerde ve bir de çok sevdiğim <a href="http://blog.stackoverflow.com/2009/09/podcast-69/">StackOverflow Podcast</a>'de kitapla ilgili olumlu yorumlar çıkınca ben de Amazon'dan siparişimi verip kitabı beklemeye başladım. Amazon'dan şimdiye kadar büyük çoğunluğu kitap olmak üzere 70'e yakın ürün aldım ve hizmetten çok memnun olduğumu söyleyebilirim. Yolda kaybolmuş bir siparişimi de hiç soru sormadan tekrar yollamışlardı, çok iyi bir müşteri hizmetleri var (hepsiburada.com ile karşılaştırıldığında özellikle). Kitap 2 hafta gibi hızlı bir sürede elime geçti ve ben de hemen okumaya başladım. Amazon'dan sipariş etmeyi düşünenler için şunu söyleyeyim, siparişiniz kitap olduğu ve 150$'dan fazla tutmadığı sürece gümrükte vs. bir sorun çıkmadan elinize ulaşıyor. Tabii aynı kitaptan 10 tane almadığınızı varsayıyorum (o durumda ticari işlem görebilir gümrükte).<br /><br />Öncelikle şunu söylemem gerekiyor, insanların meslekleri hakkında neler düşündüklerini, nasıl çalıştıklarını okumak çok hoşuma gidiyor. Bir meslek hakkında öğrenmenin en iyi yollarından birisi onu en iyi şekilde uygulayanların düşünüş şekillerini, küçük alışkanlıklarını, geliştirdikleri teknikleri öğrenmek belki de. Bu yüzden <a href="http://www.amazon.com/Paris-Review-Interviews-Vols-1-4/dp/0312429169/">Paris Review mülakatlarını</a> çok severek okudum, veya <a href="http://www.inc.com/magazine/20091101/the-way-i-work-jason-fried-of-37signals.html">Inc. Dergisinin "The Way I Work" serisini</a>. Yine aynı nedenle <a href="http://www.amazon.com/Writing-Stephen-King/dp/0743455967/">Stephen King'in On Writing kitabı da bence yazmak konusunda en iyi kitaplardan</a>. Eğer kitapta samimi bir ortam oluşturulmuşsa ve sohbet çoğunlukla özgür bir şekilde akıyorsa konu hakkında çok şey öğrenebiliyorsunuz. Yazarlık ve programcılık gibi meslekler için bu daha da önemli bir konu. Çünkü örneğin bir doktorun nasıl çalıştığını az buçuk anlayabilirsiniz, veya bir inşaat mühendisini gözlemleyerek mesleğinin nasıl işlediğini kaba hatlarıyla görebilirsiniz. Yazarlar ve programcılar ise genellikle kapalı alanlarda (kendi karellerinde, odalarında vs.) akıllarında bir sürü şey düşünüp, karalayıp ve en sonunda karar verip bir ürüne dönüştürüyorlar. Başka insanlarla etkileşim minimum düzeyde. Yazarlarda en azından bitirilmiş kitabı okuyup verilen kararların, seçilen yolların sonuçlarını görebilirsiniz; programcılarda ise araya bir katman daha giriyor. Son kullanıcı olarak ancak üretilen programı kullanarak kod hakkında çıkarımlarda bulunabilirsiniz. Programı kullanarak kod hakkında sonuçlara varmanın çok da doğru olmadığını söylememe gerek yok herhalde.<br /><br />Coders At Work bu boşluğu doldurmak amacında. Kitapta tüm zamanların en iyi programcıları ile röportajlar var. Bunlar arasında<br /><ul><li>Netscape'i yazan adamlardan efsane isim Jamie Zawinsky</li><br /><li>LiveJournal kurucularından, memcached'nin yazarı ve şimdilerde Google'da AppEngine üzerinde çalışan Brad Fitzpatrick</li><br /><li>Yahoo'da çalışan JavaScript gurusu Douglas Crockford</li><br /><li>JavaScript'in yaratıcısı Brendan Eich</li><br /><li>Başka şeyler yanında ODTÜ Bilgisayar Mühendisliği Yapay Zeka dersinde kullanılan kitabın da yazarı Peter Norvig</li><br /><li>UNIX'in yaratıcısı Ken Thompson</li><br /><li>TeX'in yaratıcısı ve çok etkili The Art of Computer Programming kitabının yazarı Donald Knuth</li></ul><br />gibi insanlar var.<br /><br />Kitaptaki röportajları gerçekleştiren yani kitabın yazarı Peter Seibel medyadan teknoloji sektörüne geçmiş ve arada bir de Common Lisp kitabı yazmış bir isim. Röportajlarında insanlara benzer soruları soruyor. Bilgisayar Bilimlerindeki büyük isimlerin aynı sorulara verdikleri farklı cevapları karşılaştırabilmek güzel. Soruları programlamaya nasıl başladıkları, kendilerinin rol aldıkları önemli olaylar ve bunların içyüzleri, tartışmalı (yani herkesin hemfikir olmadığı) çeşitli konulardan oluşuyor. Nispeten çok kısa olan bilgisayar bilimleri tarihine giriş bile denebilir kitabın içeriğine.<br /><br />Bilgisayar bilimleri tarihi bence Türkiye'deki programcılar için önemli bir konu çünkü ülkemiz teknolojiyi ıskaladığı için biz bu ilk gelişmelere çok uzak kaldık. <a href="http://en.wikipedia.org/wiki/Programmed_Data_Processor">DEC'in PDP'lerinin</a>, <a href="http://www.youtube.com/watch?v=OYecfV3ubP8&feature=related">Apple'ın 1984'de çıkardığı kişisel bilgisayarın</a> veya yazılım tarafında Fortran'ın, C veya C++'nın hangi sebeplerle (hangi sorunlara çözüm olarak) ve nasıl geliştirildiğini en azından şahsen bilmiyorum. Aynı durum daha teorik konular için de geçerli, çeşitli algoritmaların tarihini bildiğim söylenemez. Bunların arka planını öğrenmek ise sadece bugünü anlamak için değil, geleceği daha iyi tahmin edebilmek açısından da bence çok önemli.<br /><br />Sonuç olarak Coders At Work kitabından kaptığım, aklımın bir köşesine yazdığım pek çok fikir var. Bunları kitapta okurken altını çizdim ve en sonunda kitapta altı çizili bir sürü cümle oldu :) Gerisi bunlar üzerinde düşünüp işlerimde uygulamak artık.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

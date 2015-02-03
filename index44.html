@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/06/openmpi-problem-mpirun-doesnt-do.html">
+            OpenMPI problem: mpirun doesn't do anything
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-06-03 00:00:00+02:00" pubdate title="on Tue 03 June 2008">on Tue 03 June 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I have been compiling and recompiling and recompiling OpenMPI from source all day because I couldn't successfully run the hello world program. mpirun would just sit there returning no errors of any sort and no output. It turns out that my iptables configuration was causing the problem. So, if you are experiencing similar problem, better check your firewall settings. To give a little more detail, <a href="http://www.open-mpi.org/community/lists/users/2006/02/0624.php">OpenMPI uses random ports to communicate</a> so you should open ports to other nodes you will be communicating with. For one node localhost testing environments, you should tell iptables to accept connections from the loopback interface.<br /><br />Oh, and other thing, while running you may encounter errors like:<br /><br /><code>[peanutbutter:21391] mca: base: component_find: unable to open vprotocol pessimist: /usr/local/lib/openmpi/mca_vprotocol_pessimist.so: undefined symbol: pml_v_output (ignored)<br />[peanutbutter:21392] mca: base: component_find: unable to open vprotocol pessimist: /usr/local/lib/openmpi/mca_vprotocol_pessimist.so: undefined symbol: pml_v_output (ignored)</code><br /><br />If you do, just apply the below patch, I think it has something to do with network protocol that has been changed.<br /><br /><code>--- opal/libltdl/ltdl.c.old     2008-03-07 13:47:39.000000000 +0100<br />+++ opal/libltdl/ltdl.c 2008-03-07 13:48:05.000000000 +0100<br />@@ -1096,7 +1096,7 @@<br />     lt_user_data loader_data;<br />     const char *filename;<br />{<br />-  lt_module   module   = dlopen (filename, LT_LAZY_OR_NOW);<br />+  lt_module   module   = dlopen (filename, RTLD_GLOBAL | LT_LAZY_OR_NOW);<br /><br />  if (!module)<br />    {<br /></code></p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/05/using-edge-rails.html">
+            Using Edge Rails
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-31 00:00:00+02:00" pubdate title="on Sat 31 May 2008">on Sat 31 May 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Well I will assume that you know what Edge Rails is and why you would want to use it rather than the rather updated 2.0.2 version <a href="http://rails.dreamhosters.com/">installed on Dreamhost servers</a>. Even though I'm making reference to Dreamhost servers, you should be able to adapt this for other shared environments or your own local system.<br /><br />Using Edge Rails requires a few basic steps. This is not hard at all, once you understand it. First of all, you need to get the newest files. There are two ways to do this, you could either <a href="http://dev.rubyonrails.org/archives/rails_edge.zip">get a zip file from the rubyonrails.org</a> or <a href="http://github.com/rails/rails/tree/master">download a tar.gz file from the github rails repository</a> (Note that you shouldn't use the SVN repositories because they are not maintained anymore <a href="http://weblog.rubyonrails.org/2008/4/11/rails-premieres-on-github">as told here</a>). I'll show you the first way:<br /><code><br />$ wget http://dev.rubyonrails.org/archives/rails_edge.zip<br /></code><br />and then<br /><code><br />$ unzip rails_edge.zip<br /></code><br />Now you will have rails unpacked. What you need to do now is to use this rails to create new applications, and you will be good to go. For example:<br /><code><br />$ ruby /path_to_my_edge_rails/railties/bin/rails myapp<br /></code><br />will create you application structure for the edge rails. But there's a caveat, it is not over yet. Although you have edge rails structure and files for your application, you are still using the old rails installed on Dreamhost. To use your newly install rails, you need to put it into the vendor/rails directory of your application. You can always copy the files but if you want to use your newly downloaded edge rails for your other projects as well, it is better to just create a symlink. Use the following command from your application directory:<br /><code><br />$ ln -s /path_to_my_edge_rails vendor/rails<br /></code><br />And your application will start using rails in the vendor directory from now on. You may need to kill the previous dispatch.fcgi for the application to pick it up.<br /><br />Hope this helps someone.<br /><br />BTW, if you are thinking of buying hosting from Dreamhost, you can use 3DOMAINS4FREE coupon to get 50$ off first payment + 3 domains free for lifetime! Sounds like a good deal.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/05/dizstnde-linux-kablosuz-ipucu.html">
+            Dizüstünde linux kablosuz ipucu
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-29 00:00:00+02:00" pubdate title="on Thu 29 May 2008">on Thu 29 May 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Dizüstü bilgisayarınız uyku moduna (hibernate veya sleep) geçip tekrar açıldığında kablosuz bağlantınız çalışmıyorsa, ve messages dosyasında şuna benzer satırlar varsa:<br /><br /><code>May 29 11:21:47 peanutbutter kernel: ADDRCONF(NETDEV_UP): ath0: link is not ready<br /></code><br />ve her yolu denemenize rağmen bilgisayarı açıp kapatmaktan başka çare bulamadıysanız, daha kolay bir yol var:<br /><br /><code># lsmod | grep ath<br />ath_pci               175788  0 <br />ath_rate_sample        13504  1 <br />wlan                  225520  4 ath_pci,wlan_scan_sta,ath_rate_sample<br />ath_hal               279328  3 ath_pci,ath_rate_sample<br /></code><br />benzeri bir komut ile kablosuz için gereken çekirdek modüllerini bulun. Bunlardan benim donanım için olanı ath_pci, onu çekirdekten çıkartacağım ve sonra tekrar ekleyeceğim:<br /><br /><code># rmod ath_pci<br /># modprobe ath_pci</code><br /><br />ve ağı tekrar başlatacağım:<br /><br /><code>#/etc/init.d/networking stop<br />#/etc/init.d/networking start<br /></code><br />Herşey yolunda giderse kablosuz ağ kartınız tekrar çalışmaya başlayacaktır.<br /><br />Sorun bilgisayarı tekrar başlatınca çözülünce aklıma geldi, /etc/init.d/ dizinindeki bir betikten değilse eğer modüllerle alakalı olmalıydı. Sonunda bu çözümü buldum. Umarım işinize yaramıştır.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/05/odt-ktphanesi-ve-memur-zihniyeti.html">
+            ODTÜ Kütüphanesi ve Memur Zihniyeti
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-29 00:00:00+02:00" pubdate title="on Thu 29 May 2008">on Thu 29 May 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><span style="font-weight:bold;">Güncelleme: Kütüphaneye yazdığım mailin ardından konuşmak için davet edildim ve bence yararlı bir görüşme ortaya çıktı. Müdür yardımcısı arıza bildirim formu oluşturup danışmaya bırakılacağını ve böylece insanların arıza bildirimi yapabileceklerini söyledi. Ayrıca boş olup kullanılmayan kareller için bilgisayarda dolu göründüğünü, bazı öğrencilerin anahtarları geri getirmediklerini öğrenmiş oldum. Her açıdan en azından arızaları bildirim konusu çözümlendiği için mutluyum. Resmi bir şekilde bildirilince (sözlü bildirim yerine) daha etkili olacağını düşünüyorum.</span><br /><br /><br />Tez yazmak için zamanım giderek azalıyor. Yurtta da pek verimli çalışamadığım için ODTÜ Kütüphanesine gidip küçük kare odalarda (karellerde) çalışmayı düşündüm. Şimdi karellerden birinden bu yazıyı yazıyorum. Nedeni ise benim canımı sıkan bir olay. Sabah gelip bir anahtar aldım. Odaya girip yerleştim, dizüstü bilgisayarımın pili bitmesin diye adaptörünü prize taktım. Ama priz çalışmıyordu. Olabilir diyerekten aşağıdaki danışmaya inip yeni bir oda anahtarı istedim. Görevli memur "sene başında herşey çalışıyor ama..." diyerek ilginç bir savunma yaptı ve yeni bir anahtar verdi. Bu seferki odaya gidip tekrar prizi denedim, yine elektrik yoktu. Tekrar aşağıya inip tekrar yeni bir oda istedim. Artık bunun bir istisna olmadığına karar verip arıza formları olup olmadığını, onlardan doldurmak istediğimi söyledim. Öyle bir form yokmuş. Ben arızanın giderilmesi için üsteleyince bana bakan görevli yanındaki görevliye sordu, o da bugün gelen tamirci olduklarını anladığım kişilere iletmesini istedi. Yani çözüm için böyle bir ahbab çavuş ilişkisi gerekiyor, resmi bir yöntem yok anladığım kadarıyla.<br /><br />Ya şimdi anlamadığım konu şu: Zaten kütüphanede var olan yirmiden fazla karelin büyük bir kısmını kullanamıyoruz. Sabah açılma saati olan 9'dan bir saat sonra gelip karel istesek boş yer yok diye verilmiyor (başıma geldiğinden biliyorum) ama yukarı çıkıp baktığımızda karellerin çoğunun boş olduğunu görüyoruz (görevliye sorunca da bir kısmının arızalı olduğunu söylüyorlar). İkinci olarak karellerin arıza çıkarması çok normal birşey, hele hele prizlerde kullanılan malzemenin kalitesizliğini görünce prizlerin düzgün çalışmasının normal olmadığını anlıyoruz. Peki bu kareller ilk kez de arıza çıkartmıyorken neden bir arıza tespit formu gibi bir sistem ortaya çıkmıyor? Hiç mi süreç iyileştirmesinden haberiniz yok? Neden çıkan çeşitli sorunlar için formel ve sistematik/şeffaf yollar ile iyileştirmeler yapmıyorsunuz?<br /><br />Memur zihniyetine hastayım. Senin görevin oradaki işlerin düzgün yürümesini sağlamak ama sorun çıkınca sorumlu biz oluyoruz. Sanki memurlar vatandaşlar/öğrenciler için varlar değil de biz onlar için varız. Japonların <a href="http://en.wikipedia.org/wiki/Kaizen">Kaizen</a>i geliyor aklıma ve neden bu kadar geri kaldığımızı bir kez daha anlıyorum.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/05/pazar-gezisi.html">
+            Pazar gezisi
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-26 00:00:00+02:00" pubdate title="on Mon 26 May 2008">on Mon 26 May 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><a href="http://www.flickr.com/groups/fotografca_biz/discuss/72157604605358563/">Fotoğrafça gezisinden kareler. </a>Burası Sapanca, Kocaeli.<br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SDqKta8rkhI/AAAAAAAAAno/WW5vk5TFIQg/s1600-h/DSCN9444.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SDqKta8rkhI/AAAAAAAAAno/WW5vk5TFIQg/s400/DSCN9444.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204624832312611346" /></a><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SDqKuK8rkiI/AAAAAAAAAnw/6-snlEx6vLE/s1600-h/DSCN9453.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SDqKuK8rkiI/AAAAAAAAAnw/6-snlEx6vLE/s400/DSCN9453.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204624845197513250" /></a>Su denemelerim :)<br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SDqLd68rkmI/AAAAAAAAAoQ/stYIzkvEXwY/s1600-h/DSCN9516_2.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SDqLd68rkmI/AAAAAAAAAoQ/stYIzkvEXwY/s400/DSCN9516_2.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204625665536266850" /></a><br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SDqNcq8rksI/AAAAAAAAApA/WHMPeWYJiQk/s1600-h/DSCN9512_2.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SDqNcq8rksI/AAAAAAAAApA/WHMPeWYJiQk/s400/DSCN9512_2.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204627843084686018" /></a><br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SDqLeK8rknI/AAAAAAAAAoY/iqnWb_UZD84/s1600-h/DSCN9554_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SDqLeK8rknI/AAAAAAAAAoY/iqnWb_UZD84/s400/DSCN9554_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204625669831234162" /></a>Salyangozu pek net çekemedim. Halbuki makine odaklanmış gibiydi. Tezi yazayım bir SLR alacağım.<br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SDqKua8rkjI/AAAAAAAAAn4/J1KifG_XE-M/s1600-h/DSCN9486_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SDqKua8rkjI/AAAAAAAAAn4/J1KifG_XE-M/s400/DSCN9486_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204624849492480562" /></a>Parkur zorluydu. Dağcılık Kulübüne bir süre katılsaydım diye düşündüm başlarda. Suya düşen arkadaşları görünce son uçuruma gitmedim :)<br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SDqKuq8rkkI/AAAAAAAAAoA/aJBDzBOP6Y4/s1600-h/DSCN9505_2.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SDqKuq8rkkI/AAAAAAAAAoA/aJBDzBOP6Y4/s400/DSCN9505_2.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204624853787447874" /></a><br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SDqKuq8rklI/AAAAAAAAAoI/wQ55vFVSCAY/s1600-h/DSCN9510_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SDqKuq8rklI/AAAAAAAAAoI/wQ55vFVSCAY/s400/DSCN9510_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204624853787447890" /></a><br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SDqNcK8rkrI/AAAAAAAAAo4/OUEv7ksYcYg/s1600-h/DSCN9560_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SDqNcK8rkrI/AAAAAAAAAo4/OUEv7ksYcYg/s400/DSCN9560_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204627834494751410" /></a><br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SDqNbq8rkpI/AAAAAAAAAoo/sJ4jE6gor8w/s1600-h/DSCN9582_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SDqNbq8rkpI/AAAAAAAAAoo/sJ4jE6gor8w/s400/DSCN9582_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204627825904816786" /></a><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SDqNb68rkqI/AAAAAAAAAow/OVjBAEy7wno/s1600-h/DSCN9599_2.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SDqNb68rkqI/AAAAAAAAAow/OVjBAEy7wno/s400/DSCN9599_2.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204627830199784098" /></a>Tuana. Çocuklar çok tatlı oluyorlar ya..<br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SDqLea8rkoI/AAAAAAAAAog/5NX4dhdeglQ/s1600-h/DSCN9615_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SDqLea8rkoI/AAAAAAAAAog/5NX4dhdeglQ/s400/DSCN9615_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5204625674126201474" /></a>Dönüş yolunda arabada makro denemeleri. Yasin'in koltuk örtüleri.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

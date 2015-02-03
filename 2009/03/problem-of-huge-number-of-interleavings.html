@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem of huge number of interleavings in MPI | Tayfun Sen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            Problem of huge number of interleavings in MPI
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-03-11 00:00:00+01:00" pubdate title="on Wed 11 March 2009">on Wed 11 March 2009</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I've just came across a <a href="http://www.cs.utah.edu/formal_verification/ISP-release/">verification tool for MPI programs</a>. Even debugging sequential programs written in a language like C/C++ can be a quite daunting task because of the complexity it involves; all those pointer operations including memory management, cryptic C++ template errors, the time wasting edit-compile-test procedure of compiled languages etc. Dynamic languages are easier in my opinion because they are more simple with automatic garbage collection, duck typing and the interactive shells that enables you to test your programs and/or snippets much faster. Parallel programming introduces other complexities. You have to watch out for <a href="http://en.wikipedia.org/wiki/Deadlock">deadlocks</a>, race conditions etc. and thinking/visualizing them is much more harder than sequential programs. The human brain is more suitable for small number of parallel jobs, it is most intuitive to understand serial programs. Maybe this is because of the way we had been taught at the universities because parallel programming is not so widespread right now.<br /><br />Simply thinking about the number of different runnings of parallel programs can be daunting. The simple example in the <a href="http://www.cs.utah.edu/formal_verification/ISP-release/">ISP website</a> is enlightening:<br /><blockquote>It is well known that even an MPI program with five process, each making five MPI calls each, has over 10 billion interleavings (schedules). This is what bogs testing tools down -- they do not know which interleavings matter, thus end up missing some interleavings while pursuing others redundantly.</blockquote><br />We had a discussion with my friend from mathematics department, Hakan Özadam, about the number of interleavings. Five processes, making five calls each to MPI functions means 25 function calls. For each process, you have to choose 5 function calls. If you number each from 1 to 25, you can have each process choose its functions and move on to the next one. Thus, the number becomes:<br /><code><br />C(25/5) * C(20/5) * C(15/5) * C(10/5)<br /></code><br />Where <code>C(x/y) = x! / ((x - y)! * y!)</code> The last process simply has to select all the left calls for itself, and thus its number of choices is C(5/5) = 1, only one.<br /><br />That makes the number quite high. No wonder it is hard to formally verify that a parallel program just doesn't <a href="http://en.wikipedia.org/wiki/Deadlock">deadlock</a> somewhere and wait indefinitely for an input it is to process (<a href="http://en.wikipedia.org/wiki/Halting_problem">halting problem</a>, anyone?). ISP debugger looks promising on finding certain types of bugs in MPI programs. It seems to have formal framework for following promising interleavings and not checking ones that are sure not to be executed. I wonder how it could be used with Boost libraries, which are the libraries I am using for C++ MPI development.<br /><br /><br />[thanks to Hakan for his help ]</p>
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

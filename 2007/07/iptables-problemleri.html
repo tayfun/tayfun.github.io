@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iptables Problemleri | Tayfun Sen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            Iptables Problemleri
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-07-20 00:00:00+02:00" pubdate title="on Fri 20 July 2007">on Fri 20 July 2007</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Birkaç gün önce linux çekirdeğimi derleyerek değiştirdim. Yeni çekirdeklerle birlikte IDE disklerin de sda olarak tanındığını öğrenmiştim (hda kalkmış oluyor) ama yeni çekirdeğin IDE diskimi ilk sıraya atacağı aklıma gelmemişti, bu yüzden bir sürü kök dosya bağlama hataları aldım. Daha sonra grub menu.lst dosyasını ve fstab dosyalarını düzenleyince sorunu giderebildim. Bir diğer sorun da iptables ile oldu. Çekirdeğe durum yeteneği ("state" match support) vermeyi unuttuğum için eski güvenlik duvarı ayarlarımı uygulatamadım iptables'a. Çekirdekteki güvenlik duvarı kodu netfilter olarak adlandırılıyor. iptables ise netfilter çekirdek programını kullanabilmemizi sağlayan kullanıcı alanındaki programın ismi. Şimdi aldığım hataya bakalım:<br /><br /><code><br /># iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT<br />iptables: No chain/target/match by that name<br /></code> <br />Bu basit kodda içeri gelecek bağlantıların ancak bizim tarafımızdan başlatıldığında (RELATED,ESTABLISHED kelimeleri) kabul edilmesini sağlıyor. Verilen hata ise değiştirmek istediğimiz "chain/target/match" bilgisinin bulunamadığı yönünde. Bu hatayı  INPUT yerine "input" yazarsanız, yani yazım hatası yaparsanız da alabilirsiniz. Ben yazım yanlışı yapmadığımı kontrol ettikten sonra durum bilgisi anlama yeteneğini çekirdeğe verip vermediğimi kontrol ettim. Sorun buradaydı, bu modülü unutmuşum. Çekirdeği yeniden derledim ve güvenlik ayarlarımı tekrar yükledim.</p>
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

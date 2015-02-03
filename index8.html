@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/05/blog-post.html">
+            vietnam
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-05-17 00:00:00+02:00" pubdate title="on Mon 17 May 2010">on Mon 17 May 2010</time>, and filed under <a class="posttag" href="tag/literature.html">literature</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <blockquote>A lof of the vets tried to justify, rationalize for all the death and dying. But, there really is no explanation to it. Figuring it out is a waste of time. It's just another war that's started by old men and fought by young boys.<br /></blockquote>
+
+<p><br />A Vietnam war veteran on the irrationality of war (from NYT, 15 May 2010 edition).</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/05/which-side-are-you-on.html">
+            Which Side Are You On?
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-05-10 00:00:00+02:00" pubdate title="on Mon 10 May 2010">on Mon 10 May 2010</time>, and filed under <a class="posttag" href="tag/literature.html">literature</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <blockquote><br />The history of any country, presented as the history of a family, conceals fierce conflicts of interest (sometimes exploding, most often repressed) between conquerors and conquered, masters and slaves, capitalist and workers, dominators and dominated in race and sex. And in such a world of conflict, a world of victims and executioners, it is the job of thinking people, as Albert Camus suggested, not to be on the side of executioners.<br /></blockquote>
+
+<p><br />From the late <a href="http://en.wikipedia.org/wiki/Howard_Zinn">Howard Zinn</a>'s <span style="font-style:italic;">A People's History of the United States</span>.<br /><br />I think being on the side of the suffering is many times underestimated. People think it doesn't matter what they do, simply because of the sheer hugeness of the dark side. I believe the opposite. What you think, what you say and do matters much more than you anticipate; and when organized, no force is big enough to stop your rightful initiative.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/04/variable-hoisting-in-javascript.html">
+            Variable Hoisting in JavaScript
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-04-30 00:00:00+02:00" pubdate title="on Fri 30 April 2010">on Fri 30 April 2010</time>, and filed under <a class="posttag" href="tag/javascript.html">javascript</a>, &nbsp;<a class="posttag" href="tag/programming.html">programming</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>If you are programming in JavaScript, the odds are that you come from C/C++/Java background and have been bitten by the web development bug. This might cause a couple of problems however, mostly because JavaScript is <a href="http://javascript.crockford.com/javascript.html">"Lisp in C's Clothing"</a>. So you might find yourself a little disoriented with the familiar syntax and sometimes very unintuitive execution. One thing that is not quite so easy to understand is the fact that functions are first class in JavaScript and that they do create <a href="http://en.wikipedia.org/wiki/Closure_(computer_science)">closures</a>. Couple that with <a href="http://en.wikipedia.org/wiki/Scope_(programming)#Lexical_scoping">lexical scoping</a> and you can get some really unexpected results.<br /><br />Connected to the concept of functions being first class is the notion of variable hoisting. Dictionary definition of "<a href="http://en.wiktionary.org/wiki/hoist">hoisting</a>" is lifting or raising something up. And this exactly what JavaScript engines do. Any variable that is declared (be it initialized to a primitive data type, an object or even a method) anywhere in a function will actually be run as if they are declared in the beginning of that function. That is, they are raised to the top of the scope they are in. Initializations for that variable will not run however, since this is not what you normally expect, and because it would have caused rather unexpected run time peculiarities. <br /><br />Consider the following JavaScript snippet:<br /><code><pre><br />function foo() {<br />   // Some other stuff.<br />   // blah blah blah<br /><br />   if (false) {<br />       var myVar = "bar";<br />   }<br /><br />   alert(myVar);<br />}<br />foo();<br /></pre></code><br />When you run above code, you will get an alert box with "undefined" in it. Even though what's inside the "if" conditional is not executed, the variable is nevertheless declared in the beginning of the function. So, in effect, the above code is equivalent to:<br /><code><pre><br />function foo() {<br />   var myVar;<br />   // Some other stuff.<br />   // blah blah blah<br /><br />   if (false) {<br />       myVar = "bar";<br />   }<br /><br />   alert(myVar);<br />}<br />foo();<br /></pre></code><br />Note how the variable is taken and declared at the top while the initialization is left where it was.<br /><br />But wait, there's more. Since the condition for the "if" is never true, execution does not enter inside the block, and thus it doesn't matter where it is placed in our function. Thus, below is equivalent to the two code fragments above:<br /><code><pre><br />function foo() {<br />   // Some other stuff.<br />   // blah blah blah<br /><br />   alert(myVar);<br /><br />   if (false) {<br />       var myVar = "bar";<br />   }<br />}<br />foo();<br /></pre></code><br /><br />Contrast above executions with the below where you'll get a ReferenceError exception because myVar has not been declared.<br /><code><pre><br />function foo() {<br />   // Some other stuff.<br />   // blah blah blah<br />/<em><br />   if (false) {<br />       var myVar = "bar";<br />   }<br /></em>/<br />   alert(myVar);<br />}<br /><br />foo();<br /></pre></code><br />Variable hoisting is actually quite logical when you think about it, but you have to get into the mindset of functional programming. And because of such properties, variable hoisting is asked a lot on JavaScript quizzes found on the web.<br /><br />I have to admit that the above example does not seem very likely in any code, but believe me you will one day come across it if you start coding complex JavaScript applications. When you do find yourself with bugs caused by hoisting, you might also understand the reason behind the coding convention where all variables are declared at the top of the scope, even if they are used at the very bottom. Don't be afraid though, JavaScript is still a beautiful language, if you try to understand it and use "the good parts".</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/04/php-sessions.html">
+            PHP Sessions
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-04-19 00:00:00+02:00" pubdate title="on Mon 19 April 2010">on Mon 19 April 2010</time>, and filed under <a class="posttag" href="tag/php.html">php</a>, &nbsp;<a class="posttag" href="tag/programming.html">programming</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I recently found out that the directory we kept PHP session files had more than 2 million files. Now that's a lot of files and even though it is less than ~55 million maximum allowed on a typical linux system, we had to act fast. On Linux boxes number of files allowed is determined by the number of inodes and this can be viewed with the following command: <br /><code><br />$ df -i <br /></code><br />Which will give you number of inodes you are using and how much more you can use.<br /><br />I went through <a href="http://us.php.net/manual/en/session.configuration.php">PHP documents on sessions</a> and checked our PHP configuration file php.ini. It turns out that Debian systems does not want PHP to do its garbage collection itself and tries to remove old sessions using a simple cron job. The problem was we were using another directory for storing sessions and not the default "/var/lib/php5". So PHP wasn't removing old sessions because "session.gc_probability" was set to 0 by Debian and Debian cron job wasn't removing these sessions because the sessions were not in their default location. We enabled PHP's garbage collector and modified the cron job so that it uses the correct folder now. Now we have two checks in place for removing old sessions.<br /><br />This is something to keep in mind if you find yourself with a lot of session files. Hope this helps others.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/03/web-teknolojileri-nereye.html">
+            Web Teknolojileri Nereye?
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-03-21 00:00:00+01:00" pubdate title="on Sun 21 March 2010">on Sun 21 March 2010</time>, and filed under <a class="posttag" href="tag/teknoloji.html">teknoloji</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <div class="prezi-player"><style type="text/css" media="screen">.prezi-player { width: 440px; } .prezi-player-links { text-align: center; }</style><object id="prezi_5jlp0qbs2tmx" name="prezi_5jlp0qbs2tmx" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"><param name="movie" value="http://prezi.com/bin/preziloader.swf"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="bgcolor" value="#ffffff"/><param name="flashvars" value="prezi_id=5jlp0qbs2tmx&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"/><embed id="preziEmbed_5jlp0qbs2tmx" name="preziEmbed_5jlp0qbs2tmx" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" bgcolor="#ffffff" flashvars="prezi_id=5jlp0qbs2tmx&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"></embed></object><div class="prezi-player-links"><p><a title="Web geliştirme için çok heyecanlı bir zaman. Herşey çok hızlı bir şekilde değişirken ve belki bir devrimin ortasındayken, neler yapmalıyız?" href="http://prezi.com/5jlp0qbs2tmx/">Web Nereye Gidiyor?</a></p></div></div>
+
+<p><br /><br />Bugün dışarıdaki harika havaya rağmen ODTÜ Teknokent'teki sunumuma gelen herkese teşekkürler. Sunumumu yukarıya koyuyorum, ancak konuşma odaklı bir sunum olduğu için pek işinize yaramayabilir. Sunumumu yazılarla doldurmak istemedim :) insanları konuşmaya odaklanmaya zorlamak daha iyi sanırım.<br /><br />Bir de şahsi fikrim, onca saçmalığa rağmen bu ülkede duruyorsak bir katkıda bulunmamızın gerekliliği. Bilgiyi paylaşmalı, biz de eğitimli kesim olarak katkıda bulunmalıyız. Web sektörünün gelişmesi herkesin işine gelecektir.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

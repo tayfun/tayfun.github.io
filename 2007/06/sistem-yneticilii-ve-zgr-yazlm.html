@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem Yöneticiliği ve Özgür Yazılım | Tayfun Sen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            Sistem Yöneticiliği ve Özgür Yazılım
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-06-10 00:00:00+02:00" pubdate title="on Sun 10 June 2007">on Sun 10 June 2007</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Sistem Yöneticiliği ve Özgür Yazılım<br /><br /><br />Tayfun Şen <em><br /><br /><font size=1><br />Anahtar kelimeler: esnek, güvenli, güçlü, ücretsiz, geliştirmeye açık. port knocking, ossec, snort, iptables. nagios, ganglia, mrtg. genel web uygulamaları için apache, mysql (LAMP mimarisi icinde), postgreSQL. yedekleme için amanda, tar, gzip. mail icin sendmail, clamav, bogofilter, spamassassin. yuk dengeleme için heartbeat.<br /></font><br /><br />Sistem yöneticisi farklı bilgisayar sistemlerini ve çeşitli ağ donanımlarını ve bunların üzerinde çalışan programları kurmak, en iyi çalışacak şekilde ayarlarını yapmak, güncellemeler dahil bakımlarını yapmak, yedek almak ve sorunlarda hızlıca çözüme ulaşmakla, kısacası bu sistemlerin amaçları doğrultusunda en iyi hizmeti vermelerini sağlamakla görevlidir. Sistem yöneticisi farklı sistemlerde çalışan oldukça geniş yelpazedeki programların en iyi hizmet vermelerini sağlamaya çalışır. Bu durumda doğal olarak en hızlı ve etkin çözüme ulaşmak onun için büyük önem taşır. Özgür yazılım dünyası sistem yöneticisine herhangi bir sistemi en iyi şekilde yönetmek için gerekli olan gücü ve esnekliği verebilmektedir. Bu, bin kullanıcılı görece daha az önemli sunucular için de geçerlidir, on binlerce kullanıcıya hizmet vermekle sorumlu olan ve binlerce çekirdeğe sahip bir süper bilgisayar için de.<br /><br /><br />Özgür yazılım dünyası, kaynak kodunun açık olması ve isteyen herkesin geliştirebilme şansına sahip olması nedeniyle çok büyük bir esnekliğe sahiptir, yapmak istediğiniz bir iş için büyük bir olasılıkla birden fazla iyi ve gelişmiş yol vardır. Bu yazıda özgür yazılım dünyasının sistem yöneticisine ne gibi kolaylıklar sağladığından bahsedecek, onun elinin altında bulunan çeşitli yazılımları anlatacağım.<br /><br /><br />Yazımın ana kısmına geçmeden önce söylemem gerekiyor, hemen hemen benzer işleri yapan bu programların hangilerini seçeceğiniz size bağlı. Anlatılan yazılımların size ne kadar uygun olduğunu en iyi belirleyecek olan kişi, kaynaklarınızı ve ihtiyaçlarınızı en iyi bilen kişi olarak sizsiniz. Kaynak olarak öncelikle önemli olanlar donanımlarınız, insan kaynağınız (çalışan sayınız ve ayırabilecekleri zamanın bileşimi [1]) ve elinizdeki bütçeniz. Hangi yazılımı seçmeliyim konusuna geldiğinizde yazılımların artı ve eksilerini değerlendirin ve ihtiyaçlarınıza en uygun yazılımı seçin. İleride daha deneyimli olduğunuzda geri dönüp bir diğer programa geçebileceğinizi de aklınızdan çıkarmayın.<br /><br /><br /><span style="font-weight:bold;">İşletim Sistemleri:</span><br /><br />Özgür yazılım dünyasında işletim sistemi seçenekleri daha çok BSD serisi işletim sistemleri ile çeşitli Linux dağıtımları arasında. Bu işletim sistemleri temel olarak aynı işleri yapmalarına rağmen bazı konularda farklı dünya görüşlerine (veya önceliklere) sahipler. BSD serisinden OpenBSD güvenlik konusuna fazladan önem verirken FreeBSD ise performans ve kararlılık üzerine kendilerine güveniyorlar. Örneğin OpenBSD 10 yıldan fazla bir süredir varsayılan kurulumda sadece iki açık çıktığı ile övünürken [2] FreeBSD ise en fazla süredir ayakta kalan sunucuları ile övünüyor [3].<br /><br /><br />Peki Linux bunun neresinde yer alıyor? En fazla kullanılan “özgür” işletim sistemleri Linux sistemler. Hem BSD hem de Linux sistemler UNIX türevi oldukları için yaptıkları iş de büyük ölçüde benziyor. Linux'un kendi içinde yüzlerce dağıtımı var. Bunlardan en çok bilinenler arasında Debian, Ubuntu, Red Hat ve son zamanlarda özellikle aktif olarak TÜBİTAK-UEKAE tarafından geliştirilen Pardus dağıtımı var. İşletim sistemi çekirdeği aynı olsa da sistemin bazı noktaları farklı, örneğin işletim sistemi ön-yükleme programı veya paket yönetimi gibi. Her dağıtımın kendine has özellikleri var. Örneğin ev kullanıcıları daha çok Ubuntu'yu tercih ederken, sunucu sistemlerde Debian, çok çekirdekli devasa küme bilgisayarlarda ise Red Hat tabanlı bir dağıtım daha çok tercih edilebiliniyor. Bu konuda hangi dağıtımı seçeceğiniz konusuna siz karar vereceksiniz, çok bilinen ve desteklenen bir dağıtımı seçmeniz sorunlarınızı daha hızlı çözmeniz açısından yararlı olacaktır.<br /><br /><br /><span style="font-weight:bold;">Güvenlik uygulamaları:</span><br /><br />Özgür yazılım dünyasında güvenlik en önem verilen konular arasında. Herhangi bir programdaki açık en hızlı bir şekilde kapatılıyor ve bu bazı ticari firmaların güvenlik duyurularından daha hızlı oluyor. İşletim sistemi ve programlar bazında da pek çok güvenlik mekanizması bulunuyor. iptables gibi durum bilgisi tutabilen bir güvenlik duvarını yalın bir halde kullanabileceğiniz, üzerine kuralları kendiniz yazabileceğiniz gibi iptables üzerine yazılmış arayüzleri (örneğin Shorewall [4]) de kullanabilirsiniz. Bunlar dışında, saldırı tespitinde uzmanlaşmış snort [5] veya ossec [6] gibi programları da kullanarak çok önem verdiğiniz güvenliğinizi sağlama alabilirsiniz.<br /><br /><br />Özgür yazılım dünyası çok esnek ve güçlü, bunu güvenlik uygulamalarında da görebiliyoruz. Örnek olarak iptables kullanarak güvenlik mekanizmanızı bir kat daha arttırabilirsiniz. iptables ile belirli portları açıp kapatabilmenizin yanında port knocking [7] yöntemini kullanarak ek bir güvenlik katmanı daha ekleyebilirsiniz. Aslında yapabilecekleriniz biraz da sizin hayal gücünüze kalmış.<br /><br /><br /><span style="font-weight:bold;">Posta sunucusu:</span><br /><br />Klasik bir e-posta sunucusu kurmak da özgür yazılım dünyasında çok rahat. Bilgisayarınıza sendmail, postfix veya exim gibi posta sunucusunu, clamav gibi bir antivirüs çözümünü ve istenmeyen postalar ile savaşmak için öğrenebilen bogofilter veya modüllerle ek özellikler ekleyebileceğiniz spamassassin gibi programlar kurarak tam bir sunucu sahibi olabilirsiniz.<br /><br /><br /><span style="font-weight:bold;">LAMP Mimarisi:</span><br /><br />Bir genel ağ uygulaması sunacaksanız uzun zamandır en önemli yardımcınız Linux-Apache-MySQL-PHP takımı idi. Son yıllarda özellikle Web2.0 ile birlikte Ruby on Rails ve Phyton gibi nesneye yönelik ve hızlı uygulama geliştirme ortamları ortaya çıksa da PHP halen en çok kullanılan ağ uygulaması geliştirme dili. Son katmanda hangi dil kullanılırsa kullanılsın LAMP mimarisinin diğer elemanları, Linux, Apache ve MySQL ise halen çok kullanılıyorlar. En güçlü olması beklenen uygulamalarda bile Linux işletim sistemi, Apache web sunucusu ve MySQL veri tabanı size iyi bir performans sunacaklardır. Apache halen dünyanın en çok kullanılan web sunucusu durumunda [8], %58'lik pazar payı ile en yakın rakibi Microsoft IIS'i neredeyse ikiye katlamış (MS sunucuları %31 pazar payına sahip). Apache oldukça kararlı ve performansı yüksek bir web sunucusu, ayrıca eklenebilen onlarca modülü de Apache sunucusuna başka sunucularda olmayan özellikler ekleyebiliyor. MySQL kolay kullanımı ve yaygın desteği sayesinde açık kaynak kodlu veritabanları arasında özel bir yere sahip. Yine veritabanı yazılımları arasında, özellikle ileri seviye kullanıcı kitlesini kendisine çeken, daha uzman ayarları olan postgreSQL de mySQL'i yakından izliyor.<br /><br /><br /><span style="font-weight:bold;">Nagios/Ganglia/Cacti gibi sunucu izleme yazılımları:</span><br /><br />Sunucularınızı kontrol etme işini sunuculara tek tek bağlanıp işlemci yük durumlarını, disk doluluklarını, üzerindeki işlemlerin devam edip etmediğini kontrol ederek yapabilirsiniz. Veya tüm bu işleri otomatikleştiren açık kaynak kodlu onlarca yazılımdan birini kurabilirsiniz. Bu yazılımlar sizin için sunucuya bağlanıp yük, disk durumunu sorabilir veya bir hizmete bağlanıp hizmetin çalışıp çalışmadığına bakabilir. Bu alanda da seçenekler oldukça fazla. Bu tür yazılımlar çoğunlukla bir web sayfası aracılığıyla size özet bilgiler sunabilirler veya bir sorun durumunda size posta ile veya başka bir yolla haber verebilirler. Geçtiğimiz günlerde internette rastgeldiğim Pingdom [9] adlı bir site bu ücretsiz ve özgür yazılımların yaptığı işi aylık bir ücret karşılığı yapıyor. Bu da pek çok özgür yazılımda karşılaşılan ilginç bir durum.<br /><br /><br /><span style="font-weight:bold;">Yedekleme programları:</span><br /><br />Sisteminizi ne kadar kararlı yaparsanız yapın bir gün önceden tahmin etmediğiniz bir sorunla karşılaşabilirsiniz. İşte bu zamanlarda günü kurtarmak için yedekler imdadınıza koşacak. Bir diskinizdeki birkaç dosyayı tar [10] ve gzip programları yardımıyla başka bir diskte yedeklemekten tutun amanda [11] programı yardımıyla tüm senenin her gününde birden fazla sunucunuzdaki disklerinizi LTO teyplere yedeklemeye varıncaya kadar her zorluktaki işleriniz için özgür yazılım dünyasında seçenekleriniz bol.<br /><br /><br /><span style="font-weight:bold;">Güçlü bir kabuk, çeşitli yardımcı programlar ve esnek yönetim:</span><br /><br />Kabuk betikleri, perl betikleri ve açık kaynak kodlu binlerce program özgür yazılım dünyasında size başka hiç bir yerde bulamayacağınız esnekliği ve gücü veriyor. İşletim sisteminde yaptığınız herhangi bir işi otomatize etmenize yardımcı olan bu programlar onlara alıştıktan sonra büyük bir iş yükünü üzerinizden alıyorlar.<br /><br /><br /><span style="font-weight:bold;">Lisanslar, destekler:</span><br /><br />Pek çok özgür yazılım isteğe bağlı olarak ticari desteklerle de gelebiliyor. Bu sayede kullanacağınız insan gücünü daha düşük bir seviyeye indirebilirsiniz. Ticari desteklerle ilgili daha fazla bilgiyi destek almak istediğiniz yazılımların internet sayfalarında bulabilirsiniz. Tabii ticari destek almayıp kullanıcı topluluğu yardımıyla işlerinizi götürmeniz de her zaman mümkün. Özgür yazılım dünyasında size yardım etmek isteyen birilerini her zaman olacaktır.<br /><br /><br />1 Bkz. ay adam ölçeği.<br /><br />2 Kaynak OpenBSD web sayfası: http://www.openbsd.org/<br /><br />3 Ortalama ayakta kalma süreleri bilgisi Netcraft firmasının http://uptime.netcraft.com/up/today/top.avg.html adresinden edinilebilinir.<br /><br />4 Shorewall anasayfası için: http://www.shorewall.net/<br /><br />5 http://www.snort.org/<br /><br />6 http://www.ossec.net/<br /><br />7 Daha fazla bilgi için, Vikipedi sayfası: http://tr.wikipedia.org/wiki/Port_knocking<br /><br />8 Web sunucu istatistikleri Mayıs ayı Netcraft raporundan alınmıştır: http://news.netcraft.com/archives/2007/05/01/may_2007_web_server_survey.html<br /><br />9 Sitenin anasayfası için: http://www.pingdom.com/<br /><br />10 http://en.wikipedia.org/wiki/Tar_%28file_format%29<br /><br />11 http://www.amanda.org/<br /><br /><br /><br /></em> Tayfun Şen, lisans diplomasını ODTÜ Bilgisayar Mühendisiğinden aldıktan sonra aynı bölümde Yüksek Lisans'a başladı. Aynı zamanda ODTÜ Bilgi İşlem Daire Başkanlığı'nda Sistem Yöneticisi olarak çalışmaktadır. e-posta: tayfun.sen {at} ceng.metu.edu.tr<br />Bu yazı EMO Özgür Yazılım Dosyası için yazılmıştır.</p>
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

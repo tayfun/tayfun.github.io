@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adblock ve İnternet Reklamlarından Kurtulmak | Tayfun Sen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            Adblock ve İnternet Reklamlarından Kurtulmak
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-02-09 00:00:00+01:00" pubdate title="on Sat 09 February 2008">on Sat 09 February 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Bazen ziyaret ettiğim sitelerde o kadar çok reklam oluyor ki sitedeki içeriğe odaklanmak mümkün olmuyor. Reklamlar gelir yaratarak ağ sayfalarının ayakta kalmasını sağlasalar da son kullanıcılar için istenilen bir şey değiller. İşte bu yazımda reklamlardan nasıl kurtulacağınızı anlatacağım, ve kendi topladığım kara listeyi de yayınlayarak reklamsız bir dünyaya hızlı bir geçiş yapmanıza yardımcı olacağım.<br /><br />Bunun için kullanacağımız eklentinin ismi Adblock. Bu eklenti Firefox ağ tarayıcısı üzerinde çalışıyor (eğer halen Firefox kullanmıyorsanız <a href="http://www.mozilla-europe.org/tr/products/firefox/">buradan indirebilirsiniz</a>). Adblock eklentisini <a href="https://addons.mozilla.org/en-US/firefox/addon/10">https://addons.mozilla.org/en-US/firefox/addon/10</a> adresini ziyaret ederek kurabilirsiniz (sayfayı Firefox ile ziyaret edin). Eklenti kurulduktan sonra tarayıcıyı yeniden başlatmanız gerekecek. Bundan sonra Adblock ile reklamları engellemeye başlayabilirsiniz. Firefox menülerinden Araçlar -&gt; Adblock -&gt; Preferences seçeneğine tıklayın. Burada Adblock Options düğmesine tıkladığınızda gelen seçenekler arasında Import Filters seçeneği de var. Bu özellik sayesinde daha önce var olan reklam filtrelerini kullanmaya başlayabilirsiniz. Benim filtrelerim, yani kara listem aşağıdaki gibi:<br /><code><br />(Adblock Plus 0.6.1.2 or higher required) [Adblock]<br />@@|http://www.mozilla.org/<br /><em>/adbanner/</em><br /><em>/advertisements/</em><br />http://sozluk.sourtimes.org/adcss/<em><br />http://ad.e-kolay.net/</em><br />http://pagead<em>.googlesyndication.com/</em><br />http://www.nicheportalbuilder.com/images/<em><br />http://i.i.com.com/cnwk.1d/i/hdft/body_bg.gif<br />http://altfarm.mediaplex.com/</em><br />http://adlog.com<em><br />http://www.ntvmsnbc.com/adimages/</em><br />http://<em>.addadserver.com/</em><br />http://servedby.advertising.com/<em><br />http://reklam.mynet.com/</em><br />http://206.225.93.16/<em><br />http://</em>.tikle.com/<em><br />http://216.55.165.13/</em><br />http://ads.linuxjournal.com/<em><br />http://www.gazetevatan.com/pics/yokyokki_banner_ELLEZZA25122006.gif<br />http://reklam.gittigidiyor.com/</em><br />http://www.isteyatirim.com.tr/images/istecanliborsa.gif<br />http://adonline.e-kolay.net/<em><br />http://img.adnet.com.tr/</em><br />http://medya.e-kolay.net/<em><br />http://www.milliyet.com.tr/adv/adnet/</em><br />http://ads.adbrite.com/<em><br />http://b1.adbrite.com/</em><br />http://www.akampus.com/adrotfiles/toyota/2007_03_468x220_2.swf?clickTAG=http://www.akampus.com/linker.asp?linkID=225<br />http://www.akampus.com/special/iste_geveze/<em><br />http://www.akampus.com/special/real/</em><br />http://kt4.kliptracker.com/<em><br />http://</em>adsrevenue.net/<em><br />http://ads.clicksor.com/</em><br />http://<em>zapmedya.com/</em><br />http://<em>garantiarkadas.com/</em><br />http://www.habervitrini.com/banner/<em><br />http://www.vatanbilgisayar.com/product_flash/cebit.swf<br />http://www.samsung.com/images/header/maintop_menu.swf?depth1=2<br />http://www.adtology3.com/</em><br />http://adtology.com/<em><br />http://</em>bannerbank.ru/<em><br />http://files.adbrite.com/</em><br />http://static.awempire.com/<em><br />http://www.euros4click.de/</em><br />http://<em>icoonet.com/</em><br />http://<em>ihaberadserver.com/</em><br />http://<em>kontera.com</em><br />http://<em>pop6.com</em><br />http://<em>adultfriendfinder.com</em><br />http://<em>doubleclick.net</em><br />http://<em>.pointroll.com/</em><br />http://<em>.tribalfusion.com</em><br />http://www.vatanbilgisayar.com/product_flash/adana_banner.swf<br />http://media.sourcelabs.com/Spot1/FlowPlayer.swf<br />http://www.hoccam.com/ads/drunk3.swf<br />http://www.hoccam.com/reklam/<em><br />http://www.hoccam.com/banner/</em><br />http://webrazzi.com/ads/<em><br />http://ads.yimg.com/us.yimg.com/a/ya/yahoo_search3/051507_300x250_pulltogether_shrek_10_blank.swf<br />http://www.eksisozluk.com/adcss/</em><br />http://www.internethaber.com/images/banner/<em><br />http://image.haber7.com/banners/</em><br />http://<em>bidclix.com</em><br />http://www.gayet.net/includes/gayet.jsp<br />http://www.cpaclicks.com/<em><br />http://medya.zaman.com.tr/pics/reklam/</em><br />http://www.nt.com.tr/images/flash/trans.swf<br />http://www.blograzzi.com/blog/ads/bulucak_side.swf<br />http://www.blograzzi.com/blog/ads/bulucak_top.swf<br />http://www.blograzzi.com/ads/bulucak_top.swf<br />http://global.acer.com/index_banner/web-op.swf<br />http://www.flypgs.com/flash/pgs_menu.swf<br />http://ntvmsnbc.com/inc/newsmidpage2.asp?AdSection=NTVCOM&amp;AdSubSection=NTVCOM<br />http://www.business.lbn.ru/<em><br />http://ads.yimg.com/us.yimg.com/a/ni/nikon/</em><br />http://www.germanwings.com/images/067_006_0592x0305_en_20070914-psssst-as__s_004_l.swf<br />http://cdn.fastclick.net/fastclick.net/cid92560/300x250.swf?clickTag=http%3A//media.fastclick.net/w/click.here%3Fcid%3D92563%26mid%3D180542%26sid%3D28467%26m%3D6%26c%3D0<br />http://www.germanwings.com/images/connectedflights_en.swf<br />http://www.balladins.com/images/slogan.swf<br />http://212.175.75.141/reklamz/<em><br />http://www.germanwings.com/images/067_006_0592x0305_en_20071012-100000__s_003_l.swf<br />http://ak.bluestreak.com//adv/boursorama/%5E10227/%5E6153141/300x250_Piste5_bluestreak.swf?siteid=5644901&amp;adid=6153141&amp;cltk=http%3A%2F%2Fhoryzonix%2Esdv%2Efr%2FRealMedia%2Fads%2Fclick%5Flx%2Eads%2Fwww%2Eblogmusik%2Enet%2Fhome%2F1611635012%2FMiddle%2FHoryzon%2FBOURSORAMA%5FDEEZER%5FPAVE%5F0907%2FBOURSORAMACCMPAVE%5F0907%2Ehtml%2F38326532316461393437303262653830%3F&amp;xtrack=xxxtrackxx&amp;mb=http://ak.bluestreak.com//adv/boursorama/^10227/^6153141/&amp;cp=http://ak.bluestreak.com//flashtracking/tracking_&amp;url=http%3A%2F%2Fhoryzonix%2Esdv%2Efr%2FRealMedia%2Fads%2Fclick%5Flx%2Eads%2Fwww%2Eblogmusik%2Enet%2Fhome%2F1611635012%2FMiddle%2FHoryzon%2FBOURSORAMA%5FDEEZER%5FPAVE%5F0907%2FBOURSORAMACCMPAVE%5F0907%2Ehtml%2F38326532316461393437303262653830%3Fhttp%3A%2F%2Fs0b%2Ebluestreak%2Ecom%2Fix%2Ee%3Ftr%26s%3D5644901%26a%3D6153141%26u%3Dhttp%3A%2F%2Fwww%2Eboursorama%2Ecom%2Fbanque%2Den%2Dligne%2Findex%2Ehtml%3Forigine%3D700<br />http://</em>.atdmt.com/<em><br />https://nexaweb.webex.com/mw0305l/</em><br />http://www.yonjada.com/banner3.swf<em><br />http://www.gazeteodtulu.com/banner/akbank4.swf<br />http://hstdk.tradedoubler.com</em><br />http://<em>.fastclick.net/</em><br />http://ad.yieldmanager.com/<em><br />http://</em>.clickhype.com/<em><br />http://</em>.cpxinteractive.com/<em><br />http://</em>.baventures.com/<em><br />http://</em>.etology.com/<em><br />http://www.arcelik.com.tr/Templates/promosyon.swf?lang=tr<br />http://content.zaman.com.tr/pics/reklam/</em><br />http://avpa.javalobby.org/<em><br />http://www.dr.dk/drdkGlobal/spot/Images/DRMF/282x116/</em><br />http://82.99.18.195/media.1/128/1518/140019/<em><br />http://banners.one.com/</em><br />http://ad1.emediate.dk/<em><br />http://mjxads.devx.com/RealMedia/ads/</em><br />http://network.business.com/hooprograms/<em><br />http://ad.adtegrity.net/</em><br /></code><br />Bu listeyi kopyalayın ve bir dosyaya kaydedin. Daha sonra Adblock eklentisinden Import Filters seçeneği ile çıkan pencereden bu dosyayı seçin. Burdan sonra aynı pencerede benim filtrelerim görünecektir. Artık bu listede olan reklam sağlayıcıların reklamlarını görmeyeceksiniz, dikkatiniz dağılmadan internette gezinebilirsiniz.<br /><br />Adblock eklentisinin tüm özellikleri bu kadar değil. Sayfalarda bulunan herhangi bir içeriği bu eklenti sayesinde engelleyebilirsiniz. Benim listemde olmayan reklamları da bu program sayesinde engelleyebilirsiniz.<br /><br />Artık okumak istediğiniz içeriği kendiniz belirleyebilirsiniz, özgürlüğe biraz daha yakınsınız.</p>
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/08/gelecein-internetinin-nizlemesini.html">
+            Geleceğin İnternet'inin Önizlemesini Yapıyoruz!
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-08-18 00:00:00+02:00" pubdate title="on Mon 18 August 2008">on Mon 18 August 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Youtube aylardır kapalı durumda. Bundan başka hangi sitelerin kapatıldığını ancak o sitelere giremediğimizde öğreniyoruz. Daha önce kapatılan siteler arasında Wordpress blog sağlayıcısı (yani wordpress kullanan binlerce günlük) ve Flickr fotoğraf paylaşım sitesi de var. Yarın kendi sitenizin veya en çok kullandığınız sitenin de kapatılmayacağını kim garanti edebilir? Sansüre karşı olduğumuzu göstermek için, bu durumu protesto etmek için kendi sayfalarımızı kendi isteğimizle kapatıyoruz.<br /><br />NTVMSNBC.com'da çıkan haberi <a href="http://ntvmsnbc.com/news/456410.asp">buradan</a> okuyabilirsiniz.<br /><br />Blogger'dan almış olduğunuz bir günlük siteniz varsa şu anda bu sitede uygulanmakta olan kapatmayı şu şekilde gerçekleştirebilirsiniz:<br /><br /><ol><li>Layout -&gt; Edit HTML sayfasına ulaşın. İlk olarak şablonunuzu "Download Full Template" linkine tıklayarak indirin. Eğer herhangi birşey ters gidecek olursa, veya oto sansürünüzü kaldırmak isterseniz bu şablonu tekrar yükleyerek ("Upload a template..." diye başlayan link ile) sayfanızı eski çalışır haline döndürebilecekseniz. Dolayısıyla indirdiğiniz şablon dosyasını diskinizde iyi bir yere saklayın.</li><br /><br /><li>Aşağıdaki kodu kendi günlük şablonunuzda &lt;body&gt; gördüğünüz yerden hemen sonraya yerleştirin. Yani aşağıdaki kod, "body" bölümünün ilk kodu olmalı.</li></ol><br /><code>&lt;!-- Sansure karsi protesto kodu BASLADI. --&gt;<br />&lt;b:if cond='data:blog.pageType == &amp;quot;index&amp;quot;'&gt;<br /><br />&lt;div style='width:100%;background:#ffffff;'&gt;&lt;div style='float:right;'&gt;&lt;a href='2008_08_01_archive.html' style='font-size:12px;background:red; color:white;'&gt;tayfunsen.com&amp;#39;a devam etmek için t&amp;#305;klay&amp;#305;n&amp;#305;z.&lt;/a&gt;&lt;/div&gt;&lt;iframe frameborder='0' height='600' hspace='0' marginheight='0' marginwidth='0' scrolling='no' src='http://anafikir.com/sansur/iframe.php?site=blog.tayfunsen.com&amp;amp;devam=2008_08_01_archive.html' vspace='0' width='100%'/&gt;&lt;/div&gt;<br /><br />&lt;script type='text/javascript'&gt;<br />function addLoadEvent(func) {<br />      var oldonload = window.onload;<br />      if (typeof window.onload != &amp;#39;function&amp;#39;) {<br />        window.onload = func;<br />      }<br />      else {<br />        window.onload = function() {<br />          if (oldonload) {<br />           oldonload();<br />         }<br />         func();<br />       }<br />     }<br />   }<br /><br />function removeOuter() {<br /> outer = document.getElementById(&amp;quot;outer-wrapper&amp;quot;);<br /> outer.style.display = &amp;quot;none&amp;quot;;<br />}<br /><br />addLoadEvent(removeOuter);<br />&lt;/script&gt;<br /><br />&lt;/b:if&gt;<br />&lt;!-- Sansure karsi protesto kodu BiTTi. --&gt;<br /></code><br /><br />Buradaki kodu yazarken taytenik.com'un sağlamış olduğu kodu biraz değiştirdim. Öncelikle sadece "index" sayfalarınız kapatılmış olacak (Buna arama sayfaları, etiket sayfaları ve anasayfa dahil). Bunun dışında ana içeriğin olduğu "outer-wrapper" bölümünü (yani div'ini) silmek istemediğimiz için, daha kolaylık olsun diye bir javascript kodu ile kaldırıyoruz. Sayfamızı gezmek isteyenlere üst sağ köşede bir link veriyoruz ve bu link arşiv sayfasına gidiyor. Arşiv sayfası olarak içinde bulunduğumuz ağustos ayını kullanıyoruz ki en son yazdıklarımız sayfaya gelebilsin. Artık herşey çalışır durumda olmalı. "Preview - Önizleme" butonuna basarak doğru çalışıp çalışmadığını kontrol edin ve şablonu kaydedin.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/08/about-south-of-border-west-of-sun.html">
+            About "South of the Border, West of the Sun"
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-08-09 00:00:00+02:00" pubdate title="on Sat 09 August 2008">on Sat 09 August 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Well it has the same Murakami-san smoothness, the story runs well and you are always curious about what will happen to the characters, or why they are who they are right now. It is interesting from the cultural perspective for me too, because I don't know much about the still kept-back Japanese culture. It seems that they are reserved when it comes to relationships, a bit like here. I can relate to the growing up presented in the book, like I guess, many boys. I mean that coming of adolescence feel, that same awkward relationships with girls, trying to discover the opposite sex. Not knowing what to do with life, nor the meaning of it. I think these two topics, girls and future plans are the summary of those years. I think Murakami-san portrays it well. As his characters get old (well he is narrating from the future but for the sake of the argument, or the books progress) they tie their acts to the past memories, experiences. So you think "Oh, that's the reason he is this way" or maybe "so this is why she is hurt" etc. And it is interesting because you like to see your future, with respect to all your past experiences. You can relate to the story, and in a way its your future, or how your future could [have] be[en], that is told in the story.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/08/bursa-dier-fotoraflar.html">
+            Bursa - Diğer Fotoğraflar
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-08-06 00:00:00+02:00" pubdate title="on Wed 06 August 2008">on Wed 06 August 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Doğa fotoğrafları Uludağ'dan. Kampın büyük bir bölümünde Uludağ'daydık zaten. Bir günlüğüne Bursa şehir merkezine inip gezdik.<br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJl9dJvzWfI/AAAAAAAAA4w/TNqsnkU7kj8/s1600-h/P7231381_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJl9dJvzWfI/AAAAAAAAA4w/TNqsnkU7kj8/s400/P7231381_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231350381953636850" /></a><br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl9dRtIIBI/AAAAAAAAA44/KxdmRwwfyx4/s1600-h/P7231510_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl9dRtIIBI/AAAAAAAAA44/KxdmRwwfyx4/s400/P7231510_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231350384089899026" /></a><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl9dbYwN-I/AAAAAAAAA5A/OS4JlbpshKk/s1600-h/P7231535_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl9dbYwN-I/AAAAAAAAA5A/OS4JlbpshKk/s400/P7231535_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231350386688800738" /></a><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl9dUdf2jI/AAAAAAAAA5I/ooyQdZM78iQ/s1600-h/P7231538_2.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl9dUdf2jI/AAAAAAAAA5I/ooyQdZM78iQ/s400/P7231538_2.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231350384829651506" /></a><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl9dnfzf3I/AAAAAAAAA5Q/9DQfPjZdNlI/s1600-h/P7231539_2.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl9dnfzf3I/AAAAAAAAA5Q/9DQfPjZdNlI/s400/P7231539_2.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231350389939601266" /></a>&gt;Zirveye doğru.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl-MR2TJnI/AAAAAAAAA5Y/j1Ncs7M9wls/s1600-h/P7231562_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl-MR2TJnI/AAAAAAAAA5Y/j1Ncs7M9wls/s400/P7231562_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231351191582221938" /></a>Buzlu göl.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl-MtIKcAI/AAAAAAAAA5g/3MFx7V4iB68/s1600-h/P7231586_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl-MtIKcAI/AAAAAAAAA5g/3MFx7V4iB68/s400/P7231586_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231351198904905730" /></a>Kilimli Göl'ün karşı kıyısı. Sürüler, çobanlar ve kampçılar.<br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl-M3f7j9I/AAAAAAAAA5o/51MafM1VfvU/s1600-h/P7251744.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl-M3f7j9I/AAAAAAAAA5o/51MafM1VfvU/s400/P7251744.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231351201688948690" /></a><br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl-NPmOiEI/AAAAAAAAA5w/wTTZNifPHD4/s1600-h/P7251761_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl-NPmOiEI/AAAAAAAAA5w/wTTZNifPHD4/s400/P7251761_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231351208157808706" /></a><br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJl-NK9D97I/AAAAAAAAA54/kvn3Fv4Oycw/s1600-h/P7251779_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJl-NK9D97I/AAAAAAAAA54/kvn3Fv4Oycw/s400/P7251779_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231351206911408050" /></a><br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl_cQtwa0I/AAAAAAAAA6A/KxI63WghQVw/s1600-h/P7251825.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl_cQtwa0I/AAAAAAAAA6A/KxI63WghQVw/s400/P7251825.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231352565667490626" /></a><br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl_cm8gb0I/AAAAAAAAA6I/0hAr22wub9w/s1600-h/P7251839_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl_cm8gb0I/AAAAAAAAA6I/0hAr22wub9w/s400/P7251839_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231352571634937666" /></a><br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl_c3VfFNI/AAAAAAAAA6Q/4OtoWKDIGM4/s1600-h/P7261863_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl_c3VfFNI/AAAAAAAAA6Q/4OtoWKDIGM4/s400/P7261863_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231352576034673874" /></a>Teleferikle şehre inerken.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl_c4Ql7gI/AAAAAAAAA6Y/ffoElKHyAXg/s1600-h/P7261890_2.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl_c4Ql7gI/AAAAAAAAA6Y/ffoElKHyAXg/s400/P7261890_2.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231352576282586626" /></a>Ulucami içinden.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl_dedbr6I/AAAAAAAAA6g/vxKm4tujjgQ/s1600-h/P7261903.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl_dedbr6I/AAAAAAAAA6g/vxKm4tujjgQ/s400/P7261903.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231352586536988578" /></a>Kozahan.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJmA_9KxKnI/AAAAAAAAA6o/KNdNQLdYp9c/s1600-h/P7261904.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJmA_9KxKnI/AAAAAAAAA6o/KNdNQLdYp9c/s400/P7261904.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231354278407383666" /></a><br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJmA_7G4dAI/AAAAAAAAA6w/ml-bYXqGD3Q/s1600-h/P7302002_2.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJmA_7G4dAI/AAAAAAAAA6w/ml-bYXqGD3Q/s400/P7302002_2.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231354277854213122" /></a>Yeşil Camii'nin içinde çekildi. Dehşet güzel bir camii, harika çınarların bulunduğu bir bahçesi var. İnsana huzur veren bir yerde, şehrin gürültüsünden uzak.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/08/bursa-nce-insanlar.html">
+            Bursa - Önce İnsanlar
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-08-06 00:00:00+02:00" pubdate title="on Wed 06 August 2008">on Wed 06 August 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl1LsdmPfI/AAAAAAAAA1M/UqTuYlAvBPU/s1600-h/P7251724_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl1LsdmPfI/AAAAAAAAA1M/UqTuYlAvBPU/s400/P7251724_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231341285941853682" /></a>Uludağ'da ara sıra öyle sis bastırıyor ki, manzara çok ilginç oluyor.<br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl1L976ZSI/AAAAAAAAA1U/6Rn9pTModFE/s1600-h/P7251730_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl1L976ZSI/AAAAAAAAA1U/6Rn9pTModFE/s400/P7251730_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231341290632406306" /></a><br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl1L0Bd_0I/AAAAAAAAA1c/0OOVU-GSD1U/s1600-h/P7251764_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl1L0Bd_0I/AAAAAAAAA1c/0OOVU-GSD1U/s400/P7251764_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231341287971356482" /></a>Derya.<br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl1MV4xNQI/AAAAAAAAA1k/vnf2vNd1_Rs/s1600-h/P7251766_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl1MV4xNQI/AAAAAAAAA1k/vnf2vNd1_Rs/s400/P7251766_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231341297061672194" /></a>Berrin.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl1MltW83I/AAAAAAAAA1s/4YOBexB6C9k/s1600-h/P7251768_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl1MltW83I/AAAAAAAAA1s/4YOBexB6C9k/s400/P7251768_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231341301308781426" /></a>Ozan.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl1f4OlWpI/AAAAAAAAA10/aop2AYftz14/s1600-h/P7251771_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl1f4OlWpI/AAAAAAAAA10/aop2AYftz14/s400/P7251771_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231341632697490066" /></a>Samet.<br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl1gLzNEGI/AAAAAAAAA18/qF1Idy-mfeQ/s1600-h/P7251782_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl1gLzNEGI/AAAAAAAAA18/qF1Idy-mfeQ/s400/P7251782_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231341637951361122" /></a><br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl1gVSJFjI/AAAAAAAAA2E/tc9AFzjz2oA/s1600-h/P7251783_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl1gVSJFjI/AAAAAAAAA2E/tc9AFzjz2oA/s400/P7251783_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231341640497042994" /></a>Tuba.<br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl1gYCpzDI/AAAAAAAAA2M/Mrvpqiq1ot4/s1600-h/P7251830.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJl1gYCpzDI/AAAAAAAAA2M/Mrvpqiq1ot4/s400/P7251830.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231341641237384242" /></a>Fehmi Hoca.<br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJl1g_T0amI/AAAAAAAAA2U/srWUz09b1NU/s1600-h/P7261872.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJl1g_T0amI/AAAAAAAAA2U/srWUz09b1NU/s400/P7261872.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231341651778366050" /></a>Burhan Hoca. Bir D70S'i var, mutlu :)<br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl2O20qpoI/AAAAAAAAA2c/yJgIcFrUDDY/s1600-h/P7261873_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl2O20qpoI/AAAAAAAAA2c/yJgIcFrUDDY/s400/P7261873_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231342439774201474" /></a>Ayşegül.<br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl2O2va_JI/AAAAAAAAA2k/tF6EgVdCH1U/s1600-h/P7261921_4.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJl2O2va_JI/AAAAAAAAA2k/tF6EgVdCH1U/s400/P7261921_4.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231342439752203410" /></a>Teleferikle şehre inerken karşılaştığımız dayı. Ne anlatıyor bilmiyorum, biraz uzaktaydım. Her direk çıkışında bağrışlar, zevkli sohbetler.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl8FdBvfXI/AAAAAAAAA4o/G_AFMIEaA7I/s1600-h/P7261924_2.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJl8FdBvfXI/AAAAAAAAA4o/G_AFMIEaA7I/s400/P7261924_2.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231348875300666738" /></a></p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/08/gkyz.html">
+            Gökyüzü
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-08-05 00:00:00+02:00" pubdate title="on Tue 05 August 2008">on Tue 05 August 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Bursa'daki Yıldızlar Altında Gökbilim Kampı sırasında çektiğim fotoğraflar:<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJhM3gwfcMI/AAAAAAAAAz8/F83EYpiRUm0/s1600-h/P7211248.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJhM3gwfcMI/AAAAAAAAAz8/F83EYpiRUm0/s400/P7211248.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231015483760668866" /></a>Otel balkonundan gözlem.<br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJhM30vAubI/AAAAAAAAA0E/0M_bd47tdQU/s1600-h/P7211254.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJhM30vAubI/AAAAAAAAA0E/0M_bd47tdQU/s400/P7211254.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231015489123170738" /></a><br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJhM4EPDTPI/AAAAAAAAA0M/L0dD-iHUsMQ/s1600-h/P7211256.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJhM4EPDTPI/AAAAAAAAA0M/L0dD-iHUsMQ/s400/P7211256.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231015493284089074" /></a>Ayın doğuşu.<br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJhM4g3SvzI/AAAAAAAAA0U/DSioQC8hELs/s1600-h/P7211257.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJhM4g3SvzI/AAAAAAAAA0U/DSioQC8hELs/s400/P7211257.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231015500969066290" /></a><br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJhOb72wmVI/AAAAAAAAA0k/fOIF4AvoD2w/s1600-h/P7221356.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/SJhOb72wmVI/AAAAAAAAA0k/fOIF4AvoD2w/s400/P7221356.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231017209021634898" /></a><br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJhOcEjCGsI/AAAAAAAAA0s/-TedcT5xSE4/s1600-h/P7221366.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SJhOcEjCGsI/AAAAAAAAA0s/-TedcT5xSE4/s400/P7221366.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231017211354815170" /></a>Samanyolunun çeşitli fotoğrafları. Uzun pozlama, izleyici motor olmadığı için yıldızların hareketini görebiliyorsunuz fotoğrafa yakından baktığınızda. Yukarıdaki en parlak eleman Jupiter bu arada. <br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJhOcvnCvyI/AAAAAAAAA00/Rx6PKL3v3_k/s1600-h/P7251847.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SJhOcvnCvyI/AAAAAAAAA00/Rx6PKL3v3_k/s400/P7251847.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231017222914359074" /></a><br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJhOdD1Z7EI/AAAAAAAAA1E/Vbtqur5qLhM/s1600-h/P7251855_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SJhOdD1Z7EI/AAAAAAAAA1E/Vbtqur5qLhM/s400/P7251855_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5231017228343307330" /></a></p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

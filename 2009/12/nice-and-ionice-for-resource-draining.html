@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nice and ionice for resource draining processes | Tayfun Sen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            nice and ionice for resource draining processes
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-12-24 00:00:00+01:00" pubdate title="on Thu 24 December 2009">on Thu 24 December 2009</time>, and filed under <a class="posttag" href="tag/linux.html">linux</a>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>We recently started using <a href="http://www.nongnu.org/duplicity/duplicity.1.html"><span style="font-weight:bold;">duplicity</span></a> for backups. Duplicity is a really nice backup utility which makes it a piece of cake to take full and <a href="http://en.wikipedia.org/wiki/Incremental_backup">incremental backups</a>. It uses rsync in the background but adds a whole lot of clever features as well. One can take full backups once a month and then go on to use incremental backups every night so that less resources are used. Duplicity also has many interfaces for the backup service, it can use ssh or ftp or even Amazon's S3 service to store the backups on the cloud.<br /><br />Having an easy way to restore from the backups is the other side of taking backups. With duplicity this is handled easily as well because you can say "get me this file/directory from 5 days ago". If something goes wrong you can easily restore the files and go on with your work with minimum downtime. Note that backups are not to be used in place of redundancy. In redundancy you can have more than one server doing the same stuff, having the same files but they will both suffer from a failure in the application. So for example, if one of your customers accidentally deletes his account then your redundant servers will not question the action and both will lose all the account info. When that happens you would want your backups to be there.<br /><br />One trouble with backups is that they are Disk/CPU intensive. This could cause problems because you will generally want to backup important stuff on live servers. There could be workarounds to this but not all the time. For example, if you want to backup your database and you are using database replication, then you can take backups from the slave and not from the live server. But for most other backup types you will not have this flexibility. What do you do with backup processes on live servers?<br /><br />Two system utilities that come on Linux are "<span style="font-weight:bold;">nice</span>" and "<span style="font-weight:bold;">ionice</span>". They allow you to fine tune the priority of your programs. Using these two commands you can lower priorities of programs so that they run only when the CPU or disk has less load. On a live server this could be vital.<br /><br />On my experiments I've found that I don't need encryption duplicity offers because backup server is also our own box and since backups are sent over ssh there's no possibility of eavesdropping. You can disable encryption with the --no-encryption option. The upside of this is that duplicity will not run gpg and use processing power which encryption needs. In the end the duplicity command I ended up using is similar to this:<br /><code><br />$ sudo ionice -c3 nice -n19 duplicity -v 4 --no-encryption backupdir scp://myuser@myserver.com//opt/backupdir <br /></code><br />"ionice" with -c3 makes it run only when there are no other processes asking for IO. For "nice", I've used the lowest priority of 19 to run the process. You can check out a running process's "ionice" priority value by using -p switch:<br /><code><br />$ ionice -pMYPID <br /></code><br />and its nice value by using the "renice" tool.<br /><br />I love the flexibility Linux offers to developers. Having these tools makes taking backups less of a hassle.</p>
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

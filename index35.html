@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/12/postgresql.html">
+            PostgreSQL
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-12-01 00:00:00+01:00" pubdate title="on Mon 01 December 2008">on Mon 01 December 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Uzun bir aradan sonra tekrar veritabanı kullanmaya başladım. MySQL ve PostgreSQL'i biraz karıştırdıktan sonra aslında ikisinin de şimdilerde çok farklı olmadığını ve ortak bir paydaya doğru gittiklerini farkettim. MySQL daha popüler ve Google, Youtube, Wikipedia, Flickr, Facebook gibi sağlam kullanıcıları var. Diğer taraftan PostgreSQL de dünyanın en büyük veritabanlarından birine sahip olduğu söylenen Yahoo! tarafından kullanılıyor. Geçmişte PostgreSQL MySQL'e göre daha fazla gelişmiş özelliklere sahip ama performansı daha düşük kabul ediliyordu ama şimdi her ikisinin de performans ve özellikleri çok benziyor.<br /><br />Yeniden veritabanları konusunda bildiklerimi hatırlamam gerekiyor. Bu sayfa hem benim için, hem de benzer sorunlarla karşılaşanlar için.<br /><br />Debian'da PostgreSQL'i aptitude ile kurduğunuzda bir tane "postgres" kullanıcısı yaratılıyor ve veritabanına erişim bu kullanıcı üzerinden var. Yani ilk olarak veritabanına erişmek için root kullanıcısı iken "su postgres" ile postgres kullanıcısı olup sonra "psql" komutu ile veritabanına bağlanabilirsiniz. postgres kullanıcısı güvenlik amacı ile oluşturulmuş oyuncak (dummy) bir kullanıcı, şifresi yok. Veritabanına bağlanırken <a href="http://www.postgresql.org/docs/8.0/static/auth-methods.html">ident ile kimlik doğrulama kullanıldığı için (varsayılan olarak)</a> bu kullanıcı olmanız gerekiyor. <a href="http://www.postgresql.org/docs/8.3/interactive/client-authentication.html">Kimlik doğrulama konusundaki ayarları değiştirmek</a> için /etc/postgresql altında yer alan pg_hba.conf dosyasını kurcalamanız gerekiyor.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/11/dileke.html">
+            Dilekçe
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-29 00:00:00+01:00" pubdate title="on Sat 29 November 2008">on Sat 29 November 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Çeşitli devlet kurumlarina (başta <a href="http://www.akim.akparti.org.tr/akp.akim/faces/internetBasvuruGiris.jsp">AKP İletişim Merkezi</a>'ne ve <a href="http://www.rekabet.gov.tr/index.php?Sayfa=sayfahtml&Id=80">Rekabet Kurumuna</a>) yaptigim basvurum:<br /><br /><blockquote>Bir Türkiye Cumhuriyeti vatandasi olarak, bir Bilgisayar Muhendisi olarak Turk Telekom'un tekel durumundan rahatsizim. Yasalarla belirli miktarda hukuki serbestlesme saglansa da fiili tekel durumu aynen devam ediyor. Turk Telekom altyapi olarak tekel durumunda, son kullaniciya internet veya telefon hizmeti satan diger sirketler ise bu hizmetlerini Turk Telekom'dan hizmet alip katma degerle son kullaniciya satmak zorunda kaliyorlar. Bu durum serbest rekabet acisindan ve sonuc olarak verimlilik, teknolojik gelisme ve en sonunda sade vatandas acisindan cok zararli. Milliyet gazatesinden Metin Munir de bir sure once kosesinde bu konuya degindi, ilgili makale <a href="http://www.milliyet.com.tr/Yazar.aspx?aType=YazarDetayArsiv&ArticleID=1018344&AuthorID=57">http://www.milliyet.com.tr/Yazar.aspx?aType=YazarDetayArsiv&amp;ArticleID=1018344&amp;AuthorID=57</a> adresinde ve 20 Kasim 2008 tarihli Milliyet gazetesinde. Ozetle anlatilan su ki, tum dunyada en temel ekonomi kitaplarinda serbest rekabetten bahsedilir, bunun onemi bilinir. Turkiye'de ise kartellesmenin de otesinde bir tekel vardir ama buna karsi hicbirsey yapilmiyor. Turk Telekom telefon hizmetlerindeki hakim durumunu kullanarak internet hizmeti konusunda rekabeti engelliyor. Bu durumda gerekli onlemlerin alinmasi, ve belki Turk Telekom'un bolunerek ADSL ve sabit telefon bolumlerinin ayrilmasi onem kazaniyor.<br /><br />Yine bu konuda baska bir kaynak ise The Economist 'in hazirladigi 2008 Bilişim Sektoru Rekabetcilik Raporudur. Raporun tamamina <a href="http://global.bsa.org/2008eiu/study/2008-eiu-study.pdf">http://global.bsa.org/2008eiu/study/2008-eiu-study.pdf</a> adresinden erisebilirsiniz. Bu raporda, ozet bolumunde (Executive Summary) benzer ifadeler gecmektedir. Direk alintiliyorum:<br /><br />"Competitive broadband markets help cultivate strong IT sectors. Without fast, reliable and secure Internet access, technology firms cannot interact effectively with partners and the research community, nor can they sell their services online. IT industries in the index top tier all derive substantial benefit from the high-quality networks developed through competition, but more telecoms liberalisation is needed in less developed regions to spur infrastructure development."<br /><br />Bu konuda gorevli ve sorumlu kurum Sanayi ve Ticaret Bakanligina bagli Rekabet Kurumu'dur. Rekabet Kurumunun gorevleri kendi ag sayfasinda anlatildigi uzere (<a href="http://www.rekabet.gov.tr/index.php?Sayfa=sayfahtml&Id=110">http://www.rekabet.gov.tr/index.php?Sayfa=sayfahtml&amp;Id=110</a>):<br /><br />"Özetle; Rekabet Kurumu, 4054 Sayılı Kanun’un 20’nci maddesine göre mal ve hizmet piyasalarının serbest ve sağlıklı bir rekabet ortamı içinde teşekkülünün ve gelişmesinin temini ile bu Kanunun uygulanmasını gözetmek ve Kanunun kendisine verdiği görevleri yerine getirmek üzere kurulmuştur. Bu çerçevede Rekabet Kurumu’nun esas görevi Kanun’da kendisine verilen yetkileri kullanarak mal ve hizmet piyasalarındaki rekabetçi sürecin tehdit edilmesini engellemektedir. Rekabetçi sürecin korunması yoluyla kaynakların etkin dağılımının sağlanması, toplumsal refahın arttırılması, Rekabet Kurumu’nun misyonunun temel dayanağını oluşturmaktadır."<br /><br />Sonuc olarak serbest rekabetin toplum yarari icin onemi kesindir ve direk olarak fiyat/kalite gibi ozelliklere yansimakta, bircok sektorun gelismesini etkilemektedir. Bu durumda halkin refah seviyesinin yukselmesi ve haksizliklarin kaldirilmasi icin gerekli hukuki duzenlemelerin yapilmasi yoneticilerin yetkisi ve sorumlulugundadir. <br /><br />Gerekenin yapilmasini arz ederim.</blockquote><br /><br />Gerci kimi kime sikayet ediyorsam :) Bakalim nasil bir bahane ile oyalayacaklar.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/11/using-video-projectorexternal-monitor.html">
+            Using a video projector/external monitor on Linux
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-29 00:00:00+01:00" pubdate title="on Sat 29 November 2008">on Sat 29 November 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>[Turkish version follows]<br /><br />If you have a laptop, chances are that the special keys for sending signals to external devices are not working. Many times different laptop producers stick to different standards and thus Linux has hard time recognizing these keys (I think Ubuntu is best on this one). But don't fret, you have other choices to try.<br /><br />For starters, you can try xrandr tool to detect and automatically configure the external device signals. While connected to an external device, like a monitor or a video projector, try<br /><br /><code># xrandr -q</code><br /><br />which will give you a list of devices that are connected. You can then choose a device to configure, or by simply using<br /><br /><code># xrandr --auto</code><br /><br />you can have all the devices automatically configured. <br /><br />In my case, with the -q option, laptop monitor is specified as LVDS and external devices as VGA. If xrandr is not available in your system, check your usual repositories (apt/yum etc), most probably it is included there since this is a pretty basic tool.<br /><br />If none of the above work, try booting your linux while the device is physically connected. It might be the case that the OS will pick up the device and configure it automatically.<br /><br />Best of luck.<br /><br />---<br /><br />Geçenlerde Linux üzerinden projektöre bağlanmak zorunda kaldım. Daha önce bu tür bir durumla karşılaşmadığım için biraz endişeliydim. Dizüstünde bulunan özel tuşlar çalışmadı (hani şu Fn'li olanlar), ve doğrusu buna pek şaşırmadım çünkü her dizüstü üreticisi farklı bir standart kullanıyor. Biraz internette araştırdıktan sonra xrandr programını buldum.<br /><br /><code># xrandr -q</code><br /><br />Bu komut ile bağlı bulunan aletleri görebiliyorsunuz. Benim durumumda dizüstü monitörü LVDS ve harici görüntüleyiciler de VGA olarak gösterilmiş. Şimdi bunları tek tek ayarlayabilirsiniz, veya bırakın xrandr kendisi en iyi ayarlara getirsin:<br /><br /><code># xrandr --auto</code><br /><br />Eğer bu program sisteminizde yoksa kurmayı deneyin. Çalışmadığı durumda yapabileceğiniz bir şey de dizüstünü harici aletler bağlıyken çalıştırmak.<br /><br />Kolay gelsin.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/11/advanced-mpi.html">
+            Advanced MPI
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-28 00:00:00+01:00" pubdate title="on Fri 28 November 2008">on Fri 28 November 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I'll be giving an MPI presentation today at 13:30, Computer Engineering Department BMB5, Middle East Technical University. The bulk of my presentation will be about MPI and parallel programming in general but I'll also be looking at Boost MPI libraries and some helper tools. gfilt, ddd and valgrind will be presented as tools greatly helping parallel programming.<br /><br />Here's the presentation I'll be using, if you are wondering about the topics.<br /><br /><div style="width:425px;text-align:left" id="__ss_796590"><object style="margin:0px"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=mpipres20081127-1227857722801807-8&stripped_title=advanced-mpi-presentation" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=mpipres20081127-1227857722801807-8&stripped_title=advanced-mpi-presentation" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;">View SlideShare <a style="text-decoration:underline;" href="http://www.slideshare.net/tayfun/advanced-mpi-presentation?type=powerpoint" title="View Advanced MPI on SlideShare">presentation</a> (tags: <a style="text-decoration:underline;" href="http://slideshare.net/tag/openmpi">openmpi</a> <a style="text-decoration:underline;" href="http://slideshare.net/tag/mpi">mpi</a>)</div></div><br /><br />All interested are cordially welcome.<br /><br />Place: METU Computer Engineering Department, BMB5<br />Date: 28 November 2008, 13:30.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/11/openoffice-impress-templates.html">
+            OpenOffice Impress Templates
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-27 00:00:00+01:00" pubdate title="on Thu 27 November 2008">on Thu 27 November 2008</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Turns out there are not many templates that come with OpenOffice.org Impress, which is used for creating presentations. Check out <a href="http://www.presentationhelper.co.uk/free-open-office-impress-templates-91.htm">presentation helper</a>, which has really good free presentation designs.<br /><br />To go along with that, <a href="http://wiki.services.openoffice.org/wiki/Documentation/FAQ/Writer/FormattingPagesAndDocuments/How_do_I_add_my_own_templates%3F">OpenOffice.org Wiki</a> page has the instructions for enabling them on Impress.<br /><br />Click on File-&gt;Templates-&gt;Organize and then add them using Command-&gt;Import Template.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

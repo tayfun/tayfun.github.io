@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/06/uybhm.html">
+            UYBHM
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-06-28 00:00:00+02:00" pubdate title="on Thu 28 June 2007">on Thu 28 June 2007</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>DPT desteği ile İTÜ'de kurulan <a href="http://uybhm.itu.edu.tr/">Ulusal Yüksek Başarımlı Hesaplama Merkezi</a>ndeki Süper Bilgisayar 26 Haziran'da Almanya Dresden'de düzenlenen International Supercomputing Conference'de açıklanan listeye göre 239. sıraya yükselmiş. UYBHM'deki süper daha önceki listede 353. sıradaydı. Mayıs ayında yine İTÜ'de düzenlenen HPC Zirvesi ile ilgili izlenimlerimi <a href="http://tayfunsen.blogspot.com/2007/05/yksek-baarml-hesaplama-zirvesi.html">daha önce</a> yazmıştım. Sunumlarda anlatılan özellikler ile <a href="http://www.top500.org/system/details/8777">Top 500</a> listesindeki özelliklerin farklı olduğunu ve yeni uçlar eklendiğini düşündüğümü belirtmiştim. Benim açıdan bu yükselme sürpriz olmadı. Bilgisayarın ne kadar kullanıldığı ve verimli olduğu konusunda ise şüphelerim halen devam ediyor. <br /><br />Yüksek başarımlı hesaplama konusuna ilgiyi arttırmak için UYBHM bu Temmuz ayında İstanbul'da bir yaz okulu düzenliyor. MPI, paralel programlama, grid, yüksek başarım gibi konulara ilgi duyanlar için iyi bir fırsat olabilir. Kayıt için <a href="http://yazokulu.uybhm.itu.edu.tr/index.php">UYBHM Yaz okulu</a> sayfasından başvuru yapmanız gerekiyor.<br /><br />UYBHM'nin yaz okulu daha çok işin programlama kısmıyla ilgileniyor. Yine Temmuz ayında TÜBİTAK tarafından düzenlenecek <a href="http://www.grid.org.tr/etkinlikler/egitim/index.uhtml">eğitimde</a> ise grid ara katmanları eğitimi (iş yollama vs.) verilecek anladığım kadarıyla. Grid konusuna ilgi duyanlar bu eğitimi de izleyebilirler.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/06/ossec-nobody.html">
+            Rule: 40101 + OSSEC + nobody
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-06-26 00:00:00+02:00" pubdate title="on Tue 26 June 2007">on Tue 26 June 2007</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>OSSEC sistem loglarını inceleyerek bir gariplik durumunda bana mail atar. Her sabah kural 40101 yüzünden bana mail atarak nobody kullanıcısının sisteme girdiğinden şikayet ediyordu. Biraz inceleyerek bu kuralın neden tetiklendiğini öğrendim.<br /><br />40101. kural ossec/rules/attack_rules.xml dosyası içerisinde tanımlanmış. Bu kurala göre sakıncalı sistem kullanıcılarının hiçbir zaman sisteme login olmamaları gerekiyor, "nobody" kullanıcısı da bunlardan biri. /var/log/auth.log dosyasına baktığımda her sabah 6:25'de bu "sakıncalı" kullanıcının login olduğunu gördüm. İlk işim cron'daki zamanlanmış görevlere bakmak oldu. Günde bir defa olduğu için cron.daily dizini içerisindeki betiklerden biri olması muhtemeldi ve nitekim her gün 6'yı 25 geçe çalışan "find" isimli ve locate komutunun kullandığı veritabanını güncelleyen betiğin "nobody" kullanıcısı olarak çalıştığını gördüm. Yani aslında bir nevi yanlış alarm. Yine de sanırım kuralı değiştirmeyeceğim, ileride bir gün doğru alarm da olabilir.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/06/debsums.html">
+            Debsums
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-06-25 00:00:00+02:00" pubdate title="on Mon 25 June 2007">on Mon 25 June 2007</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Debsums ile Debian sisteminizde kurulu olan programların gerçekten istenilen programlar olup olmadığına bakabiliyorsunuz. Bu bir seviye güvenlik sağlıyor size, mesela bir sorun sonrası dosyaların bozuk olup olmadığını kontrol edebilirsiniz ve bazı düşük profilli saldırılarda, sisteminize sızmalarda yardımcı olabilir. Dosyaların doğru olup olmadığını anlamak için MD5 toplamlarını dpkg veritabanındaki (/var/lib/dpkg/info/*.md5sums dosyaları) listelerle karşılaştırıyor. Dolayısıyla eğer sisteminize sızan kişi bu listeyi değiştirirse sızmaları farketmenizin pek imkanı yok.<br /><br /># aptitude install debsums<br /># debsums -s<br /><br /><br />Buna benzer başka bir program da tripwire. O da başka bir yazımıza artık. Herkese güvenli günler :)</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/06/pirs-zaferi.html">
+            Pirüs Zaferi
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-06-12 00:00:00+02:00" pubdate title="on Tue 12 June 2007">on Tue 12 June 2007</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Geçenlerde gazete okurken Pirüs Zaferi'ne gönderme ile karşılaştım. Ne olduğunu bilmiyordum, internette nasıl arama yapmam gerektiğini de (orijinal yazılışını bilmediğimden). Neyse ki Vikipedi'de <a href="http://en.wikipedia.org/wiki/Pyrrhic_victory">Pirüs Zaferi</a> ile ilgili bilgi varmış. Pirüs zaferi deyimi kazanana çok büyük zarar veren zaferler için kullanılıyormuş. Tarihte Yunan kralı Pirüs Romalılara karşı M.Ö. 280 yıllarında bir savaş yapmış, savaşı kazanmasına rağmen çok büyük kayıplar vermiş. Söylendiğine göre savaştan sonra onu tebrik eden askerlerinden birine<br /><blockquote>Bu şekilde bir zafer daha ve işim biter.</blockquote> <br />anlamına gelen o ünlü cümlesini söylemiş. <br /><br />Tarih ve kültür gerçekten çok ilginçler :)</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/06/deiim.html">
+            Değişim
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-06-11 00:00:00+02:00" pubdate title="on Mon 11 June 2007">on Mon 11 June 2007</time>.</span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Dünyada son 10-20 yıldır çok büyük bir değişim yaşanıyor. Bu öyle bir değişim ki herkesi bir şekilde etkiliyor. Öyle görünüyor ki bu değişim çok daha hızlanarak sürecek. Eğer geleceğe hazırlıklı olmak istiyorsak, geleceğin neler getireceğini tahmin etmek ve ona uygun davranmak gerekiyor. <br /><br />İnternette bulduğum, "değişim" ile ilgili güzel bir sunu:<br /><br /><object type="application/x-shockwave-flash" data="https://s3.amazonaws.com:443/slideshare/ssplayer.swf?id=33834&doc=shift-happens-23665"><param name="movie" value="https://s3.amazonaws.com:443/slideshare/ssplayer.swf?id=33834&doc=shift-happens-23665" /></object></p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>
