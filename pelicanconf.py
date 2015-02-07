@@ -53,10 +53,14 @@ THEME_STATIC_DIR = ''
 PAGE_SAVE_AS = '{slug}.html'
 STATIC_PATHS = [
     'others/cv.html',
+    'others/CNAME',
 ]
 EXTRA_PATH_METADATA = {
     'others/cv.html': {
         'path': 'cv.html',
+    },
+    'others/CNAME': {
+        'path': 'CNAME',
     }
 }
 
