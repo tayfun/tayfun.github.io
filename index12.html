@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2010/01/curse-of-success.html">
+            The Curse of Success?
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-01-02 00:00:00+01:00" pubdate title="on Sat 02 January 2010">on Sat 02 January 2010</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Simon Peyton Jones of <a href="http://en.wikipedia.org/wiki/Haskell_(programming_language)">Haskell</a> fame says "avoid success at all costs." He is talking about programming languages and Haskell in particular but I think he would have no problems extending it to other software (and technologies?) in general. At first this seems ridiculous, isn't all the motivation behind all the work is about becoming popular and being useful to a lot of people and hence becoming "successful"?<br /><br />He goes on to give his reasons. When you become popular people start using your product in ways you have never anticipated, even when there are better alternatives. For many users being popular is enough to choose a product. You will inevitably start adding features that do not really fit into the grand architecture, in order to satisfy your new users. If you begin to spread your software base and features in many different levels your software becomes much more complex, and this is almost always something bad. Why is <a href="http://en.wikipedia.org/wiki/Unix_philosophy#McIlroy:_A_Quarter_Century_of_Unix">"do one thing and do it well"</a> at the center of Unix philosophy? As per <a href="http://blog.tayfunsen.com/2009/12/there-are-two-ways-to-design-system.html">Hoare's principle</a>, you will stop being obviously bug free and become having no obvious bugs. And it doesn't help that <a href="http://blog.tayfunsen.com/2009/11/making-things-less-complicated.html">it is not easy to resist new feature requests</a>. <br /><br />The other disadvantage of becoming popular is the inflexibility it brings. You will have to consider how people are using your software while making decisions. It's not as easy as in the beginning to change some part of the software that just doesn't look right. You'll have <span style="font-style:italic;">legacy</span> users who will complain every time you change your API. They will tell you "please don't break my code." If complexity is one of the most dangerous ways to turn to a wrong path, then not being able to evolve is another one. It's because evolution and change is at the heart of technology. You cannot survive unless you change, and unless you change faster than your competitors. If you cannot make the necessary changes then someone else will come and grab your food.<br /><br />I think these are more or less what is conveyed by "avoiding success at all costs". I certainly think these two sides are at the center of discussion. How to implement these decisions are frankly beyond me, I'm also trying to grasp it as best as I can.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2010/01/programming.html">
             Programming
         </a>
@@ -90,22 +104,6 @@
     </div>
     <div class="postcontent">
         <p>We recently started using <a href="http://www.nongnu.org/duplicity/duplicity.1.html"><span style="font-weight:bold;">duplicity</span></a> for backups. Duplicity is a really nice backup utility which makes it a piece of cake to take full and <a href="http://en.wikipedia.org/wiki/Incremental_backup">incremental backups</a>. It uses rsync in the background but adds a whole lot of clever features as well. One can take full backups once a month and then go on to use incremental backups every night so that less resources are used. Duplicity also has many interfaces for the backup service, it can use ssh or ftp or even Amazon's S3 service to store the backups on the cloud.<br /><br />Having an easy way to restore from the backups is the other side of taking backups. With duplicity this is handled easily as well because you can say "get me this file/directory from 5 days ago". If something goes wrong you can easily restore the files and go on with your work with minimum downtime. Note that backups are not to be used in place of redundancy. In redundancy you can have more than one server doing the same stuff, having the same files but they will both suffer from a failure in the application. So for example, if one of your customers accidentally deletes his account then your redundant servers will not question the action and both will lose all the account info. When that happens you would want your backups to be there.<br /><br />One trouble with backups is that they are Disk/CPU intensive. This could cause problems because you will generally want to backup important stuff on live servers. There could be workarounds to this but not all the time. For example, if you want to backup your database and you are using database replication, then you can take backups from the slave and not from the live server. But for most other backup types you will not have this flexibility. What do you do with backup processes on live servers?<br /><br />Two system utilities that come on Linux are "<span style="font-weight:bold;">nice</span>" and "<span style="font-weight:bold;">ionice</span>". They allow you to fine tune the priority of your programs. Using these two commands you can lower priorities of programs so that they run only when the CPU or disk has less load. On a live server this could be vital.<br /><br />On my experiments I've found that I don't need encryption duplicity offers because backup server is also our own box and since backups are sent over ssh there's no possibility of eavesdropping. You can disable encryption with the --no-encryption option. The upside of this is that duplicity will not run gpg and use processing power which encryption needs. In the end the duplicity command I ended up using is similar to this:<br /><code><br />$ sudo ionice -c3 nice -n19 duplicity -v 4 --no-encryption backupdir scp://myuser@myserver.com//opt/backupdir <br /></code><br />"ionice" with -c3 makes it run only when there are no other processes asking for IO. For "nice", I've used the lowest priority of 19 to run the process. You can check out a running process's "ionice" priority value by using -p switch:<br /><code><br />$ ionice -pMYPID <br /></code><br />and its nice value by using the "renice" tool.<br /><br />I love the flexibility Linux offers to developers. Having these tools makes taking backups less of a hassle.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2009/12/there-are-two-ways-to-design-system.html">
-            There are two ways to design a system
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2009-12-20 00:00:00+01:00" pubdate title="on Sun 20 December 2009">on Sun 20 December 2009</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <blockquote>... One way is to make it so simple that there are <em>obviously no deficiencies</em> and the other way is to make it so complicated that there are <em>no obvious deficiencies</em>. The first method is far more difficult. It demands the same skill, devotion, insight, and even inspiration as the discovery of the simple physical laws which underlie the complex phenomena of nature. It also requires a <em>willingness to accept objectives</em> which are limited by physical, logical, and technological constraints, and to accept a <em>compromise</em> when conflicting objectives cannot be met. <em>No committee</em> will ever do this until it is too late.</blockquote>
-
-<p><br />From Tony Hoare's Turing Award speech (emphasis mine).</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

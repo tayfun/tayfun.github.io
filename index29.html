@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2009/01/walk-alone.html">
+            Walk Alone
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-01-29 00:00:00+01:00" pubdate title="on Thu 29 January 2009">on Thu 29 January 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>If they answer not to thy call walk alone,<br />If they are afraid and cower mutely facing the wall,<br />O thou of evil luck,<br />open thy mind and speak out alone.<br /><br />If they turn away, and desert you when crossing the wilderness,<br />O thou of evil luck,<br />trample the thorns under thy tread,<br />and along the blood-lined track travel alone.<br /><br />If they do not hold up the light when the night is troubled with storm,<br />O thou of evil luck,<br />with the thunder flame of pain ignite thy own heart<br />and let it burn alone.<br /><br />From <a href="http://en.wikipedia.org/wiki/Rabindranath_Tagore">Tagore</a><br /><br />(eğer çağrına kulak vermezlerse, yalnız yürü!)</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2009/01/cant-read-mpirunhost.html">
             Can't read MPIRUN_HOST
         </a>
@@ -92,20 +106,6 @@
     </div>
     <div class="postcontent">
         <p>Tezde sona yaklaştıkça yaptığım işler de hızlanıyor. Son bir haftadır projedeki bir bug'ı çözmeye çalışıyordum. İşte de biraz yoğun olduğum için teze fazla vakit ayıramıyorum hafta içi, bu yüzden bu kadar uzun sürdü biraz da. Tez projemi C++ ve arka planda MPI, Boost kütüphanelerini kullanarak yapıyorum. Biraz takip edenler anlamışlardır sanırım, veri madenciliği konusunda önemli bir algoritmayı paralelleştiriyorum. Amacım grid veya herhangi bir dağıtık hesaplama kümesinde hızlı bir şekilde bu algoritmayı çalıştırıyor olmak. Yani performans çok önemli benim tezim için. Algoritmayı paralel çalışacak hale soktum. C++ cidden karmaşık bir dil, yanında OpenMPI, bunu saran (wrapper) Boost::MPI ve objeleri işlemciden işlemciye yollarken kullandığım Boost::Serialization kullandığım önemli kütüphaneler arasındalar. MPI hakkında daha fazla bilgiyi <a href="http://blog.tayfunsen.com/search?q=mpi&amp;submit.x=0&amp;submit.y=0">önceki yazılarımda</a> bulabilirsiniz.<br /><br />Performans testleri yaparken aklıma gelen parametreler şunlar:<br /><br /><ul><li>OpenMPI ve MVAPICH hız farkları</li><li>Derleyici eniyilemeleri (optimizations)</li><li>reduce&amp;broadcast, reduceAll ve pure send&amp;receive arasındaki hız farkları</li><li>Tabii ki farklı veri kümeleri (data sets) arasındaki hız farkları. Veriler arasındaki farklılıklar ne yazık ki çok değişik olabiliyor ve bunlar hızı çok fazla etkiliyorlar. Örneğin verinin yoğun veya seyrek olması (dense/sparse), veri büyüklüğü, destek (support) değerleri hep farklı algoritmik uygulamaların hızını büyük oranda etkiliyorlar.</li></ul><br />Beni bir haftadır uğraştıran sorun aslında bir segmentation fault hatası. Genel olarak bellekteki sizin olmayan bir bölüme dokunduğunuzda işletim sistemi tarafından programınızın kafasına vurulduğunda ortaya çıkar. Benim hata bir işlemciden başka bir işlemciye çok büyük bir ağaç yapısını gönderirken ortaya çıkıyordu. Daha küçük verilerde ortaya çıkmıyordu, bu benim başlangıç noktam oldu. İlk başta ağaç yapımın döngüler veya hatalı başka yapılar içermesinden kuşkulandım. DDD ile debug etmek için baya bir uğraştım. Aslında hata ayıklama konusunda çok deneyimli değilim. gdb'yi çok kez kullandım ama çok karmaşık işler için değil. where, up, down gibi birçok komutu iyi kullanmayı öğrendim. 6-7 gün DDD ile cebelleşirken benim segmentation fault'un hep farklı fonksiyonlarda ortaya çıktığını farkettim. Gerçi hep Boost'ın Serialize kütüphanesi içindeydi ama bu kütüphanenin farklı sınıflarında hata veriyordu. Daha sonra farkettim ki benim programın stack trace'i yüzbinlerce çağrıdan oluşuyordu. Stack Size bitiyordu. Bunun nedeni yerel değişkenler kullanmam değildi (new ile heap'den yer alıyorum çünkü), ama çağrı sayısının çok büyük olmasıydı. Nitekim 8 MB olarak ayrılmış olan stack büyüklüğü bir süre sonra bitiyordu. Boost::Serialize ile hatanın bağlantısı ise şu: Boost::Serialize gerçekten çok miktarda fonksiyon çağrısı yapıyor. "ulimit -s unlimited" komutu ile stack size'ı limitsiz yapınca benim hata da yok oldu.<br /><br />Kıssadan hisse: Veri yapınız büyük olunca ve serialize kullanıyorsanız çok büyük miktarda fonksiyon çağrıları yapıyor olabilirsiniz, ve bu durumda stack bölgesi doluyor olabilir. Sonuç seg fault olacaktır. Büyük veriler ile daha dikkatli olmak gerekiyor.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2009/01/nuray-mert-feeds-feed43.html">
-            Nuray Mert Feeds - feed43
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2009-01-11 00:00:00+01:00" pubdate title="on Sun 11 January 2009">on Sun 11 January 2009</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>Çeşitli gazetelerden takip ettiğim bir sürü köşe yazarı var. Bu gazetelerin web sitelerine girip zaman kaybetmeyi istemediğimden feed'lerini kullanarak Thunderbird veya başka bir feed okuyucusunda yazıları okumayı seviyorum. Hürriyet veya Milliyet gibi gazete web sitelerinin neredeyse tamamı da zaten asparagas haberlerden ve magazinden oluşuyor. Bunları ziyaret etmemek bana göre herkes tarafından verilmesi gereken bir tepki. Haber siteleri içinden bir tek <a href="http://ntvmsnbc.com/news/default.asp">ntvmsnbc.com</a> bence ziyareti hak ediyor. <br /><br />Peki çoğu gazete herhangi bir yazarı için feed adresi vermiyor, bu durumda ne yapmak gerekiyor? <a href="http://feed43.com/">feed43</a> imdadımıza yetişiyor ve herhangi bir sayfadan feed oluşturmamıza izin veriyor. Örneğin Radikal'den yazılarına bayıldığım Nuray Mert'in yazıları için şu feed sayfasını oluşturdum: <a href="http://feed43.com/nuray_mert.xml">http://feed43.com/nuray_mert.xml</a>. Sitedeki feed oluşturucu sayesinde sayfaları parçalayıp (parse) istediğiniz bölümleri alabiliyorsunuz. Güzel bir hizmet.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2008/12/secret-of-day.html">
+            Secret of the Day
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-12-16 00:00:00+01:00" pubdate title="on Tue 16 December 2008">on Tue 16 December 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SUdcq-SKtlI/AAAAAAAABNo/OsPwlmM4cZs/s1600-h/magritte.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 291px;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SUdcq-SKtlI/AAAAAAAABNo/OsPwlmM4cZs/s400/magritte.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5280290981458654802" /></a><br />From the <a href="http://postsecret.blogspot.com/">PostSecret website</a>.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2008/12/debianda-srmler-ve-paket-ynetimi.html">
             Debian'da sürümler ve paket yönetimi
         </a>
@@ -88,20 +102,6 @@
     </div>
     <div class="postcontent">
         <p>I was trying some examples on <a href="http://www.postgresql.org/docs/8.3/interactive/textsearch-controls.html">PosgreSQL documentation</a> about highlighting search terms in a text. I would like to do full-text search on documents and have them highlighted by PostgreSQL automatically so that I could show them right away on a web page. The trouble was, the examples were not working out correctly for me. Here's the correct running:<br /><br /><code>SELECT ts_headline('english', 'The most common type of search<br />is to find all documents containing given query terms<br />and return them in order of their similarity to the<br />query.', to_tsquery('query &amp; similarity'));<br />                     ts_headline                      <br />------------------------------------------------------------<br />given &lt;b&gt;query&lt;/b&gt; terms<br />and return them in order of their &lt;b&gt;similarity&lt;/b&gt; to the<br />&lt;b&gt;query&lt;/b&gt;.<br /></code><br /><br />But here's what I was getting:<br /><br /><code>SELECT ts_headline('english', 'The most common type of search is to find all documents containing given query terms and return them in order of their similarity to the  query.', to_tsquery('query &amp; similarity'));<br />                                     ts_headline                                      <br />--------------------------------------------------------------------------------------<br /> The most common type of search is to find all documents containing given query terms<br />(1 row)<br /></code><br /><br />After googling it for some time I found the reason. It is because of the default search configuration I was using. Since it is not "english", the to_tsquery function does not work as expected.<br /><br /><code>=&gt; show default_text_search_config;<br /> default_text_search_config <br />----------------------------<br /> pg_catalog.turkish<br />(1 row)<br /><br />=&gt; select to_tsquery('query &amp; similarity');<br />       to_tsquery       <br />------------------------<br /> 'query' &amp; 'similarity'<br />(1 row)<br /><br />=&gt; select to_tsquery('english', 'query &amp; similarity');<br />     to_tsquery      <br />---------------------<br /> 'queri' &amp; 'similar'<br />(1 row)<br /></code><br /><br />Aha. Now we can retry:<br /><br /><code>SELECT ts_headline('english', 'The most common type of search is to find all documents containing given query terms and return them in order of their similarity to the  query.', to_tsquery('english', 'query &amp; similarity'));<br />                                            ts_headline                                             <br />----------------------------------------------------------------------------------------------------<br />given &lt;b&gt;query&lt;/b&gt; terms<br />and return them in order of their &lt;b&gt;similarity&lt;/b&gt; to the<br />&lt;b&gt;query&lt;/b&gt;.<br />(1 row)<br /></code><br /><br />Now that's better.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2008/12/postgresql-ve-locale-hakknda.html">
-            PostgreSQL ve locale hakkında
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2008-12-02 00:00:00+01:00" pubdate title="on Tue 02 December 2008">on Tue 02 December 2008</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>Şu aralar PostgreSQL veritabanında tam yazı arama (<a href="http://en.wikipedia.org/wiki/Full_text_search">full-text search</a>) uygulamalarını araştırıyorum. 8.3.5 Sürümü ile birlikte <a href="http://www.postgresql.org/docs/8.3/interactive/textsearch-intro.html">gelişmiş arama özelliklerinin</a> geldiğini bilmiyordum, bu konuda fikir sahibi olmak için dökümantasyonu bir gözden geçirin derim. Şimdiki sorunum locale'ler ve özellikle de Türkçe arama konusundaki bir takım gereklilikler. Aradığım özelliklerden en önemlisi "kirmizi" gibi bir kelime arandığında dökümanda "kırmızı" olsa bile bunu geri dönmesi. Bir anlamda Türkçe'ye özgü karakterlerin latin karşılıklarının olduğunun varsayılması. Konuyla ilgili anahtar kelimelerden birisi "collation".<br /><br />PostgreSQL'de bir veritabanı kümesi yarattıktan sonra değiştiremeyeceğiniz bazı yerelleştirme özellikleri var. Ve kullanabildiğiniz yerelleştirme özellikleri de kullandığınız sisteme bağlı aynı zamanda. Bu durumda sisteminize gerekli dil özelliklerini yüklemelisiniz. Debian için yaptıklarım şunlar:<br /><br /><code># vim /etc/locale.gen </code><br /><br />bu dosyayı açtıktan sonra şu iki satırın başındaki yorum işaretlerini (#) silin.<br /><br /><blockquote>tr_TR ISO-8859-9<br />tr_TR.UTF-8 UTF-8</blockquote><br />Ve sonra dil özelliklerinin tekrar derlenmesi için:<br /><br /><code># locale-gen </code><br /><br />dedikten sonra <br /><br /><code># locale -a<br />C<br />en_US.utf8<br />POSIX<br />tr_TR<br />tr_TR.iso88599<br />tr_TR.utf8<br />turkish<br /></code><br /><br />komutunun çıktısı yukarıdaki gibiyse dil özellikleriniz yüklenmiş demektir.<br /><br />Şimdi tekrar veritabanını kurcalamaya devam edebiliriz.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

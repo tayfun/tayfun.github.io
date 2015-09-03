@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2008/11/initialization-lists-in-c.html">
+            Initialization Lists in C++
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-01 00:00:00+01:00" pubdate title="on Sat 01 November 2008">on Sat 01 November 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>By the time execution reaches inside of a constructor (just passing the opening brace), all the class data members have already been constructed. This is the reason you have to initialize any <span style="font-style: italic;">const</span> or <span style="font-style: italic;">reference</span> data members of a class in the initializer lists. Both const and reference data <del>variables</del> cannot be changed once created, so they will have to be created correctly in the first place. The way to do that is calling the appropriate constructors they have inside initialization lists.<br /><br />One other side effect of initialization lists is that initializing class data members inside a ctor and not inside initialization list will almost always be less efficient. This is true if you are planning to change the state of the data member right after creating them. Inside the constructor you would already have a complete data member and would change its state using operator=() rather than creating it correctly in initialization list in the first place.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2008/10/about-love.html">
             About Love
         </a>
@@ -92,20 +106,6 @@
     </div>
     <div class="postcontent">
         <p>Öyle görünüyor ki fotoğraftan vazgeçemiyorum. Bakmaktan veya çekmekten veya paylaşmaktan. Yazmaya ara verdiğim zamanda aslında yazmamazlık etmedim, sadece "yayınla" düğmesine basmadım. Hepsi ya taslak olarak burada kayıtlılar ya da aklımda :)<br /><br />Geri dönüyorum.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SM7PDXaqVtI/AAAAAAAAA8I/UKHmf7HqUmo/s1600-h/DSCN7537_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SM7PDXaqVtI/AAAAAAAAA8I/UKHmf7HqUmo/s400/DSCN7537_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5246358272665605842" /></a><a href="http://en.wikipedia.org/wiki/St._Nikolai_(Hamburg)">St. Nikolai Kilisesi</a>'nden, Hamburg.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SM7LUoc1M7I/AAAAAAAAA8A/KAJlBMhuOLM/s1600-h/DSCN7519_2.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SM7LUoc1M7I/AAAAAAAAA8A/KAJlBMhuOLM/s400/DSCN7519_2.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5246354171249374130" /></a>Yine Hamburg, belediye binası olmalı.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SM7LUO-HszI/AAAAAAAAA7w/U9S_rw-2u9c/s1600-h/DSCN7202_1.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SM7LUO-HszI/AAAAAAAAA7w/U9S_rw-2u9c/s400/DSCN7202_1.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5246354164409676594" /></a>Paris'ten, o ünlü atlıkarınca.<br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SM7LUbxKCbI/AAAAAAAAA74/qqGOLBEvjzM/s1600-h/DSCN7256_4.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SM7LUbxKCbI/AAAAAAAAA74/qqGOLBEvjzM/s400/DSCN7256_4.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5246354167844964786" /></a>Le Louvre.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2008/10/geleneksel-odtl-flickrclar-bulumas.html">
-            1. Geleneksel (!)  ODTÜ'lü Flickr'cılar buluşması
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2008-10-26 00:00:00+02:00" pubdate title="on Sun 26 October 2008">on Sun 26 October 2008</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SNVmXaqLugI/AAAAAAAAA8Q/K4d21OCrs-w/s1600-h/p9202225_1.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SNVmXaqLugI/AAAAAAAAA8Q/K4d21OCrs-w/s400/p9202225_1.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5248213493249456642" /></a><br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SNVmXt6G7VI/AAAAAAAAA8Y/t_WJwAhN72U/s1600-h/p9202244_1.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SNVmXt6G7VI/AAAAAAAAA8Y/t_WJwAhN72U/s400/p9202244_1.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5248213498416524626" /></a><br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/SNVmXwWVrCI/AAAAAAAAA8g/3GHjXMukdTo/s1600-h/p9202249_1.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/SNVmXwWVrCI/AAAAAAAAA8g/3GHjXMukdTo/s400/p9202249_1.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5248213499071802402" /></a><br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SNVmYCR9gsI/AAAAAAAAA8o/vL0cZui1kcU/s1600-h/p9202262_3.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SNVmYCR9gsI/AAAAAAAAA8o/vL0cZui1kcU/s400/p9202262_3.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5248213503885279938" /></a><br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SNVmYa8mXzI/AAAAAAAAA8w/L0DAODrwFBk/s1600-h/p9202311_1.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SNVmYa8mXzI/AAAAAAAAA8w/L0DAODrwFBk/s400/p9202311_1.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5248213510506569522" /></a>Kozalaklara bayılıyorum.<br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SNVmcmPN6hI/AAAAAAAAA84/2aM_7vQsfO8/s1600-h/p9202354_1.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SNVmcmPN6hI/AAAAAAAAA84/2aM_7vQsfO8/s400/p9202354_1.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5248213582256925202" /></a>Çatı'dan bir kare.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

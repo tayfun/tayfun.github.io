@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2008/12/postgresql-ve-locale-hakknda.html">
+            PostgreSQL ve locale hakkında
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-12-02 00:00:00+01:00" pubdate title="on Tue 02 December 2008">on Tue 02 December 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Şu aralar PostgreSQL veritabanında tam yazı arama (<a href="http://en.wikipedia.org/wiki/Full_text_search">full-text search</a>) uygulamalarını araştırıyorum. 8.3.5 Sürümü ile birlikte <a href="http://www.postgresql.org/docs/8.3/interactive/textsearch-intro.html">gelişmiş arama özelliklerinin</a> geldiğini bilmiyordum, bu konuda fikir sahibi olmak için dökümantasyonu bir gözden geçirin derim. Şimdiki sorunum locale'ler ve özellikle de Türkçe arama konusundaki bir takım gereklilikler. Aradığım özelliklerden en önemlisi "kirmizi" gibi bir kelime arandığında dökümanda "kırmızı" olsa bile bunu geri dönmesi. Bir anlamda Türkçe'ye özgü karakterlerin latin karşılıklarının olduğunun varsayılması. Konuyla ilgili anahtar kelimelerden birisi "collation".<br /><br />PostgreSQL'de bir veritabanı kümesi yarattıktan sonra değiştiremeyeceğiniz bazı yerelleştirme özellikleri var. Ve kullanabildiğiniz yerelleştirme özellikleri de kullandığınız sisteme bağlı aynı zamanda. Bu durumda sisteminize gerekli dil özelliklerini yüklemelisiniz. Debian için yaptıklarım şunlar:<br /><br /><code># vim /etc/locale.gen </code><br /><br />bu dosyayı açtıktan sonra şu iki satırın başındaki yorum işaretlerini (#) silin.<br /><br /><blockquote>tr_TR ISO-8859-9<br />tr_TR.UTF-8 UTF-8</blockquote><br />Ve sonra dil özelliklerinin tekrar derlenmesi için:<br /><br /><code># locale-gen </code><br /><br />dedikten sonra <br /><br /><code># locale -a<br />C<br />en_US.utf8<br />POSIX<br />tr_TR<br />tr_TR.iso88599<br />tr_TR.utf8<br />turkish<br /></code><br /><br />komutunun çıktısı yukarıdaki gibiyse dil özellikleriniz yüklenmiş demektir.<br /><br />Şimdi tekrar veritabanını kurcalamaya devam edebiliriz.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2008/12/postgresql.html">
             PostgreSQL
         </a>
@@ -88,20 +102,6 @@
     </div>
     <div class="postcontent">
         <p>I'll be giving an MPI presentation today at 13:30, Computer Engineering Department BMB5, Middle East Technical University. The bulk of my presentation will be about MPI and parallel programming in general but I'll also be looking at Boost MPI libraries and some helper tools. gfilt, ddd and valgrind will be presented as tools greatly helping parallel programming.<br /><br />Here's the presentation I'll be using, if you are wondering about the topics.<br /><br /><div style="width:425px;text-align:left" id="__ss_796590"><object style="margin:0px"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=mpipres20081127-1227857722801807-8&stripped_title=advanced-mpi-presentation" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=mpipres20081127-1227857722801807-8&stripped_title=advanced-mpi-presentation" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;">View SlideShare <a style="text-decoration:underline;" href="http://www.slideshare.net/tayfun/advanced-mpi-presentation?type=powerpoint" title="View Advanced MPI on SlideShare">presentation</a> (tags: <a style="text-decoration:underline;" href="http://slideshare.net/tag/openmpi">openmpi</a> <a style="text-decoration:underline;" href="http://slideshare.net/tag/mpi">mpi</a>)</div></div><br /><br />All interested are cordially welcome.<br /><br />Place: METU Computer Engineering Department, BMB5<br />Date: 28 November 2008, 13:30.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2008/11/openoffice-impress-templates.html">
-            OpenOffice Impress Templates
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2008-11-27 00:00:00+01:00" pubdate title="on Thu 27 November 2008">on Thu 27 November 2008</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>Turns out there are not many templates that come with OpenOffice.org Impress, which is used for creating presentations. Check out <a href="http://www.presentationhelper.co.uk/free-open-office-impress-templates-91.htm">presentation helper</a>, which has really good free presentation designs.<br /><br />To go along with that, <a href="http://wiki.services.openoffice.org/wiki/Documentation/FAQ/Writer/FormattingPagesAndDocuments/How_do_I_add_my_own_templates%3F">OpenOffice.org Wiki</a> page has the instructions for enabling them on Impress.<br /><br />Click on File-&gt;Templates-&gt;Organize and then add them using Command-&gt;Import Template.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>
