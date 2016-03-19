@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2009/12/nice-and-ionice-for-resource-draining.html">
+            nice and ionice for resource draining processes
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-12-24 00:00:00+01:00" pubdate title="on Thu 24 December 2009">on Thu 24 December 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>We recently started using <a href="http://www.nongnu.org/duplicity/duplicity.1.html"><span style="font-weight:bold;">duplicity</span></a> for backups. Duplicity is a really nice backup utility which makes it a piece of cake to take full and <a href="http://en.wikipedia.org/wiki/Incremental_backup">incremental backups</a>. It uses rsync in the background but adds a whole lot of clever features as well. One can take full backups once a month and then go on to use incremental backups every night so that less resources are used. Duplicity also has many interfaces for the backup service, it can use ssh or ftp or even Amazon's S3 service to store the backups on the cloud.<br /><br />Having an easy way to restore from the backups is the other side of taking backups. With duplicity this is handled easily as well because you can say "get me this file/directory from 5 days ago". If something goes wrong you can easily restore the files and go on with your work with minimum downtime. Note that backups are not to be used in place of redundancy. In redundancy you can have more than one server doing the same stuff, having the same files but they will both suffer from a failure in the application. So for example, if one of your customers accidentally deletes his account then your redundant servers will not question the action and both will lose all the account info. When that happens you would want your backups to be there.<br /><br />One trouble with backups is that they are Disk/CPU intensive. This could cause problems because you will generally want to backup important stuff on live servers. There could be workarounds to this but not all the time. For example, if you want to backup your database and you are using database replication, then you can take backups from the slave and not from the live server. But for most other backup types you will not have this flexibility. What do you do with backup processes on live servers?<br /><br />Two system utilities that come on Linux are "<span style="font-weight:bold;">nice</span>" and "<span style="font-weight:bold;">ionice</span>". They allow you to fine tune the priority of your programs. Using these two commands you can lower priorities of programs so that they run only when the CPU or disk has less load. On a live server this could be vital.<br /><br />On my experiments I've found that I don't need encryption duplicity offers because backup server is also our own box and since backups are sent over ssh there's no possibility of eavesdropping. You can disable encryption with the --no-encryption option. The upside of this is that duplicity will not run gpg and use processing power which encryption needs. In the end the duplicity command I ended up using is similar to this:<br /><code><br />$ sudo ionice -c3 nice -n19 duplicity -v 4 --no-encryption backupdir scp://myuser@myserver.com//opt/backupdir <br /></code><br />"ionice" with -c3 makes it run only when there are no other processes asking for IO. For "nice", I've used the lowest priority of 19 to run the process. You can check out a running process's "ionice" priority value by using -p switch:<br /><code><br />$ ionice -pMYPID <br /></code><br />and its nice value by using the "renice" tool.<br /><br />I love the flexibility Linux offers to developers. Having these tools makes taking backups less of a hassle.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2009/12/there-are-two-ways-to-design-system.html">
             There are two ways to design a system
         </a>
@@ -92,20 +106,6 @@
     </div>
     <div class="postcontent">
         <p>Uzun süredir düşünüyorum. Yani ben bu kadar süredir Türkiye'de yaşıyor ama kendi ülkemi anlayamıyorsam yabancıların anlamamasına şaşırmamak gerek değil mi? <a href="http://sozluk.sourtimes.org/show.asp?t=idris+k%C3%BC%C3%A7%C3%BCk%C3%B6mer&nr=y&pt=idris+kucukomer">İdris Küçükömer</a>'in yaşadığı kafa karışıklığını birkaç on sene sonra ben yaşıyorum. Sonunda çözdüm gibi ama. Aydınlanma anı TCDD'nin (şaka gibi bir kurum bu arada) web sitesini incelerken geldi. Türkiye'de bence komünizm'in en kötü şekli ile kapitalizm'in en kötü şekli uygulanıyor. Bunu bir örnekle açıklayayım. Her sene bayram/seyran/tatil zamanları otobüs firmalarına insanlar akın ediyorlar ve bilet almaya çalışıyorlar. Otobüs firmaları da biletlerinin ücretlerini yükseltiyorlar ve bir kısmını (normalden daha büyük bir kısmını) kendi tanıdıklarına ayırıp satmıyorlar. Sonuçta benim gibi birçok insan bilet bulamıyor veya bulabilenler de normal ücretten fazlasını vermek zorunda kalıyorlar (bu karaborsaya benziyor ama fark şu ki bunu seyahat firmaları yapıyor). Bu durum kapitalizmin başkenti ABD'de bile olmayacak birşey. Denetleme ve düzenleme adına hiçbir şey yok. İsteyen firma istediği gibi at koşturuyor. Bunun yanında serbest piyasa da işlemediği için, yani bu duruma dur diyecek bir seyahat firması kurmak isteyenler için şeffaf bir süreç bulunmadığı için (ne rantlar dönüyordur var ya) rekabet de olmuyor.<br /><br />Bu saçma sapan kapitalizmin diğer tarafında ise devletin komik devlet demiryolları var. Web sitelerine Internet Explorer haricinde girilmiyor, saçma sapan arayüzleri kullanmak zorundasınız. Yani neden 10 sene önceki arayüz prensiplerini kullanmak zorunda kalayım ki? Pes edip sonuna kadar gittiğinizde ise örneğin Mersin gibi bir şehre direk tren bileti satın alamayacağınızı, aktarma yapacağınız Adana'nın ise 11 saat sürdüğünü görüyorsunuz. Biraz gelişmiş tüm ülkelerde tren daha hızlı bir ulaşım aracıdır ama bizde neredeyse otobüsün iki katı zamanda gidebiliyor. <br /><br />Bu da komünizmin en kötü şeklini temsil ediyor. Rant, dalavere, torpil ile göreve getirilen insanlar, yeteneksiz yöneticiler ve bunu çekmek zorunda olan insanlar, yani biz.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2009/11/making-things-less-complicated.html">
-            Making Things Less Complicated
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2009-11-06 00:00:00+01:00" pubdate title="on Fri 06 November 2009">on Fri 06 November 2009</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>In <a href="http://www.inc.com/magazine/20091101/the-way-i-work-jason-fried-of-37signals.html">The Way I Work</a>, Jason Fried of the 37Signals fame talks about how he works. This paragraph about complexity caught my eye:<br /><blockquote><br />I spend another good portion of my day thinking about how to make things less complicated. In the software world, the first, second, and third versions of any product are really pretty good, because everyone can use them. Then companies start adding more and more stuff to keep their existing customers happy. But you end up dying with your customer base, because the software is too complicated for a newcomer. We keep our products simple. I'd rather have people grow out of our products, as long as more people are growing into them.<br /></blockquote></p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2007/05/maceralarm.html">
+            Creative Zen Neeon 2 maceralarım :)
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-05-27 00:00:00+02:00" pubdate title="on Sun 27 May 2007">on Sun 27 May 2007</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/RllZ3nZPvZI/AAAAAAAAAFM/D-7xkgROSbA/s1600-h/lowres_zn2.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/RllZ3nZPvZI/AAAAAAAAAFM/D-7xkgROSbA/s400/lowres_zn2.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5069181667584753042" /></a><br />Bugün bir mağazada kampanyada olan Creative firmasının Zen Neeon2 modelini aldım. Eski mp3 çalarım 128 MB'dı, bunun 2 GB belleği var (flash bellek kullanıyor, disk değil). Fiyatı 190 YTL olunca bana gayet makul geldi ve almaya karar verdim. İnternetten Creative web sayfasında yaptığım araştırmalarda FM radyosunun olduğu yazıyordu, mağazaya gittiğimde ise kutunun üzerinde "Non-FM version" çıkartması olduğunu gördüm. Biraz işkillendim ama yine de aldım. Menüde radyo seçeneği yoktu. Yine internette yaptığım araştırmalar sonucu öğrendim ki Creative firması TRT'ye bandrol ve diğer radyo ithal etmek için gereken parayı ödememek için aletin yazılımını değiştirmiş. Yani aletin aslında radyo donanımı olmasına rağmen yazılımı kırpılmış olduğu için bu donanımı kullanamıyorsunuz. Ben de hemen Creative web sayfasına gidip <a href="http://ccfiles.creative.com/manualdn/Drivers/PDE/10086/0x433EA22F/ZENNeeon2_PCFW_A5_1_07_03.exe">son firmware</a>'i indirdim. Windows kullanmadığım (Ubuntu-Linux kullanıyorum) için .exe dosyasını bir şekilde çalıştırmam gerekiyordu. Burda imdadıma wine geldi. Wine ile .exe dosyasını çalıştırdım ve firmware güncellenmesini yaptım. Artık aletin radyosunu kullanabiliyorum :) Çok mesudum, başka arkadaşlar varsa onlar da hemen benim yaptığımı yapsınlar, radyolarının tadını çıkarsınlar.<br /><br />Bunun yanında aletin en kötü özelliği sadece USB'den şarj olması sanırım. mp3 yanında video da (ve resim de) gösterebilmesi çok iyi özellikleri. Yalnız ses kalitesi çok iyi değil, ama bana yetecek kalitede. Sizin de iPod'a gıcığınız varsa, ve uygun fiyata bulabilirseniz tercih edilebilinecek bir ürün.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2007/05/yksek-baarml-hesaplama-zirvesi.html">
             Yüksek Başarımlı Hesaplama Zirvesi
         </a>
@@ -88,20 +102,6 @@
     </div>
     <div class="postcontent">
         <p><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/RlSOqXZPvSI/AAAAAAAAAEU/1Ipv3ZiX5v8/s1600-h/100_3310Cropped.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/RlSOqXZPvSI/AAAAAAAAAEU/1Ipv3ZiX5v8/s400/100_3310Cropped.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5067832339184205090" /></a><br />Haftasonları alışveriş yaptığım Yüzüncü Yıl Tansaş önünde, şeker yiyen üç çocuk...</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2007/05/ubuntuda-x-forwarding.html">
-            Ubuntu'da X Forwarding
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2007-05-22 00:00:00+02:00" pubdate title="on Tue 22 May 2007">on Tue 22 May 2007</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>Uzaktaki bir sunucudaki programı kendi makinenizdeymişcesine çalıştırmak istiyorsanız ne yaparsınız?<br /><br />Bunun için iki yöntem var:<br /><br />1. Yol: Eğer uzaktaki makinenizde X11 forwarding açıksa, yani ayar dosyanızda (bu büyük bir olasılıkla /etc/ssh/sshd_config dosyası) "X11Forwarding yes" yazılı ise, <br /><code># ssh -X kullaniciAdi@makineAdi</code><br />komutu ile bağlanmak yeterli.<br /><br />Eğer bu ayar dosyasını değiştirme hakkınız varsa, uzaktaki makinedeki ayar dosyasına "X11Forwarding yes" satırını ekleyin ve ssh sunucusunu tekrar başlatın.<br /><code># /etc/init.d/ssh restart</code><br />Eğer ayar dosyasını değiştirme hakkınız yoksa 2. yola bakın:<br /><br />2. Yol: Eğer karşı makinede X11 forwarding açık değilse, kendi yerel makinenizdeki X11 sunucusuna bağlantı yapabiliyor olmanız gerekiyor. Bunun için Ubuntu'da izlenmesi gereken adımlar:<br /><br />a) System -&gt; Administration -&gt; Login Window tıklanır, açılan pencerede Security sekmesine gidilir, "Deny TCP connections to XServer" yazısının yanındaki "tick" kaldırılır. Bunu yaptıktan sonra X sunucunuzun 6000. porttan dinlemeye başlaması gerekiyor. Benim makinemde bunu yapması için X sunucusunu öldürüp tekrar kaldırmam gerekti. Yani Ctrl-Alt-Backspace ile çıkıp tekrar girdim.<br /><br />b) Bir terminal açılır, <br /><code># xhost +uzaktakiMakineninIPsi</code><br />çalıştırılır. Burada uzaktaki makinenin IPsinden X bağlantılarını kabul edeceğimizi söylemiş oluyoruz.<br /><br />c) Uzaktaki makineye ssh ile bağlanılır:<br /><code>ssh kullanıcıAdım@makineAdım</code><br />ve display ortamı bizim bilgisayara ayarlanır:<br /><code># set DISPLAY=yerelMakineminIPsi:0.0</code><br />veya başka bir kabuk kullanıyorsanız<br /><code># export DISPLAY=yerelMakineminIPsi:0.0</code><br /><br />------<br /><br />Artık programlarınızı çalıştırabiliyor olmanız lazım:<br /><code># xclock &amp;</code><br />dediğinizde yerel bilgisayarınızda analog bir saat çıkmalı.<br /><br /><br />Güvenlik notları: 2. yöntemin çalışabilmesi için yerel makinenizdeki 6000. porta bağlantıların güvenlik duvarı tarafından kesilmemesi gerekiyor. Bunun yanında uzaktaki makine ile yerel makine arasında gidip gelen veriler ağda gidip gelirken dinlenebilir (yani şifreleme yok). Ayrıca her iki yöntemde de uzaktaki makinede root yetkileri olan birisi sizin X sunucunuzda işlemler yapabilir (bu konuda Gökdeniz'in yalancısıyım :)).<br /><br />iyi çalışmalar :)<br /><br /><span style="font-weight:bold;">düzenleme: Gökdeniz'e yanlış bilgilerimi düzelttiği için teşekkürler. Yorumunu kaybettim sanırım. Blogger'a daha yeniyim, yazıyı düzenle dedim ve yorumun gitti :(</span></p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

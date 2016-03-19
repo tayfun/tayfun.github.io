@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2008/05/barndrma-hizmetleri-web-hosting.html">
+            Barındırma hizmetleri (web hosting)
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-10 00:00:00+02:00" pubdate title="on Sat 10 May 2008">on Sat 10 May 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Bir süredir hosting işleri ile uğraştığım için biraz bilgi sahibi oldum. Dreamhost yurtdışından alınacak en iyi firmalardan biri gibi. Sunucularin özellikleri çok iyi ( <a href="https://dreamhost.com/hosting.html">https://dreamhost.com/hosting.html</a> ) ve sunucularının hızı da fena değil. Daha önce netfirms'den aldığım barındırma hizmeti için verilen sunucu acaip yavaştı. Bazı firmalar bir sunucuya çok fazla müşteri veriyorlar. Dreamhost'ta benim bulunduğum sunucunun rakamları şöyle:<br /><br /><code> $ cat /etc/passwd | wc -l<br />497</code><br /><br />Yaklaşık 500 kişi, çift işlemcili opteron bir sunucuya. RAM miktarı ise 4 GB. Çok iyi olmasa da verdiğin ücrete göre fena değil sanırım. Tabii sunucudaki elemanların iş yoğunlukları da önemli.<br /><br />Internetten birsey alacağım zaman genel olarak indirim kuponu araştırması yaparım. Dreamhost'ta da bunu yaptım ve sanırım oldukça iyi bir fırsat sahibi oldum. Benim de kullandığım indirim kuponlarından biri Dreamhost icin <span style="font-weight:bold;">3DOMAINS4FREE</span> , bununla ilk seferde 50 dolar indirim kazanıyorsun ve 3 tane de alan adı bedavaya geliyor (toplam 4 alan adın barındırma hizmeti aldığın süre için bedava oluyor).<br /><br />Barındırma hizmeti satın alacakların ilk belirlemeleri gereken şey ihtiyaç. Dreamhost'un 500 GB alan ve 5 TB bağlantısına ihtiyacınız olmayabilir. Ben alanı çok bulup rapidshare klonu bir sayfa yaptim ( <a href="http://www.saklabana.com">http://www.saklabana.com</a> ) ama şu anda pek kullanılacak şekilde değil. Ruby on Rails desteği verdiğini söylüyor Dreamhost ama <span style="font-weight:bold;">en fazla iki tane FastCGI işlemi</span>ne izin veriyor. İki kişiye aynı anda dosya yollandığında benim uygulama bloklanıyor. Uygulamayı bir şekilde optimize etmem gerekiyor, zaman bulduğum bir ara bakacağım. Yani paylaşımlı barındırma hizmetlerinde her soylenilene kanmayın, <span style="font-weight:bold;">sanal özel sunucular (VPS) ise çok pahalı</span> (doğru düzgün bir VPS aylık 20 dolardan başlıyor). Bu yüzden yeni bir uygulama yazanlar için önermiyorum. Özel bir ihtiyacınız yoksa (ruby on rails gibi) veya cok fazla ziyaretçiniz olmayacaksa VPS'e gerek yok. PHP kullanacaksanız veya önbelleklenecek miktarda sayfanız varsa pek sorun yaşayacağınızı sanmıyorum. Mephisto (ruby on rails uygulaması) kullanarak kurduğum blog sayfasında önbellekleme iyi miktarda yapılıyor (<a href="http://blog.saklabana.com">blog.saklabana.com</a>) ve bu sayede çok yoğun durumlara bile cevap verebiliyor (curl-loader stress testine göre saniyede 200 istek).<br /><br />Bunun dışında söylemeden edemeyeceğim, Dreamhost'un güzel özelliklerinden biri <span style="font-weight:bold;">derleyicilere ve kütüphanelere erişebiliyor olmanız</span>. Kendi hesabıma git derledim ve şimdi projelerim için repository olarak kullanıyorum. Bu özellik hoş bir olay.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2008/05/deploying-your-rails-application-to.html">
             Deploying your Rails Application to Dreamhost
         </a>
@@ -88,20 +102,6 @@
     </div>
     <div class="postcontent">
         <p>Türkiye ile de şimdilerde çok ilgili bir konuşma. İnternetin en sevdiğim yanlarından biri alanının en iyilerine ulaşabilmek, bazen dünyanın diğer tarafında olsalar bile odandan çıkmadan düşüncelerini dinleyebilmek. Sudan'lı Prof. Abdullahi Ahmed An-Na'im'in ABD'deki en iyi üniversitelerden University of İllinois'daki konuşması:<br /><br /><a href="http://www.cgs.uiuc.edu/resources/webvideo/an_naim.html">http://www.cgs.uiuc.edu/resources/webvideo/an_naim.html</a><br /><br />Kendi içinde çok tutarlı. Güzel bir konuşma.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2008/05/routing-error-in-rails.html">
-            Routing Error in Rails
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2008-05-01 00:00:00+02:00" pubdate title="on Thu 01 May 2008">on Thu 01 May 2008</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>I have been struggling with a Routing Error over the last few hours and I finally got to understand and solve it. Even though it seems that my routing configuration is correct and that the URI I access for testing should be recognized, I get a Routing Error saying that no routes matched. I have an UploadsController and in the routes.rb file I created a named path with something along the lines:<br /><br /><code>map.request_upload '/indir/:random_id/:filename', :controller =&gt; 'uploads', :action =&gt; 'request_file'</code><br /><br />When I try to visit the URI http://localhost/indir/3454353/.bashrc though, I get a Routing Error. It seemed as though Rails was missing the line, it is as if Rails is not reading it at all. I've went through all the information I could find on the Internet, even started re-reading the Routing chapter from Fernandez' book, but to no avail. Then while trying to solve this problem I requested http://localhost/indir/3454353/bashrc, that is a file without a dot in the name, and bingo, it was recognized.<br /><br />So what's the result? I am not sure why or how but when wildcard components (or receptors as sometimes called) include a dot, something goes wrong. I think it is not matched with the receptor and thus the route is not recognized. It is an interesting bug (or a feature?).</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

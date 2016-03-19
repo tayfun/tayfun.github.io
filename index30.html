@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2009/01/boost-mpi.html">
+            Boost + MPI
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-01-13 00:00:00+01:00" pubdate title="on Tue 13 January 2009">on Tue 13 January 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Tezde sona yaklaştıkça yaptığım işler de hızlanıyor. Son bir haftadır projedeki bir bug'ı çözmeye çalışıyordum. İşte de biraz yoğun olduğum için teze fazla vakit ayıramıyorum hafta içi, bu yüzden bu kadar uzun sürdü biraz da. Tez projemi C++ ve arka planda MPI, Boost kütüphanelerini kullanarak yapıyorum. Biraz takip edenler anlamışlardır sanırım, veri madenciliği konusunda önemli bir algoritmayı paralelleştiriyorum. Amacım grid veya herhangi bir dağıtık hesaplama kümesinde hızlı bir şekilde bu algoritmayı çalıştırıyor olmak. Yani performans çok önemli benim tezim için. Algoritmayı paralel çalışacak hale soktum. C++ cidden karmaşık bir dil, yanında OpenMPI, bunu saran (wrapper) Boost::MPI ve objeleri işlemciden işlemciye yollarken kullandığım Boost::Serialization kullandığım önemli kütüphaneler arasındalar. MPI hakkında daha fazla bilgiyi <a href="http://blog.tayfunsen.com/search?q=mpi&amp;submit.x=0&amp;submit.y=0">önceki yazılarımda</a> bulabilirsiniz.<br /><br />Performans testleri yaparken aklıma gelen parametreler şunlar:<br /><br /><ul><li>OpenMPI ve MVAPICH hız farkları</li><li>Derleyici eniyilemeleri (optimizations)</li><li>reduce&amp;broadcast, reduceAll ve pure send&amp;receive arasındaki hız farkları</li><li>Tabii ki farklı veri kümeleri (data sets) arasındaki hız farkları. Veriler arasındaki farklılıklar ne yazık ki çok değişik olabiliyor ve bunlar hızı çok fazla etkiliyorlar. Örneğin verinin yoğun veya seyrek olması (dense/sparse), veri büyüklüğü, destek (support) değerleri hep farklı algoritmik uygulamaların hızını büyük oranda etkiliyorlar.</li></ul><br />Beni bir haftadır uğraştıran sorun aslında bir segmentation fault hatası. Genel olarak bellekteki sizin olmayan bir bölüme dokunduğunuzda işletim sistemi tarafından programınızın kafasına vurulduğunda ortaya çıkar. Benim hata bir işlemciden başka bir işlemciye çok büyük bir ağaç yapısını gönderirken ortaya çıkıyordu. Daha küçük verilerde ortaya çıkmıyordu, bu benim başlangıç noktam oldu. İlk başta ağaç yapımın döngüler veya hatalı başka yapılar içermesinden kuşkulandım. DDD ile debug etmek için baya bir uğraştım. Aslında hata ayıklama konusunda çok deneyimli değilim. gdb'yi çok kez kullandım ama çok karmaşık işler için değil. where, up, down gibi birçok komutu iyi kullanmayı öğrendim. 6-7 gün DDD ile cebelleşirken benim segmentation fault'un hep farklı fonksiyonlarda ortaya çıktığını farkettim. Gerçi hep Boost'ın Serialize kütüphanesi içindeydi ama bu kütüphanenin farklı sınıflarında hata veriyordu. Daha sonra farkettim ki benim programın stack trace'i yüzbinlerce çağrıdan oluşuyordu. Stack Size bitiyordu. Bunun nedeni yerel değişkenler kullanmam değildi (new ile heap'den yer alıyorum çünkü), ama çağrı sayısının çok büyük olmasıydı. Nitekim 8 MB olarak ayrılmış olan stack büyüklüğü bir süre sonra bitiyordu. Boost::Serialize ile hatanın bağlantısı ise şu: Boost::Serialize gerçekten çok miktarda fonksiyon çağrısı yapıyor. "ulimit -s unlimited" komutu ile stack size'ı limitsiz yapınca benim hata da yok oldu.<br /><br />Kıssadan hisse: Veri yapınız büyük olunca ve serialize kullanıyorsanız çok büyük miktarda fonksiyon çağrıları yapıyor olabilirsiniz, ve bu durumda stack bölgesi doluyor olabilir. Sonuç seg fault olacaktır. Büyük veriler ile daha dikkatli olmak gerekiyor.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2009/01/nuray-mert-feeds-feed43.html">
             Nuray Mert Feeds - feed43
         </a>
@@ -88,20 +102,6 @@
     </div>
     <div class="postcontent">
         <p>I've just added two new links to the column on the right. Both of the links broadcast interviews/talks with people that are influential. I really like listening how people do what they do and hopefully I'll be inspired by them. The first link is to a show that I like, <a href="http://en.wikipedia.org/wiki/Charlie_Rose_(talk_show)">Charlie Rose Show</a>, you can watch interviews with famous people <a href="http://www.charlierose.com/">here</a>. Check out the interview with John Grisham at <a href="http://www.charlierose.com/view/clip/9507">http://www.charlierose.com/view/clip/9507</a>.<br /><br />The other link is to <a href="http://en.wikipedia.org/wiki/Ted_talks">TED Talks</a>, they give annual prizes to people who have made some difference to humanity, in a good way. They have many important people who gave talks and you can watch freely from <a href="http://www.ted.com/">their website</a>. Check out an interesting <a href="http://www.ted.com/index.php/talks/paul_koontz_shares_his_pix_of_north_korea.html">talk about North Korea</a>, with some interesting photos.<br /><br />I am going to check these two websites from time to time to see if they put on interesting videos. Have fun!</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2009/01/love.html">
-            Love
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2009-01-06 00:00:00+01:00" pubdate title="on Tue 06 January 2009">on Tue 06 January 2009</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>ROSE: Have you ever been in love?<br /><br />DESIRE: You might say that.<br /><br />ROSE: Horrible, isn't it?<br /><br />DESIRE: In what way?<br /><br />ROSE: It makes you so vulnerable. It opens your chest and it opens your heart and it means someone can get inside you and mess you up. You build up all these defenses. You build up this whole armor, for years, so nothing can hurt you, then one stupid person, no different from any other stupid person, wanders into your stupid life...<br /><br />You give them a piece of you. They don't ask for it. They do something dumb one day like kiss you, or smile at you, and then your life isn't your own anymore.<br /><br />Love takes hostages. It gets inside you. It eats you out and leaves you crying in the darkness, so a simple phrase like "Maybe we should just be friends" or "How very perceptive" turns into a glass splinter working its way to your heart.<br /><br />DESIRE: How picturesque.<br /><br />ROSE: It hurts. Not just in the imagination. Not just in the mind. It's a soul-hurt, a body-hurt, a real gets-inside-you-and-rips-you-apart pain. <br /><br />Nothing should be able to do that.<br /><br />Especially not love.<br /><br />I hate love. <br /><br /><br />[ From Neil Gaiman's "Sandman Library-The Kindly Ones", as quoted by Aykut Erdem.]</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

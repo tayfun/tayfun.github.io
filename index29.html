@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2009/01/koheis-stuff.html">
+            Kohei's stuff
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-01-29 00:00:00+01:00" pubdate title="on Thu 29 January 2009">on Thu 29 January 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/SYIPGigUcDI/AAAAAAAABOo/qUbHdJy_dIU/s1600-h/p1053468.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/SYIPGigUcDI/AAAAAAAABOo/qUbHdJy_dIU/s400/p1053468.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5296812716757119026" /></a><br />Had never seen a 3-year diary before. That's just Japanese oddity.<br /><br /><br /><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/SYIPG9GVIYI/AAAAAAAABOw/JKcv2AMUNKY/s1600-h/p1053471.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 300px;" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/SYIPG9GVIYI/AAAAAAAABOw/JKcv2AMUNKY/s400/p1053471.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5296812723895869826" /></a><br />Looks like there's a lot of books, right :)</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2009/01/walk-alone.html">
             Walk Alone
         </a>
@@ -92,20 +106,6 @@
         <div style="text-align: center;"><a href="http://basarim09.ceng.metu.edu.tr"><br /> <img src="http://basarim09.ceng.metu.edu.tr/images/basarim09.jpg" alt="BAŞARIM09 - I. Ulusal Yüksek Başarım ve Grid Konferansı" /></a></div>
 
 <p><br /><br />1. Ulusal Yüksek Başarım ve Grid Konferansı için bildiri iletme tarihleri 26 Ocak tarihine kadar ertelendi. Eğer Yüksek Başarım, HPC, MPI, MP, Paralel Hesaplama gibi anahtar kelimeler size birşey ifade ediyorsa takip etmenizi öneririm. Bu konuda somut projeleriniz varsa bildiri sunabilir veya atölye çalışmalarına katılabilirsiniz. Bu konulara yeni iseniz konferansta eğitim günleri olacağını da unutmayın. <br /><br />Kolay gelsin.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2009/01/boost-mpi.html">
-            Boost + MPI
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2009-01-13 00:00:00+01:00" pubdate title="on Tue 13 January 2009">on Tue 13 January 2009</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>Tezde sona yaklaştıkça yaptığım işler de hızlanıyor. Son bir haftadır projedeki bir bug'ı çözmeye çalışıyordum. İşte de biraz yoğun olduğum için teze fazla vakit ayıramıyorum hafta içi, bu yüzden bu kadar uzun sürdü biraz da. Tez projemi C++ ve arka planda MPI, Boost kütüphanelerini kullanarak yapıyorum. Biraz takip edenler anlamışlardır sanırım, veri madenciliği konusunda önemli bir algoritmayı paralelleştiriyorum. Amacım grid veya herhangi bir dağıtık hesaplama kümesinde hızlı bir şekilde bu algoritmayı çalıştırıyor olmak. Yani performans çok önemli benim tezim için. Algoritmayı paralel çalışacak hale soktum. C++ cidden karmaşık bir dil, yanında OpenMPI, bunu saran (wrapper) Boost::MPI ve objeleri işlemciden işlemciye yollarken kullandığım Boost::Serialization kullandığım önemli kütüphaneler arasındalar. MPI hakkında daha fazla bilgiyi <a href="http://blog.tayfunsen.com/search?q=mpi&amp;submit.x=0&amp;submit.y=0">önceki yazılarımda</a> bulabilirsiniz.<br /><br />Performans testleri yaparken aklıma gelen parametreler şunlar:<br /><br /><ul><li>OpenMPI ve MVAPICH hız farkları</li><li>Derleyici eniyilemeleri (optimizations)</li><li>reduce&amp;broadcast, reduceAll ve pure send&amp;receive arasındaki hız farkları</li><li>Tabii ki farklı veri kümeleri (data sets) arasındaki hız farkları. Veriler arasındaki farklılıklar ne yazık ki çok değişik olabiliyor ve bunlar hızı çok fazla etkiliyorlar. Örneğin verinin yoğun veya seyrek olması (dense/sparse), veri büyüklüğü, destek (support) değerleri hep farklı algoritmik uygulamaların hızını büyük oranda etkiliyorlar.</li></ul><br />Beni bir haftadır uğraştıran sorun aslında bir segmentation fault hatası. Genel olarak bellekteki sizin olmayan bir bölüme dokunduğunuzda işletim sistemi tarafından programınızın kafasına vurulduğunda ortaya çıkar. Benim hata bir işlemciden başka bir işlemciye çok büyük bir ağaç yapısını gönderirken ortaya çıkıyordu. Daha küçük verilerde ortaya çıkmıyordu, bu benim başlangıç noktam oldu. İlk başta ağaç yapımın döngüler veya hatalı başka yapılar içermesinden kuşkulandım. DDD ile debug etmek için baya bir uğraştım. Aslında hata ayıklama konusunda çok deneyimli değilim. gdb'yi çok kez kullandım ama çok karmaşık işler için değil. where, up, down gibi birçok komutu iyi kullanmayı öğrendim. 6-7 gün DDD ile cebelleşirken benim segmentation fault'un hep farklı fonksiyonlarda ortaya çıktığını farkettim. Gerçi hep Boost'ın Serialize kütüphanesi içindeydi ama bu kütüphanenin farklı sınıflarında hata veriyordu. Daha sonra farkettim ki benim programın stack trace'i yüzbinlerce çağrıdan oluşuyordu. Stack Size bitiyordu. Bunun nedeni yerel değişkenler kullanmam değildi (new ile heap'den yer alıyorum çünkü), ama çağrı sayısının çok büyük olmasıydı. Nitekim 8 MB olarak ayrılmış olan stack büyüklüğü bir süre sonra bitiyordu. Boost::Serialize ile hatanın bağlantısı ise şu: Boost::Serialize gerçekten çok miktarda fonksiyon çağrısı yapıyor. "ulimit -s unlimited" komutu ile stack size'ı limitsiz yapınca benim hata da yok oldu.<br /><br />Kıssadan hisse: Veri yapınız büyük olunca ve serialize kullanıyorsanız çok büyük miktarda fonksiyon çağrıları yapıyor olabilirsiniz, ve bu durumda stack bölgesi doluyor olabilir. Sonuç seg fault olacaktır. Büyük veriler ile daha dikkatli olmak gerekiyor.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

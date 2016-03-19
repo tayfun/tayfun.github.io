@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2010/01/apache-address-already-in-use.html">
+            Apache "Address already in use"
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-01-13 00:00:00+01:00" pubdate title="on Wed 13 January 2010">on Wed 13 January 2010</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Say you are configuring SSL for your website and after <a href="http://www.debian-administration.org/article/Setting_up_an_SSL_server_with_Apache2">enabling mod_ssl</a>, <a href="http://httpd.apache.org/docs/2.0/ssl/ssl_faq.html#selfcert">creating self signed certificates</a> and adding necessary configuration options to your virtual host definition you are still getting errors of the sort:<br /><code><br />(98)Address already in use: make_sock: could not bind to address 0.0.0.0:443<br />no listening sockets available, shutting down<br />Unable to open logs<br /></code><br />in your logs, what do you do? You check who is using the port of course, <br /><code><br />$ sudo lsof -i :443<br />$<br /></code><br />But that doesn't lead you anywhere because, guess what, nobody is using port 443. <br /><br />So what is the problem? It might be because there multiple definitions of the same type. In my case it was because of this line:<br /><code><br />Listen 443<br /></code><br />which got executed twice. One problem of Apache is that the configuration files are all over the place. It used to be that many configuration options were in the same apache.conf file before but there's a restructuring going on and newer releases emphasize this. You might find old articles and when you use them you can get in these kinds of troubles. <br /><br />Luckily these problems are not that hard to solve. Just be on the lookout for extra definitions and try to understand which declaration is where and does what. You'll avoid most problems by doing that.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2010/01/kitap-yorumu-coders-at-work.html">
             Kitap Yorumu: Coders At Work
         </a>
@@ -92,20 +106,6 @@
         <blockquote><br />Deutsch: One of the things that I've been thinking about off and on over the last five-plus years is, "Why is programming so hard?"<br /><br />[...] the world of basically all programming languages that we have is so different in such deep ways from the physical world that our senses and our brains and our society have coevolved to deal with, that it is loony to expect people to do well with it. There has to be something a little wrong with you for you to be a really good programmer. Maybe "wrong with you" is a little too strong, but the qualities that make somebody a well-functioning human being and the qualities that make somebody a real good programmer - they overlap but they don't overlap a whole heck of a lot.</blockquote>
 
 <p><br />From <span style="font-style:italic;">Coders at Work, Reflections on the Craft of Programming</span> by Peter Seibel.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2010/01/basarl-olmann-laneti.html">
-            Başarılı Olmanın Laneti?
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2010-01-02 00:00:00+01:00" pubdate title="on Sat 02 January 2010">on Sat 02 January 2010</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p><a href="http://en.wikipedia.org/wiki/Haskell_(programming_language)">Haskell</a>'in yaratıcılarından Simon Peyton Jones şu aralar okuduğum Coders at Work kitabında "başarıdan mümkün olduğunca sakının" diyor. Bunu programlama dilleri ve özellikle de Haskell için söylüyor ama sanırım başka yazılımlar (ve teknolojiler?) için genellemek çok da yanlış olmaz. İlk bakışta çok anlamsız gelen bir cümle bu, çünkü zaten bunca emeğin amacı popüler olmak, bir sürü insana faydalı olmak ve böylece "başarılı olmak" değil midir?<br /><br />Simon Peyton Jones bundan sonra nedenlerinden bahsediyor. Yazılımınız popüler olmaya başlayınca insanlar onu daha önce düşünmediğiniz şekillerde kullanmaya başlıyorlar, daha iyi alternatifleri olsa bile. Birçok programcı için popülerlik seçimlerinde yeterli bir sebep. Durum böyle olunca, mimarinize uygun olmasa bile yeni kullanıcılarınızı tatmin edebilmek için yeni özellikler ekliyorsunuz. Ve bu durum neredeyse her zaman kötü birşey. <a href="http://en.wikipedia.org/wiki/Unix_philosophy#McIlroy:_A_Quarter_Century_of_Unix">Unix felsefesinin merkezinde "sadece bir işi yapın ama iyi yapın" mantığının</a> olmasının nedeni de bu. Karmaşıklığınız artınca <a href="http://blog.tayfunsen.com/2009/12/there-are-two-ways-to-design-system.html">Hoare'nin kuralına</a> da uygun olarak "basitçe görülüyor ki hiç hata yok" durumundan "hiç basit hata yok" durumuna geçiş yapıyorsunuz. Ve <a href="http://blog.tayfunsen.com/2009/11/making-things-less-complicated.html">kullanıcılara "hayır" demenin zorluğu</a> da işinizi kolaylaştırmıyor doğrusu.<br /><br />Popüler olmanın diğer bir dezavantajı ise esnekliğinizi götürmesi. Yeni kararlar alırken insanların yazılımınızı nasıl kullandığını da düşünmek zorundasınız. Doğru görünmeyen bir bölümünü değiştirmek artık başlangıçtaki gibi kolay değil. Artık kullanıcılarınız her API değişikliğinde size şikayet edeceklerdir. Var olan yazılımlarının çalışmaya devam etmesi için size yalvaracaklardır. Eğer karmaşıklık yanlış yola sapmak için çok tehlikeli bir tuzaksa, evrimleşememek de bir diğeridir. Bunun nedeni değişimin teknolojinin kalbinde olmasıdır. Eğer değişemezseniz, veya rakibinizden daha hızlı değilseniz o zaman hayatta kalmanız zorlaşır. Eğer gerekli değişiklikleri yapamazsanız birileri sizin yerinize geçecektir. <br /><br />Sanırım "başarıdan mümkün olduğunca sakının" cümlesinden anladıklarım bunlar. En azından bu fikirlerin önemli bir yer tuttuğuna inanıyorum. Bunların nasıl uygulanacağı ise başka bir şey. Ve bunu öğrenmeye ben de devam ediyorum.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>
