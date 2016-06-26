@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2008/05/harika-bir-konuma.html">
+            Harika bir konuşma
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-04 00:00:00+02:00" pubdate title="on Sun 04 May 2008">on Sun 04 May 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Türkiye ile de şimdilerde çok ilgili bir konuşma. İnternetin en sevdiğim yanlarından biri alanının en iyilerine ulaşabilmek, bazen dünyanın diğer tarafında olsalar bile odandan çıkmadan düşüncelerini dinleyebilmek. Sudan'lı Prof. Abdullahi Ahmed An-Na'im'in ABD'deki en iyi üniversitelerden University of İllinois'daki konuşması:<br /><br /><a href="http://www.cgs.uiuc.edu/resources/webvideo/an_naim.html">http://www.cgs.uiuc.edu/resources/webvideo/an_naim.html</a><br /><br />Kendi içinde çok tutarlı. Güzel bir konuşma.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2008/05/routing-error-in-rails.html">
             Routing Error in Rails
         </a>
@@ -88,22 +102,6 @@
     </div>
     <div class="postcontent">
         <p>Takas alanı linux'larda sanal bellek alanı olarak kullanılır (scratch veya swap alanı denilir bu alana). Farzedelim ki takas alanınızı büyütmek istiyorsunuz, ki bunun çeşitli nedenleri olabilir. Daha fazla RAM gerektiren uygulamalar kullanıyor olabilirsiniz veya bilgisayarın uyku durumuna geçmesi için daha fazla takas alanı gerekiyor olabilir (benim nedenim bu). Uyku durumunda bellekteki herşey takas alanına yazıldığı için büyüklüğünün yeterli olması gerekiyor.<br /><br />Şimdi takas alanını hard disk bölümlerini kurcalayarak değiştirebilirsiniz ve önerilen yöntem de bu. Ama bunu yapmak istemiyorsanız hızlı ve kirli (quick and dirty :)) bir çözüm var. Bir dosyayı takas alanı olarak kullanabilirsiniz. Önce bir dosya yaratıyoruz:<br /><br /><code># dd if=/dev/zero of=swapfile bs=1024 count=614400</code><br /><br />Bu komut sonlandığında bulunduğunuz dizinde swapfile isimli bir dosya oluşmuş olacak. Dosya büyüklüğü benim durumumda 600 MB. Komutta yazan 614400 rakamı KB cinsinden ne kadar istediğimi söylüyor. Kaç MB'lık takas alanı istiyorsanız 1024 ile çarpıp "count" kısmına yazın. Takas alanını yaratacağınız dizin nispeten az kullanılan bir diskte olursa daha iyi olur.<br /><br />Bundan sonra dosyayı takas yapıyoruz:<br /><br /><code># mkswap swapfile</code><br /><br />Ve etkinleştiriyoruz:<br /><br /><code># swapon swapfile</code><br /><br />Bundan sonra takas alanını kullanmaya başladınız. "free -m" komutu ile veya "cat /proc/swaps" ile yerinizin büyüdüğünü görebilirsiniz. Bu değişikliği her açılışta etkin hale getirmek için /etc/fstab dosyasını değiştirmemiz gerekecek. Dosyaya şöyle bir satır ekleyin:<br /><br /><code>/media/sdb1/swapfile swap    swap   defaults   0   0</code><br /><br />/media/sdb1/swapfile yerine kendi dosyanızın bulunduğu yer yazılmalı.<br /><br />Umarım yardımcı olmuşumdur. İyi günler.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2008/04/trivia-birthday-problem-doumgn-problem.html">
-            Trivia - Birthday Problem / Doğumgünü Problemi
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2008-04-19 00:00:00+02:00" pubdate title="on Sat 19 April 2008">on Sat 19 April 2008</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <blockquote>In probability theory,, the birthday problem, or birthday paradox,[1] pertains to the probability that in a set of randomly chosen people some pair of them will have the same birthday. In a group of 23 (or more) randomly chosen people, there is more than 50% probability that some pair of them will have the same birthday. For 57 or more people, the probability is more than 99%, tending toward 100% as the pool of people grows.</blockquote>
-
-<p><br /><a href="http://en.wikipedia.org/wiki/Birthday_problem">http://en.wikipedia.org/wiki/Birthday_problem</a><br /><br />İlginç bir makale. 23 kişinin olduğu bir odada 2 kişinin aynı doğum gününe sahip olma olasılığı olmama olasılığından fazla, yani %50'den yüksek. İlgili makalede neden çok güzel açıklanmış. 23 kişinin bulunmasıyla, 23'ün 2'li kombinasyonlarından 253 çiftin doğum gününün aynı olma şansı doğuyor. Bu da oldukça büyük bir şans demek, makaledeki temel olasılık formülünü kullandığınızda olasılığın %50.7 olduğunu buluyorsunuz. Odada 50 kişi varsa bu olasılık %97'ye çıkıyor.<br /><br />Ama bu, 23 kişi bulunan odada sizinle aynı doğum gününe sahip olan birisinin bulunma olasılığı demek değil. Bu durumda problem <a href="http://en.wikipedia.org/wiki/Birthday_problem#Same_birthday_as_you">sizin doğumgününüz</a> problemine dönüşüyor ve bunun için de 253 kişi gerekiyor. Orijinal problemde odadaki herhangi 2 kişinin doğum gününün aynı olması yeterli.<br /><br />:) Matematik çok güzel birşey...</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

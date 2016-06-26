@@ -37,6 +37,20 @@
   <div id="content">
 <article>
     <div class="postheader">
+        <a class="posttitle" href="2007/07/iptables-problemleri.html">
+            Iptables Problemleri
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-07-20 00:00:00+02:00" pubdate title="on Fri 20 July 2007">on Fri 20 July 2007</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Birkaç gün önce linux çekirdeğimi derleyerek değiştirdim. Yeni çekirdeklerle birlikte IDE disklerin de sda olarak tanındığını öğrenmiştim (hda kalkmış oluyor) ama yeni çekirdeğin IDE diskimi ilk sıraya atacağı aklıma gelmemişti, bu yüzden bir sürü kök dosya bağlama hataları aldım. Daha sonra grub menu.lst dosyasını ve fstab dosyalarını düzenleyince sorunu giderebildim. Bir diğer sorun da iptables ile oldu. Çekirdeğe durum yeteneği ("state" match support) vermeyi unuttuğum için eski güvenlik duvarı ayarlarımı uygulatamadım iptables'a. Çekirdekteki güvenlik duvarı kodu netfilter olarak adlandırılıyor. iptables ise netfilter çekirdek programını kullanabilmemizi sağlayan kullanıcı alanındaki programın ismi. Şimdi aldığım hataya bakalım:<br /><br /><code><br /># iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT<br />iptables: No chain/target/match by that name<br /></code> <br />Bu basit kodda içeri gelecek bağlantıların ancak bizim tarafımızdan başlatıldığında (RELATED,ESTABLISHED kelimeleri) kabul edilmesini sağlıyor. Verilen hata ise değiştirmek istediğimiz "chain/target/match" bilgisinin bulunamadığı yönünde. Bu hatayı  INPUT yerine "input" yazarsanız, yani yazım hatası yaparsanız da alabilirsiniz. Ben yazım yanlışı yapmadığımı kontrol ettikten sonra durum bilgisi anlama yeteneğini çekirdeğe verip vermediğimi kontrol ettim. Sorun buradaydı, bu modülü unutmuşum. Çekirdeği yeniden derledim ve güvenlik ayarlarımı tekrar yükledim.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
         <a class="posttitle" href="2007/07/in-satyor.html">
             Çin Satıyor
         </a>
@@ -90,20 +104,6 @@
     </div>
     <div class="postcontent">
         <p>Türkiye'de 24 Ekim 2003'de imzalanan ve 6 ay sonra yürürlüğe giren bir kanun var, ismi Bilgi Edinme Hakkı Kanunu. Benzer bir yasa ABD'de 1966'da imzalanmış ve 1996 yılında elektronik alanlarda da ekler yapılmış Clinton tarafından. Bu tür kanunların en eskileri ise 1776 tarihli İsveç'te çıkarılan ve halen yürürlükte olan yasa. Biz biraz geç kalmışız, biraz araştırsam AB'ye uyum paketlerinden biri ile imzalanmış olduğunun çıkmasından korkuyorum (kendi aklımızla yasayı çıkartmamız gerekir, bu hakkı isteyerek). Esasında çok önemli bir yasa, devlet görevlilerinin sorgulanabilirlikleri sağlanıyor, yapılan uygunsuz işlerin (torpil, yolsuzluk vs.) ortaya çıkarılmasına ve devletin denetlenmesinde ilk adım belki de. Ben de birkaç kere bu hakkımı kullanarak çeşitli sorgularda bulundum. İnternetten başvuru yapmak çok kolay, herhangi bir devlet kurumunun bu başvuruları alan bir web sayfası veya e-posta adresi oluyor, onu kullanarak başvuru yapabilirsiniz. Merak ettiğiniz konularda başvurunuz; denetlemek ve verdiğiniz vergilerin nerelerde kullanıldığı sormak vatandaş olarak sadece hakkınız değildir, bu aynı zamandan bir görevdir. <br /><br />Daha şeffaf, yolsuzlukların, haksızlıkların olmadığı aklın yolunun seçildiği bir ülke istiyorum. Bence bunu başarabiliriz.<br /><br /><li><a href="http://www.bilgiedinmehakki.org/tr/index.php?option=com_content&task=view&id=11&Itemid=8">Bilgi Edinme Hakkı Kanunu</a></li><br /><li><a href="http://en.wikipedia.org/wiki/Freedom_of_information_legislation">Dünyadaki çeşitli uygulamaları</a></li></p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2007/07/temmuzda.html">
-            Temmuzda *
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2007-07-06 00:00:00+02:00" pubdate title="on Fri 06 July 2007">on Fri 06 July 2007</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>Efenim yazıları azalttım, farkındayım. Ama tatil moduna girdiğimden değil, tam tersi bu aralar dönem içi kadar belki de daha fazla yoğunum. İşte yapmam gerekenler arttı, tez için araştırmalara başladım ve MPI kütüphanesi kullanarak paralel bir veri madenciliği uygulaması yazmaya başladım. Günlüğüme yazmak istediğim birçok şey geldi aklıma ama zaman bulamadım, veya tembellik yaptım itiraf ediyorum. Tam 2 kilo fazlam var beden kitle endeksine göre, daha az yemeye başladım. İlk defa temmuzda Ankara'dayım diye düşündüm, halbuki 5 senedir Ankara'da yaşıyorum. Yaklaşık 5 senedir TV izlemiyorum, Barış Akarsu adında birisi ölmüş, yine medya olayı abartmış tüm haber sayfalarında ilk haber. Hergün onlarca insan açlıktan, çeşitli haksızlıklardan dolayı ölürken birşey olmuyor ama gün geliyor bir kişi ölünce kıyamet kopuyor. Ne diyelim, Allah rahmet eylesin. Bu mevsimde alerjim artıyor, sürekli hapşuruyorum. Yakın bir zamanda bir süreliğine seyahat edebilirim, Ankara'daki eşyalarımı napsam acaba diye kara kara düşünüyorum. Aslında emanete verebileceğim yer de çok ama... Evi özledim. Annemi, babamı ve kardeşlerimi. Ankara'da havalar çok sıcak. İş yerinde Raks marka 1986 yapımı bir vantilatör var, canavar gibi çalışıyor. Raks şirketi geçenlerde iflas etti. Okumam gereken kitap, dergi, makale vs.ler artıyor sürekli. Bir de internet var ya, işin içinden çıkılmıyor bazen. Bu kadar bilgi çok fazla. İş yerinden Altay'la refah, gelişim ve mutluluk üzerinde sohbetlerimiz devam ediyor. O hep tüketim, mutsuzluk, kölelik, medya vs. tarafından bakıyor ben de hep olanaksızlıktan okula gidemeyen kız çocukları tarafından. Bir dengesizlik var, o çözülmeli. Seçimlere 15 gün kaldı ama kime oy vereceğimi halen bilmiyorum. Bağımsızlardan kimler var acaba. Veya en iyisi boş oy atmak. Güçlü Türkiye Partisi denen genç elemanların kurduğu bir parti vardı, o da fos çıktı galiba - hiç ses sedaları yok. Bari başladığım kitapları bitirsem...<br /><br /><br /><br />* Fatih Akın'ın o güzel filmini bir kez daha izleme vakti geldi sanırım.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>
