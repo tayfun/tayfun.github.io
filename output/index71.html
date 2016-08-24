@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/05/ocuklar.html">
+            Çocuklar
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-05-23 00:00:00+02:00" pubdate title="on Wed 23 May 2007">on Wed 23 May 2007</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/RlSOqXZPvSI/AAAAAAAAAEU/1Ipv3ZiX5v8/s1600-h/100_3310Cropped.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/RlSOqXZPvSI/AAAAAAAAAEU/1Ipv3ZiX5v8/s400/100_3310Cropped.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5067832339184205090" /></a><br />Haftasonları alışveriş yaptığım Yüzüncü Yıl Tansaş önünde, şeker yiyen üç çocuk...</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/05/ubuntuda-x-forwarding.html">
+            Ubuntu'da X Forwarding
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-05-22 00:00:00+02:00" pubdate title="on Tue 22 May 2007">on Tue 22 May 2007</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Uzaktaki bir sunucudaki programı kendi makinenizdeymişcesine çalıştırmak istiyorsanız ne yaparsınız?<br /><br />Bunun için iki yöntem var:<br /><br />1. Yol: Eğer uzaktaki makinenizde X11 forwarding açıksa, yani ayar dosyanızda (bu büyük bir olasılıkla /etc/ssh/sshd_config dosyası) "X11Forwarding yes" yazılı ise, <br /><code># ssh -X kullaniciAdi@makineAdi</code><br />komutu ile bağlanmak yeterli.<br /><br />Eğer bu ayar dosyasını değiştirme hakkınız varsa, uzaktaki makinedeki ayar dosyasına "X11Forwarding yes" satırını ekleyin ve ssh sunucusunu tekrar başlatın.<br /><code># /etc/init.d/ssh restart</code><br />Eğer ayar dosyasını değiştirme hakkınız yoksa 2. yola bakın:<br /><br />2. Yol: Eğer karşı makinede X11 forwarding açık değilse, kendi yerel makinenizdeki X11 sunucusuna bağlantı yapabiliyor olmanız gerekiyor. Bunun için Ubuntu'da izlenmesi gereken adımlar:<br /><br />a) System -&gt; Administration -&gt; Login Window tıklanır, açılan pencerede Security sekmesine gidilir, "Deny TCP connections to XServer" yazısının yanındaki "tick" kaldırılır. Bunu yaptıktan sonra X sunucunuzun 6000. porttan dinlemeye başlaması gerekiyor. Benim makinemde bunu yapması için X sunucusunu öldürüp tekrar kaldırmam gerekti. Yani Ctrl-Alt-Backspace ile çıkıp tekrar girdim.<br /><br />b) Bir terminal açılır, <br /><code># xhost +uzaktakiMakineninIPsi</code><br />çalıştırılır. Burada uzaktaki makinenin IPsinden X bağlantılarını kabul edeceğimizi söylemiş oluyoruz.<br /><br />c) Uzaktaki makineye ssh ile bağlanılır:<br /><code>ssh kullanıcıAdım@makineAdım</code><br />ve display ortamı bizim bilgisayara ayarlanır:<br /><code># set DISPLAY=yerelMakineminIPsi:0.0</code><br />veya başka bir kabuk kullanıyorsanız<br /><code># export DISPLAY=yerelMakineminIPsi:0.0</code><br /><br />------<br /><br />Artık programlarınızı çalıştırabiliyor olmanız lazım:<br /><code># xclock &amp;</code><br />dediğinizde yerel bilgisayarınızda analog bir saat çıkmalı.<br /><br /><br />Güvenlik notları: 2. yöntemin çalışabilmesi için yerel makinenizdeki 6000. porta bağlantıların güvenlik duvarı tarafından kesilmemesi gerekiyor. Bunun yanında uzaktaki makine ile yerel makine arasında gidip gelen veriler ağda gidip gelirken dinlenebilir (yani şifreleme yok). Ayrıca her iki yöntemde de uzaktaki makinede root yetkileri olan birisi sizin X sunucunuzda işlemler yapabilir (bu konuda Gökdeniz'in yalancısıyım :)).<br /><br />iyi çalışmalar :)<br /><br /><span style="font-weight:bold;">düzenleme: Gökdeniz'e yanlış bilgilerimi düzelttiği için teşekkürler. Yorumunu kaybettim sanırım. Blogger'a daha yeniyim, yazıyı düzenle dedim ve yorumun gitti :(</span></p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/05/nereye-gitmek-istediini-bilmiyorsan.html">
+            Nereye gitmek istediğini bilmiyorsan, seçtiğin yolun ne önemi var?
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-05-20 00:00:00+02:00" pubdate title="on Sun 20 May 2007">on Sun 20 May 2007</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <blockquote><br />Alice, Cheshire kedisine sordu:<br /><br /> 'Buradan hangi yolu izlemem gerektiğini söyler misin?'<br /><br /> 'Bu, nereye gitmek istediğine bağlı', dedi kedi.<br /><br /> 'Neresi olduğunun önemi yok,' dedi Alice.<br /><br /> 'O zaman hangi yol olduğunun önemi yok' dedi kedi.<br /><br /> 'Sonunda herhangi bir yere varsın da,' diye Alice ekledi.<br /><br /> 'Elbette varacaksın,' dedi kedi, 'yeterince uzun yürüdüğün sürece.'<br /><br />----------------<br /><br />`Cheshire Puss,' she began, rather timidly, as she did not at<br />all know whether it would like the name:  however, it only<br />grinned a little wider.  `Come, it's pleased so far,' thought<br />Alice, and she went on.  `Would you tell me, please, which way I<br />ought to go from here?'<br /><br />  `That depends a good deal on where you want to get to,' said<br />the Cat.<br /><br />  `I don't much care where--' said Alice.<br /><br />  `Then it doesn't matter which way you go,' said the Cat.<br /><br />  `--so long as I get SOMEWHERE,' Alice added as an explanation.<br /><br />  `Oh, you're sure to do that,' said the Cat, `if you only walk<br />long enough.'<br /></blockquote>
+
+<p><br /><br />Alice Harikalar Diyarında, Lewis Carroll.<br />Alice's adventures in Wonderland by Lewis Carroll.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/05/bele-nyt-yelii.html">
+            Beleş NYT Üyeliği
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-05-16 00:00:00+02:00" pubdate title="on Wed 16 May 2007">on Wed 16 May 2007</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Geçtiğimiz birkaç sene içinde bir çok kere başıma geldi. New York Times'da çıkan bir makaleye bir şekilde ulaşıyorum, üyelik istiyor, üyeyim de ama ücretli bir makale oluyor ve sadece birkaç paragrafı okumama izin veriyor. Geçenlerde yine böyle olunca artık canıma tak etti, ne kadar istiyorlar diye araştırmaya başladım. Yıllık 50 Dolara ayda 100 makale okuyabiliyormuşuz. Üyelik ile ilgili bilgileri okurken üniversite öğrencilerine bedava üyelik verdiklerini okudum. Heyecanla hemen üyelik formunu doldurdum, aslında formun sonunda sadece ABD'de geçerli bir kampanya olduğu uyarısını bekliyordum. Neyse ki öyle olmadı, tüm öğrencilere açık bir olay olduğunu anladım, neden daha önce bunu farketmediğime yandım.<br /><br />Üyelik için hemen <a href="http://www.nytimes.com/gst/ts_university_email_verify.html?incamp=ts:sell_pages_tsu_2">üyelik</a> sayfasına gidiyoruz ve içinde "edu" geçen üniversite posta adresimizi giriyoruz. Posta adresimize gelen onay postasını onayladıktan sonra bedava üyeliğimizin tadını çıkarıp gazetemizi okuyabiliriz.<br /><br />Eğer Türk medyasından biraz olsun sıkıldıysanız bir deneyin derim.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/05/good-will-hunting-can-dostum.html">
+            Good Will Hunting / Can Dostum
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-05-12 00:00:00+02:00" pubdate title="on Sat 12 May 2007">on Sat 12 May 2007</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/RkWWhb-pQ5I/AAAAAAAAAEE/BjXgZUGsQr4/s1600-h/good_will_hunting_verdvd.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/RkWWhb-pQ5I/AAAAAAAAAEE/BjXgZUGsQr4/s400/good_will_hunting_verdvd.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5063618857238348690" /></a><br /><br />Birkaç sene önce Kanal-D'de dublajlı olarak izlediğim "Good Will Hunting"i bu sefer orijinal haliyle tekrar izledim. İlk izlediğimde -doğal olarak- göremediğim Skylar'ın İngiliz aksanı ve Will'in Güney Boston varoş konuşuş biçimi ("I gotta go see about a girl") gerçekten filmi farklılaştırmış. Filmde Will Hunting Güney Boston'da yaşayan İrlanda asıllı bir dahi, ve biraz da arıza kişi. Daldan dala atlayıp Amerika'nın etnik yapısından bahsedeyim. Amerika, çok çeşitli insanlara sahip, Amerikan rüyasını gerçekleştirmek için dünyanın her tarafından insanlar Amerika'ya akın etmişler. İrlanda da göç edilen ülkelerden biri, Büyük Kıtlık denen patates kıtlığında baya bir İrlandalı Amerika'ya göç ediyor. Hatta Osmanlı yardım için gemilerle yiyecek yolluyor, buna minnet duyan bazı İrlandalı'lar da soyisimlerini Turk yapıyorlar. Filmin müzikleri de çok hoş. Aşağıya dinlemeniz için bir tanesini koyuyorum. Yine "arıza" birisinden, Elliot Smith'ten "Between the Bars". <br /><br />iyi dinlemeler...<br /><br /><center><br /><embed id="radioblog_player_0" src="http://stat.radioblogclub.com/radio.blog/skins/mini/player.swf" type="application/x-shockwave-flash" allowscriptaccess="always" bgcolor="#ECECEC" flashvars="id=0&filepath=http%3A%2F%2Fwww.ceng.metu.edu.tr%2F~e1347939/musiki/08%20-%20Elliott%20Smith%20-%20Between%20The%20Bars.rbs&amp;colors=body:#ECECEC;border:#BBBBBB;button:#999999;player_text:#999999;playlist_text:#999999;"></embed><br /></center></p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

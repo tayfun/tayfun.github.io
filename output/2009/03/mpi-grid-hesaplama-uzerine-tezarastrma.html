@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPI / Grid Hesaplama Üzerine Tez/Araştırma Konuları | Tayfun Sen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            MPI / Grid Hesaplama Üzerine Tez/Araştırma Konuları
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-03-06 00:00:00+01:00" pubdate title="on Fri 06 March 2009">on Fri 06 March 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Bir arkadaştan "MPI konusunda ne gibi araştırmalar yapabilirim" gibi bir soru geldi. MPI ve Grid hesaplama konusunda günlük sayfamda yazılar yazarak bilgimi başkalarına aktarmaya çalışıyorum. Bu konularda çalışmak isteyen Türklere de aynı zamanda biraz motivasyon vermek için aslında bu, hani daha önce yapanlar da varmış dedirtmek için. Ve sorusu olana bilgim dahilinde tabii ki cevap vermek isterim.<br /><br />Grid hesaplama ve MPI konusunda aslında oldukça fazla araştırma konusu var bana göre. Örneğin grid konusunda araştırma yapılacaksa Java ile çeşitli servisler yazılabilir. Gridleri yönetmek için kullanılan çeşitli yardımcı programlara, araçlara bakılarak bunlardan fikir edinilebilir. Örneğin vikiden <a href="http://en.wikipedia.org/wiki/Globus_Toolkit">globus toolkit</a> makalesi başlangıç olabilir. Bunlar çok büyük araçlar, özel bir konu seçilip araştırma yapılabilir. Benim aklıma gelen konu mesela "iş ayarlama (scheduling) nasıl geliştirilebilir?". Buna benzer bir alt alanda araştırma yapılabilir.<br /><br />MPI konusu ise yine çok geniş. MPI ve OpenMP gibi araçlardan hangilerini seçeceksin? MPI seçeceksen hangi sürümünü seçeceksin (OpenMPI, mvapich vs.)? Hangi dilde yazacaksın, bir derleyici sargısı (wrapper) kullanacak mısın? Bu seni sınırlandırır mı? Veya sen kendin mi benzer bir MPI kütüphanesi yazacaksan? MPI senin için bir araçsa bunu ne için kullanacaksın? <br /><br />Eğer bir MPI kütüphanesi yazmayacaksan ve MPI senin için sadece bir araç olacaksa, bunu ne için kullanacaksın? Bu soru diğer soruların cevaplarını da yönlendirecek aslında. Çalışmak istediğin alanda bir problem bul, bunu MPI ile çözmeye çalışabilirsin. Algoritmayı paralel hale sokman gerekebilir. Veya yeni bir algoritma geliştirmen gerekebilir.<br /><br />Ben veri madenciliği ile ilgileniyordum, bu yüzden bu alanda bir problem seçtim (sık nesne kümeleri madenciliği) ve bu alanda ne yapabileceğimi araştırdım. Sonra iyi bir algoritma dikkatimi çekti (CLOSET+) ve bunu nasıl paralel bir şekilde MPI ile çalıştırırım diye düşündüm. Algoritmayı değiştirdim ve MPI ile uygulamayı yazdım. Bundan sonra performans testleri kaldı ve başka çeşitli iyileştirmeler.<br /><br />Yani genel olarak önereceklerim: Hangi alanda çalışmak istediğinize karar verin. Bu herhangi bir Bilgisayar Bilimleri alanındaki bir problemi paralel çözüm uzayına taşımak olabilir veya direk olarak MPI kütüphanesi geliştirmek, bunları servis olarak açmak vs. de olabilir. Sonra bu seçtiğiniz alanla ilgili olarak tüm gelişmeleri takip edin. Bu konuda benim takip ettiğim metod en eski makalelerden başlayarak en güncel makalelelere kadar okumak. Böylece büyük resmi görebilirsiniz (big picture - kelime kelime çeviri oldu, özür dilerim bazen ingilizce düşünüyorum). Ve böylece yeni çözümler için aklınıza fikirler gelebilir. Bundan sonra yapmanız gereken güncel çözümlere yeni neler getirebileceğinizi düşünmek olacak. Bol bol araştırın, problemi farklı bilimlerdeki çözüm uzaylarına yansıtın (özellikle matematikten ağaçlar, çizgeler, çeşitli geometrik 3 boyutlu şekiller) ve daha rahat bir çözüm bulun. Genel olarak çalışmak istediğiniz alandaki en iyi konferansları takip edin, bunlardan çıkan makaleleri okuyun. Alanınızdaki en iyi hocaları, okulları, konferansları takip edin. Siz takip ettikten sonra bence geliştirmek isteyeceğiniz bir problem ortaya mutlaka çıkacaktır.<br /><br />Bundan sonrası motivasyon işi, benim kötü olduğum bir alan. O yüzden sonrası için kolay gelsin.<br /><br /><span style="font-weight:bold;">Bonus: </span>Türkçe Yüksek Başarımlı Hesaplama Konferanslarından biri Nisan'da ODTÜ'de olacak. Detaylar için <a href="http://basarim09.ceng.metu.edu.tr/">BAŞARIM 09</a> anasayfasına bakabilirsiniz.<br /><br /><span style="font-weight:bold;">Bonus2: </span>Benim de BAŞARIM 09'a kabul edilen bir makalem var. Bunu burada yayınlayacağım, birkaç hafta içinde. BAŞARIM 09'da sunumda yapma planlarım var (eğitim odaklı bir sunum olacak, debugging konusunda olabilir), buna da beklerim.</p>
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

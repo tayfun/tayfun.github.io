@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/01/baarim09.html">
+            BAŞARIM09
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-01-13 00:00:00+01:00" pubdate title="on Tue 13 January 2009">on Tue 13 January 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <div style="text-align: center;"><a href="http://basarim09.ceng.metu.edu.tr"><br /> <img src="http://basarim09.ceng.metu.edu.tr/images/basarim09.jpg" alt="BAŞARIM09 - I. Ulusal Yüksek Başarım ve Grid Konferansı" /></a></div>
+
+<p><br /><br />1. Ulusal Yüksek Başarım ve Grid Konferansı için bildiri iletme tarihleri 26 Ocak tarihine kadar ertelendi. Eğer Yüksek Başarım, HPC, MPI, MP, Paralel Hesaplama gibi anahtar kelimeler size birşey ifade ediyorsa takip etmenizi öneririm. Bu konuda somut projeleriniz varsa bildiri sunabilir veya atölye çalışmalarına katılabilirsiniz. Bu konulara yeni iseniz konferansta eğitim günleri olacağını da unutmayın. <br /><br />Kolay gelsin.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/01/boost-mpi.html">
+            Boost + MPI
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-01-13 00:00:00+01:00" pubdate title="on Tue 13 January 2009">on Tue 13 January 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Tezde sona yaklaştıkça yaptığım işler de hızlanıyor. Son bir haftadır projedeki bir bug'ı çözmeye çalışıyordum. İşte de biraz yoğun olduğum için teze fazla vakit ayıramıyorum hafta içi, bu yüzden bu kadar uzun sürdü biraz da. Tez projemi C++ ve arka planda MPI, Boost kütüphanelerini kullanarak yapıyorum. Biraz takip edenler anlamışlardır sanırım, veri madenciliği konusunda önemli bir algoritmayı paralelleştiriyorum. Amacım grid veya herhangi bir dağıtık hesaplama kümesinde hızlı bir şekilde bu algoritmayı çalıştırıyor olmak. Yani performans çok önemli benim tezim için. Algoritmayı paralel çalışacak hale soktum. C++ cidden karmaşık bir dil, yanında OpenMPI, bunu saran (wrapper) Boost::MPI ve objeleri işlemciden işlemciye yollarken kullandığım Boost::Serialization kullandığım önemli kütüphaneler arasındalar. MPI hakkında daha fazla bilgiyi <a href="http://blog.tayfunsen.com/search?q=mpi&amp;submit.x=0&amp;submit.y=0">önceki yazılarımda</a> bulabilirsiniz.<br /><br />Performans testleri yaparken aklıma gelen parametreler şunlar:<br /><br /><ul><li>OpenMPI ve MVAPICH hız farkları</li><li>Derleyici eniyilemeleri (optimizations)</li><li>reduce&amp;broadcast, reduceAll ve pure send&amp;receive arasındaki hız farkları</li><li>Tabii ki farklı veri kümeleri (data sets) arasındaki hız farkları. Veriler arasındaki farklılıklar ne yazık ki çok değişik olabiliyor ve bunlar hızı çok fazla etkiliyorlar. Örneğin verinin yoğun veya seyrek olması (dense/sparse), veri büyüklüğü, destek (support) değerleri hep farklı algoritmik uygulamaların hızını büyük oranda etkiliyorlar.</li></ul><br />Beni bir haftadır uğraştıran sorun aslında bir segmentation fault hatası. Genel olarak bellekteki sizin olmayan bir bölüme dokunduğunuzda işletim sistemi tarafından programınızın kafasına vurulduğunda ortaya çıkar. Benim hata bir işlemciden başka bir işlemciye çok büyük bir ağaç yapısını gönderirken ortaya çıkıyordu. Daha küçük verilerde ortaya çıkmıyordu, bu benim başlangıç noktam oldu. İlk başta ağaç yapımın döngüler veya hatalı başka yapılar içermesinden kuşkulandım. DDD ile debug etmek için baya bir uğraştım. Aslında hata ayıklama konusunda çok deneyimli değilim. gdb'yi çok kez kullandım ama çok karmaşık işler için değil. where, up, down gibi birçok komutu iyi kullanmayı öğrendim. 6-7 gün DDD ile cebelleşirken benim segmentation fault'un hep farklı fonksiyonlarda ortaya çıktığını farkettim. Gerçi hep Boost'ın Serialize kütüphanesi içindeydi ama bu kütüphanenin farklı sınıflarında hata veriyordu. Daha sonra farkettim ki benim programın stack trace'i yüzbinlerce çağrıdan oluşuyordu. Stack Size bitiyordu. Bunun nedeni yerel değişkenler kullanmam değildi (new ile heap'den yer alıyorum çünkü), ama çağrı sayısının çok büyük olmasıydı. Nitekim 8 MB olarak ayrılmış olan stack büyüklüğü bir süre sonra bitiyordu. Boost::Serialize ile hatanın bağlantısı ise şu: Boost::Serialize gerçekten çok miktarda fonksiyon çağrısı yapıyor. "ulimit -s unlimited" komutu ile stack size'ı limitsiz yapınca benim hata da yok oldu.<br /><br />Kıssadan hisse: Veri yapınız büyük olunca ve serialize kullanıyorsanız çok büyük miktarda fonksiyon çağrıları yapıyor olabilirsiniz, ve bu durumda stack bölgesi doluyor olabilir. Sonuç seg fault olacaktır. Büyük veriler ile daha dikkatli olmak gerekiyor.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/01/nuray-mert-feeds-feed43.html">
+            Nuray Mert Feeds - feed43
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-01-11 00:00:00+01:00" pubdate title="on Sun 11 January 2009">on Sun 11 January 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Çeşitli gazetelerden takip ettiğim bir sürü köşe yazarı var. Bu gazetelerin web sitelerine girip zaman kaybetmeyi istemediğimden feed'lerini kullanarak Thunderbird veya başka bir feed okuyucusunda yazıları okumayı seviyorum. Hürriyet veya Milliyet gibi gazete web sitelerinin neredeyse tamamı da zaten asparagas haberlerden ve magazinden oluşuyor. Bunları ziyaret etmemek bana göre herkes tarafından verilmesi gereken bir tepki. Haber siteleri içinden bir tek <a href="http://ntvmsnbc.com/news/default.asp">ntvmsnbc.com</a> bence ziyareti hak ediyor. <br /><br />Peki çoğu gazete herhangi bir yazarı için feed adresi vermiyor, bu durumda ne yapmak gerekiyor? <a href="http://feed43.com/">feed43</a> imdadımıza yetişiyor ve herhangi bir sayfadan feed oluşturmamıza izin veriyor. Örneğin Radikal'den yazılarına bayıldığım Nuray Mert'in yazıları için şu feed sayfasını oluşturdum: <a href="http://feed43.com/nuray_mert.xml">http://feed43.com/nuray_mert.xml</a>. Sitedeki feed oluşturucu sayesinde sayfaları parçalayıp (parse) istediğiniz bölümleri alabiliyorsunuz. Güzel bir hizmet.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/01/mpi-hakknda.html">
+            MPI Hakkında
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-01-10 00:00:00+01:00" pubdate title="on Sat 10 January 2009">on Sat 10 January 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>7-8-9 Ocak'ta, yani geçtiğimiz birkaç gün boyunca Intel sponsorluğunda bir MPI/OpenMP semineri düzenlendi. Seminerler ODTÜ Bilgisayar Mühendisliği bölüm lablarındaydı. Ben son gün Debugger oturumuna katılabildim ama gördüğüm kadarıyla eğitimler zevkli ve bilgilendiriciydi. Öğrendiğime sevindiğim bilgiler şunlar:<br /><code><br /># qsub -I<br /></code><br />qsub'ın interactive (etkileşimli) modu olduğunu bilmiyordum doğrusu. Hep bir iş tanımı yapıp ona qsub ile gönderiyorduk, bu yöntemin farkında değildim. Aslında Nar'da ilk zamanlarda mpirun programına bir nodefile gösterip istediğimiz uçlarda direk çalışmasını (yani iş yöneticisine uğramadan) sağlayabiliyorduk ama sonra bu yöntem çok verimli olmadığı için kapatıldı. Sanırım etkileşimli seçenek de istediğimiz uçları bloke ettiği için aynı şekilde verimsiz. Bu da belki kapatılabilir, veya sırf Intel göstersin diye de açılmış olabilir. Örneğin<br /><code><br /># qsub -I -l nodes=2:ppn=8 -q cenga<br /></code><br />diyerek 2 uçta 8 çekirdeğin bize verilmesini isteyebiliriz.<br /><br />Etkileşimli qsub'ın güzel özelliklerinden birisi de direk HPC makinesinde debug yapabilmemiz. Bunun için kendi MPI kütüphanenizin binary dosyalarının yardımlarına bakın "mpirun --help" ile. OpenMPI'da debug için -debug, MVAPICH'de sanırım -gdb demeniz gerekiyor. qsub etkileşimli modda örnek bir komut şöyle:<br /><code><br /># mpirun -r ssh -gdb -n 4 ./a.out<br /></code><br />Tekrar söylüyorum, bunun çalışması için etkileşimli modda olmanız gerekiyor.<br /><br />Bunun dışında debugger olarak paralı olan TotalView ve Intel Traceanalyzer gibi programlardan bahsedildi. Paralı ve ticari oldukları için çok dikkate almadım ben. OpenMPI'ın kendi web sitesinde debug etmek için programın bir yerinde sleep çağırılması ve sonra debugger ile attach etmek öneriliyor. Benim de kullandığım yöntem bu aslında. HPC makinelerde debug yapılmasını çok önermiyorum, kendi yerel makinenizde (birden fazla işlemciniz olmasa bile) küçük verilerle başlayarak testler ve hata ayıklama yapabilirsiniz.<br /><br />Intel'den gelen eğitimciler gerçekten hakim görünüyorlardı işlerine. Bence HPC, Grid konusu gelişecekse üniversitelerin ve/ya TÜBÜTAK/Ulakbim'in de uzun dönemli kaliteli araştırmacı/eğitici yetiştirmesi gerekiyor. Bilgili ve bilgisini kolay/eğlenceli bir şekilde anlatabilen insanlara ihtiyaç var. Tabii bu üniversite/kadro ve geleceğe/gençlere yatırım sorunlarının bir parçası aslında.<br /><br /><br />Konuşmak istediğim bir başka konu ise <a href="http://www.boost.org/">Boost kütüphaneleri</a>. MPI'ı saf C kütüphanesi olarak kullanırsanız çok esnek/güçlü bir platforma sahip olursunuz ama eğer karmaşık sınıflarınız varsa, objeye yönelik programlama yapmak istiyorsanız MPI C biraz zayıf kalacaktır. Bunun için <a href="http://www.boost.org/doc/libs/1_37_0/doc/html/mpi.html">Boost::MPI kütüphanelerini</a> kullanabilirsiniz. Boost::MPI kütüphaneleri arka planda herhangi bir MPI C kütüphanesini kullabiliyorlar (OpenMPI ve MVAPICH de tabii ki destekleniyor). Boost sayesinde serialize edebildiğiniz sınıf objelerini kullanabilir, direk uçlara yollayabilirsiniz. Güzel değil mi?<br /><br />Bugün seminerde OpenMP/MPI hibrit konusu açıldı. Aslında MPI'ın OpenMPI implementation'ı SMP sistemlerde ortak belleği kullanıyor. Bu biraz OpenMP'nin yaptığına benziyor ama şöyle bir temel farktan kaynaklanan bir durum var: OpenMP'de işler threadlerle halledilirken MPI'da bunlar process'ler. Yani OpenMPI'ın spec'lere göre yapması gereken ayrı bir hafızasının olması. Bu durumda hafıza kopyalanıyor bir adresten diğer adrese ve diğer uç onu kullanabiliyor. Tabii bu TCP üzerinden vs. olmadığı için gayet hızlı, ama hiç kopyalama yapmadan direk olarak hafıza bölgesini kurcalayabilen OpenMP'ye göre de yavaş. Ama OpenMP de çok esnek bir yapı değil, parallelleştirebileceğiniz belirli yapılar (for döngüsü gibi) var. Yani her zaman olduğu gibi bir nevi trade-off. "Doğru işe doğru alet" mantığıyla işinize en uyan yöntemi kullanmanız gerekiyor. Bu hibrit bir yöntem de olabilir, tek başına MPI veya OpenMP de.<br /><br />Bu arada unutmadan, Boost kütüphanelerinde varsayılan olarak MPI kurulmuyor. "./configure"dan sonra user-config.jam dosyasını değiştirip "using mpi ;" satırını eklemeniz gerekiyor. Bundan sonra "make install" işiniz görecektir. Boost'taki birçok kütüphane zaten sadece header'lardan oluştuğu için derlenmesine de gerek yok, ama yine de diğer kütüphanelerin derlenmesi biraz zaman alıyor. /usr/local/lib ve /usr/local/include dizinlerine dosyaları yazmak için root yetkinizin olmasına dikkat edin.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/01/salaklklar-tarihi.html">
+            Salaklıklar Tarihi (History of Stupidity)
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-01-09 00:00:00+01:00" pubdate title="on Fri 09 January 2009">on Fri 09 January 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>1923-2008 Cumhuriyet Tarihi El Kitabı isimli bir kitaba bakıyorum. ODTÜ Tarih Bölümü'nde hoca olan İlter Ertuğrul yazmış, kitap ODTÜ Yayıncılık'tan çıkmış, tarih Nisan 2008. Klasik bir ODTÜ'lü stilinde, ideolojik olarak. Yazar eski toprak olunca zaten bundan daha doğal birşey de beklenmiyor. Her türden fikirleri okuyan, doğru taraflarının olduğunu düşünen birisiyim, bu yüzden kendimi daha çok bir liberal olarak tanımlasam da bu tür kitaplar da ilginç geliyor. Kitaptan belki çıkardığım en büyük sonuç yakın dönemin bir salaklıklar tarihi olması. 10 senede bir gelen darbelerle, öldürülen öğrenciler/aydınlarla, kaynaksızlıktan yapılamayan Kıbrıs çıkarma denemeleriyle, yolsuzlukları ve bir türlü düzeltilemeyen ekonomisiyle...<br /><br />Gerçekten ilginç bir milletiz vesselam.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

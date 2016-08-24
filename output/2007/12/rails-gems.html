@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rails Gems | Tayfun Sen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            Rails Gems
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-12-18 00:00:00+01:00" pubdate title="on Tue 18 December 2007">on Tue 18 December 2007</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Şu an çalıştığım bir projede rails kullanıyorum. Resim işleme için *nix'lerde ImageMagick programını kullanan bir kütüphaneyi kurmam gerekti. Gem yöneticisini kullanarak kütüphaneyi kurdum:<br /><br /><code>$ sudo gem install mini_magick<br />Successfully installed mini_magick-1.2.3<br />Installing ri documentation for mini_magick-1.2.3...<br />Installing RDoc documentation for mini_magick-1.2.3...</code><br /><br />Bundan sonra kütüphanenin doğru kurulu olup olmadığını denemek için ruby kabuğunu çalıştırdım ve kütüphaneyi eklemeye çalıştım:<br /><br /><code>$ irb<br />irb(main):001:0&gt; require "mini_magick"<br />LoadError: no such file to load -- mini_magick<br />        from (irb):1:in `require'<br />        from (irb):1</code><br /><br />Anladığımız kadarıyla ruby kütüphaneleri bulamıyor. Hımm, nerede acaba bu kütüphane dosyaları?<br /><br /><code>$ sudo gem contents mini_magick<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/MIT-LICENSE<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/History.txt<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/Manifest.txt<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/README.txt<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/Rakefile<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/init.rb<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/lib/image_temp_file.rb<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/lib/mini_magick.rb<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/test/actually_a_gif.jpg<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/test/not_an_image.php<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/test/simple.gif<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/test/test_image_temp_file.rb<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/test/test_mini_magick_test.rb<br />/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/test/trogdor.jpg</code><br /><br />Tamam, yerini artık biliyoruz. Şimdi tekrar deneyelim:<br /><br /><code>irb(main):005:0&gt; require '/usr/lib/ruby/gems/1.8/gems/mini_magick-1.2.3/lib/mini_magick.rb'<br />=&gt; true</code><br /><br />Sorunun path'lerle ilgili olduğundan artık eminiz. Biraz araştırma yapıp <a href="http://rubygems.org/read/chapter/3#page70">RubyGems dökümantasyonunu</a> buluyoruz. Yazılanlar kısaca şöyle: RubyGems, sürüm sisteminden dolayı kurulan kütüphaneleri direk kütüphanelerin bulunduğu dizine değil de sürümüne göre ayrı dizinlere koyuyor. Bu yüzden ruby'ye özellikle nerede bulunduklarını söylemek gerekiyor. Bunu otomatik olarak rubygems kütüphanesi yapıyor, doğru sürümdeki kütüphaneleri ruby'ye anlatıyor. Bunu sağlamak için birkaç yol var, mesela bir tanesi rubygems kütüphanesini eklemek, bir ikincisi ve kolay olanı ise RUBYOPT çevre değişkenini tanımlamak:<br /><br /><code>$ export RUBYOPT=rubygems<br />$  irb<br />irb(main):001:0&gt; require 'mini_magick'<br />=&gt; true</code><br /><br />Artık kütüphaneyi kullanabiliriz.</p>
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

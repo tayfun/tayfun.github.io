@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weblog | Tayfun Şen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/11/using-video-projectorexternal-monitor.html">
+            Using a video projector/external monitor on Linux
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-29 00:00:00+01:00" pubdate title="on Sat 29 November 2008">on Sat 29 November 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>[Turkish version follows]<br /><br />If you have a laptop, chances are that the special keys for sending signals to external devices are not working. Many times different laptop producers stick to different standards and thus Linux has hard time recognizing these keys (I think Ubuntu is best on this one). But don't fret, you have other choices to try.<br /><br />For starters, you can try xrandr tool to detect and automatically configure the external device signals. While connected to an external device, like a monitor or a video projector, try<br /><br /><code># xrandr -q</code><br /><br />which will give you a list of devices that are connected. You can then choose a device to configure, or by simply using<br /><br /><code># xrandr --auto</code><br /><br />you can have all the devices automatically configured. <br /><br />In my case, with the -q option, laptop monitor is specified as LVDS and external devices as VGA. If xrandr is not available in your system, check your usual repositories (apt/yum etc), most probably it is included there since this is a pretty basic tool.<br /><br />If none of the above work, try booting your linux while the device is physically connected. It might be the case that the OS will pick up the device and configure it automatically.<br /><br />Best of luck.<br /><br />---<br /><br />Geçenlerde Linux üzerinden projektöre bağlanmak zorunda kaldım. Daha önce bu tür bir durumla karşılaşmadığım için biraz endişeliydim. Dizüstünde bulunan özel tuşlar çalışmadı (hani şu Fn'li olanlar), ve doğrusu buna pek şaşırmadım çünkü her dizüstü üreticisi farklı bir standart kullanıyor. Biraz internette araştırdıktan sonra xrandr programını buldum.<br /><br /><code># xrandr -q</code><br /><br />Bu komut ile bağlı bulunan aletleri görebiliyorsunuz. Benim durumumda dizüstü monitörü LVDS ve harici görüntüleyiciler de VGA olarak gösterilmiş. Şimdi bunları tek tek ayarlayabilirsiniz, veya bırakın xrandr kendisi en iyi ayarlara getirsin:<br /><br /><code># xrandr --auto</code><br /><br />Eğer bu program sisteminizde yoksa kurmayı deneyin. Çalışmadığı durumda yapabileceğiniz bir şey de dizüstünü harici aletler bağlıyken çalıştırmak.<br /><br />Kolay gelsin.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/11/advanced-mpi.html">
+            Advanced MPI
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-28 00:00:00+01:00" pubdate title="on Fri 28 November 2008">on Fri 28 November 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I'll be giving an MPI presentation today at 13:30, Computer Engineering Department BMB5, Middle East Technical University. The bulk of my presentation will be about MPI and parallel programming in general but I'll also be looking at Boost MPI libraries and some helper tools. gfilt, ddd and valgrind will be presented as tools greatly helping parallel programming.<br /><br />Here's the presentation I'll be using, if you are wondering about the topics.<br /><br /><div style="width:425px;text-align:left" id="__ss_796590"><object style="margin:0px"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=mpipres20081127-1227857722801807-8&stripped_title=advanced-mpi-presentation" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=mpipres20081127-1227857722801807-8&stripped_title=advanced-mpi-presentation" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;">View SlideShare <a style="text-decoration:underline;" href="http://www.slideshare.net/tayfun/advanced-mpi-presentation?type=powerpoint" title="View Advanced MPI on SlideShare">presentation</a> (tags: <a style="text-decoration:underline;" href="http://slideshare.net/tag/openmpi">openmpi</a> <a style="text-decoration:underline;" href="http://slideshare.net/tag/mpi">mpi</a>)</div></div><br /><br />All interested are cordially welcome.<br /><br />Place: METU Computer Engineering Department, BMB5<br />Date: 28 November 2008, 13:30.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/11/openoffice-impress-templates.html">
+            OpenOffice Impress Templates
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-27 00:00:00+01:00" pubdate title="on Thu 27 November 2008">on Thu 27 November 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Turns out there are not many templates that come with OpenOffice.org Impress, which is used for creating presentations. Check out <a href="http://www.presentationhelper.co.uk/free-open-office-impress-templates-91.htm">presentation helper</a>, which has really good free presentation designs.<br /><br />To go along with that, <a href="http://wiki.services.openoffice.org/wiki/Documentation/FAQ/Writer/FormattingPagesAndDocuments/How_do_I_add_my_own_templates%3F">OpenOffice.org Wiki</a> page has the instructions for enabling them on Impress.<br /><br />Click on File-&gt;Templates-&gt;Organize and then add them using Command-&gt;Import Template.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/11/trkiyede-biliim-sektr.html">
+            Türkiye'de Bilişim Sektörü
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-26 00:00:00+01:00" pubdate title="on Wed 26 November 2008">on Wed 26 November 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p><a href="http://www.economist.com/">The Economist</a>'in <a href="http://global.bsa.org/2008eiu/study/2008-eiu-study.pdf">2008 IT Industry Competitiveness Index</a> raporu, özet bölümü (executive summary) herşeyi açıklıyor. Özellikle şu cümleler Türkiye'deki bilişim sektörü için altyapının ne durumda olduğunu gösteriyor, bizim durumumuzu özetliyor:<br /><blockquote><br />Competitive broadband markets help cultivate strong IT sectors. Without fast, reliable and secure Internet access, technology firms cannot interact effectively with partners and the research community, nor can they sell their services online. IT industries in the index top tier all derive substantial benefit from the high-quality networks developed through competition, but more telecoms liberalisation is needed in less developed regions to spur infrastructure development.</blockquote><br /><br />Aynı konuyu geçenlerde Milliyet'ten Metin Münir de <a href="http://www.milliyet.com.tr/Yazar.aspx?aType=YazarDetayArsiv&ArticleID=1018344&AuthorID=57">işlemişti</a>.<br /><br />Türk Telekom özel bir tekel, internet üzerinde ise halen saçma sapan yasalar yüzünden kara bulutlar dolaşıyor. Herhangi bir gün hangi web sitesinin kapanacağını kimse bilmiyor. Diğer taraftan ülkenin en üst düzey yöneticisi ise arkaik yasaları değiştirmek, yeni çağa ayak uydurmak gerekirken ve bunun sorumluluğu üzerindeyken <a href="http://www.ntvmsnbc.com/news/466693.asp">"ben youtube'a giriyorum, siz de girin" diyebiliyor</a>, suçu teşvik ediyor.<br /><br />Herşeyi toplayın, neden 3. sınıf bir ülke olduğumuz ortaya çıkıyor.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/11/jump-on-bandwagon-origin-of-term.html">
+            \jump on the bandwagon\" - origin of the term"
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-15 00:00:00+01:00" pubdate title="on Sat 15 November 2008">on Sat 15 November 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>From <a href="http://en.wikipedia.org/wiki/Bandwagon_effect#Origin_of_the_phrase">Wikipedia</a>:<br /><blockquote>Literally, a bandwagon is a wagon which carries the band in a parade, circus or other entertainment. The phrase "jump on the bandwagon" first appeared in American politics in 1848 when Dan Rice, a famous and popular circus clown of the time, used his bandwagon and its music to gain attention for Zachary Taylor's campaign appearances. As Taylor's campaign became more successful, more politicians strove for a seat on the bandwagon, hoping to be associated with the success.[...]</blockquote></p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

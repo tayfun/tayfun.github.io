@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ubuntu 8.04 ile Firefox sorunsalı | Tayfun Sen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            Ubuntu 8.04 ile Firefox sorunsalı
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-04-29 00:00:00+02:00" pubdate title="on Tue 29 April 2008">on Tue 29 April 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Birkaç gün önce Ubuntu'nun 8.04 sürümü çıktı. Zaten beklediğim bir sürüm olduğu için ben de hemen sistemimi yükselttim. Yeni Ubuntu ile gelen tarayıcı Firefox'un 3 beta 5 sürümü. Görünüşe göre Canonical ekibi yeni güvenlik güncellemeleri içermesi sebebiyle Firefox'un bu sürümünü sisteme eklemeye karar vermişler, beta olmasına rağmen. Firefox'un kararlı bir 3.0 sürümünün ise ne zaman çıkacağı belli değil. <br /><br />Yükseltme ile birlikte Firefox'un 3b5 sürümünü kullanmaya başladım, görünüş olarak iyi ve birkaç güzel özelliği de yok değil ama eklentilerim olmadan yaşayamam diyerek eklentilerimi etkinleştirmeye çalıştım. Ancak pek çok eklenti 3 sürümü ile uyumlu değildi. Sürüm uygunluk kontrolünü Configuration Maniac eklentisini kurcalayarak kapattım ve uyumlu olmadığı söylenen eklentileri de etkinleştirdim. Buna rağmen bazı eklentiler çalışmadı ve ben de gerisin geriye Firefox'un 2 sürümüne geri dönmek için kolları sıvadım. Ubuntu paketleri arasına firefox-2 isimli paket benim gibiler için bırakılmış. Bu paketi kurarak eski sürüme geri döndüm. Ancak eklentiler yine çalışmadı. Nedenini anlayamadım ama sanırım 3 sürümü profilde bazı değişiklikler yaptı ve bunlar 2 sürümünün kafasını karıştırdı. Herşeyi varsayılan profile koymanın zararını böylece görmüş oldum. Varsayılan profili az önce uçurdum (bkz. "rm -rf <em>") ve şimdi eklentilerimi yeniden kuracağım. Şimdi bu güncellemeden öğrendiğimiz Firefox dersleri:<br /><br /></em> Varsayılan Firefox profiline eklenti vs. kurma!<br />* Her büyük (major, yani ilk sürüm numarası büyüyen) sürüm için ayrı bir profil kullan. Firefox'u profil yöneticisi ile başlatmak için: <br /><br /><code># firefox -ProfileManager</code><br /><br />demek gerekiyor.<br /><br />Bir musibet bin nasihatten iyidir derler ya, bu da bana iyi bir ders oldu sanırım. En iyi uygulamalara (best practices) doğru gidiyorum :)</p>
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

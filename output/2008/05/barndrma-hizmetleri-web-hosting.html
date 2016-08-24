@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barındırma hizmetleri (web hosting) | Tayfun Sen</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <div class="posttitle">
+            Barındırma hizmetleri (web hosting)
+        </div>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-10 00:00:00+02:00" pubdate title="on Sat 10 May 2008">on Sat 10 May 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Bir süredir hosting işleri ile uğraştığım için biraz bilgi sahibi oldum. Dreamhost yurtdışından alınacak en iyi firmalardan biri gibi. Sunucularin özellikleri çok iyi ( <a href="https://dreamhost.com/hosting.html">https://dreamhost.com/hosting.html</a> ) ve sunucularının hızı da fena değil. Daha önce netfirms'den aldığım barındırma hizmeti için verilen sunucu acaip yavaştı. Bazı firmalar bir sunucuya çok fazla müşteri veriyorlar. Dreamhost'ta benim bulunduğum sunucunun rakamları şöyle:<br /><br /><code> $ cat /etc/passwd | wc -l<br />497</code><br /><br />Yaklaşık 500 kişi, çift işlemcili opteron bir sunucuya. RAM miktarı ise 4 GB. Çok iyi olmasa da verdiğin ücrete göre fena değil sanırım. Tabii sunucudaki elemanların iş yoğunlukları da önemli.<br /><br />Internetten birsey alacağım zaman genel olarak indirim kuponu araştırması yaparım. Dreamhost'ta da bunu yaptım ve sanırım oldukça iyi bir fırsat sahibi oldum. Benim de kullandığım indirim kuponlarından biri Dreamhost icin <span style="font-weight:bold;">3DOMAINS4FREE</span> , bununla ilk seferde 50 dolar indirim kazanıyorsun ve 3 tane de alan adı bedavaya geliyor (toplam 4 alan adın barındırma hizmeti aldığın süre için bedava oluyor).<br /><br />Barındırma hizmeti satın alacakların ilk belirlemeleri gereken şey ihtiyaç. Dreamhost'un 500 GB alan ve 5 TB bağlantısına ihtiyacınız olmayabilir. Ben alanı çok bulup rapidshare klonu bir sayfa yaptim ( <a href="http://www.saklabana.com">http://www.saklabana.com</a> ) ama şu anda pek kullanılacak şekilde değil. Ruby on Rails desteği verdiğini söylüyor Dreamhost ama <span style="font-weight:bold;">en fazla iki tane FastCGI işlemi</span>ne izin veriyor. İki kişiye aynı anda dosya yollandığında benim uygulama bloklanıyor. Uygulamayı bir şekilde optimize etmem gerekiyor, zaman bulduğum bir ara bakacağım. Yani paylaşımlı barındırma hizmetlerinde her soylenilene kanmayın, <span style="font-weight:bold;">sanal özel sunucular (VPS) ise çok pahalı</span> (doğru düzgün bir VPS aylık 20 dolardan başlıyor). Bu yüzden yeni bir uygulama yazanlar için önermiyorum. Özel bir ihtiyacınız yoksa (ruby on rails gibi) veya cok fazla ziyaretçiniz olmayacaksa VPS'e gerek yok. PHP kullanacaksanız veya önbelleklenecek miktarda sayfanız varsa pek sorun yaşayacağınızı sanmıyorum. Mephisto (ruby on rails uygulaması) kullanarak kurduğum blog sayfasında önbellekleme iyi miktarda yapılıyor (<a href="http://blog.saklabana.com">blog.saklabana.com</a>) ve bu sayede çok yoğun durumlara bile cevap verebiliyor (curl-loader stress testine göre saniyede 200 istek).<br /><br />Bunun dışında söylemeden edemeyeceğim, Dreamhost'un güzel özelliklerinden biri <span style="font-weight:bold;">derleyicilere ve kütüphanelere erişebiliyor olmanız</span>. Kendi hesabıma git derledim ve şimdi projelerim için repository olarak kullanıyorum. Bu özellik hoş bir olay.</p>
+    </div>
+    <div class="postfooter">
+        <div class="fb-like" data-share="false" data-width="450" data-show-faces="false" data-layout="button"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="tayfunsen" data-related="tayfunsen" data-dnt="true">Tweet</a>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'tayfunsen';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</article>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>
