@@ -10,7 +10,7 @@
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
 <link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
-<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
 </head>
 <body class="homepage" >
 <script>
@@ -35,6 +35,20 @@
     <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
   </header>
   <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/10/expected-declaration-specifiers-or.html">
+            expected declaration specifiers or '...' before myType
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-10-29 00:00:00+01:00" pubdate title="on Mon 29 October 2007">on Mon 29 October 2007</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>[English follows]<br /><br />Merhabalar !<br /><br />Biliyorum uzun süredir yazmıyordum, en son 7'sinde yazdığıma göre 3 haftadır benden tık yok :) Neyse, bu mesajla ölmediğimi kanıtlamış olayım. Son yazımdan beri baya bir gelişme oldu. Uzun süredir  yapmak istediğim Interrail seyahatini gerçekleştirdim. Bir hafta boyunca Amsterdam, Brüksel, Paris, Köln ve Hamburg'u gezdik. Çok zevk aldım, fotoğrafları bir ara buraya yollayacağım. Artık darısı gelecek yaz için planladığım Trans-Sibirya ve Çin gezisinde :) Gelmek isteyenler elime mum diksin bu arada :)<br /><br />Yine uzun süredir teknik bir konuda yazı yazmamıştım, yeni yerlerin heyecanı daha baskın çıkmış, gezi ve gözlem yazıları yazmıştım. Şimdi tekniğe geri dönüyorum.<br /><br />Efenim bazen bir programı derlemeye çalıştığımızda derleyici hatalarını anlamakta zorlanırız. Bu yazı o hatalardan birini aydınlatmaya yönelik olacak. Aldığımız hatamız şu:<br /><br /><code>expected declaration specifiers or ‘...’ before ‘myType’</code><br /><br />Bu hatayı almamıza yol açan kod şöyle olabilir:<br /><br /><code>int myFunc(int arg0, myType arg1);</code><br /><br />Burada bir fonksiyon prototipi tanımlamışız ama derleyicimizin bize kızmasına bakarak birşeylerin ters olduğunu anlıyoruz. Derleyicinin "declaration specifier" derken kastettiği şey aslında fonksiyon argümanlarının tipi. Burada derleyici myType'ın bir tip değil parametre ismi olduğunu düşünüyor (arg0 ve arg1 gibi). Bunun nedeni bu tipi bilmiyor olması. '...' derken ise beklediği tipin bir literal da olabileceğini (int, float vs.) anlatıyor. Sorunu çözmek için kullandığınız tipi nerede tanımladığınıza bakın. Eğer bir kütüphanede ise kütüphaneyi gözden geçirmeniz, doğru eklemeniz gerekiyor. Derleyiciye kullandığınız tipin nerede olduğunu gösterince sorununuz çözülecektir.<br /><br />--<br /><br />[English Version]<br /><br />This article is about a specific compiler error. I want to shed some light on an error I had received many times before. The error is, like in the title,<br /><br /><code>expected declaration specifiers or ‘...’ before ‘myType’</code><br /><br />This error may be resulting from a code excerpt such as:<br /><br /><code>int myFunc(int arg0, myType arg1);</code><br /><br />Here we are declaring a function prototype. What compiler means when it says it expects a "declaration specifier" is that it doesn't know what type myType is. The compiler than assumes that myType is a parameter name (like the name in "int myName") and thinks that parameter type is missing. Thus, it expects a declaration specifier before my parameter name. The type can also be a literal (like int etc.) , I think this is what is meant by '...' from the message. If only the compilers were more understandable :) Anyway, to remove this bug and compile your code, you have to show the compiler where your type is. If you are using a library, check your library and how you include it. After that you should be fine.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
 <article>
     <div class="postheader">
         <a class="posttitle" href="2007/10/geri-kalan-hayatm.html">
@@ -88,20 +102,6 @@
     </div>
     <div class="postcontent">
         <p>Yorgunluktan kırılmak. Öresund köprüsünü gece olduğu için göremedik pek. Hoş, zaten halimiz de yoktu ya.<br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/Rv70AxCjurI/AAAAAAAAAN0/f8IX6nZOLKQ/s1600-h/DSCN6070.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/Rv70AxCjurI/AAAAAAAAAN0/f8IX6nZOLKQ/s400/DSCN6070.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5115794520740706994" />Tren penceresinden yansıma.</a><br /><br /><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/Rv7xJBCjuqI/AAAAAAAAANs/CwKlZopqkZ0/s1600-h/DSCN6066.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/Rv7xJBCjuqI/AAAAAAAAANs/CwKlZopqkZ0/s400/DSCN6066.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5115791363939744418" />Bu da bizim tayfa.</a></p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2007/09/helsingborg.html">
-            Helsingborg
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2007-09-30 00:00:00+02:00" pubdate title="on Sun 30 September 2007">on Sun 30 September 2007</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>Burası İsveç'te ve Danimarka'daki Helsingor'un kardeş şehri gibi. Feribot ile 20 dakikada ulaşılıyor. Havanın yağmurlu olması nedeni ile pek planlı gezemedik ama en önemli yapıları <a href="http://en.wikipedia.org/wiki/K%C3%A4rnan">Karnan Kulesine</a> çıktık.<br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/Rv7uRxCjuaI/AAAAAAAAALs/4SWAro5Zku4/s1600-h/DSCN5931.JPG"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/Rv7uRxCjuaI/AAAAAAAAALs/4SWAro5Zku4/s400/DSCN5931.JPG" border="0" alt=""id="BLOGGER_PHOTO_ID_5115788215728716194" />Bu Karnan Kulesi merdivenlerinde çekildi.</a></p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

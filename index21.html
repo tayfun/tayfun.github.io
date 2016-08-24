@@ -10,7 +10,7 @@
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
 <link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
-<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
 </head>
 <body class="homepage" >
 <script>
@@ -35,6 +35,20 @@
     <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
   </header>
   <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/05/installing-ttf-fonts-in-debianlinux.html">
+            Installing ttf fonts in Debian/Linux
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-05-11 00:00:00+02:00" pubdate title="on Mon 11 May 2009">on Mon 11 May 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Installing fonts in Debian is really easy nowadays. But, even so, there seems to be a wealth of outdated information on the Internet. So I'll be providing my easy way, for others and myself in case I need this information again. The first thing you need to do is downloading the fonts and putting them into one of the optional directories. This could be .fonts directory (notice the plural) in your home folder or a system wide folder such as /usr/share/fonts . In my case, I created a folder in /usr/share/fonts/truetype/ to keep my own fonts that I downloaded and installed. After putting the .ttf files into this directory, you will have to clear the font information cache files so that the new fonts are picked up and ready to use with applications such as gimp, openoffice etc. The command to be used is:<br /><code><br /># fc-cache -fv<br /></code><br />After this, you should be good to go. By the way, if you are looking for fonts including Turkish characters, <a href="http://www.fonttr.com/font.aspx">fonttr</a> seems to be a good place to go.<br /><br />Enjoy!</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
 <article>
     <div class="postheader">
         <a class="posttitle" href="2009/05/sansure-sansur.html">
@@ -88,22 +102,6 @@
     </div>
     <div class="postcontent">
         <p>I've had quite a hard time getting a correct eps file to include in my thesis. I use eps format basically because it is a vector image format so the quality does not degrade as the document is enlarged. But, and that is a big "but", generating correct eps files are hard for OpenOffice.org Draw and Calc. I created a table in OOo Draw and exported it to pdf file as one cannot export to eps directly. But when I include it in my thesis.tex file, latex is complaining about missing bounding box. I'm not sure why, is OOo creating an incomplete, or non standard, pdf file? To circumvent this, I made use of some programs. First of all, I used "pdftops -eps" command to convert the pdf file to eps. Than I used the fixbb script so that the extra space around the image could be cropped. When I included the final eps file to my thesis file, everything worked like a charm. I hope this helps others in the same situtation. Cheers!</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2009/05/trivia-how-do-you-like-them-apples.html">
-            trivia - How do you like them apples?
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2009-05-03 00:00:00+02:00" pubdate title="on Sun 03 May 2009">on Sun 03 May 2009</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <blockquote>&quot;How do you like them apples?&quot;, also shortened to, &quot;How do you like them?&quot; or, &quot;Them apples&quot;, is a phrase used to gloat or to express bemusement. In both senses, the phrase acts as a rhetorical question. The origin of this idiom is uncertain. The phrase experienced a resurgence after being said by Matt Damon in the 1997 movie Good Will Hunting.</blockquote>
-
-<p><br /><br />from <a href="http://en.wikipedia.org/wiki/How_do_you_like_them_apples">Wikipedia</a>.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>
