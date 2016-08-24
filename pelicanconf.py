@@ -18,6 +18,10 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
+SITEURL = 'http://blog.tayfunsen.com'
+FEED_DOMAIN = SITEURL
+FEED_ATOM = 'feeds/posts/default.atom'
+
 # Blogroll
 LINKS = (('Pelican', 'http://getpelican.com/'),
          ('Python.org', 'http://python.org/'),
