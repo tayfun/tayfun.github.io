@@ -10,7 +10,7 @@
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
 <link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
-<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
 </head>
 <body class="homepage" >
 <script>
@@ -35,20 +35,6 @@
     <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
   </header>
   <div id="content">
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2007/07/temmuzda.html">
-            Temmuzda *
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2007-07-06 00:00:00+02:00" pubdate title="on Fri 06 July 2007">on Fri 06 July 2007</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>Efenim yazıları azalttım, farkındayım. Ama tatil moduna girdiğimden değil, tam tersi bu aralar dönem içi kadar belki de daha fazla yoğunum. İşte yapmam gerekenler arttı, tez için araştırmalara başladım ve MPI kütüphanesi kullanarak paralel bir veri madenciliği uygulaması yazmaya başladım. Günlüğüme yazmak istediğim birçok şey geldi aklıma ama zaman bulamadım, veya tembellik yaptım itiraf ediyorum. Tam 2 kilo fazlam var beden kitle endeksine göre, daha az yemeye başladım. İlk defa temmuzda Ankara'dayım diye düşündüm, halbuki 5 senedir Ankara'da yaşıyorum. Yaklaşık 5 senedir TV izlemiyorum, Barış Akarsu adında birisi ölmüş, yine medya olayı abartmış tüm haber sayfalarında ilk haber. Hergün onlarca insan açlıktan, çeşitli haksızlıklardan dolayı ölürken birşey olmuyor ama gün geliyor bir kişi ölünce kıyamet kopuyor. Ne diyelim, Allah rahmet eylesin. Bu mevsimde alerjim artıyor, sürekli hapşuruyorum. Yakın bir zamanda bir süreliğine seyahat edebilirim, Ankara'daki eşyalarımı napsam acaba diye kara kara düşünüyorum. Aslında emanete verebileceğim yer de çok ama... Evi özledim. Annemi, babamı ve kardeşlerimi. Ankara'da havalar çok sıcak. İş yerinde Raks marka 1986 yapımı bir vantilatör var, canavar gibi çalışıyor. Raks şirketi geçenlerde iflas etti. Okumam gereken kitap, dergi, makale vs.ler artıyor sürekli. Bir de internet var ya, işin içinden çıkılmıyor bazen. Bu kadar bilgi çok fazla. İş yerinden Altay'la refah, gelişim ve mutluluk üzerinde sohbetlerimiz devam ediyor. O hep tüketim, mutsuzluk, kölelik, medya vs. tarafından bakıyor ben de hep olanaksızlıktan okula gidemeyen kız çocukları tarafından. Bir dengesizlik var, o çözülmeli. Seçimlere 15 gün kaldı ama kime oy vereceğimi halen bilmiyorum. Bağımsızlardan kimler var acaba. Veya en iyisi boş oy atmak. Güçlü Türkiye Partisi denen genç elemanların kurduğu bir parti vardı, o da fos çıktı galiba - hiç ses sedaları yok. Bari başladığım kitapları bitirsem...<br /><br /><br /><br />* Fatih Akın'ın o güzel filmini bir kez daha izleme vakti geldi sanırım.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
 <article>
     <div class="postheader">
         <a class="posttitle" href="2007/07/wheres-my-love-wheres-my-love-one-for.html">
@@ -102,6 +88,20 @@
     </div>
     <div class="postcontent">
         <p>OSSEC sistem loglarını inceleyerek bir gariplik durumunda bana mail atar. Her sabah kural 40101 yüzünden bana mail atarak nobody kullanıcısının sisteme girdiğinden şikayet ediyordu. Biraz inceleyerek bu kuralın neden tetiklendiğini öğrendim.<br /><br />40101. kural ossec/rules/attack_rules.xml dosyası içerisinde tanımlanmış. Bu kurala göre sakıncalı sistem kullanıcılarının hiçbir zaman sisteme login olmamaları gerekiyor, "nobody" kullanıcısı da bunlardan biri. /var/log/auth.log dosyasına baktığımda her sabah 6:25'de bu "sakıncalı" kullanıcının login olduğunu gördüm. İlk işim cron'daki zamanlanmış görevlere bakmak oldu. Günde bir defa olduğu için cron.daily dizini içerisindeki betiklerden biri olması muhtemeldi ve nitekim her gün 6'yı 25 geçe çalışan "find" isimli ve locate komutunun kullandığı veritabanını güncelleyen betiğin "nobody" kullanıcısı olarak çalıştığını gördüm. Yani aslında bir nevi yanlış alarm. Yine de sanırım kuralı değiştirmeyeceğim, ileride bir gün doğru alarm da olabilir.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2007/06/debsums.html">
+            Debsums
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2007-06-25 00:00:00+02:00" pubdate title="on Mon 25 June 2007">on Mon 25 June 2007</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Debsums ile Debian sisteminizde kurulu olan programların gerçekten istenilen programlar olup olmadığına bakabiliyorsunuz. Bu bir seviye güvenlik sağlıyor size, mesela bir sorun sonrası dosyaların bozuk olup olmadığını kontrol edebilirsiniz ve bazı düşük profilli saldırılarda, sisteminize sızmalarda yardımcı olabilir. Dosyaların doğru olup olmadığını anlamak için MD5 toplamlarını dpkg veritabanındaki (/var/lib/dpkg/info/*.md5sums dosyaları) listelerle karşılaştırıyor. Dolayısıyla eğer sisteminize sızan kişi bu listeyi değiştirirse sızmaları farketmenizin pek imkanı yok.<br /><br /># aptitude install debsums<br /># debsums -s<br /><br /><br />Buna benzer başka bir program da tripwire. O da başka bir yazımıza artık. Herkese güvenli günler :)</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

@@ -10,7 +10,7 @@
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
 <link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
-<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
 </head>
 <body class="homepage" >
 <script>
@@ -35,20 +35,6 @@
     <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
   </header>
   <div id="content">
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2008/12/guide-to-managing-git-repositories.html">
-            Guide to managing Git repositories
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2008-12-25 00:00:00+01:00" pubdate title="on Thu 25 December 2008">on Thu 25 December 2008</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>Say you have a local development environment with all the source code which you would like to replicate/copy to a remote git server. You might like to do this because you want to share your development with others in your team, to backup your data somewhere else, or to be able to synchronize your project on different computers. How do you do that? Here's a step by step explanation:<br /><br />1. First create a bare repository on your remote server:<br /><code> remote # newgit myproject.git </code><br /><br />2. Then, on your local server, inside your project directory initialize a local git repository:<br /><code> local # git init </code><br /><br />Next we will add all the files under current directory to be tracked.<br /><code> local #  git add . </code><br /><br />And then, lets commit the changes so that the files to be tracked are really added:<br /><code> local # git commit </code><br /><br />3. Now, while still on your local server, set up your remote repositories:<br /><code> local # git remote add origin ssh://username@server/~remoteHome/git/myproject.git </code><br /><br /><code> local # git config branch.master.remote origin </code><br /><br /><code> local # git config branch.master.merge refs/head/master </code><br /><br />4. That is all the setup needed. Now you can push your project to the bare repository:<br /><code> local # git push --all </code><br />If your git installation on the remote server is not on your path, you have to give --receive-pack=/path/to/git-receive-pack option to git-push command.<br /><br />At this time your local development environment and the bare remote git server are synchronized. You can now clone it to a dummy directory if you would like to have another checked out copy on remote server:<br /><code> remote # git-clone -l ~/git/myproject.git dummy </code><br /><br />And later update the dummy project as needed:<br /><code> remote # git pull </code><br /><br />Check out my previous post about git commands (cheatsheet) if you want to know more about these commands.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
 <article>
     <div class="postheader">
         <a class="posttitle" href="2008/12/hangi-debian-mimarisi-size-uygun.html">
@@ -102,6 +88,20 @@
     </div>
     <div class="postcontent">
         <p>Yaklaşık bir ay önce bir <a href="http://blog.tayfunsen.com/2008/11/dileke.html">dilekçe ile Rekabet Kurumuna başvurmuş, Türk Telekom'un tekel konumunda olduğunu, hem telefon hem de internet altyapısını elinde bulundurduğundan bahsetmiştim</a>. Bugün bununla ilgili bir cevap geldi. Cevap hakkına saygı açısından noktasına dokunmadan aşağıya ekliyorum.<br /><br /><blockquote>Sayın Tayfun Şen,<br /><br />E-posta aracılığıyla göndermiş olduğunuz şikayet Kurumumuz tarafından incelenmiştir. Şikayetinizde Türk Telekom firmasının altyapı bakımından hakim durumda olduğu ifade edilmekte ve bu durumun çeşitli yönlerden sakıncaları sıralanarak Rekabet Kurumu’nun gerekli hukuki düzenlemeleri yapması talep edilmektedir.<br /><br /> 4054 sayılı Rekabetin Korunması Hakkında Kanun’un ikinci maddesine göre “… her türlü teşebbüsün aralarında yaptığı rekabeti engelleyici, bozucu ve kısıtlayıcı anlaşma, uygulama ve kararlar ile piyasaya hâkim olan teşebbüslerin bu hâkimiyetlerini kötüye kullanmaları ve rekabeti önemli ölçüde azaltacak birleşme ve devralma niteliğindeki her türlü hukuki işlem ve davranışlar, rekabetin korunmasına yönelik tedbir, tespit, düzenleme ve denetlemeye ilişkin işlemler bu Kanun kapsamına girer”. Kurumun Kanun’da sayılan görevleri incelendiğinde bir piyasada hakim durumda olmanın değil bu hakim durumun kötüye kullanılmasının dikkate alındığı görülmektedir. Dolayısıyla Türk Telekom ya da herhangi bir teşebbüsün hakim durumda olması 4054 sayılı Kanun kapsamında bir ihlal teşkil etmemektedir.<br /><br />Bununla birlikte rekabet hukuku literatüründe hakim durumda olan teşebbüslere özel bir sorumluluk verildiği ve bu firmaların davranışlarının diğerlerine göre daha sıkı denetime tabi olduğu da muhakkaktır. Nitekim Rekabet Kurulu da 19.11.2008 tarihinde verdiği 1055-411 sayılı kararla (Türk Telekom’un bir iştiraki olan TTNet’in “Yaz Fırtınası” kampanyası hakkında) 4054 sayılı Kanun’un 6. maddesine aykırı uygulamaları[1] nedeniyle, aynı Kanun’un 16. maddesinin üçüncü fıkrası uyarınca Türk Telekomünikasyon A.Ş. ve TTNet A.Ş. ekonomik bütünlüğünün, ilgili ürün pazarındaki 2007 mali yılı sonunda oluşan toplam ciroları baz alınarak Türk Telekomünikasyon A.Ş. ve TTNet A.Ş.’ye müteselsilen 12.394.781,16 YTL idari para cezası verilmesine hükmetmiştir. Anılan kararda olduğu gibi bir inceleme yapılıp gerekli görüldüğü takdirde ceza uygulanabilmesi için tarafımızca yapılacak resen incelemeler haricinde, üçüncü tarafların iddialarının değerlendirilebilmesi için spesifik bir şikayetin varlığı gerekmektedir<br /><br />Bilgi edinilmesi rica olunur.<br /><br /><br />[1] Yapılan değerlendirmede Türk Telekomünikasyon A.Ş. ve TTNet A.Ş.’den oluşan ekonomik bütünlüğün, diğer internet servis sağlayıcıları pazar dışına çıkarmak amacıyla, toptan genişbant internet erişim hizmetleri pazarındaki hakim durumunu, perakende genişbant internet hizmetleri pazarında fiyat sıkıştırması yoluyla kötüye kullandığına, bu suretle 4054 sayılı Kanun’un 6. maddesini ihlal ettiği sonucuna ulaşılmıştır.</blockquote><br /><br />Aslında beklediğim türden bir cevap. Fiili tekel durumuna dokunulmayacak. TT yine halkı kazıklamaya devam edecek.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/12/linux-consoleda-trke-karakterler.html">
+            Linux Console'da Türkçe karakterler
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-12-16 00:00:00+01:00" pubdate title="on Tue 16 December 2008">on Tue 16 December 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Yeni bir Debian kurulumu yaptım. X.Org pencere sistemini çok gerekli görmediğim için onu kurmadım, işlerimi console'dan (burada console'dan kastım sanal terminaller, yani /dev/tty[1-7]) halledecektim. Kurulumu biraz kurcaladıktan sonra Türkçe karakterlerin bir kısmının düzgün gösterilmediğini (ş, ı gibi) farkettim. Biraz araştırdıktan sonra hem Türkçe karakterlerin bulunduğu yazı tiplerini (font) indirip kurdum hem de gözü daha az yoran görünüm (glyph) seçtim. Yaptıklarım şunlar:<br /><br /><code># aptitude install console-setup </code><br /><br />Bu paket hem çeşitli fontları kuruyor (bağımlılık sayesinde) hem de console karakter desteğini ve fontları seçebilmenizi sağlayan bir program getiriyor. Bunu kurduktan sonra <br /><br /><code># dpkg-reconfigure console-setup </code> <br /><br />komutunu kullanın, ekranı izleyin ve Türkçe'yi seçin. Eğer fontlardan Terminus-Bold seçerseniz biraz daha kalın, rahat okunur Türkçe karakterleri kullanabilirsiniz.<br /><br />Bonus olarak da şu komutu vereyim:<br /><br /><code># showcfont </code><br /><br />Bu komutla kullanmakta olduğunuz yazı tipinin gösterebildiği karakterleri ekranda görebilirsiniz. <br /><br />Kolay gelsin.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

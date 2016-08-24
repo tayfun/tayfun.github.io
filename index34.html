@@ -10,7 +10,7 @@
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
 <link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
-<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
 </head>
 <body class="homepage" >
 <script>
@@ -35,20 +35,6 @@
     <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
   </header>
   <div id="content">
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2008/12/linux-consoleda-trke-karakterler.html">
-            Linux Console'da Türkçe karakterler
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2008-12-16 00:00:00+01:00" pubdate title="on Tue 16 December 2008">on Tue 16 December 2008</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>Yeni bir Debian kurulumu yaptım. X.Org pencere sistemini çok gerekli görmediğim için onu kurmadım, işlerimi console'dan (burada console'dan kastım sanal terminaller, yani /dev/tty[1-7]) halledecektim. Kurulumu biraz kurcaladıktan sonra Türkçe karakterlerin bir kısmının düzgün gösterilmediğini (ş, ı gibi) farkettim. Biraz araştırdıktan sonra hem Türkçe karakterlerin bulunduğu yazı tiplerini (font) indirip kurdum hem de gözü daha az yoran görünüm (glyph) seçtim. Yaptıklarım şunlar:<br /><br /><code># aptitude install console-setup </code><br /><br />Bu paket hem çeşitli fontları kuruyor (bağımlılık sayesinde) hem de console karakter desteğini ve fontları seçebilmenizi sağlayan bir program getiriyor. Bunu kurduktan sonra <br /><br /><code># dpkg-reconfigure console-setup </code> <br /><br />komutunu kullanın, ekranı izleyin ve Türkçe'yi seçin. Eğer fontlardan Terminus-Bold seçerseniz biraz daha kalın, rahat okunur Türkçe karakterleri kullanabilirsiniz.<br /><br />Bonus olarak da şu komutu vereyim:<br /><br /><code># showcfont </code><br /><br />Bu komutla kullanmakta olduğunuz yazı tipinin gösterebildiği karakterleri ekranda görebilirsiniz. <br /><br />Kolay gelsin.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
 <article>
     <div class="postheader">
         <a class="posttitle" href="2008/12/linuxta-pidgin-derlemek.html">
@@ -102,6 +88,20 @@
     </div>
     <div class="postcontent">
         <p><a href="http://en.wikipedia.org/wiki/YAML">YAML</a> formatını Ruby on Rails günlerimden biliyorum. Şimdi Symfony deniyorum ve onun da varsayılan olarak bu dosya formatını ayarlar için kullandığını gördüm. <a href="http://en.wikipedia.org/wiki/XML">XML</a> ilk çıktığında ikili (binary) dosyalar yerine ASCII kullanarak bilgi saklamayı sağlamak amacındaydı, yani insanlar tarafından okunabilir olması (human readable) en büyük avantajlarından sayılıyordu. Ama XML'in genişletilebilir olması yüzünden (veya sayesinde?) onlarca ek etiketler ve bunları açıklayan bir sürü döküman ortaya çıktı. Sonuç olarak pratikte XML'in binary dosyalardan çok farkı kalmadı, okunabilirliği ortadan kalktı. YAML bu boşluğu doldurmaya çalışan bir format. Ama benim C/C++ projeleri için çok kullandığım Makefile'lar ve daha birçok başka formatta olduğu gibi boşluklar önemli. Ben ise boşlukların önemli olduğu durumlardan nefret ediyorum. Symfony'nin <a href="http://www.symfony-project.org/book/1_2/05-Configuring-Symfony">çevrimiçi kitabında</a> "Help, a YAML File Killed My App!" başlıklı bir bölüm var ki olabilecek kazaları bir sayfa boyunca anlatıyor. Bu hoşuma gitmiyor. Yok şuraya boşluk koy, yok tab kullanma onun yerine iki boşluk kullan, yok satır atlama... Bunlar yazılımcının bence kolayca hataya düşmesine yol açabilecek olaylar ve gereksizler. Daha güzel bir dil arıyorum.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/12/youtubea-erime-yollar.html">
+            YouTube'a erişme yolları
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-12-12 00:00:00+01:00" pubdate title="on Fri 12 December 2008">on Fri 12 December 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Şimdi Türkiye'deki bazı sivri zekalı insanlar (bkz. <a href="http://www.ntvmsnbc.com/news/468087.asp">ntvmsnbc'deki Bakan Yıldırım haberi</a>) interneti kısıtlayabileceklerini düşünüyorlar. <a href="http://www.ntvmsnbc.com/news/466693.asp">Başbakan bile "ben yutub'a giriyorum siz de girin" diyebiliyor</a>. Şimdi bu durumda başbakan'ın sözüne uyarak biz de yutub'a girme rehberi hazırladık. Windows ve Linux için ayrı ayrı yapılması gerekenler var. Her iki işletim sistemi için de hosts dosyasına yutub için IP girmeniz gerekiyor. Yalnız bu dosyaların yerleri farklı. Vindovz için:<br /><br />C (veya D):\Windows\system32\drivers\etc\hosts dosyasının içine şu satırları ekleyin:<br /><br /><code>208.117.236.70 www.youtube.com<br /><br />208.117.236.70 youtube.com<br /></code><br /><br />Benim dosyamın son hali şöyle:<br /><br /><code>127.0.0.1       localhost<br /><br />208.117.236.70 www.youtube.com<br /><br />208.117.236.70 youtube.com</code><br /><br />Linux içinse bu dosyanın yeri /etc/hosts . Buna da aynı satırları ekledikten sonra yutub'a girebilirsiniz. Eğer bir iPhone veya PDA tarzı bir cihazınız varsa yine hosts dosyasını bulmanız gerekiyor. Bu dosyaların yerleri <a href="http://en.wikipedia.org/wiki/Hosts_file">vikipedi makalesinde</a> ayrıntılı olarak açıklanmış. Tek yapmanız gereken bu dosyaları değiştirmek.<br /><br />Şimdi ne yaptığımızı da şöyle açıklayayım: YouTube Google'a bağlı bir firma ve yüzlerce sunucusu bulunmakta, ve her gün yeni sunucular ekliyorlar. Bizim eklediğimiz IP yeni sunuculardan birinin IP'si ve henüz sansürcü sansarlar tarafından bilinmiyorlar. Bu sayede biz sansürden etkilenmemiş oluyoruz.<br /><br />İnternette özgürlüğün keyfini çıkarın.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

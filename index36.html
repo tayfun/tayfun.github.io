@@ -10,7 +10,7 @@
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
 <link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
-<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
 </head>
 <body class="homepage" >
 <script>
@@ -35,20 +35,6 @@
     <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
   </header>
   <div id="content">
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2008/11/using-video-projectorexternal-monitor.html">
-            Using a video projector/external monitor on Linux
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2008-11-29 00:00:00+01:00" pubdate title="on Sat 29 November 2008">on Sat 29 November 2008</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <p>[Turkish version follows]<br /><br />If you have a laptop, chances are that the special keys for sending signals to external devices are not working. Many times different laptop producers stick to different standards and thus Linux has hard time recognizing these keys (I think Ubuntu is best on this one). But don't fret, you have other choices to try.<br /><br />For starters, you can try xrandr tool to detect and automatically configure the external device signals. While connected to an external device, like a monitor or a video projector, try<br /><br /><code># xrandr -q</code><br /><br />which will give you a list of devices that are connected. You can then choose a device to configure, or by simply using<br /><br /><code># xrandr --auto</code><br /><br />you can have all the devices automatically configured. <br /><br />In my case, with the -q option, laptop monitor is specified as LVDS and external devices as VGA. If xrandr is not available in your system, check your usual repositories (apt/yum etc), most probably it is included there since this is a pretty basic tool.<br /><br />If none of the above work, try booting your linux while the device is physically connected. It might be the case that the OS will pick up the device and configure it automatically.<br /><br />Best of luck.<br /><br />---<br /><br />Geçenlerde Linux üzerinden projektöre bağlanmak zorunda kaldım. Daha önce bu tür bir durumla karşılaşmadığım için biraz endişeliydim. Dizüstünde bulunan özel tuşlar çalışmadı (hani şu Fn'li olanlar), ve doğrusu buna pek şaşırmadım çünkü her dizüstü üreticisi farklı bir standart kullanıyor. Biraz internette araştırdıktan sonra xrandr programını buldum.<br /><br /><code># xrandr -q</code><br /><br />Bu komut ile bağlı bulunan aletleri görebiliyorsunuz. Benim durumumda dizüstü monitörü LVDS ve harici görüntüleyiciler de VGA olarak gösterilmiş. Şimdi bunları tek tek ayarlayabilirsiniz, veya bırakın xrandr kendisi en iyi ayarlara getirsin:<br /><br /><code># xrandr --auto</code><br /><br />Eğer bu program sisteminizde yoksa kurmayı deneyin. Çalışmadığı durumda yapabileceğiniz bir şey de dizüstünü harici aletler bağlıyken çalıştırmak.<br /><br />Kolay gelsin.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
 <article>
     <div class="postheader">
         <a class="posttitle" href="2008/11/advanced-mpi.html">
@@ -102,6 +88,22 @@
     </div>
     <div class="postcontent">
         <p>From <a href="http://en.wikipedia.org/wiki/Bandwagon_effect#Origin_of_the_phrase">Wikipedia</a>:<br /><blockquote>Literally, a bandwagon is a wagon which carries the band in a parade, circus or other entertainment. The phrase "jump on the bandwagon" first appeared in American politics in 1848 when Dan Rice, a famous and popular circus clown of the time, used his bandwagon and its music to gain attention for Zachary Taylor's campaign appearances. As Taylor's campaign became more successful, more politicians strove for a seat on the bandwagon, hoping to be associated with the success.[...]</blockquote></p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/11/trivia-four-letter-word.html">
+            trivia: Four-letter word
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-11-10 00:00:00+01:00" pubdate title="on Mon 10 November 2008">on Mon 10 November 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <blockquote>The phrase four-letter word refers to a set of English words written with four letters which are considered profane, including common popular or slang terms for excretory functions, sexual activity, and genitalia. The "four-letter" claim refers to the fact that most English swear words are monosyllabic, and therefore are likely to have four letters on average. This euphemism came into use during the first half of the twentieth century.</blockquote>
+
+<p><br />From <a href="http://en.wikipedia.org/wiki/Four_letter_word">wikipedia</a>.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>

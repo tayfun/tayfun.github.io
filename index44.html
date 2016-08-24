@@ -10,7 +10,7 @@
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
 <link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
-<link href="http://blog.tayfunsen.com/feeds/posts/default" rel="alternate" title="Atom" type="application/atom+xml" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
 </head>
 <body class="homepage" >
 <script>
@@ -35,22 +35,6 @@
     <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
   </header>
   <div id="content">
-<article>
-    <div class="postheader">
-        <a class="posttitle" href="2008/06/blog-post.html">
-            rivayet odur ki
-        </a>
-        <div class="postmetadata">
-            <span>Written <time class="postdate" datetime="2008-06-17 00:00:00+02:00" pubdate title="on Tue 17 June 2008">on Tue 17 June 2008</time></span>
-        </div>
-    </div>
-    <div class="postcontent">
-        <blockquote>Rivayetçi der ki, aslında her şey tek bir rüyadır. Ve, her hayat tek bir rüyanın parçasıdır.<br /><br />Her insan, o tek rüyanın tek bir parçasını yaşamaktadır. Bundandır ki, tek bir rüyayı anlamak için, bütün rüyaların buluşması gerekir. Rivayetçi der ki, işte bu yüzden, aşk, bedenler gibi ruhların da buluşmasını ister.<br /><br />Mesnevi, rüyalar güldestesidir. Mesnevi anlatır, bir fil, rüyasında Hindistan'ı görmüştür. Fil zincirlerini kırar ve tutsak olduğu diyardan ülkesine kaçar. Kimse onu tutamaz. Çünkü fil Hindistan'a aittir. Onun nazargahından söyler isek eğer, dünyalı, aslında başka bir diyardan kopup gelmiştir, burada tutsak olarak yaşar.<br /><br />Derler ki, ipek kurdunun ördüğü ipek kendinin kefenidir.<br />İpek kurdu kelebek olarak sevinçle uyanır. Yavaşça ve döne döne, bir o yana bir bu yana uçmasının nedeni, gördüğü rüyanın şaşkınlığıdır.</blockquote>
-
-<p><br /><br />Sessizce Dön. Özcan Yüksek. Doğan Kitapçılık, 2007.</p>
-    </div>
-    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
-</article>
 <article>
     <div class="postheader">
         <a class="posttitle" href="2008/06/istanbul-yolcusu.html">
@@ -104,6 +88,20 @@
     </div>
     <div class="postcontent">
         <p>Well I will assume that you know what Edge Rails is and why you would want to use it rather than the rather updated 2.0.2 version <a href="http://rails.dreamhosters.com/">installed on Dreamhost servers</a>. Even though I'm making reference to Dreamhost servers, you should be able to adapt this for other shared environments or your own local system.<br /><br />Using Edge Rails requires a few basic steps. This is not hard at all, once you understand it. First of all, you need to get the newest files. There are two ways to do this, you could either <a href="http://dev.rubyonrails.org/archives/rails_edge.zip">get a zip file from the rubyonrails.org</a> or <a href="http://github.com/rails/rails/tree/master">download a tar.gz file from the github rails repository</a> (Note that you shouldn't use the SVN repositories because they are not maintained anymore <a href="http://weblog.rubyonrails.org/2008/4/11/rails-premieres-on-github">as told here</a>). I'll show you the first way:<br /><code><br />$ wget http://dev.rubyonrails.org/archives/rails_edge.zip<br /></code><br />and then<br /><code><br />$ unzip rails_edge.zip<br /></code><br />Now you will have rails unpacked. What you need to do now is to use this rails to create new applications, and you will be good to go. For example:<br /><code><br />$ ruby /path_to_my_edge_rails/railties/bin/rails myapp<br /></code><br />will create you application structure for the edge rails. But there's a caveat, it is not over yet. Although you have edge rails structure and files for your application, you are still using the old rails installed on Dreamhost. To use your newly install rails, you need to put it into the vendor/rails directory of your application. You can always copy the files but if you want to use your newly downloaded edge rails for your other projects as well, it is better to just create a symlink. Use the following command from your application directory:<br /><code><br />$ ln -s /path_to_my_edge_rails vendor/rails<br /></code><br />And your application will start using rails in the vendor directory from now on. You may need to kill the previous dispatch.fcgi for the application to pick it up.<br /><br />Hope this helps someone.<br /><br />BTW, if you are thinking of buying hosting from Dreamhost, you can use 3DOMAINS4FREE coupon to get 50$ off first payment + 3 domains free for lifetime! Sounds like a good deal.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2008/05/dizstnde-linux-kablosuz-ipucu.html">
+            Dizüstünde linux kablosuz ipucu
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2008-05-29 00:00:00+02:00" pubdate title="on Thu 29 May 2008">on Thu 29 May 2008</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Dizüstü bilgisayarınız uyku moduna (hibernate veya sleep) geçip tekrar açıldığında kablosuz bağlantınız çalışmıyorsa, ve messages dosyasında şuna benzer satırlar varsa:<br /><br /><code>May 29 11:21:47 peanutbutter kernel: ADDRCONF(NETDEV_UP): ath0: link is not ready<br /></code><br />ve her yolu denemenize rağmen bilgisayarı açıp kapatmaktan başka çare bulamadıysanız, daha kolay bir yol var:<br /><br /><code># lsmod | grep ath<br />ath_pci               175788  0 <br />ath_rate_sample        13504  1 <br />wlan                  225520  4 ath_pci,wlan_scan_sta,ath_rate_sample<br />ath_hal               279328  3 ath_pci,ath_rate_sample<br /></code><br />benzeri bir komut ile kablosuz için gereken çekirdek modüllerini bulun. Bunlardan benim donanım için olanı ath_pci, onu çekirdekten çıkartacağım ve sonra tekrar ekleyeceğim:<br /><br /><code># rmod ath_pci<br /># modprobe ath_pci</code><br /><br />ve ağı tekrar başlatacağım:<br /><br /><code>#/etc/init.d/networking stop<br />#/etc/init.d/networking start<br /></code><br />Herşey yolunda giderse kablosuz ağ kartınız tekrar çalışmaya başlayacaktır.<br /><br />Sorun bilgisayarı tekrar başlatınca çözülünce aklıma geldi, /etc/init.d/ dizinindeki bir betikten değilse eğer modüllerle alakalı olmalıydı. Sonunda bu çözümü buldum. Umarım işinize yaramıştır.</p>
     </div>
     <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
 </article>
