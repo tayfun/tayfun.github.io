@@ -58,6 +58,7 @@ PAGE_SAVE_AS = '{slug}.html'
 STATIC_PATHS = [
     'others/cv.html',
     'others/CNAME',
+    'slides',
 ]
 EXTRA_PATH_METADATA = {
     'others/cv.html': {
