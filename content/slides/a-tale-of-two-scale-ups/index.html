@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section data-markdown>
+          <textarea data-template>
+            <h1>A Tale of Two Scale Ups</h1>
+            <h3>Learnings from AWS</h3>
+            <p>by Tayfun Sen</p>
+          </textarea>
+        </section>
+
+				<section>
+          <h1>Background:<br> Data Processing Pipeline</h1>
+          <p>
+            <ul>
+              <li>Data from a partner APIs</li>
+              <li>Flow through different steps: <br>download, parse, deduplication, normalization, validation, publish...</li>
+            </ul>
+          </p>
+        </section>
+
+				<section>
+          <h1>Tools of the trade</h1>
+          <p>
+            <ul>
+              <li>Python 3.5</li>
+              <li>Runs on AWS</li>
+              <li>Celery, Docker, SQS (RabbitMQ replacement), ECS, S3...</li>
+            </ul>
+          </p>
+        </section>
+
+				<section>
+          <h1>Scale up using AWS Auto Scaling</h1>
+          <p>
+            Well not exactly...
+            <ul>
+              <li>Instances are added with auto scaling</li>
+              <li>But there was no native solution for service scaling</li>
+              <li>until... <a href='https://aws.amazon.com/blogs/compute/automatic-scaling-with-amazon-ecs/'>May 2016</a></li>
+            </ul>
+          </p>
+        </section>
+
+				<section>
+          <h2>Workaround: <a href='https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cfn-customresource.html'>Custom lambda resource</a></h2>
+
+          <p>
+            <ul>
+              <li>High CPU alarm</li>
+              <li>Two actions on the alarm: EC2 scaling & custom service scaling</li>
+              <li>Custom service scaling policy simply calls lambda function</li>
+              <li>Lambda function uses boto to scale up</li>
+            </ul>
+          </p>
+        </section>
+
+				<section>
+          <h1>Reality check</h1>
+          <p>
+            <ul>
+              <li>Very fickly, not easy to setup lambdas (have to zip, upload to S3 to deploy)</li>
+              <li>Worked in testing/sandbox but...</li>
+              <li>Did not work well in prod</li>
+              <li>Had to manually scale up in high load</li>
+            </ul>
+          </p>
+        </section>
+
+				<section>
+          <h1>CPU utilization?</h1>
+          <p>
+            <ul>
+              <li>Not the best indicator of load for every task</li>
+              <li>IO meant CPU load went down</li>
+              <li>But there were many tasks piling up</li>
+            </ul>
+          </p>
+        </section>
+
+				<section>
+          <h1>Solution: Scale up using SQS!</h1>
+          <p>
+            <ul>
+              <li>Number of tasks in SQS was a better indicator of load</li>
+              <li>AWS introduced Application Auto Scaling (in addition to Auto Scaling!). Yay!</li>
+              <li>Implemented application auto scaling using SQS queue size</li>
+            </ul>
+          </p>
+        </section>
+
+				<section>
+          <h1>Result</h1>
+          <p>
+            <ul>
+              <li>Cleaner code (scale up logic is in cloudformation file too)</li>
+              <li>We removed a lot of code (lambda functions)</li>
+              <li>Much smoother scale ups and downs</li>
+              <li>Consistent with EC2 scaling</li>
+            </ul>
+          </p>
+        </section>
+
+				<section>
+          <h1>Learnings</h1>
+          <p>
+            <ul>
+              <li>Rewrite or refactor? Trade-offs?</li>
+              <li>Good to revisit past solutions</li>
+              <li>Emerging tech changes often :)</li>
+            </ul>
+          </p>
+        </section>
+
+				<section>
+          <h1>Thanks!</h1>
+          <p>
+            <ul>
+              <li>Questions?</li>
+            </ul>
+          </p>
+        </section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>

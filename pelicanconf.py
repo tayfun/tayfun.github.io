@@ -66,8 +66,9 @@ EXTRA_PATH_METADATA = {
     },
     'others/CNAME': {
         'path': 'CNAME',
-    }
+    },
 }
+IGNORE_FILES = ['slides']
 
 # This is so that any pre-generated HTML files are not processed again.
 # For example cv.html file. See:
