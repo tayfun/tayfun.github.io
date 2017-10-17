@@ -13,6 +13,10 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fiel
 	padding:0;
 }
 
+ul {
+  list-style-position: inside;
+}
+
 img {
     border: none;
 }
@@ -79,13 +83,11 @@ header, footer, aside, nav, article {
     height: 1em;
 }
 
-#quote {
-    width: 27em;
+#objective {
+    width: 40em;
     margin: 2em auto;
     font-size: 1em;
-    text-align: center;
     color: #777;
-    font-style: italic;
 }
 
 .info-section-hr {
@@ -134,21 +136,112 @@ tr td:first-child {
     </div>
     <div id="contact">
         <div>
-        <a href="http://blog.tayfunsen.com" itemprop="url">http://blog.tayfunsen.com</a><br>
-        <a href="mailto:ts@tayfunsen.com" itemprop="email">ts@tayfunsen.com</a>
-        <br>&#9742; <span itemprop="tel">+44 7 444 22 54 58</span>
+        <br>&#9742; <a href="tel:07444225458" itemprop="tel">07444 22 54 58</a>
+        <br><a href="mailto:tayfun.sen@gmail.com" itemprop="email">ts@tayfunsen.com</a>
+        <br><a href="http://blog.tayfunsen.com" itemprop="url">http://blog.tayfunsen.com</a><br>
         </div>
     </div>
 </section>
-<section id="quote">"We act as though comfort and luxury were the chief requirements of life, when all that we need to make us happy is something to be enthusiastic about."</section>
+<section id="objective">Objective: To work as a senior engineer helping colleagues with my experience, and to guide organization towards technical and commercial success.</section>
 <table id="info-table">
     <tr>
         <td><hr class="info-section-hr"></td>
-        <td class="info-section-title">Personal Information</td>
+        <td class="info-section-title">Tech Skills</td>
     </tr>
     <tr>
-        <td>Date of Birth</td>
-        <td class="info-section-answer">December 25, 1984</td>
+        <td valign="top">Languages</td>
+        <td class="info-section-answer">Python, Javascript, C/C++, SQL, Bash</td>
+    </tr>
+    <tr>
+        <td valign="top">Operating Systems</td>
+        <td class="info-section-answer">Linux, Mac OS</td>
+    </tr>
+    <tr>
+        <td valign="top">Tools</td>
+        <td class="info-section-answer">Source control (git), vim, SQL databases including MySQL and PostgreSQL, Docker, AWS.</td>
+    </tr>
+    <tr>
+        <td><hr class="info-section-hr"></td>
+        <td class="info-section-title">Work Experience</td>
+    </tr>
+    <tr>
+        <td valign="top">06/2015 - Present</td>
+        <td class="info-section-answer"><b>Software Engineer</b>, <a href="https://www.skyscanner.net/">Skyscanner</a>, Edinburgh, UK<br>
+          <ul>
+            <li>
+              Within a team, implemented async data pipeline which replaced a manual and error prone process for updating hotels data
+            </li>
+            <li>
+              Documented and gave talks to various teams in different countries on using this tool
+            </li>
+            <li>
+              Development on the cloud: AWS infrastructure and services such as S3, ECS, ECR, Lambda, SQS, Cloudformation...
+            </li>
+            <li>
+              Used Python 3, Celery, Docker, Kafka, ElasticSearch stack (kibana, logstash etc.)
+            </li>
+          </ul>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">04/2014 - 05/2015</td>
+        <td class="info-section-answer"><b>Software Engineer</b>, <a href="http://www.booking.com">Booking.com</a>, Amsterdam, Netherlands<br>
+          <ul>
+            <li>
+              Design and implementation of hotel back office tools
+            </li>
+            <li>
+              Used Perl on the back end and JavaScript (jQuery, Handlebars...) on the front end.
+            </li>
+          </ul>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">06/2013 - 03/2014</td>
+        <td class="info-section-answer"><b>Web Developer</b>, <a href="http://www.redbeacon.com">Redbeacon</a>, Istanbul (Remote work)<br>
+        <ul>
+          <li>
+            Worked as full stack engineer in a SF startup
+          </li>
+          <li>
+            Used Python, Django, MySQL, memcached, jQuery
+          </li>
+          </ul>
+        </td>
+    </tr>
+    <tr>
+      <td valign="top">09/2011 - 03/2013</td>
+      <td class="info-section-answer">
+        <b>Web Developer</b>,
+        <a href="https://www.markafoni.com">Markafoni</a>,
+        Istanbul, Turkey<br>
+        <ul>
+        <li>
+          Within a team rewrote web app for one of the largest e-commerce websites in Turkey
+        </li>
+        <li>
+          Designed and implemented its API
+        </li>
+        <li>
+          Used Python, Django, PostgreSQL, Redis, RabbitMQ, uwsgi
+        </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+        <td valign="top">08/2010 - 08/2011</td>
+        <td class="info-section-answer"><b>Translator</b>, Cyprus. Worked as a translator during mandatory military service.<br>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">08/2009 - 08/2010</td>
+        <td class="info-section-answer"><b>Web Developer</b>, <a href="http://www.jotform.com/">JotForm</a>, Ankara, Turkey.<br>
+        <ul>
+          <li>
+            System administration and web development for a form builder startup with global reach
+          </li>
+        </ul>
+        </td>
     </tr>
     <tr>
         <td><hr class="info-section-hr"></td>
@@ -157,80 +250,12 @@ tr td:first-child {
     <tr>
         <td valign="top">2006-2009</td>
         <td class="info-section-answer"><b>M.Sc. in Computer Engineering</b>, <a href="http://metu.edu">Middle East Technical University</a>, <a href="http://www.ceng.metu.edu.tr/">Department of Computer Engineering</a>, Ankara, Turkey.<br>
-            Recipient of the Turkish Scientific and Technical Council Graduate Degree scholarship. Spent 6 months in Denmark at <a href="http://www.dtu.dk/">Denmark Technical University</a> as an exchange student.
         </td>
     </tr>
     <tr>
         <td valign="top">2002-2006</td>
         <td class="info-section-answer"><b>B.Sc. in Computer Engineering</b>, Middle East Technical University, Department of Computer Engineering, Ankara, Turkey.<br>
-        Joined METU ranking in the Top 500 in the National Student Placement Exam in Turkey. CGPA: 3.22/4.00.
         </td>
-    </tr>
-    <tr>
-        <td><hr class="info-section-hr"></td>
-        <td class="info-section-title">Work Experience</td>
-    </tr>
-    <tr>
-        <td valign="top">06/2015 - Present</td>
-        <td class="info-section-answer"><b>Software Developer</b>, <a href="https://www.skyscanner.net/">Skyscanner</a>, Edinburgh, UK.<br>
-          Within a team, worked in developing a distributed task pipeline library that has been used by various teams in the company for gathering data. Made extensive use of AWS services, including CloudFormation, ECR, ECS, Lambda, SQS... Main languages/technologies used: Python, Celery, Docker, Kafka for logging and various other elastic search stack (kibana, elastic search).
-        </td>
-    </tr>
-    <tr>
-        <td valign="top">04/2014 - 05/2015</td>
-        <td class="info-section-answer"><b>Software Developer</b>, <a href="http://www.booking.com">Booking.com</a>, Amsterdam, Netherlands.<br>
-          Participated in design and coding of hotel back office tools, using Perl on the back end and JavaScript (jQuery, Handlebars etc.) on the front end.
-        </td>
-    </tr>
-    <tr>
-        <td valign="top">06/2013 - 03/2014</td>
-        <td class="info-section-answer"><b>Web Developer</b>, <a href="http://www.redbeacon.com">Redbeacon</a>, Istanbul (Remote work).<br>
-          I was a full stack engineer at Redbeacon, working remotely from Istanbul until H1B visa was processed. Technologies used include Python, Django, MySQL, memcached, jQuery; and the usual suspects, git, vim, Linux.
-        </td>
-    </tr>
-    <tr>
-        <td valign="top">09/2011 - 03/2013</td>
-        <td class="info-section-answer"><b>Web Developer</b>, <a href="https://www.markafoni.com">Markafoni</a>, Istanbul.<br>
-            Worked as back end developer for one of the largest e-commerce sites in Turkey. Rewrote markafoni.com from scratch within a team of developers. Some technologies used include Python, Django, PostgreSQL, Redis, RabbitMQ, git, vim, Linux, nginx and uwsgi.</td>
-    </tr>
-    <tr>
-        <td valign="top">08/2010 - 08/2011</td>
-        <td class="info-section-answer"><b>Translator</b>, Turkish Army, Turkish Republic of Northern Cyprus.<br>
-        </td>
-    </tr>
-    <tr>
-        <td valign="top">08/2009 - 08/2010</td>
-        <td class="info-section-answer"><b>Web Developer</b>, <a href="http://www.jotform.com/">JotForm</a>, Ankara, Turkey.<br>
-        Worked both on system administration and web development. Co-wrote the new version of the popular online form builder, JotForm, from scratch. Used PHP, JavaScript, Amazon EC2, pound, nagios and a bunch of other tools.
-        </td>
-    </tr>
-    <tr>
-        <td valign="top">10/2007 - 01/2008</td>
-        <td class="info-section-answer"><b>Web Developer</b>, <a href="http://www.gbar.dtu.dk/">Gbar Group</a>, Denmark Technical University, Lyngby, Denmark.<br>Designed and developed a back office web interface for management of various computer systems in use. Used Ruby on Rails, MySQL and JavaScript.</td>
-    </tr>
-    <tr>
-        <td valign="top">11/2006 - 08/2007</td>
-        <td class="info-section-answer"><b>System Administrator</b>, <a href="http://www.cc.metu.edu.tr/">Computer Center</a>, Middle East Technical University, Ankara, Turkey.<br>Management of Unix and Linux machines in the data center. Duties include installation and configuration of mail/web servers, updating OS, ensuring security, taking backups and occasional user support.</td>
-    </tr>
-    <tr>
-        <td valign="top">01/2006 - 06/2006</td>
-        <td class="info-section-answer"><b>Junior Software Developer</b>, <a href="http://www.srdc.metu.edu.tr/">Software Development and Research Center</a>, Ankara, Turkey.<br>Participation in several European Union Framework Programme sponsored software projects. Used Java for development.</td>
-    </tr>
-    <tr>
-        <td><hr class="info-section-hr"></td>
-        <td class="info-section-title">Tech Skills</td>
-    </tr>
-    <tr>
-        <td valign="top">Languages</td>
-        <td class="info-section-answer">C, C++, SQL, Bash Shell, Python and JavaScript</td>
-    </tr>
-    <tr>
-        <td valign="top">OS</td>
-        <td class="info-section-answer">Ubuntu and other linux, Unix and clones (including Mac OS X)</td>
-    </tr>
-    <tr>
-        <td valign="top">Tools</td>
-        <td class="info-section-answer">Source control (git), vim, SQL databases including MySQL, PostgreSQL and sqlite.</td>
     </tr>
     <tr>
         <td><hr class="info-section-hr"></td>
@@ -255,14 +280,6 @@ tr td:first-child {
     <tr>
         <td valign="top">Photography</td>
         <td class="info-section-answer">Photography is an interest I enjoy very much and some of my photos have been published in books, magazines and podcasts. You can see my portfolio at <a href="http://www.flickr.com/photos/typhoon476">Flickr</a> or on my <a href="http://blog.tayfunsen.com/">blog</a>.</td>
-    </tr>
-    <tr>
-        <td><hr class="info-section-hr"></td>
-        <td class="info-section-title">References</td>
-    </tr>
-    <tr>
-        <td valign="top"></td>
-        <td class="info-section-answer">Available upon request.</td>
     </tr>
 </table>
 </div>
