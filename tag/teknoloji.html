@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rastgele Düşünceler - teknoloji tag</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2014/03/dns-ve-vpn-nedir.html">
+            DNS, DPI ve VPN nedir?
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2014-03-22 00:00:00+01:00" pubdate title="on Sat 22 March 2014">on Sat 22 March 2014</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>AKP, pislikler ortaya saçılmasın diye twitter'ı yasaklamaya çalışıyor. Öyle görünüyor ki seçimlerden sonra da özgürlüklere baskı devam edecek. Ülkemizdeki herkes birer ağ uzmanı oldu neredeyse, ama gerçekte DNS, VPN ne anlama geliyor? Hükümetin son sansür yasası ile hazırlıklarını bitirdiği Deep Packet Inspection, yani DPI, neler getiriyor?</p>
+<h2>DNS Nedir?</h2>
+<p>Önce temelden başlayalım, ve basitleştirerek anlatayım. Google Chrome tarayıcısında adres çubuğuna www.google.com yazdığınızda bilgisayarınızın ilk yaptığı işlerden biri, DNS sunucusuna gidip bu web sayfasının bulunduğu bilgisayarın adresini almak olur. Bu adres, tahmin ettiğiniz üzere IP adresidir ve noktalarla ayrılan 4 tane rakamdan oluşur.</p>
+<p>BTK'nın uzun zamandır yaptığı sansür DNS üzerinden çalışıyordu. Örnek olarak twitter.com adresine girmek istediğinizde varsayılan olarak TTNET DNS sunucularını kullanıyorsunuz. TTNET ise size twitter'ın gerçek IP adresi yerine mavi sansür sayfasının bulunduğu IP adresini bilgisayarınıza iletiyor. Bu yüzden siz twitter sayfası yerine sansür sayfasına ulaşmış oluyordunuz.</p>
+<p>Bunu alt etmek çok zor değil. Zaten 2 seneden fazla devam eden youtube yasağı sırasında halkımız DNS uzmanı olmuştu. 8.8.8.8 veya 8.8.4.4 şeklindeki sansür yapmayan google DNS sunucuları kullanınca twitter'a erişebilir olduk.</p>
+<p>Bu sabahtan itibaren Google DNS sunucuları da yasaklandı. Bizim bilgisayarımız twitter.com adresinin IP numaralarını isterken çeşitli paketler yolluyordu. BTK, bu sabahtan itibaren bu paketlerin geçmesini engellemeye başladı. Bundan dolayı tekrar twitter'a girememeye başladık.</p>
+<p>OpenDNS, Yandex ve daha bir çok kurumun DNS'leri halen kullanılabilir. Ancak DNS adreslerini değiştirmesini bilmeyen pek çok insan var, bunun yanında mobil cihazlarda bazen DNS değiştirmek çok çok zor olabiliyor.</p>
+<h2>DPI Nedir?</h2>
+<p>Son çıkan yasa ile toptan site kapatmak yerine belirli adresleri hızlıca kapatmanın hukuku dayanağı yapıldı. Ancak adres bazlı yasaklar teknik açıdan çok zor ve mahremiyet yönünden çok sakıncalı. Adres bazlı filtreleme yapmak için kablodan geçen tüm paketlerin içeriğine bakmak ve eğer sansürlenmek istenen adres varsa o paketleri geçirmemek gerekiyor. Eğer herhangi bir şifreleme yöntemi kullanmıyorsanız kredi kart bilgilerinizden e-postalarınıza bir çok konuda devletin bizi gözetliyor olması anlamına geliyor bu. Aynı zamanda internetimizin de yavaşlaması demek bu ve ben son zamanlarda sıkça karşılaştığım bağlantı ve SSL hatalarının bundan olduğunu düşünüyorum.</p>
+<h2>VPN Nedir?</h2>
+<p>Bu noktada VPN sahneye çıkıyor. VPN özel bir ağ yazılımı sayesinde internete çıkışlarınızı belirli bir bilgisayardan gerçekleştirmeniz anlamına geliyor. Örnek olarak ABD'de bulunan bir VPN sunucusu kiraladığınızda internet bağlantınız o bilgisayar üzerinden gerçekleştiriliyor. Twitter'a ABD'den bağlanıyormuş gibi görünüyorsunuz ve dolayısıyla Türkiye'deki sansürden etkilenmiyorsunuz. Eğer kişisel bilgisayarınız ile VPN sunucusu arasında şifreleme yöntemi kullanıyorsanız, o zaman büyük biraderin gözlerinden kaçmış oluyorsunuz. Tabii yine kesin kurtuluş yok, eğer bir dava söz konusu olur ve VPN hizmeti aldığınız servise mahkeme kararı giderse bu şirket sizin bilgilerinizi devlete verebilir. Yine de yasaklardan kurtulmak için iyi bir seçenek.</p>
+<p>İnternette bir çok VPN hizmeti sağlayan şirket var. Bunlara bir göz atmanızı öneriyorum. AKP'nin kasetleri çıkıp pislikler ortaya saçıldıkça özgürlüklerin üzerine daha fazla gideceklerdir diye düşünüyorum. "Hiçbir korkuya benzemez halkını satanların korkusu", değil mi?</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/06/google-io-ve-mobil-gelecek.html">
+            Google IO ve Mobil Gelecek
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-06-06 00:00:00+02:00" pubdate title="on Sun 06 June 2010">on Sun 06 June 2010</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Google her sene gelistiriciler icin bir konferans duzenliyor. Bu konferansin adi input/output'a yani girdi/cikti'ya gonderme yapmak icin Google IO konulmus. Yani Google gelistiriciler ile bir araya geliyor ve bu iki grup arasinda bir geri besleme oluyor. Tabi olay sadece Google ve gelistiriciler arasinda degil. Google dunyanin en etkili teknoloji sirketi ve "bu dunyada ben de varim" diyen tum sirketler bu konferansta boy gosteriyorlar. Buyukce bir alanda Amazon'dan tutun Facebook'a veya donanimcilardan HTC ve Samsung gibi firmalara kadar buyuklu kucuklu bircok firma en son urunlerini ve teknolojilerini tanitiyorlar. Bu sene ben de teknoloji dunyasinin bu en onemli bulusmasina katilma firsati buldum ve Mayis ayinin bir kismini San Francisco'da gecirdim.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_AZvuJ9kmERM/TAtacSiNVbI/AAAAAAAABeo/VJNo4eU6lqI/s1600/2010-05-18+22.32.12.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="240" src="http://4.bp.blogspot.com/_AZvuJ9kmERM/TAtacSiNVbI/AAAAAAAABeo/VJNo4eU6lqI/s320/2010-05-18+22.32.12.jpg" width="320" /></a></div><br /><a href="http://code.google.com/events/io/2010/">Google IO</a>'ya bu sene mobil sistemler ve HTML5 teknolojileri damgasini vurdu bence. Cep telefonlari giderek akilli telefonlara donusuyorlar; nerede oldugunuzu ve aliskanliklarinizi ogrenip size en iyi onerileri sunuyorlar. Zaten yeni akilli telefonlarin hepsi birer algilayici deposu. GPS'den accelerometer'a, pusuladan kablosuz baglanti yongalarina kadar her sey var. Buna bir de Nexus One'daki gibi 1GHz'lik islemciyi ekleyince birkac sene onceki dizustu bilgisayarlardan daha guclu ama cebinizde tasiyabileceginiz bir alet ortaya cikiyor.<br /><br />Mobil sistemler alani cok buyuk, ileride cok fazla para edecek bir alan; ve tam da bu yuzden cok buyuk bir rekabet yasaniyor. Donanim alaninda Apple pazara ilk giren firma oldugu icin iPhone ve iPod Touch gibi urunleri ile lider konumunda. Google, Android isletim sistemini gelistirip bedava vererek bu ekosistemde yerini almak istiyor. HTC gibi eskiden OEM urunler ureten bir firma artik kendi orijinal tasarimlarini yapip kendi markasiyla satabiliyor.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/TAtbIAtmzYI/AAAAAAAABes/zNfgPsscHB8/s1600/camera-t.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="240" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/TAtbIAtmzYI/AAAAAAAABes/zNfgPsscHB8/s320/camera-t.jpg" width="320" /></a></div><br />Burada Nokia ve Microsoft gibi eskinin dev firmalarindan bahsetmek gerekiyor. Bu iki firma da geleneksel yollardan zengin oldu (ilki ozelliksiz cep telefonlarindan, ikincisi masaustu isletim sistemlerinden) ve halen bunlardan ekmek yiyorlar. Pazarin degisimi ise bu iki firmanin da degismesini gerektiriyor. Nokia akilli telefon uretmeye ve Intel ile <a href="http://en.wikipedia.org/wiki/Maemo">Maemo'nun</a> <a href="http://en.wikipedia.org/wiki/MeeGo">yerini alacak bir isletim sistemi</a> gelistirmeye basladi bile. Microsoft da benzer bir sekilde web'den calisan ofis paketi sunmaya basladi ve cloud computing konularinda <a href="http://en.wikipedia.org/wiki/Azure_Services_Platform">Azure</a> gibi servisler acti. Ama bu iki firmanin da daha gidecek cok yolu var. Zaten zor durumda olduklarini patent davalarina bel baglamalarindan da gorebiliyoruz. Nokia, iPhone yuzunden Apple'a dava acti. iPhone'daki erken baslama avantajini kaybetmek istemeyen Apple da HTC firmasina (ve aslinda Android gelistiricisi Google'a) dava acti. Diger taraftan Microsoft da HTC firmasindan yuklu bir patent parasi almaya basliyor. Dunya cok ilginc gercekten; Microsoft Android isletim sisteminden, yaraticisi Google'dan fazla para kazaniyor.<br /><br />Diger bir rekabet de tarayici alaninda yasaniyor. Google IO'da Chrome muhendislerinin ozet olarak soyledikleri sey su:<br /><br /><blockquote>Biz Google Chrome'u diger tarayici ureticilerini uyandirmak, onlari hizlandirmak icin gelistiriyoruz. "Web'de su da olmali, tarayicilar sunu da yapabilmeli" diyorsaniz bize bir hata raporu yazin, eger mantikli bir istekse bunu tarayiciya ekleyebiliriz.</blockquote><br />Apple Flash'i kendi platformunda istemediginden dolayi Safari ve Webkit'e cok buyuk onem veriyor. Firefox ve Opera da keza surekli kendilerini gelistiriyorlar. Burada esamesi okunmayan tek buyuk uretici Microsoft. Google IO'da ozellikle farkettigim konu Microsoft'un ve Internet Explorer'in mobil dunyada artik dikkate alinmamasi oldu. Internet Explorer'in geriligini dusununce bunun cok iyi bir gelisme oldugu gorulebilir. Bu ayni zamanda Microsoft'un geleceginin <a href="http://www.techflash.com/seattle/2009/10/microsofts_ballmer_the_internet_is_not_designed_for_the_iphone.html">Steve Ballmer</a> ile pek de parlak olmadigini gosteriyor. Yani MS teknolojilerini ogrenmeyi dusunuyorsaniz bir daha dusunun derim.<br /><br />Google, Chrome ile web'i cok iyi anladigini gosteriyor. Otomatik ve sik guncellemeler bunun en iyi gostergesi. Chrome, tarayicilar arasinda "build number" ile gelen tek tarayici. Benim Ubuntu bilgisayarimda surum numarasi 5.0.375.55 diyor :) Diger tum tarayicilarin surum numaralari son kullaniciya yonelik kisaltilmis bir surum numarasindan ibaret. Bu sayidan gordugumuz diger bir nokta ise surumun ana numarasinin 5 olmasi. Chrome cikali 2 sene olmadi ama 5 tane ana surum cikardilar bile. Chrome'un diger bir ozelligi Windows'da size sormadan otomatik olarak kendini guncellemesi, bu da cok buyuk bir gelisme. Buna karsilik Microsoft ise daha ne zaman cikacagi belli olmayan bir Internet Explorer 9'u insanlara gosterip duruyor. Aradaki fark bu. Birisi web'i anlayip sik guncellemelerle tarayicisini gelistirirken digeri her seyin bitmesini bekliyor.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_AZvuJ9kmERM/TAtejoCvXWI/AAAAAAAABe0/LcAQmbhMaxc/s1600/P5190246.JPG" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="240" src="http://1.bp.blogspot.com/_AZvuJ9kmERM/TAtejoCvXWI/AAAAAAAABe0/LcAQmbhMaxc/s320/P5190246.JPG" width="320" /></a></div><br />Google IO'da benim cok ilgimi cekmeyen bir diger gelisme (TV'den nefret ederim) ise Google TV oldu. Internet artik yatak odaniza kadar giriyor, internetteki icerigi (dizi/film/klip vs) buyuk ekranli televizyon setlerinizden izleyebileceksiniz. Turkiye'ye ne zaman gelir bir fikrim yok ama :)<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/TAtdr0ynHXI/AAAAAAAABew/jHZ6fAwASsQ/s1600/2010-05-20+10.31.10.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="239" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/TAtdr0ynHXI/AAAAAAAABew/jHZ6fAwASsQ/s320/2010-05-20+10.31.10.jpg" width="320" /></a></div><br />Tarayicilar artik <a href="http://en.wikipedia.org/wiki/Google_Chrome_OS">isletim sistemimiz</a> oluyorlar. Cogu insan bilgisayarlarini sirf tarayicilarini calistirip internete baglanmak icin kullaniyor. Masaustu uygulamalar yerine cok daha zengin ve isabetli icerik sunabilen web uygulamalari tercih ediliyor. Teknoloji dunyasi bir devrimin esiginde, bu yuzden bu heyecan.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/03/web-teknolojileri-nereye.html">
+            Web Teknolojileri Nereye?
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-03-21 00:00:00+01:00" pubdate title="on Sun 21 March 2010">on Sun 21 March 2010</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <div class="prezi-player"><style type="text/css" media="screen">.prezi-player { width: 440px; } .prezi-player-links { text-align: center; }</style><object id="prezi_5jlp0qbs2tmx" name="prezi_5jlp0qbs2tmx" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"><param name="movie" value="http://prezi.com/bin/preziloader.swf"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="bgcolor" value="#ffffff"/><param name="flashvars" value="prezi_id=5jlp0qbs2tmx&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"/><embed id="preziEmbed_5jlp0qbs2tmx" name="preziEmbed_5jlp0qbs2tmx" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" bgcolor="#ffffff" flashvars="prezi_id=5jlp0qbs2tmx&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"></embed></object><div class="prezi-player-links"><p><a title="Web geliştirme için çok heyecanlı bir zaman. Her şey çok hızlı bir şekilde değişirken ve belki bir devrimin ortasındayken, neler yapmalıyız?" href="http://prezi.com/5jlp0qbs2tmx/">Web Nereye Gidiyor?</a></p></div></div>
+
+<p><br /><br />Bugün dışarıdaki harika havaya rağmen ODTÜ Teknokent'teki sunumuma gelen herkese teşekkürler. Sunumumu yukarıya koyuyorum, ancak konuşma odaklı bir sunum olduğu için pek işinize yaramayabilir. Sunumumu yazılarla doldurmak istemedim :) insanları konuşmaya odaklanmaya zorlamak daha iyi sanırım.<br /><br />Bir de şahsi fikrim, onca saçmalığa rağmen bu ülkede duruyorsak bir katkıda bulunmamızın gerekliliği. Bilgiyi paylaşmalı, biz de eğitimli kesim olarak katkıda bulunmalıyız. Web sektörünün gelişmesi herkesin işine gelecektir.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/02/google-chromeda-arama-ksayollar.html">
+            Google Chrome'da Arama Kısayolları
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-02-27 00:00:00+01:00" pubdate title="on Sat 27 February 2010">on Sat 27 February 2010</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Bu yazıda Google Chrome kullanarak nasıl hızlı aramalar yapabileceğinizi anlatacağım. Örnek arama motoru olarak Türk Dil Kurumu'nun Güncel Türkçe Sözlüğünde nasıl arama yapabileceğinizi anlatacağım, ama yazımı başka arama motorları için de kolaylıkla uygulayabilirsiniz.<br /><br />Önce şunu aradan çıkartayım, web tarayıcısı olarak <a href="http://www.google.com.tr/chrome">Google Chrome</a> kullanacağız (<a href="http://www.google.com.tr/chrome">Google Chrome indirin</a>). Eğer hala Internet Explorer kullanıyorsanız bilgisayarınızdaki virüsleri hak ediyorsunuz demektir, lütfen okumayı keserek başka bir siteye gidin ve virüslerle yaşamayı öğrenin :) (sert oldu ama gerçekler acıdır). Ve hayır, bilgisayarınızdaki virüsleri temizlemek istemiyorum.<br /><br />Google Chrome çok hızlı ve güvenli bir tarayıcı, arama motorları ekleme özelliği ise bir diğer harika tarayıcı olan Firefox'dan daha da kolay. Öncelikle hızlı arama yapmak istediğimiz web sitesine gidip bir prova yapıyoruz. TDK kullanacağımızı söylediğime göre, önce <a href="http://www.tdk.gov.tr/">TDK web sayfasına</a> gidiyorum ve örnek bir arama yapıyorum, kullanacağım kelime "manifesto". Güncel Türkçe Sözlük'te kelimemi yazıp arama yapınca beni <a href="http://www.tdk.gov.tr/TR/Genel/SozBul.aspx?F6E10F8892433CFFAAF6AA849816B2EF4376734BED947CDE&Kelime=manifesto">yeni bir sayfaya yönlendiriyor ve kelimenin anlamını açıklıyor</a>. Web tarayıcınızın adres çubuğundaki yeni web adresini kopyalıyoruz, şuna benzer bir adres olmalı şimdi: <a href="http://www.tdk.gov.tr/TR/Genel/SozBul.aspx?F6E10F8892433CFFAAF6AA849816B2EF4376734BED947CDE&Kelime=manifesto">http://www.tdk.gov.tr/TR/Genel/SozBul.aspx?F6E10F8892433CFFAAF6AA849816B2EF4376734BED947CDE&amp;Kelime=manifesto</a>. Sitenin böyle salak bir adrese sahip olması yeteneksiz çalışanlarının sayesinde bu arada, ama bu şu anki konumuz değil, devam edelim. <br /><br />Adres çubuğundaki adresi kopyaladıktan sonra iş Chrome'a bu adresi tanıtmaya kalıyor. Menüden "Options" seçeneğine tıklıyoruz ve tarayıcı ayarları penceresini açıyoruz. Bu pencere şuna benzer olmalı:<br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/S4kSLi18oSI/AAAAAAAABb4/ejqkqBbl5Bo/s1600-h/Screenshot1.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 359px; height: 400px;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/S4kSLi18oSI/AAAAAAAABb4/ejqkqBbl5Bo/s400/Screenshot1.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5442901614194893090" /></a><br /><br />Buradan "Default Search: Google" yazısının yanında bulunan "Manage" butonuna tıklıyoruz ve yeni bir pencere ile karşılaşıyoruz. Bu pencerede var olan bazı arama motorları var. Bazıları Google Chrome ile gelirken bazılarını ise Google Chrome bizim internet gezinimlerimizi inceleyerek akıllılık edip eklemiş. <br /><br /><br /><a href="http://3.bp.blogspot.com/_AZvuJ9kmERM/S4kSKzZcUjI/AAAAAAAABbw/uSo1ebNQlno/s1600-h/Screenshot2.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 375px; height: 400px;" src="http://3.bp.blogspot.com/_AZvuJ9kmERM/S4kSKzZcUjI/AAAAAAAABbw/uSo1ebNQlno/s400/Screenshot2.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5442901601458868786" /></a><br /><br />Biz buraya TDK'nın sitesini ekleyeceğiz. Bu penceredeki "Add" butonuna basın. Name kısmına hatırlatıcı bir isim (ben "TDK GTS" yazdım), "keyword" kısmına hızlı arama yaparken kullanacağınız kısa bir anahtar kelime ("tdk" gibi)yazın ve URL kısmına da az önce kopyaladığınız web adresini yapıştırın. Şimdi burası önemli, URL'yi biraz değiştirmemiz gerekiyor, URL'nin en sonundaki arama yaptığımız kelimeyi silip onun yerine %s yazıyoruz. Kutudaki URL şuna benziyor yani: http://www.tdk.gov.tr/TR/Genel/SozBul.aspx?F6E10F8892433CFFAAF6AA849816B2EF4376734BED947CDE&amp;Kelime=%s <br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/S4kSKnwM35I/AAAAAAAABbo/OWIgTNk-3sA/s1600-h/Screenshot3.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 373px; height: 400px;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/S4kSKnwM35I/AAAAAAAABbo/OWIgTNk-3sA/s400/Screenshot3.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5442901598333099922" /></a><br /><br />Bu URL'yi baştan verebilirdim ama size balık tutmayı öğretmek istedim, hem TDK'nin pek zeki bilgisayarcıları bu salak URL'yi ileride bir gün değiştirirlerse bu yolu baştan takip edip arama motorunu tekrar oluşturabilirsiniz. Veya başka bir web servisini bu yöntemle ekleyebilirsiniz. <br /><br />Peki bu kısayolu nasıl mı kullanacağız? Tabi bunu anlatmadan bu yazı bir işe yaramaz. Türkçe sözlükte bundan sonra kelime aramak istersek adres çubuğuna az önce girdiğimiz anahtar kelimemizi yazıyoruz (benimki "tdk" idi), boşluk bırakıp aramak istediğimiz kelimeyi yazıyoruz. Şuna benzer bir yazı çıkıyor ve "enter"a bastığımızda bizi istediğimiz kelimeye götürüyor. Ve bu yazı burada sona eriyor.<br /><br /><a href="http://2.bp.blogspot.com/_AZvuJ9kmERM/S4kUL-w3x2I/AAAAAAAABcA/zJsU54eK-GM/s1600-h/Screenshot4.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 70px;" src="http://2.bp.blogspot.com/_AZvuJ9kmERM/S4kUL-w3x2I/AAAAAAAABcA/zJsU54eK-GM/s400/Screenshot4.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5442903820713052002" /></a></p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/02/kitap-yorumu-dreaming-in-code.html">
+            Kitap Yorumu: Dreaming in Code
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-02-22 00:00:00+01:00" pubdate title="on Mon 22 February 2010">on Mon 22 February 2010</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Çalıştığım <a href="http://www.interlogy.com">şirketin</a> kitaplığında görüp okuma listeme aldığım kitaplardan biriydi, <a href="http://en.wikipedia.org/wiki/Dreaming_in_Code">"Dreaming in Code"</a>. Programcılar arasında oldukça popüler olan ve birçok sitede iyi yorumlar alan bir eser bu. Kitap temel olarak önceki işlerinde oldukça başarılı olmuş bir grup teknoloji insanının <a href="http://www.osafoundation.org/">Chandler</a> isimli dünyayı değiştireceğine inandıkları yeni bir yazılım projesi üzerinde çalışmalarını anlatıyor.<br /><br />Kitabın yazarı <a href="http://salon.com/">Salon.com</a> kurucularından Scott Rosenberg. Salon.com'u takip ediyorsanız bilirsiniz, oldukça kaliteli bir haber/yorum sitesidir. Kitabın akıcılığını biraz da bu geleneğe bağlıyorum, 300 küsür sayfayı okurken pek sıkılmıyorsunuz. Scott Rosenberg yazılımın kaderinin tam olarak ne olacağını bilmemekle birlikte projeyi takip etmeye ve kitabını hazırlamaya başlıyor. Hemen hemen bütün yazılım projelerinde geri kalmalar, hatalar, başarısızlıklar olduğu için temkinli davranıyor ama o bile 3 sene sonra 1.0 sürümünün çıkamamasına biraz şaşırıyor ve belki de 1.0 ile kitabı bitirme planlarını değiştirip kitabı daha önce baskıya göndermeye karar veriyor.<br /><br />Chandler büyük hedeflerle başlanan bir proje, birçok şeyi aynı anda yapmaya çalışıyor. Sağlam temellere dayanmıyor, devrimci olabilmek için yeni şeyler gerektiğini düşünüyor ve hepsini kendisi geliştirmek istiyor. Bu yüzden bir tarayıcı içinde yaşamak istemiyor, sonradan vazgeçilse de başlarda P2P modeli benimseniyor, Windows, Mac ve Linux'larda hepsinde çalışacak bir masaüstü uygulaması hedefleniyor. Sonuçta Chandler'ın ilk tüm sürümleri planlanandan daha geç, daha az özellik ve daha fazla hatayla, daha masraflı olarak yayınlanıyor.<br /><br />Kitabın büyük bölümü projede yaşanan olayları anlatıyor. Teknik zorluklar, yönetimsel sorunlar, her yazılım projesinde olan planlama zorlukları, kesin olarak neyi nasıl yapacağını bilememek... Rosenberg kendisi de bilişim sektöründen olduğu için olayları anlıyor ve tam olarak programcı olmadığı için de akıcı bir biçimde farklı bir bakış açısıyla bizlere anlatabiliyor.<br /><br />Scott Rosenberg arada birkaç bölüm Chandler'ın sıkıntılarını anlatmayı bırakıp bilgisayar mühendisliğinin nasıl bir mühendislik olduğundan, klasik mühendisliklerden örneğin inşaat mühendisliği gibi olgunlaşmamış olduğundan, tıp gibi çok karmaşık olmasından bahsediyor, bilgisayar bilimlerinin kısa bir tarihinden bahsediyor. <a href="http://en.wikipedia.org/wiki/Fred_Brooks">Frederick Brooks</a>'dan, <a href="http://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a>'dan, <a href="http://en.wikipedia.org/wiki/Alan_Kay">Alan Kay</a>'den bolca bahsediyor, önemli eserlerden bolca alıntılar ve özetler veriyor. Bilgisayar bilimlerinin kendi metodolojilerinden, ilk zamanlardaki NATO konferanslarından tutun da <a href="http://en.wikipedia.org/wiki/Capability_Maturity_Model">CMM seviyelerine</a>, <a href="http://en.wikipedia.org/wiki/Agile_Manifesto">Çevik Programlama</a>'ya, ve Ruby on Rails'in açtığı yola, 37 Signals'a kadar o kadar çok noktaya değiniyor ki, bu bölümleri bitirince bilgisayar bilimlerinde emin olunan çok da konu olmadığını anlıyorsunuz. Yazarın farklı bakış açılarını kitapta eşit bir biçimde sunması da bunda etkili.<br /><br />Sonuç olarak bilgisayar bilimlerini daha iyi anlamak istiyorsanız okumanızı önereceğim bir kitap bu. Bana inanmıyorsanız, belki <a href="http://www.joelonsoftware.com/items/2007/01/21.html">Joel Spolsky sizi ikna edecektir</a> (kitapta kendisinden de bahsediliyor). <br /><br />Keyifli okumalar.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>

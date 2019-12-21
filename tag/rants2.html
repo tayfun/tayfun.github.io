@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="tr">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rastgele Düşünceler - rants tag</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css?cache=20150102-01" media="screen" />
+<link href="http://blog.tayfunsen.com/feeds/posts/default.atom" rel="alternate" title="Atom" type="application/atom+xml" />
+</head>
+<body class="homepage" >
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '482957368512369',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="container">
+  <header class="mainheader">
+    <a href="/"><img class="logo img-circle" src="/images/initials.png"></a>
+  </header>
+  <div id="content">
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/02/locate-database-on-mac-os-x.html">
+            Locate Database on Mac OS X
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-02-11 00:00:00+01:00" pubdate title="on Thu 11 February 2010">on Thu 11 February 2010</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>OK, I'm here for a quick tip. I use <code>locate</code> to find files and folders a lot, especially when I'm using a system I'm not very familiar with. Mac OS X is one such system, since I've only been using it for the last few months. The problem is, Mac's have everything scattered around, and in places where a regular Linux user would not look. Take <code>updatedb</code> command for example, it is found on most Linux distributions and can be invoked quite easily on the command line. For the Mac OS X, it is hidden in the directory <code>/usr/libexec/</code> which is not even in the root path! And to compound that, its name is <code>locate.updatedb</code>, oh thanks Apple! <br /><br />How on earth am I supposed to find this program like that? [ I bet you didn't think about that eh, Steve Jobs? Just kidding :) ]<br /><br />Anyhow, here's some commands to make your life easier:<br /><code><br />$ sudo ln -s  /usr/libexec/locate.updatedb /usr/bin/updatedb<br />$ sudo updatedb<br /></code><br />Now you can run <code>updatedb</code> like you would on a Linux box.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/01/things-i-hate-about-mac-os-x.html">
+            5 Things I Hate About Mac OS X
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-01-05 00:00:00+01:00" pubdate title="on Tue 05 January 2010">on Tue 05 January 2010</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Apple had this one coming. I have been using Mac OS X at work for about 5 months now and having Linux as my primary operating system at home I thought transition to a Mac would have been more smooth. After all, isn't <a href="http://en.wikipedia.org/wiki/Mac_OS_X">Mac OS X, Unix based</a>? Turns out I had to experience a few frustrations, the last one after upgrading to Snow Leopard. <a href="http://lists.mysql.com/mysql/218638">MySQL was broken after the upgrade</a> as was all the software I had installed from <a href="http://trac.macports.org/wiki/Migration">MacPorts</a>.<br /><br />I'm now reinstalling all those software and it's not something I like doing. I never experienced any of this while upgrading my Ubuntu to 9.10 a few months ago. It was a smooth transition, everything continued working like it should. Having such a huge (and profitable I might add) company such as Apple behind it, I would have expected the upgrade process to be better.<br /><br />Joel Spolsky and Jeff Atwood were talking about programming languages in one of their StackOverflow podcasts and they said that one is not really knowledgeable about a programming language unless he can elaborate upon it's weaknesses. I like that approach, and I present my own thoughts about Mac OS X.<br /><br /><ol><li>Mac OS X does not have an official repository of programs. Of course there's <span style="font-style:italic;">Fink</span> and <span style="font-style:italic;">MacPorts</span> but they do have their weaknesses. Apple really should provide a central repository of programs that can be installed easily. Ubuntu and Debian make a great example of this, it shouldn't be hard for Apple. </li><br /><li>The keyboard and peripherals are not standard. You can have various keyboards for various models and I don't like it because it forces a learning curve each time. There are keyboards without number pads (like the one I'm using), keyboards without Page Up, Page Down, or Delete buttons etc. It is all the more mess when the keyboard you have is not a US one. If you have local characters in the keyboard then good luck trying to get the shortcuts working.</li><br /><li>Proprietary programs that do not work as expected. OK this one is a general problem of the Unix vs. Linux world but still I'm gonna rant about it. Linux is widely used as servers and if you are developing on a Mac you want to be able to create a similar environment (with web servers, continuous integration stuff, MySQL, Java JDK etc.) But this is not easy because Apple provides its own system tools and programs are not installed where they normally would be. Look at the MySQL website and you start to wonder where Apple put this executable and where it put the other instead of what the official website tells it to. It really doesn't help that Apple lags behind many programs like Java also.<br />One implication of the above is that some programs do not work fully when you are on a Mac. Take vim for example. Sure you have MacVim but it still has problems with my vim configuration working on Linux. The colors don't work because Mac's terminal is so primitive. Many plugins have to be disabled because the Mac does things differently. I don't want to manage two different set of configurations for vim, that's a hassle.</li><br /><li>Mac's are not easily customizable. I want to be able to fine-tune some of the features but there does not seem to be a way to do it. Take the program switching shortcut for example, which is Cmd Tab. Windows and Linux change the application based on its window, but on a Mac it is done based on the application. Say you have 5 terminal windows open, you can only move through one of them. I don't like that. You can use your mouse or keyboard to have every window rearranged and highlighted but that's not what I want. The trouble is you can't customize it easily.</li><br /><li>Some basic programs are lacking to say the least. The first one that comes to my mind is the Finder. You can't even write the location you want to go to it! You can't copy the location you are at! I use terminal often and I want that ability. And it is so basic. Even MS Windows has it :-) People see this as lacking and <a href="http://www.squidoo.com/osxfinderreplacement">there are commercial alternatives to Finder</a>. But why should I be paying for such a basic app? The OS should have provided one for me anyway.<br /></li></ol><br />Rant mode OFF. <br /><br />All these deficiencies notwithstanding I think I'll continue using my Mac at work so that I can see where Apple is going. With the iPod and the iPhone they have become an important player in the tech world and the design is simply an eye candy to look at. I wonder if there are nice designed products (laptops and desktops also) that are not from Apple, but inspiring nonetheless.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2010/01/curse-of-success.html">
+            The Curse of Success?
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2010-01-02 00:00:00+01:00" pubdate title="on Sat 02 January 2010">on Sat 02 January 2010</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>Simon Peyton Jones of <a href="http://en.wikipedia.org/wiki/Haskell_(programming_language)">Haskell</a> fame says "avoid success at all costs." He is talking about programming languages and Haskell in particular but I think he would have no problems extending it to other software (and technologies?) in general. At first this seems ridiculous, isn't all the motivation behind all the work is about becoming popular and being useful to a lot of people and hence becoming "successful"?<br /><br />He goes on to give his reasons. When you become popular people start using your product in ways you have never anticipated, even when there are better alternatives. For many users being popular is enough to choose a product. You will inevitably start adding features that do not really fit into the grand architecture, in order to satisfy your new users. If you begin to spread your software base and features in many different levels your software becomes much more complex, and this is almost always something bad. Why is <a href="http://en.wikipedia.org/wiki/Unix_philosophy#McIlroy:_A_Quarter_Century_of_Unix">"do one thing and do it well"</a> at the center of Unix philosophy? As per <a href="http://blog.tayfunsen.com/2009/12/there-are-two-ways-to-design-system.html">Hoare's principle</a>, you will stop being obviously bug free and become having no obvious bugs. And it doesn't help that <a href="http://blog.tayfunsen.com/2009/11/making-things-less-complicated.html">it is not easy to resist new feature requests</a>. <br /><br />The other disadvantage of becoming popular is the inflexibility it brings. You will have to consider how people are using your software while making decisions. It's not as easy as in the beginning to change some part of the software that just doesn't look right. You'll have <span style="font-style:italic;">legacy</span> users who will complain every time you change your API. They will tell you "please don't break my code." If complexity is one of the most dangerous ways to turn to a wrong path, then not being able to evolve is another one. It's because evolution and change is at the heart of technology. You cannot survive unless you change, and unless you change faster than your competitors. If you cannot make the necessary changes then someone else will come and grab your food.<br /><br />I think these are more or less what is conveyed by "avoiding success at all costs". I certainly think these two sides are at the center of discussion. How to implement these decisions are frankly beyond me, I'm also trying to grasp it as best as I can.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+<article>
+    <div class="postheader">
+        <a class="posttitle" href="2009/10/mac-os-x-file-system-is-case.html">
+            Mac OS X File System IS Case Insensitive (D'oh!)
+        </a>
+        <div class="postmetadata">
+            <span>Written <time class="postdate" datetime="2009-10-02 00:00:00+02:00" pubdate title="on Fri 02 October 2009">on Fri 02 October 2009</time></span>
+        </div>
+    </div>
+    <div class="postcontent">
+        <p>I just realized that the default file system that comes with a Mac OS X is case insensitive (also case preserving but more on that later) by losing a day's work (ouch!). What happened was that I had some code on an SVN repository and having transformed the code to a class, I wanted to change the file's name so that is started with an upper case letter. I first tried "svn move" with no luck:<br /><code><br />move /MyProjects/secretone/builder/lib/locale.php /MyProjects/secretone/builder/lib/Locale.php<br />move /MyProjects/secretone/builder/lib/util.php /MyProjects/secretone/builder/lib/Util.php<br />    svn: Path '/MyProjects/secretone/builder/lib/Util.php' is not a directory<br />    svn: Path '/MyProjects/secretone/builder/lib/Locale.php' is not a directory<br /></code><br />This should have rang alarm bells. It did not. Seeing this didn't work, I manually moved the file and did a commit:<br /><code><br />add -N /MyProjects/secretone/builder/lib/Locale.php<br />    A         /MyProjects/secretone/builder/lib/Locale.php<br />add -N /MyProjects/secretone/builder/lib/Util.php<br />    A         /MyProjects/secretone/builder/lib/Util.php<br />delete --force /MyProjects/secretone/builder/lib/locale.php /MyProjects/secretone/builder/lib/util.php<br />    D         /MyProjects/secretone/builder/lib/locale.php<br />    D         /MyProjects/secretone/builder/lib/util.php<br />commit -m "ADD: Added some test configurations" /MyProjects/secretone/builder/index.php /MyProjects/secretone/builder/lib/Locale.php /MyProjects/secretone/builder/lib/Util.php /MyProjects/secretone/builder/lib/locale.php /MyProjects/secretone/builder/lib/util.php /MyProjects/secretone/builder/tests/TestHelper.php /MyProjects/secretone/builder/tests/lib /MyProjects/secretone/builder/tests/lib/LocaleTest.php<br />    svn: Commit failed (details follow):<br />svn: '/MyProjects/secretone/builder/lib/Locale.php' is scheduled for addition, but is missing<br />    svn: Commit failed (details follow):<br />svn: '/MyProjects/secretone/builder/lib/Locale.php' is scheduled for addition, but is missing<br />    svn: '/MyProjects/secretone/builder/lib/Locale.php' is scheduled for addition, but is missing<br /></code><br />The errors in the end are true errors. SVN first deleted the files "util.php" and "locale.php" which were in fact "Util.php" and "Locale.php" files and then tried to add these files (oh, thanks!). The files are gone, thanks to HFS+ and svn working together. Gotta start again. Aptana doesn't seem to be good at taking backups neither, so...<br /><br /><a href="http://developer.apple.com/mac/library/documentation/MacOSX/Conceptual/BPFileSystem/Articles/Comparisons.html">HFS+ is the default file system Mac OS X uses</a>. The other file system, UFS is the way a Unix file system should behave, it is case sensitive but I've read many reviews that it is a bit slow compared to HFS+ on a Mac. <a href="http://support.apple.com/kb/HT1410">A page on Apple website compares the two file systems</a> but it doesn't say how you can learn which one you are using on your Mac. The problem I experienced actually does not have much to do with the version control I'm using, svn, because it seems that <a href="https://kerneltrap.org/mailarchive/git/2007/8/28/256085">git also experiences the same problem when on a case insensitive file system</a>.<br /><br />I have been working on a Mac for two months now and I always assumed the file system was case sensitive because of the Unix background Mac's have and also thanks to the file names that come by default. Take the libraries folder for example, it starts with an upper case letter: /Library. Many other folders have similar mix case names which made me think the OS was running on a case sensitive file system. This is called case-preserving, and it seems that I forgot about Windows which is also similar (it's been 4 years since I stopped using Windows). On a Windows machine things get a lot more complicated because <a href="http://support.microsoft.com/kb/100625">MS says NTFS supports case sensitivity</a> but a lot of the applications do not. Say you open the file navigator (the Explorer) and create a file (or a folder) called "MS". When you think about case sensitivity, you should be able to create another file having name, say "ms". But it turns out you can't.  MS says:<br /><blockquote><br />NTFS supports two slightly different modes of operation that can be selected by the subsystem of the application interacting with NTFS.<br /></blockquote><br />So much for consistency. And thanks Microsoft for making such a shitty OS.<br /><br />So moral of the story is, learn about your file system throughly before you do anything. Oh, and the other one, stay away from a Mac. <br /><br />Jokes aside, I think Linux offers the best development environment out there.</p>
+    </div>
+    <div class="separator"><div class="separator-ruler"></div><span class="glyphicon glyphicon-star"></span><div class="separator-ruler"></div></div>
+</article>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'tayfunsen';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">Tayfun Şen</span> 2015. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>.
+  </div><!-- footer -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+var sc_project=2353622;
+var sc_invisible=1;
+var sc_security="6d6208aa";
+</script>
+<script src="http://www.statcounter.com/counter/counter.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!-- wrapper -->
+</body>
+</html>
