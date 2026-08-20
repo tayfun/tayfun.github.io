@@ -1,0 +1,49 @@
+# Jekyll configuration for blog.tayfunsen.com
+# See: https://jekyllrb.com/docs/configuration/
+
+title: "Rastgele Düşünceler"
+tagline: "Tayfun Şen'in kişisel blogu"
+description: "Tayfun Şen'in kişisel blogu — yazılım, seyahat, okuduklarım, gözlemler."
+author: "Tayfun Şen"
+url: "https://blog.tayfunsen.com"
+baseurl: ""
+lang: "tr"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:title.html
+paginate: 5
+paginate_path: "/page:num/"
+future: false
+show_drafts: false
+
+# Use the time in the front matter (not the file system time) for dates
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: false
+
+# Plugins (whitelisted on GitHub Pages: https://pages.github.com/versions/)
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude from the build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - .github
+  - vendor
+  - node_modules
+  - .git
+  - .gitignore
+
+# Feed
+feed:
+  path: feeds/posts/default.atom

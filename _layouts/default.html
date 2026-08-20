@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'tr' }}">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% if page.title %}{{ page.title | escape }} | {{ site.author | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
+<link rel="icon" type="image/png" href="{{ '/assets/favicon.png' | relative_url }}">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Ubuntu:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+<link href="{{ '/feeds/posts/default.atom' | absolute_url }}" rel="alternate" title="{{ site.title }}" type="application/atom+xml">
+{%- seo title=false -%}
+</head>
+<body class="homepage">
+<div class="container">
+  <header class="mainheader">
+    <a href="{{ '/' | relative_url }}"><img class="logo img-circle" src="{{ '/assets/images/initials.png' | relative_url }}" alt="{{ site.author }}"></a>
+  </header>
+  <div id="content">
+    {{ content }}
+  </div><!-- content -->
+  <div class="footer">
+    &copy; <span id="footername">{{ site.author }}</span> {{ site.time | date: '%Y' }}. No <span style="background-color:#ccc; padding: 0 3px"><span style="color:red">p</span><span style="color:green">i</span><span style="color:rgb(8, 8, 161)">x</span><span style="color:rgb(143, 6, 5)">e</span><span style="color:black">l</span><span style="color:#2FA5A7">s</span></span> were harmed in during the making of this website. Powered by <a href="https://jekyllrb.com/">Jekyll</a>.
+  </div><!-- footer -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+</div><!-- wrapper -->
+</body>
+</html>

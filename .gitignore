@@ -1,3 +1,23 @@
-cache/
-output/
-__pycache__
+# Jekyll build output
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Ruby / Bundler
+vendor/
+.bundle/
+Gemfile.lock
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Python (in case any stray tooling returns)
+__pycache__/
+*.pyc
+
+# Logs
+*.log
