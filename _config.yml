@@ -1,13 +1,16 @@
 # Jekyll configuration for blog.tayfunsen.com
 # See: https://jekyllrb.com/docs/configuration/
 
-title: "Rastgele Düşünceler"
-tagline: "Tayfun Şen'in kişisel blogu"
-description: "Tayfun Şen'in kişisel blogu — yazılım, seyahat, okuduklarım, gözlemler."
+title: "ramblings of an embodied carbon based lifeform (not a silicon parrot?)"
+# Short wordmark used in the header so the long title doesn't break the
+# layout. Falls back to `title` if unset.
+brand: "ramblings"
+tagline: "Tayfun Şen's personal blog — software, travel, books, observations."
+description: "Tayfun Şen's personal blog — software, travel, books, observations."
 author: "Tayfun Şen"
 url: "https://blog.tayfunsen.com"
 baseurl: ""
-lang: "tr"
+lang: "en"
 
 # Build settings
 markdown: kramdown
