@@ -10,18 +10,18 @@ of [Tayfun Şen](https://tayfunsen.com). The site is built with
 ```
 .
 ├── _config.yml          # Jekyll configuration (permalinks, plugins, feed, …)
-├── _layouts/            # Liquid templates (default, home, post)
-├── _includes/           # Shared Liquid partials (e.g. about.html)
-├── _data/               # Site data files (cv.yml — About section source)
+├── _layouts/            # Liquid templates (default, home, post, about)
+├── _data/               # Site data files (cv.yml — About page source)
 ├── _posts/              # Blog posts, named `YYYY-MM-DD-slug.md`
 ├── assets/              # Static assets: CSS, JS, images, favicon
 │   ├── css/main.css     # Modernised CSS with dark mode + responsive layout
 │   ├── js/main.js       # Vanilla JS (no jQuery); relative post dates
 │   ├── images/initials.png
 │   └── favicon.png
-├── index.html           # Home page (uses the `home` layout, renders About + posts)
+├── index.html           # Home page (uses the `home` layout, just post list)
+├── about.md             # About page — renders the full CV data
 ├── tags.html            # Tags index
-├── cv.html              # Standalone CV page (served at /cv.html)
+├── cv.html              # Legacy standalone CV page (served at /cv.html)
 ├── CNAME                # Custom domain for GitHub Pages (blog.tayfunsen.com)
 ├── Gemfile              # Ruby gem manifest
 ├── .github/workflows/
@@ -29,17 +29,18 @@ of [Tayfun Şen](https://tayfunsen.com). The site is built with
 └── README.md
 ```
 
-## The "About me" section
+## The About page
 
-The home page renders an "About me" panel above the post list. The data is
-**not** duplicated from `cv.html` — it lives in a single source of truth at
-[`_data/cv.yml`](_data/cv.yml) and is rendered by
-[`_includes/about.html`](_includes/about.html).
+The standalone About page at `/about/` is rendered from a single source of
+truth at [`_data/cv.yml`](_data/cv.yml) via the
+[`_layouts/about.html`](_layouts/about.html) layout. It contains personal
+info, contact details, the objective, skills, full work history,
+education, open-source / side projects, and hobbies.
 
-To update the About section (and the full CV), edit `_data/cv.yml`. The
-`cv.html` page is currently a standalone document; if you want to render
-the same data as a Jekyll page, replace its body with a layout that
-iterates over `site.data.cv`.
+To update the About page, edit `_data/cv.yml`. The legacy `cv.html` page
+is still served at `/cv.html` from the repo root — it is a standalone
+document and is no longer linked from the navigation. If you want to
+delete it, just remove the file (and optionally the git history).
 
 ## Writing a new post
 
@@ -111,8 +112,8 @@ template. Highlights:
 - **Responsive layouts** built on flexbox / CSS grid; mobile-first.
 - **No jQuery** — the only JS is a small vanilla-JS file that uses
   `Intl.RelativeTimeFormat` for friendly post dates.
-- **About-me section** rendered from `_data/cv.yml` via the
-  `_includes/about.html` partial.
+- **About page** rendered from `_data/cv.yml` via the
+  `_layouts/about.html` layout — the home page only shows the post list.
 - **Accessibility improvements**: skip link, semantic landmarks, focus
   styles, reduced-motion media query, `aria-current` on the active nav item.
 

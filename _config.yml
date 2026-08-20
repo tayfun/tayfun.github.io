@@ -1,11 +1,9 @@
 # Jekyll configuration for blog.tayfunsen.com
 # See: https://jekyllrb.com/docs/configuration/
 
-title: "ramblings of an embodied carbon based lifeform (not a silicon parrot?)"
-# Short wordmark used in the header so the long title doesn't break the
-# layout. Falls back to `title` if unset.
-brand: "ramblings"
-tagline: "Tayfun Şen's personal blog — software, travel, books, observations."
+title: "ramblings of an embodied carbon based lifeform"
+brand: "ramblings of an embodied carbon based lifeform (not a stochastic silicon parrot)"
+tagline: "not a stochastic silicon parrot"
 description: "Tayfun Şen's personal blog — software, travel, books, observations."
 author: "Tayfun Şen"
 url: "https://blog.tayfunsen.com"

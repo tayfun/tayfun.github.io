@@ -137,4 +137,27 @@ hobbies: >-
   Meeting new people and cultures, seeing new places. I have lived in a
   few different countries around the world.
 
+# Open-source work and side projects. Each item has a title, an optional
+# description, and either a single `url` or an array of labelled `links`.
+open_source:
+  - title: "GitHub Action for automatic linting and code review"
+    description: "Built from scratch"
+    url: https://github.com/tayfun/flake8-your-pr
+  - title: "Celery v4 contributions"
+    description: "Contributions to the async task queue during the v4 release"
+    links:
+      - { text: "PR 1", url: "https://github.com/celery/celery/pull/3245" }
+      - { text: "PR 2", url: "https://github.com/celery/celery/pull/3573" }
+  - title: "Rasa framework contributions"
+    description: "Adding the recipe feature to the Rasa chatbot framework"
+    url: https://github.com/RasaHQ/rasa/pull/10641
+  - title: "Tatlı Sözlük"
+    description: "A simple Turkish dictionary page built by web scraping, served via AWS Lambda"
+    url: https://blog.tayfunsen.com/sozluk/
+  - title: "django-extensions runserver_plus SSL support"
+    description: "Added SSL support to the runserver_plus management command"
+    links:
+      - { text: "PR 1", url: "https://github.com/django-extensions/django-extensions/pull/289/files" }
+      - { text: "PR 2", url: "https://github.com/django-extensions/django-extensions/pull/292/files" }
+
 last_updated: 2026-08
