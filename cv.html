@@ -532,5 +532,176 @@ li {
 </table>
 <div id="last-updated">Last updated: 2026-08</div>
 </div>
+<script>
+/* Easter egg: click "objective" to trigger a short Matrix-style glyph rain.
+   Performance notes:
+   - Each glyph is pre-rendered once into a tiny offscreen canvas and blitted
+     with drawImage (much cheaper than fillText per frame).
+   - shadowBlur is avoided; the dark head sprite and green tail sprite are
+     pre-rendered once and ctx.globalAlpha handles trail fade.
+   - No per-glyph string allocations in the hot loop.
+   Color notes:
+   - The CV sits on a white card, so the classic near-black + neon-green
+     palette is inverted: dark green head for contrast on white, saturated
+     mid-green tail that stays readable against the light background. */
+(function () {
+  var objective = document.getElementById('objective');
+  if (!objective) return;
+
+  objective.style.cursor = 'pointer';
+
+  var FONT_SIZE = 20;
+  var FONT = FONT_SIZE + 'px ui-monospace, Menlo, Consolas, monospace';
+  var GLYPHS = (
+    'アイウエオカキクケコサシスセソタチツテトナニヌネノ' +
+    'ハヒフヘホマミムメモヤユヨラリルレロワヲン' +
+    '0123456789ABCDEF<>=/\\*+'
+  );
+  var GLYPH_COUNT = GLYPHS.length;
+
+  // Sprite caches. headSprites[i] is the bright version of GLYPHS[i];
+  // trailSprites[i] is the green version. Built lazily on first click.
+  var headSprites = null;
+  var trailSprites = null;
+
+  function buildSprites() {
+    headSprites = new Array(GLYPH_COUNT);
+    trailSprites = new Array(GLYPH_COUNT);
+    for (var g = 0; g < GLYPH_COUNT; g++) {
+      var ch = GLYPHS.charAt(g);
+
+      var hc = document.createElement('canvas');
+      hc.width = FONT_SIZE;
+      hc.height = FONT_SIZE;
+      var hctx = hc.getContext('2d');
+      hctx.font = FONT;
+      hctx.textBaseline = 'top';
+      hctx.fillStyle = '#001a05';
+      hctx.fillText(ch, 0, 0);
+      headSprites[g] = hc;
+
+      var tc = document.createElement('canvas');
+      tc.width = FONT_SIZE;
+      tc.height = FONT_SIZE;
+      var tctx = tc.getContext('2d');
+      tctx.font = FONT;
+      tctx.textBaseline = 'top';
+      tctx.fillStyle = '#00a82b';
+      tctx.fillText(ch, 0, 0);
+      trailSprites[g] = tc;
+    }
+  }
+
+  var running = false;
+
+  objective.addEventListener('click', function () {
+    if (running) return;
+    running = true;
+
+    if (!headSprites) buildSprites();
+
+    var canvas = document.createElement('canvas');
+    canvas.style.position = 'fixed';
+    canvas.style.left = '0';
+    canvas.style.top = '0';
+    canvas.style.width = '100vw';
+    canvas.style.height = '100vh';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = '9999';
+    canvas.style.opacity = '1';
+    document.body.appendChild(canvas);
+
+    var ctx = canvas.getContext('2d');
+    var dpr = window.devicePixelRatio || 1;
+    var w = 0;
+    var h = 0;
+
+    function resize() {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var columns = Math.max(1, Math.ceil(w / FONT_SIZE));
+
+    var drops = [];
+    for (var i = 0; i < columns; i++) {
+      drops.push({
+        y: -(Math.random() * 60 + 5),
+        speed: 0.5 + Math.random() * 0.7,
+        trailLen: 10 + Math.floor(Math.random() * 12),
+        delay: Math.floor(Math.random() * 35)
+      });
+    }
+
+    var startTime = performance.now();
+    var duration = 1800;   // ms of active rain
+    var fadeDuration = 350;
+
+    function draw(now) {
+      var elapsed = now - startTime;
+
+      // Fade out + cleanup at the end.
+      if (elapsed > duration) {
+        var fadeProgress = Math.min(1, (elapsed - duration) / fadeDuration);
+        canvas.style.opacity = String(Math.max(0, 1 - fadeProgress));
+        if (fadeProgress >= 1) {
+          window.removeEventListener('resize', resize);
+          canvas.remove();
+          running = false;
+          return;
+        }
+      }
+
+      // Fade previous frames without painting an opaque overlay, so the CV
+      // stays fully visible behind the rain. destination-out erases existing
+      // pixels based on the fill's alpha — it adds no color of its own, so the
+      // canvas remains transparent wherever there are no glyphs.
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+      ctx.fillRect(0, 0, w, h);
+      ctx.globalCompositeOperation = 'source-over';
+
+      for (var i = 0; i < drops.length; i++) {
+        var drop = drops[i];
+        if (drop.delay > 0) { drop.delay--; continue; }
+
+        var x = i * FONT_SIZE;
+        var headY = drop.y * FONT_SIZE;
+        var trail = drop.trailLen;
+
+        for (var j = 0; j < trail; j++) {
+          var cy = headY - j * FONT_SIZE;
+          if (cy < -FONT_SIZE || cy > h) continue;
+          // (Math.random() * N) | 0 is a fast int in [0, N).
+          var pick = (Math.random() * GLYPH_COUNT) | 0;
+          if (j === 0) {
+            ctx.drawImage(headSprites[pick], x, cy);
+          } else {
+            ctx.globalAlpha = 1 - j / trail;
+            ctx.drawImage(trailSprites[pick], x, cy);
+          }
+        }
+        ctx.globalAlpha = 1;
+
+        drop.y += drop.speed;
+        if (headY > h + trail * FONT_SIZE) {
+          // Recycle from above, with a small random delay so it feels like confetti.
+          drop.y = -(trail + Math.random() * 5);
+          drop.delay = Math.floor(Math.random() * 25);
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    requestAnimationFrame(draw);
+  });
+})();
+</script>
 </body>
 </html>
