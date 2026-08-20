@@ -20,7 +20,7 @@
     <div class="site-header__inner">
       <a class="site-header__brand" href="{{ '/' | relative_url }}">
         <img class="site-header__logo" src="{{ '/assets/images/initials.png' | relative_url }}" alt="" loading="lazy" decoding="async">
-        <span class="site-header__title">{{ site.brand | default: site.title | escape }}</span>
+        <span class="site-header__title">{{ site.title | escape }}</span>
       </a>
       <nav class="site-nav" aria-label="Primary">
         <ul>
@@ -38,9 +38,6 @@
         </ul>
       </nav>
     </div>
-    {%- if page.layout == 'home' and site.tagline -%}
-    <p class="site-header__tagline">{{ site.tagline }}</p>
-    {%- endif -%}
   </header>
 
   <main id="content" class="site-main" role="main">
