@@ -267,6 +267,15 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   font-weight: 400;
   letter-spacing: 0;
 }
+.site-header__tagline::after {
+  content: "_";
+  color: var(--c-accent);
+  animation: tagline-cursor-blink 1.2s ease-in-out infinite;
+}
+@keyframes tagline-cursor-blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
 
 /* ---------- Site nav ---------- */
 .site-nav ul {
