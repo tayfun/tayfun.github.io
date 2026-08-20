@@ -213,7 +213,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   overflow: hidden; /* clip the drifting gradient line */
   border-bottom: 1px solid var(--c-border);
   background-color: var(--c-bg-elevated);
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-5) var(--space-6);
 }
 .site-header::after {
   content: "";
@@ -244,13 +244,13 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   gap: var(--space-3);
   color: var(--c-text);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1.35rem;
   letter-spacing: -0.01em;
 }
 .site-header__brand:hover { text-decoration: none; }
 .site-header__logo {
-  width: 48px;
-  height: 48px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background-color: var(--c-accent);
   padding: 4px;
@@ -263,7 +263,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 .site-header__title { white-space: nowrap; }
 .site-header__tagline {
   color: var(--c-text-muted);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-weight: 400;
   letter-spacing: 0;
 }
@@ -291,7 +291,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
   color: var(--c-text-muted);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 500;
   transition: background-color var(--transition), color var(--transition);
 }
@@ -992,10 +992,11 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 /* ---------- Responsive tweaks ---------- */
 @media (max-width: 640px) {
   body { font-size: 16px; }
-  .site-header { padding: var(--space-3) var(--space-4); }
+  .site-header { padding: var(--space-4) var(--space-4); }
   .site-header__inner { gap: var(--space-3); }
-  .site-header__title { font-size: 0.95rem; }
-  .site-nav a { padding: var(--space-2); font-size: 0.88rem; }
+  .site-header__text { min-width: 0; }
+  .site-header__title { font-size: 1.15rem; white-space: normal; overflow-wrap: break-word; }
+  .site-nav a { padding: var(--space-2); font-size: 1rem; }
   .site-main { padding: var(--space-5) var(--space-4); gap: var(--space-6); }
 
   .about-page { padding: var(--space-5) var(--space-4); }
