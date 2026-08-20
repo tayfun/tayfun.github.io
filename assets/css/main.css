@@ -424,6 +424,28 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   letter-spacing: 0.08em;
   color: var(--c-text-subtle);
 }
+.about-page__contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.6rem;
+  align-items: center;
+}
+.about-page__contact-links a {
+  white-space: nowrap;
+}
+.about-page__contact-links a + a::before {
+  content: "·";
+  margin-right: 0.6rem;
+  color: var(--c-text-subtle);
+  opacity: 0.5;
+}
+.about-page__contact-note {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.75rem;
+  color: var(--c-text-subtle);
+  font-style: italic;
+}
 
 .about-page__objective {
   margin: 0;
