@@ -39,24 +39,15 @@ layout: default
     <p class="about-page__objective">{{ cv.objective }}</p>
   </section>
 
-  <section class="about-page__section" aria-labelledby="about-page-experience">
-    <h2 id="about-page-experience" class="about-page__section-title">Experience</h2>
-    <ol class="about-page__experience">
-      {%- for job in cv.experience -%}
-      <li class="about-page__job">
-        <p class="about-page__job-period">{{ job.period | escape }}</p>
-        <div class="about-page__job-body">
-          <h3 class="about-page__job-role">
-            <strong>{{ job.role | escape }}</strong>{% if job.company %}, {% if job.company_url %}<a href="{{ job.company_url }}" target="_blank" rel="noopener">{{ job.company | escape }}</a>{% else %}{{ job.company | escape }}{% endif %}{% endif %}
-          </h3>
-          {%- if job.location %}
-          <p class="about-page__job-meta">{{ job.location | escape }}</p>
-          {%- endif %}
-          <p class="about-page__job-summary">{{ job.summary }}</p>
-        </div>
-      </li>
-      {%- endfor -%}
-    </ol>
+  <section class="about-page__section" aria-labelledby="about-page-up-to">
+    <h2 id="about-page-up-to" class="about-page__section-title">What I&rsquo;m Up To</h2>
+    <p class="about-page__up-to">
+      I&rsquo;m currently working on a handful of side projects, including
+      <a href="https://walknicely.com/" target="_blank" rel="noopener">WalkNicely</a>
+      and a deal aggregator for the Turkish market called
+      <a href="https://firsatport.com/" target="_blank" rel="noopener">FirsatPort</a>.
+      Beyond that, the newest developments in LLMs are all very interesting and really hard to keep up with.
+    </p>
   </section>
 
   <footer class="about-page__footer">

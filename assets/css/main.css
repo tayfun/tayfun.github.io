@@ -345,30 +345,34 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 }
 
 .about-page__intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
   margin-bottom: var(--space-5);
   padding-bottom: var(--space-5);
   border-bottom: 1px solid var(--c-border);
 }
 .about-page__name {
-  font-size: clamp(1.8rem, 4vw, 2.4rem);
-  margin: 0 0 var(--space-2);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin: 0;
   letter-spacing: -0.02em;
 }
 .about-page__tagline {
-  margin: 0 0 var(--space-3);
+  margin: 0;
   color: var(--c-text-muted);
-  font-size: 1.05rem;
+  font-size: 1rem;
 }
 .about-page__currently {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   margin: 0;
-  padding: var(--space-2) var(--space-3);
+  padding: 0.35em 0.8em;
   background-color: var(--c-accent-soft);
   color: var(--c-accent-strong);
   border-radius: 999px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
 }
 .about-page__currently-dot {
@@ -457,47 +461,11 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 
 
 
-.about-page__experience {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-.about-page__job {
-  display: grid;
-  grid-template-columns: 130px 1fr;
-  gap: var(--space-5);
-  padding: var(--space-4);
-  border-left: 3px solid var(--c-accent);
-  background-color: var(--c-bg-muted);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-}
-.about-page__job-period {
-  margin: 0;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--c-accent-strong);
-  font-variant-numeric: tabular-nums;
-}
-.about-page__job-body { min-width: 0; }
-.about-page__job-role {
-  margin: 0 0 var(--space-2);
-  font-size: 1rem;
-  color: var(--c-text);
-  font-weight: 400;
-}
-.about-page__job-meta {
-  margin: 0 0 var(--space-2);
-  color: var(--c-text-subtle);
-  font-size: 0.85rem;
-}
-.about-page__job-summary {
+.about-page__up-to {
   margin: 0;
   color: var(--c-text-muted);
-  font-size: 0.95rem;
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .about-page__footer {
@@ -765,11 +733,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 
   .about-page { padding: var(--space-5) var(--space-4); }
   .about-page__contact-list { grid-template-columns: 1fr; }
-  .about-page__job {
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
-    padding: var(--space-3) var(--space-4);
-  }
+  .about-page__intro { gap: var(--space-2); }
 
   .post-card { padding: var(--space-4); }
   .post-card__title { font-size: 1.25rem; }
