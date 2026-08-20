@@ -26,11 +26,11 @@ layout: default
   {%- if paginator.total_pages > 1 -%}
   <nav class="pagination" aria-label="Pagination">
     {%- if paginator.previous_page -%}
-    <a class="pagination__link pagination__link--prev" href="{{ paginator.previous_page_path | relative_url }}" rel="prev">&laquo; Older</a>
+    <a class="pagination__link pagination__link--prev" href="{{ paginator.previous_page_path | relative_url }}" rel="prev">&laquo; Newer</a>
     {%- endif -%}
     <span class="pagination__status">Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
     {%- if paginator.next_page -%}
-    <a class="pagination__link pagination__link--next" href="{{ paginator.next_page_path | relative_url }}" rel="next">Newer &raquo;</a>
+    <a class="pagination__link pagination__link--next" href="{{ paginator.next_page_path | relative_url }}" rel="next">Older &raquo;</a>
     {%- endif -%}
   </nav>
   {%- endif -%}
