@@ -281,6 +281,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 .site-nav ul {
   list-style: none;
   display: flex;
+  align-items: center;
   gap: var(--space-2);
   margin: 0;
   padding: 0;
@@ -307,7 +308,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 .site-nav .icon { display: block; }
 .theme-toggle {
   position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 34px;
