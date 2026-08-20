@@ -219,18 +219,23 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 }
 .site-header__brand:hover { text-decoration: none; }
 .site-header__logo {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background-color: var(--c-accent);
   padding: 4px;
 }
+.site-header__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 .site-header__title { white-space: nowrap; }
 .site-header__tagline {
-  max-width: var(--header-max);
-  margin: var(--space-2) auto 0;
   color: var(--c-text-muted);
-  font-size: 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 /* ---------- Site nav ---------- */
@@ -261,25 +266,6 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   background-color: var(--c-accent-soft);
 }
 .site-nav .icon { display: block; }
-
-/* ---------- Site hero (home page) ---------- */
-.site-hero {
-  margin: 0 0 var(--space-2);
-  padding-bottom: var(--space-5);
-  border-bottom: 1px solid var(--c-border);
-}
-.site-hero__title {
-  font-size: clamp(1.8rem, 4vw, 2.4rem);
-  margin: 0 0 var(--space-2);
-  letter-spacing: -0.02em;
-  font-weight: 700;
-  color: var(--c-text);
-}
-.site-hero__tagline {
-  margin: 0;
-  color: var(--c-text-muted);
-  font-size: 1.05rem;
-}
 
 /* ---------- Main / layout ---------- */
 .site-main {
