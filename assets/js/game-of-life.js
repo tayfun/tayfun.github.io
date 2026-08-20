@@ -178,6 +178,60 @@
     if (shouldRun()) start(); else pause();
   }
 
+  // Build an SVG mask that fades the canvas out behind the title/tagline
+  // text block and the nav buttons. White = canvas visible, black = hidden;
+  // a feGaussianBlur gives the masked regions a soft feathered edge so the
+  // GoL doesn't look like it's clipped to a rectangle.
+  function buildMask() {
+    var host = canvas.parentElement;
+    if (!host) return "none";
+    var rect = host.getBoundingClientRect();
+    var w = Math.max(1, Math.round(rect.width));
+    var h = Math.max(1, Math.round(rect.height));
+    if (w === 0 || h === 0) return "none";
+
+    var textEl = host.querySelector(".site-header__text");
+    var navEl = host.querySelector(".site-nav");
+
+    // Pad around the masked rects so the blur has room to feather.
+    var padX = 18;
+    var padY = 14;
+
+    function maskRect(el) {
+      if (!el) return null;
+      var r = el.getBoundingClientRect();
+      var x1 = Math.max(0, r.left - rect.left - padX);
+      var y1 = Math.max(0, r.top - rect.top - padY);
+      var x2 = Math.min(w, r.right - rect.left + padX);
+      var y2 = Math.min(h, r.bottom - rect.top + padY);
+      if (x2 <= x1 || y2 <= y1) return null;
+      return [x1, y1, x2 - x1, y2 - y1];
+    }
+
+    var tr = maskRect(textEl);
+    var nr = maskRect(navEl);
+    if (!tr && !nr) return "none";
+
+    var parts = [];
+    parts.push('<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">');
+    parts.push('<defs><filter id="b" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter></defs>');
+    parts.push('<mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="' + w + '" height="' + h + '">');
+    parts.push('<rect width="' + w + '" height="' + h + '" fill="white"/>');
+    if (tr) parts.push('<rect x="' + tr[0] + '" y="' + tr[1] + '" width="' + tr[2] + '" height="' + tr[3] + '" fill="black" filter="url(#b)"/>');
+    if (nr) parts.push('<rect x="' + nr[0] + '" y="' + nr[1] + '" width="' + nr[2] + '" height="' + nr[3] + '" fill="black" filter="url(#b)"/>');
+    parts.push('</mask>');
+    parts.push('<rect width="' + w + '" height="' + h + '" fill="white" mask="url(#m)"/>');
+    parts.push('</svg>');
+
+    return 'url("data:image/svg+xml;charset=utf-8,' + encodeURIComponent(parts.join("")) + '")';
+  }
+
+  function applyMask() {
+    var m = buildMask();
+    canvas.style.mask = m;
+    canvas.style.webkitMask = m;
+  }
+
   function resize() {
     resizeRaf = 0;
     var host = canvas.parentElement;
@@ -189,6 +243,11 @@
 
     var newCols = Math.max(MIN_COLS, Math.min(MAX_COLS, Math.round(w / CELL_TARGET_PX)));
     var newRows = Math.max(MIN_ROWS, Math.min(MAX_ROWS, Math.round(h / CELL_TARGET_PX)));
+
+    // Always refresh the mask; the title block or nav can move / wrap even
+    // if the header's outer dimensions don't change.
+    applyMask();
+
     if (newCols === cols && newRows === rows && bufA) return;
 
     cols = newCols;
