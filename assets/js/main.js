@@ -50,9 +50,53 @@
     });
   }
 
+  // Theme toggle: defaults to the system preference until the user picks
+  // a theme, which is then stored in localStorage and applied via the
+  // `data-theme` attribute on <html> (see the inline script in the head).
+  function themeToggle() {
+    var btn = document.getElementById("theme-toggle");
+    if (!btn || !window.matchMedia) return;
+    var media = window.matchMedia("(prefers-color-scheme: dark)");
+    var moon = btn.querySelector(".theme-toggle__moon");
+    var sun = btn.querySelector(".theme-toggle__sun");
+
+    function currentTheme() {
+      var explicit = document.documentElement.getAttribute("data-theme");
+      return explicit || (media.matches ? "dark" : "light");
+    }
+
+    function render(theme) {
+      var dark = theme === "dark";
+      btn.setAttribute("aria-pressed", dark ? "true" : "false");
+      btn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+      if (moon) moon.hidden = dark;
+      if (sun) sun.hidden = !dark;
+    }
+
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("theme", next);
+      } catch (e) {}
+      render(next);
+    });
+
+    if (media.addEventListener) {
+      media.addEventListener("change", function () {
+        render(currentTheme());
+      });
+    }
+    render(currentTheme());
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", prettyDates);
+    document.addEventListener("DOMContentLoaded", function () {
+      prettyDates();
+      themeToggle();
+    });
   } else {
     prettyDates();
+    themeToggle();
   }
 })();
