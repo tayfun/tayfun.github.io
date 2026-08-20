@@ -4,13 +4,25 @@ layout: default
 <section class="post-list-section" aria-labelledby="posts-heading">
   <h2 id="posts-heading" class="section-title">Latest</h2>
 
+  {%- assign tweet_grid_open = false -%}
   {%- for post in paginator.posts -%}
     {%- if post.type == 'tweet' -%}
+      {%- unless tweet_grid_open -%}
+        <div class="tweet-grid">
+        {%- assign tweet_grid_open = true -%}
+      {%- endunless -%}
       {%- include tweet-card.html post=post -%}
     {%- else -%}
+      {%- if tweet_grid_open -%}
+        </div>
+        {%- assign tweet_grid_open = false -%}
+      {%- endif -%}
       {%- include post-card.html post=post -%}
     {%- endif -%}
   {%- endfor -%}
+  {%- if tweet_grid_open -%}
+    </div>
+  {%- endif -%}
 
   {%- if paginator.total_pages > 1 -%}
   <nav class="pagination" aria-label="Pagination">

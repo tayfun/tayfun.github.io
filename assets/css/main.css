@@ -552,6 +552,33 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 }
 .post-card__excerpt > *:last-child { margin-bottom: 0; }
 
+/* ---------- Tweet grid (home-page list) ---------- */
+.tweet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+.tweet-grid .tweet-card:only-child { grid-column: 1 / -1; }
+
+/* Compact tweet cards inside the grid */
+.tweet-grid .tweet-card {
+  margin-bottom: 0;
+  padding: var(--space-4);
+}
+.tweet-grid .tweet-card__header { gap: var(--space-2); }
+.tweet-grid .tweet-card__avatar { width: 40px; height: 40px; }
+.tweet-grid .tweet-card__name { font-size: 0.95rem; }
+.tweet-grid .tweet-card__handle { font-size: 0.82rem; }
+.tweet-grid .tweet-card__date { font-size: 0.8rem; }
+.tweet-grid .tweet-card__body { margin-bottom: var(--space-3); }
+.tweet-grid .tweet-card__body .tweet-text { font-size: 0.95rem; }
+.tweet-grid .tweet-card__body .tweet-media__item img { max-height: 320px; }
+.tweet-grid .tweet-card__body .tweet-media--grid .tweet-media__item img { max-height: 200px; }
+.tweet-grid .tweet-card__stats { gap: var(--space-3); font-size: 0.8rem; }
+.tweet-grid .tweet-card__source { font-size: 0.8rem; }
+
 /* ---------- Tweet card (home-page list) ---------- */
 .tweet-card {
   background-color: var(--c-bg-elevated);
@@ -958,6 +985,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   .post { padding: var(--space-5) var(--space-4); }
   .post__tags { padding-left: 0; border-left: none; }
 
+  .tweet-grid { grid-template-columns: 1fr; }
   .tweet-card { padding: var(--space-4); }
   .tweet-card--page { padding: var(--space-5) var(--space-4); }
   .tweet-card__avatar { width: 40px; height: 40px; }
