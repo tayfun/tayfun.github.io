@@ -209,9 +209,25 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 
 /* ---------- Site header ---------- */
 .site-header {
+  position: relative;
+  overflow: hidden; /* clip the drifting gradient line */
   border-bottom: 1px solid var(--c-border);
   background-color: var(--c-bg-elevated);
   padding: var(--space-4) var(--space-5);
+}
+.site-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 200%;
+  height: 2px;
+  /* Two identical gradient segments so the -50% shift loops seamlessly. */
+  background: linear-gradient(90deg, transparent, var(--c-accent) 25%, transparent 50%, var(--c-accent) 75%, transparent);
+  animation: header-line-drift 10s linear infinite;
+}
+@keyframes header-line-drift {
+  to { transform: translateX(-50%); }
 }
 .site-header__inner {
   max-width: var(--header-max);
