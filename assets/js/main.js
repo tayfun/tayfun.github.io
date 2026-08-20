@@ -57,8 +57,6 @@
     var btn = document.getElementById("theme-toggle");
     if (!btn || !window.matchMedia) return;
     var media = window.matchMedia("(prefers-color-scheme: dark)");
-    var moon = btn.querySelector(".theme-toggle__moon");
-    var sun = btn.querySelector(".theme-toggle__sun");
 
     function currentTheme() {
       var explicit = document.documentElement.getAttribute("data-theme");
@@ -69,8 +67,7 @@
       var dark = theme === "dark";
       btn.setAttribute("aria-pressed", dark ? "true" : "false");
       btn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
-      if (moon) moon.hidden = dark;
-      if (sun) sun.hidden = !dark;
+      btn.classList.toggle("theme-toggle--dark", dark);
     }
 
     btn.addEventListener("click", function () {

@@ -194,18 +194,6 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 }
 
 /* ---------- Accessibility helpers ---------- */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 .skip-link {
   position: absolute;
   top: -100px;
@@ -293,9 +281,13 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 }
 .site-nav .icon { display: block; }
 .theme-toggle {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  padding: var(--space-2);
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
   border: 0;
   border-radius: var(--radius-sm);
   background: none;
@@ -306,6 +298,18 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 .theme-toggle:hover, .theme-toggle:focus-visible {
   background-color: var(--c-bg-muted);
   color: var(--c-text);
+}
+/* Only the icon for the active theme is visible; the two icons are
+   stacked and cross-fade/rotate when the theme flips. */
+.theme-toggle .icon {
+  position: absolute;
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+.theme-toggle__moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
+.theme-toggle--dark .theme-toggle__sun { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+.theme-toggle--dark .theme-toggle__moon { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle .icon { transition: none; }
 }
 
 /* ---------- Main / layout ---------- */
