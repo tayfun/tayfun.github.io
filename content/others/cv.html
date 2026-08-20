@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="content-language" content="en">
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
-<title>Curriculum Vitae of Tayfun Şen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Curriculum Vitae of Tayfun Sen — senior software engineer with experience at Booking.com, Skyscanner, Rasa and OakNorth, focused on AI, agentic development and high-load systems.">
+<title>Curriculum Vitae of Tayfun Sen</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600&v2" rel="stylesheet" type="text/css">
 <style>
 /* Simple Reset. */
@@ -34,7 +36,7 @@ body {
     background-color: #eee;
     line-height: 1.25;
     width: 960px;
-    height: 100%;
+    max-width: 100%;
     margin: 0 auto;
     font-family: 'Open Sans', Verdana, sans-serif;
 }
@@ -43,8 +45,6 @@ body {
     background-color: #fff;
     color: #222;
     padding: 3em 3em;
-    -moz-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.75);
-    -webkit-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.75);
     margin: 2em auto;
     position: relative;
@@ -57,34 +57,42 @@ header, footer, aside, nav, article {
 }
 
 #person {
-    height: 10em;
-    display: table;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     overflow: hidden;
     width: 100%;
 }
 
-#intro i {
+#intro .name {
+    font-size: 4em;
+}
+
+#intro .accent {
     font-size: 2em;
     color: #777;
     margin-left: 0.25em;
+    font-style: italic;
 }
 
-#intro div {
-    font-size: 4em;
+#intro .currently {
+    font-style: italic;
+    color: #777;
+    font-size: 0.9em;
+    margin-top: 0.5em;
 }
 
 #contact {
     text-align: right;
-    display: table-cell;
-    vertical-align: middle;
 }
 
-#contact img {
-    height: 1em;
+#contact .line {
+    line-height: 1.6;
 }
 
 #objective {
     width: 40em;
+    max-width: 100%;
     margin: 2em auto;
     font-size: 1em;
     color: #777;
@@ -94,11 +102,11 @@ header, footer, aside, nav, article {
 .info-section-hr {
     width: 9.5em;
     height: 0.8em;
-    background-color: #6AE01B;
+    background-color: #4FA019;
 }
 
 .info-section-title {
-    color: #61BF22;
+    color: #4FA019;
     font-size: 1.25em;
     padding-left: 0.5em;
     text-transform: uppercase;
@@ -113,6 +121,10 @@ header, footer, aside, nav, article {
 
 #info-table {
     border-spacing: 8px 8px;
+}
+
+#info-table td {
+    vertical-align: top;
 }
 
 tr td:first-child {
@@ -130,26 +142,160 @@ tr td:first-child {
 li {
   text-align: left;
 }
+
+#last-updated {
+    text-align: center;
+    color: #777;
+    font-size: 0.85em;
+    margin-top: 2em;
+}
+
 @media print {
   #wrap {
     box-shadow: none;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    line-height: 1.5;
+    font-size: 16px;
+  }
+
+  #wrap {
+    padding: 1.5em 1em;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  /* Person section stacks vertically */
+  #person {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25em;
+  }
+
+  #intro .name {
+    font-size: 2.25em;
+    line-height: 1.1;
+  }
+
+  #intro .accent {
+    font-size: 1.15em;
+    margin-left: 0;
+    display: block;
+    margin-top: 0.3em;
+  }
+
+  #intro .currently {
+    font-size: 0.85em;
+    margin-top: 0.4em;
+  }
+
+  #contact {
+    text-align: left;
+    font-size: 0.95em;
+  }
+
+  #contact .line {
+    line-height: 1.5;
+  }
+
+  #objective {
+    width: auto;
+    max-width: 100%;
+    margin: 1.25em 0;
+    font-size: 0.95em;
+    text-align: left;
+  }
+
+  /* Info-table: collapse into stacked cards */
+  #info-table,
+  #info-table tbody,
+  #info-table tr,
+  #info-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #info-table {
+    border-spacing: 0;
+  }
+
+  #info-table tr {
+    margin-bottom: 0.25em;
+  }
+
+  /* First column of data rows -> label */
+  #info-table td[data-label] {
+    text-align: left;
+    font-weight: 700;
+    color: #4FA019;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 1.25em;
+    padding: 0;
+  }
+
+  /* Empty first cell (e.g. Hobbies): hide it */
+  #info-table td:first-child:empty {
+    display: none;
+  }
+
+  /* Section title rows */
+  #info-table td.info-section-title {
+    padding-left: 0;
+    font-size: 1.15em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  #info-table .info-section-hr {
+    width: 5em;
+    height: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  /* Content cells */
+  #info-table td.info-section-answer {
+    padding-left: 0;
+    text-align: left;
+  }
+
+  /* Prevent long URLs from overflowing the viewport */
+  a {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  ul {
+    list-style-position: outside;
+    padding-left: 1.2em;
+  }
+
+  #last-updated {
+    font-size: 0.8em;
+    margin-top: 1.5em;
   }
 }
 </style>
 </head>
 <body>
 <div id="wrap">
-<section id="person" itemscope itemtype="http://schema.org/Person">
+<section id="person" itemscope itemtype="https://schema.org/Person">
     <div id="intro">
-        <div itemprop="name">Tayfun Sen</div>
-        <i>Curriculum Vitae</i>
+        <div class="name" itemprop="name">Tayfun Sen</div>
+        <span class="accent">Curriculum Vitae</span>
+        <div class="currently">Now: building agentic workflows @ my startup</div>
     </div>
     <div id="contact">
-        <div>
-        <br><a href="mailto:tayfun.sen@gmail.com" itemprop="email">tayfun.sen@gmail.com</a>
-        <br><a href="https://github.com/tayfun" itemprop="url">https://github.com/tayfun</a><br>
-
+        <div class="line" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+            <span itemprop="addressLocality">London</span>, <span itemprop="addressCountry">UK</span>
         </div>
+        <div class="line"><a href="mailto:tayfun.sen@gmail.com" itemprop="email">tayfun.sen@gmail.com</a></div>
+        <div class="line"><a href="https://github.com/tayfun" itemprop="url" target="_blank" rel="noopener">https://github.com/tayfun</a></div>
     </div>
 </section>
 <section id="objective">Passionate about solving complex problems in simple, efficient and maintainable way. I take pride in critical thinking, and start from "why", before "how".</section>
@@ -159,30 +305,34 @@ li {
         <td class="info-section-title">Skills</td>
     </tr>
     <tr>
-        <td valign="top">Fundamentals</td>
-        <td class="info-section-answer">Algorithms & Data Structures, ML/AI, e-commerce under high load and high availability</td>
+        <td data-label="Fundamentals">Fundamentals</td>
+        <td class="info-section-answer">Algorithms &amp; Data Structures, ML/AI/LLMs, e-commerce under high load and high availability</td>
     </tr>
     <tr>
-        <td valign="top">Languages</td>
-        <td class="info-section-answer">Python, JavaScript, C/C++, SQL, Bash</td>
+        <td data-label="Languages">Languages</td>
+        <td class="info-section-answer">Python, JavaScript, TypeScript, C/C++, SQL, Bash</td>
     </tr>
     <tr>
-        <td valign="top">Tools</td>
-        <td class="info-section-answer">Source control (git), vim, Databases (MySQL and PostgreSQL), Docker, AWS, terminal tools.</td>
+        <td data-label="Frameworks">Frameworks</td>
+        <td class="info-section-answer">React, Next.js, Django, FastAPI</td>
+    </tr>
+    <tr>
+        <td data-label="Tools">Tools</td>
+        <td class="info-section-answer">Source control (git), vim, Databases (MySQL and PostgreSQL), Docker, Kubernetes, Terraform, AWS, CI/CD, observability, terminal tools</td>
     </tr>
     <tr>
         <td><hr class="info-section-hr"></td>
         <td class="info-section-title">Work</td>
     </tr>
     <tr>
-        <td valign="top">10/2025 - Present</td>
+        <td data-label="10/2025 – Present">10/2025 – Present</td>
 	<td class="info-section-answer"><b>Founder</b>, London, UK<br>
           <ul>
             <li>
 	      Using agentic software development and AI based features in my projects
             </li>
 	    <li>
-	      Solo developer for <a href="https://walknicely.com/">WalkNicely</a> android app city guide with point-of-interests map
+	      Solo developer for <a href="https://walknicely.com/" target="_blank" rel="noopener">WalkNicely</a> android app city guide with point-of-interests map
 	    </li>
             <li>
 	      Now co-founder of a deal aggregator which uses AI to find, scrape and compare product prices
@@ -191,8 +341,8 @@ li {
         </td>
     </tr>
     <tr>
-        <td valign="top">10/2023 - 10/2025</td>
-	<td class="info-section-answer"><b>Senior Software Engineer</b>, <a href="https://oaknorth.co.uk/">OakNorth Bank</a>, London, UK<br>
+        <td data-label="10/2023 – 10/2025">10/2023 – 10/2025</td>
+	<td class="info-section-answer"><b>Senior Software Engineer</b>, <a href="https://oaknorth.co.uk/" target="_blank" rel="noopener">OakNorth Bank</a>, London, UK<br>
           <ul>
 	    <li>
 	      Worked on multiple projects including buy-to-let mortgages and SME funding
@@ -204,14 +354,14 @@ li {
         </td>
     </tr>
     <tr>
-        <td valign="top">04/2022 - 09/2023</td>
+        <td data-label="04/2022 – 09/2023">04/2022 – 09/2023</td>
         <td class="info-section-answer"><b>Contract Software Engineer</b>, Various Startups, London, UK<br>
           <ul>
 	    <li>
 	      Worked at various startups including Argus (YC-backed fintech startup), Foundy (startup marketplace) and others
 	    </li>
             <li>
-              Design and develop a service for importing and keeping up-to-date securities from S&P - over 6 million rows with milliseconds latency using redis and gin trigram indexes on PostgreSQL
+              Design and develop a service for importing and keeping up-to-date securities from S&amp;P - over 6 million rows with milliseconds latency using redis and gin trigram indexes on PostgreSQL
             </li>
             <li>
               Many other features, large refactors, bug fixes to increase velocity
@@ -220,8 +370,8 @@ li {
         </td>
     </tr>
     <tr>
-        <td valign="top">10/2021 - 02/2022</td>
-        <td class="info-section-answer"><b>Senior Software Engineer</b>, <a href="https://rasa.com">Rasa</a>, Remote from London, UK<br>
+        <td data-label="10/2021 – 02/2022">10/2021 – 02/2022</td>
+        <td class="info-section-answer"><b>Senior Software Engineer</b>, <a href="https://rasa.com" target="_blank" rel="noopener">Rasa</a>, Remote from London, UK<br>
           <ul>
             <li>
               Work with Python 3, GCP, sqlite, docusaurus, redis, sanic
@@ -239,8 +389,8 @@ li {
         </td>
     </tr>
     <tr>
-        <td valign="top">02/2018 - 02/2021</td>
-        <td class="info-section-answer"><b>Senior Software Engineer</b>, <a href="https://plentific.com">Plentific</a>, London, UK<br>
+        <td data-label="02/2018 – 02/2021">02/2018 – 02/2021</td>
+        <td class="info-section-answer"><b>Senior Software Engineer</b>, <a href="https://plentific.com" target="_blank" rel="noopener">Plentific</a>, London, UK<br>
           <ul>
             <li>
               Work with Python 3, AWS, ReactJS, PostgreSQL, Redis, Django
@@ -257,15 +407,9 @@ li {
           </ul>
         </td>
     </tr>
-    <tr><!-- Just here for print page break -->
-      <td>
-          <div></div>
-          <div style="page-break-before:always"></div>
-      </td>
-    </tr>
-    <tr>
-        <td valign="top">06/2015 - 02-2018</td>
-        <td class="info-section-answer"><b>Software Engineer</b>, <a href="https://www.skyscanner.net/">Skyscanner</a>, Edinburgh, UK<br>
+    <tr style="page-break-after:always">
+        <td data-label="06/2015 – 02/2018">06/2015 – 02/2018</td>
+        <td class="info-section-answer"><b>Software Engineer</b>, <a href="https://www.skyscanner.net/" target="_blank" rel="noopener">Skyscanner</a>, Edinburgh, UK<br>
           <ul>
             <li>
               Implement async data pipeline replacing a manual and error prone process for updating hotel data, reducing run time from days to hours
@@ -283,21 +427,21 @@ li {
         </td>
     </tr>
     <tr>
-        <td valign="top">04/2014 - 05/2015</td>
-        <td class="info-section-answer"><b>Software Engineer</b>, <a href="http://www.booking.com">Booking.com</a>, Amsterdam, Netherlands<br>
+        <td data-label="04/2014 – 05/2015">04/2014 – 05/2015</td>
+        <td class="info-section-answer"><b>Software Engineer</b>, <a href="https://www.booking.com" target="_blank" rel="noopener">Booking.com</a>, Amsterdam, Netherlands<br>
           <ul>
             <li>
               Design and implement various features on the system hotel owners manage their account and data
             </li>
             <li>
-              Use Perl on the back end and JavaScript on the front end.
+              Use Perl on the back end and JavaScript on the front end
             </li>
           </ul>
         </td>
     </tr>
     <tr>
-        <td valign="top">06/2013 - 03/2014</td>
-        <td class="info-section-answer"><b>Web Developer</b>, <a href="http://www.redbeacon.com">Redbeacon</a>, Istanbul (Remote work)<br>
+        <td data-label="06/2013 – 03/2014">06/2013 – 03/2014</td>
+        <td class="info-section-answer"><b>Web Developer</b>, <a href="https://www.redbeacon.com" target="_blank" rel="noopener">Redbeacon</a>, Istanbul (Remote work)<br>
         <ul>
           <li>
             Work as full stack engineer at a Silicon Valley startup
@@ -309,10 +453,10 @@ li {
         </td>
     </tr>
     <tr>
-      <td valign="top">09/2011 - 03/2013</td>
+      <td data-label="09/2011 – 03/2013">09/2011 – 03/2013</td>
       <td class="info-section-answer">
         <b>Web Developer</b>,
-        <a href="https://www.markafoni.com">Markafoni</a>,
+        <a href="https://www.markafoni.com" target="_blank" rel="noopener">Markafoni</a>,
         Istanbul, Turkey<br>
         <ul>
         <li>
@@ -328,8 +472,8 @@ li {
       </td>
     </tr>
     <tr>
-        <td valign="top">08/2009 - 08/2010</td>
-        <td class="info-section-answer"><b>Web Developer</b>, <a href="http://www.jotform.com/">JotForm</a>, Ankara, Turkey.<br>
+        <td data-label="08/2009 – 08/2010">08/2009 – 08/2010</td>
+        <td class="info-section-answer"><b>Web Developer</b>, <a href="https://www.jotform.com/" target="_blank" rel="noopener">JotForm</a>, Ankara, Turkey.<br>
         <ul>
           <li>
             System administration and web development for a global startup
@@ -342,46 +486,51 @@ li {
         <td class="info-section-title">Education</td>
     </tr>
     <tr>
-        <td valign="top">2006-2009</td>
-        <td class="info-section-answer"><b>M.Sc. in Computer Engineering</b>, <a href="http://metu.edu">Middle East Technical University</a>, <a href="http://www.ceng.metu.edu.tr/">Department of Computer Engineering</a>, Ankara, Turkey.<br>
+        <td data-label="2006–2009">2006–2009</td>
+        <td class="info-section-answer"><b>M.Sc. in Computer Engineering</b>, <a href="https://metu.edu" target="_blank" rel="noopener">Middle East Technical University</a>, <a href="https://www.ceng.metu.edu.tr/" target="_blank" rel="noopener">Department of Computer Engineering</a>, Ankara, Turkey<br>
         </td>
     </tr>
     <tr>
-        <td valign="top">2002-2006</td>
-        <td class="info-section-answer"><b>B.Sc. in Computer Engineering</b>, <a href="http://metu.edu">Middle East Technical University</a>, <a href="http://www.ceng.metu.edu.tr/">Department of Computer Engineering</a>, Ankara, Turkey.<br>
+        <td data-label="2002–2006">2002–2006</td>
+        <td class="info-section-answer"><b>B.Sc. in Computer Engineering</b>, <a href="https://metu.edu" target="_blank" rel="noopener">Middle East Technical University</a>, <a href="https://www.ceng.metu.edu.tr/" target="_blank" rel="noopener">Department of Computer Engineering</a>, Ankara, Turkey<br>
         </td>
     </tr>
     <tr>
         <td><hr class="info-section-hr"></td>
-        <td class="info-section-title">Interests</td>
+        <td class="info-section-title">Open Source &amp; Side Projects</td>
     </tr>
     <tr>
-        <td valign="top">Projects</td>
+        <td data-label="Projects">Projects</td>
         <td class="info-section-answer">
           <ul>
             <li>
-              Built a <a href='https://github.com/tayfun/flake8-your-pr'>Github Action for automatic linting and code review</a> from scratch
+              Built a <a href="https://github.com/tayfun/flake8-your-pr" target="_blank" rel="noopener">Github Action for automatic linting and code review</a> from scratch
             </li>
             <li>
-              Contribution to async task queue celery during v4 release (<a href='https://github.com/celery/celery/pull/3245'>PR 1</a>, <a href='https://github.com/celery/celery/pull/3573'>PR 2</a>)
+              Contribution to async task queue celery during v4 release (<a href="https://github.com/celery/celery/pull/3245" target="_blank" rel="noopener">PR 1</a>, <a href="https://github.com/celery/celery/pull/3573" target="_blank" rel="noopener">PR 2</a>)
             </li>
             <li>
-              Number of contributions to chatbot framework Rasa (eg. <a href='https://github.com/RasaHQ/rasa/pull/10641'>adding recipe feature to Rasa</a>)
+              Number of contributions to chatbot framework Rasa (eg. <a href="https://github.com/RasaHQ/rasa/pull/10641" target="_blank" rel="noopener">adding recipe feature to Rasa</a>)
             </li>
             <li>
-              Create a simple Turkish dictionary page by web scraping, <a href='https://github.com/tayfun/sozluk'>using that data through AWS Lambda</a>: <a href="https://blog.tayfunsen.com/sozluk/">Tatli Sozluk</a>
+              Create a simple Turkish dictionary page by web scraping, <a href="https://github.com/tayfun/sozluk" target="_blank" rel="noopener">using that data through AWS Lambda</a>: <a href="https://blog.tayfunsen.com/sozluk/" target="_blank" rel="noopener">Tatli Sozluk</a>
             </li>
             <li>
-              Add SSL support to django-extension's runserver_plus (<a href='https://github.com/django-extensions/django-extensions/pull/289/files'>PR1</a>, <a href='https://github.com/django-extensions/django-extensions/pull/292/files'>PR2</a>)
+              Add SSL support to django-extension's runserver_plus (<a href="https://github.com/django-extensions/django-extensions/pull/289/files" target="_blank" rel="noopener">PR1</a>, <a href="https://github.com/django-extensions/django-extensions/pull/292/files" target="_blank" rel="noopener">PR2</a>)
             </li>
           </ul>
         </td>
     </tr>
     <tr>
-        <td valign="top">Hobbies</td>
+        <td><hr class="info-section-hr"></td>
+        <td class="info-section-title">Hobbies</td>
+    </tr>
+    <tr>
+        <td></td>
         <td class="info-section-answer">Meeting new people, cultures, seeing new places. I have lived in a few different countries around the world.</td>
     </tr>
 </table>
+<div id="last-updated">Last updated: 2026-08</div>
 </div>
 </body>
 </html>
