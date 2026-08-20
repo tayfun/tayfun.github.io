@@ -11,15 +11,15 @@ of [Tayfun Şen](https://tayfunsen.com). The site is built with
 .
 ├── _config.yml          # Jekyll configuration (permalinks, plugins, feed, …)
 ├── _layouts/            # Liquid templates (default, home, post)
+├── _includes/           # Shared Liquid partials (e.g. about.html)
+├── _data/               # Site data files (cv.yml — About section source)
 ├── _posts/              # Blog posts, named `YYYY-MM-DD-slug.md`
-├── _includes/           # Shared Liquid partials (reserved for future use)
-├── _data/               # Site data files (reserved for future use)
 ├── assets/              # Static assets: CSS, JS, images, favicon
-│   ├── css/main.css
-│   ├── js/main.js
+│   ├── css/main.css     # Modernised CSS with dark mode + responsive layout
+│   ├── js/main.js       # Vanilla JS (no jQuery); relative post dates
 │   ├── images/initials.png
 │   └── favicon.png
-├── index.html           # Home page (uses the `home` layout with pagination)
+├── index.html           # Home page (uses the `home` layout, renders About + posts)
 ├── tags.html            # Tags index
 ├── cv.html              # Standalone CV page (served at /cv.html)
 ├── CNAME                # Custom domain for GitHub Pages (blog.tayfunsen.com)
@@ -28,6 +28,18 @@ of [Tayfun Şen](https://tayfunsen.com). The site is built with
 │   └── jekyll.yml       # Build & deploy to GitHub Pages
 └── README.md
 ```
+
+## The "About me" section
+
+The home page renders an "About me" panel above the post list. The data is
+**not** duplicated from `cv.html` — it lives in a single source of truth at
+[`_data/cv.yml`](_data/cv.yml) and is rendered by
+[`_includes/about.html`](_includes/about.html).
+
+To update the About section (and the full CV), edit `_data/cv.yml`. The
+`cv.html` page is currently a standalone document; if you want to render
+the same data as a Jekyll page, replace its body with a layout that
+iterates over `site.data.cv`.
 
 ## Writing a new post
 
@@ -87,6 +99,22 @@ the repository root and must not be excluded from the build.
 The standalone CV page is also served from the site root (`cv.html`) so the
 URL [blog.tayfunsen.com/cv.html](https://blog.tayfunsen.com/cv.html) keeps
 working without any rewrites.
+
+## Template modernisation notes
+
+The current template is a clean, modern rewrite of the original legacy
+template. Highlights:
+
+- **CSS custom properties** for theming; full **dark mode** via
+  `prefers-color-scheme`.
+- **System font stack** — no external Google Fonts requests.
+- **Responsive layouts** built on flexbox / CSS grid; mobile-first.
+- **No jQuery** — the only JS is a small vanilla-JS file that uses
+  `Intl.RelativeTimeFormat` for friendly post dates.
+- **About-me section** rendered from `_data/cv.yml` via the
+  `_includes/about.html` partial.
+- **Accessibility improvements**: skip link, semantic landmarks, focus
+  styles, reduced-motion media query, `aria-current` on the active nav item.
 
 ## Migration history
 

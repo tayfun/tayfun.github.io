@@ -1,0 +1,140 @@
+# Curriculum Vitae data, extracted from cv.html.
+# Kept separate from the templates so the same data can be rendered
+# in different layouts (home page about section, dedicated CV page, etc.)
+# without editing Liquid every time.
+
+name: Tayfun Sen
+tagline: Senior Software Engineer
+location: London, UK
+email: tayfun.sen@gmail.com
+github: https://github.com/tayfun
+website: https://blog.tayfunsen.com
+cv_url: /cv.html
+
+# What the author is focused on right now. Shown as the headline of the
+# about section.
+currently: Building agentic workflows @ my startup
+
+# Short, first-person bio used in the about section.
+objective: >-
+  Passionate about solving complex problems in simple, efficient and
+  maintainable ways. I take pride in critical thinking, and start from
+  "why", before "how".
+
+# Concise summary of the CV. Each entry is a (category, list of items).
+# Rendered as a compact grid on the home page.
+skills:
+  - label: Fundamentals
+    items: "Algorithms & Data Structures, ML / AI / LLMs, e-commerce under high load"
+  - label: Languages
+    items: "Python, JavaScript, TypeScript, C / C++, SQL, Bash"
+  - label: Frameworks
+    items: "React, Next.js, Django, FastAPI"
+  - label: Tools
+    items: "Git, vim, PostgreSQL, MySQL, Docker, Kubernetes, Terraform, AWS, CI/CD"
+
+# Most recent position first. Only the current role is shown on the home
+# page; the full list is rendered on cv.html.
+experience:
+  - period: 10/2025 – Present
+    role: Founder
+    company: Independent
+    location: London, UK
+    summary: >-
+      Using agentic software development and AI-based features in my own
+      projects. Solo developer of WalkNicely (Android city guide with a
+      points-of-interest map) and co-founder of an AI deal aggregator.
+  - period: 10/2023 – 10/2025
+    role: Senior Software Engineer
+    company: OakNorth Bank
+    company_url: https://oaknorth.co.uk/
+    location: London, UK
+    summary: >-
+      Worked on buy-to-let mortgages and SME funding. AI champion at the
+      company, running workshops and hackathons on agent-based development.
+  - period: 04/2022 – 09/2023
+    role: Contract Software Engineer
+    company: Various Startups
+    location: London, UK
+    summary: >-
+      Contract work at Argus (YC-backed fintech), Foundy, and others.
+      Built a service importing millions of securities with millisecond
+      latency using Redis and PostgreSQL trigram indexes.
+  - period: 10/2021 – 02/2022
+    role: Senior Software Engineer
+    company: Rasa
+    company_url: https://rasa.com
+    location: Remote from London, UK
+    summary: >-
+      Developed features and improvements to the open-source chatbot
+      framework. Introduced graph-recipe configuration for ML models.
+  - period: 02/2018 – 02/2021
+    role: Senior Software Engineer
+    company: Plentific
+    company_url: https://plentific.com
+    location: London, UK
+    summary: >-
+      Built Python microservices on AWS, including a Lambda@Edge image
+      optimisation project. Mentored and line-managed engineers.
+  - period: 06/2015 – 02/2018
+    role: Software Engineer
+    company: Skyscanner
+    company_url: https://www.skyscanner.net/
+    location: Edinburgh, UK
+    summary: >-
+      Replaced a manual hotel-data pipeline with an async one, cutting
+      run time from days to hours. Heavy use of Python, Kafka and AWS.
+  - period: 04/2014 – 05/2015
+    role: Software Engineer
+    company: Booking.com
+    company_url: https://www.booking.com
+    location: Amsterdam, Netherlands
+    summary: >-
+      Designed and built features for the hotel-owner account management
+      system. Perl on the backend, JavaScript on the frontend.
+  - period: 06/2013 – 03/2014
+    role: Web Developer
+    company: Redbeacon
+    company_url: https://www.redbeacon.com
+    location: Istanbul (Remote)
+    summary: >-
+      Full-stack engineer at a Silicon Valley startup. Python, Django,
+      MySQL, memcached, jQuery.
+  - period: 09/2011 – 03/2013
+    role: Web Developer
+    company: Markafoni
+    company_url: https://www.markafoni.com
+    location: Istanbul, Turkey
+    summary: >-
+      Rewrote the web app for one of Turkey's largest e-commerce sites
+      and designed its API.
+  - period: 08/2009 – 08/2010
+    role: Web Developer
+    company: JotForm
+    company_url: https://www.jotform.com/
+    location: Ankara, Turkey
+    summary: >-
+      System administration and web development for a global startup.
+
+education:
+  - period: 2006 – 2009
+    degree: M.Sc. in Computer Engineering
+    institution: Middle East Technical University
+    institution_url: https://metu.edu
+    department: Department of Computer Engineering
+    department_url: https://www.ceng.metu.edu.tr/
+    location: Ankara, Turkey
+  - period: 2002 – 2006
+    degree: B.Sc. in Computer Engineering
+    institution: Middle East Technical University
+    institution_url: https://metu.edu
+    department: Department of Computer Engineering
+    department_url: https://www.ceng.metu.edu.tr/
+    location: Ankara, Turkey
+
+# A short, single-line teaser about hobbies, shown on the home page.
+hobbies: >-
+  Meeting new people and cultures, seeing new places. I have lived in a
+  few different countries around the world.
+
+last_updated: 2026-08

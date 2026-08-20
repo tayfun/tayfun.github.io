@@ -1,0 +1,67 @@
+{%- comment -%}
+  About-me section, rendered from data in _data/cv.yml.
+
+  Rendered on the home page above the post list. Designed to be a
+  concise summary that points readers to the full CV page for details.
+{%- endcomment -%}
+{%- assign cv = site.data.cv -%}
+<section class="about" aria-labelledby="about-heading">
+  <div class="about__card">
+    <header class="about__header">
+      <h1 id="about-heading" class="about__name">{{ cv.name }}</h1>
+      <p class="about__tagline">{{ cv.tagline }}</p>
+      <p class="about__currently">
+        <span class="about__currently-dot" aria-hidden="true"></span>
+        <span>{{ cv.currently }}</span>
+      </p>
+    </header>
+
+    <ul class="about__meta" aria-label="Contact and links">
+      <li>
+        <span class="about__meta-label">Location</span>
+        <span>{{ cv.location }}</span>
+      </li>
+      <li>
+        <span class="about__meta-label">Email</span>
+        <a href="mailto:{{ cv.email }}">{{ cv.email }}</a>
+      </li>
+      <li>
+        <span class="about__meta-label">GitHub</span>
+        <a href="{{ cv.github }}" target="_blank" rel="noopener">@tayfun</a>
+      </li>
+    </ul>
+
+    <p class="about__objective">{{ cv.objective }}</p>
+
+    <div class="about__skills" aria-label="Skills">
+      {%- for group in cv.skills -%}
+      <div class="about__skill">
+        <span class="about__skill-label">{{ group.label }}</span>
+        <span class="about__skill-items">{{ group.items }}</span>
+      </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if cv.experience.size > 0 -%}
+    <div class="about__experience">
+      <h2 class="about__section-title">Currently</h2>
+      {%- assign current = cv.experience[0] -%}
+      <article class="about__role">
+        <p class="about__role-period">
+          <time>{{ current.period }}</time>
+        </p>
+        <div class="about__role-body">
+          <p class="about__role-title">
+            <strong>{{ current.role }}</strong>{% if current.company %}, {{ current.company }}{% endif %}
+          </p>
+          <p class="about__role-summary">{{ current.summary }}</p>
+        </div>
+      </article>
+    </div>
+    {%- endif -%}
+
+    <footer class="about__footer">
+      <a class="about__cta" href="{{ cv.cv_url | relative_url }}">Read the full CV &rarr;</a>
+    </footer>
+  </div>
+</section>
