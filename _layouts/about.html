@@ -39,18 +39,6 @@ layout: default
     <p class="about-page__objective">{{ cv.objective }}</p>
   </section>
 
-  <section class="about-page__section" aria-labelledby="about-page-skills">
-    <h2 id="about-page-skills" class="about-page__section-title">Skills</h2>
-    <div class="about-page__skills">
-      {%- for group in cv.skills -%}
-      <div class="about-page__skill">
-        <span class="about-page__skill-label">{{ group.label | escape }}</span>
-        <span class="about-page__skill-items">{{ group.items }}</span>
-      </div>
-      {%- endfor -%}
-    </div>
-  </section>
-
   <section class="about-page__section" aria-labelledby="about-page-experience">
     <h2 id="about-page-experience" class="about-page__section-title">Experience</h2>
     <ol class="about-page__experience">
@@ -69,55 +57,6 @@ layout: default
       </li>
       {%- endfor -%}
     </ol>
-  </section>
-
-  <section class="about-page__section" aria-labelledby="about-page-education">
-    <h2 id="about-page-education" class="about-page__section-title">Education</h2>
-    <ol class="about-page__education">
-      {%- for ed in cv.education -%}
-      <li class="about-page__degree">
-        <p class="about-page__degree-period">{{ ed.period | escape }}</p>
-        <div class="about-page__degree-body">
-          <h3 class="about-page__degree-name">
-            <strong>{{ ed.degree | escape }}</strong>{% if ed.institution %}, {% if ed.institution_url %}<a href="{{ ed.institution_url }}" target="_blank" rel="noopener">{{ ed.institution | escape }}</a>{% else %}{{ ed.institution | escape }}{% endif %}{% endif %}
-          </h3>
-          {%- if ed.department %}
-          <p class="about-page__degree-meta">
-            {%- if ed.department_url %}<a href="{{ ed.department_url }}" target="_blank" rel="noopener">{{ ed.department | escape }}</a>{%- else %}{{ ed.department | escape }}{%- endif %}{% if ed.location %} &middot; {{ ed.location | escape }}{% endif %}
-          </p>
-          {%- endif %}
-        </div>
-      </li>
-      {%- endfor -%}
-    </ol>
-  </section>
-
-  <section class="about-page__section" aria-labelledby="about-page-projects">
-    <h2 id="about-page-projects" class="about-page__section-title">Open Source &amp; Side Projects</h2>
-    <ul class="about-page__projects">
-      {%- for project in cv.open_source -%}
-      <li class="about-page__project">
-        <h3 class="about-page__project-title">
-          {%- if project.url %}<a href="{{ project.url }}" target="_blank" rel="noopener">{{ project.title | escape }}</a>{%- else %}{{ project.title | escape }}{%- endif %}
-        </h3>
-        {%- if project.description %}
-        <p class="about-page__project-description">{{ project.description }}</p>
-        {%- endif %}
-        {%- if project.links %}
-        <p class="about-page__project-links">
-          {%- for link in project.links -%}
-          <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.text | escape }}</a>{%- unless forloop.last %} &middot; {% endunless -%}
-          {%- endfor -%}
-        </p>
-        {%- endif %}
-      </li>
-      {%- endfor -%}
-    </ul>
-  </section>
-
-  <section class="about-page__section" aria-labelledby="about-page-hobbies">
-    <h2 id="about-page-hobbies" class="about-page__section-title">Hobbies</h2>
-    <p class="about-page__hobbies">{{ cv.hobbies }}</p>
   </section>
 
   <footer class="about-page__footer">

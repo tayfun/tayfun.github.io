@@ -455,34 +455,9 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   line-height: 1.6;
 }
 
-.about-page__skills {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--space-3);
-}
-.about-page__skill {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-3);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-md);
-}
-.about-page__skill-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--c-accent);
-}
-.about-page__skill-items {
-  color: var(--c-text);
-  font-size: 0.92rem;
-  line-height: 1.5;
-}
 
-.about-page__experience,
-.about-page__education {
+
+.about-page__experience {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -490,8 +465,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   flex-direction: column;
   gap: var(--space-4);
 }
-.about-page__job,
-.about-page__degree {
+.about-page__job {
   display: grid;
   grid-template-columns: 130px 1fr;
   gap: var(--space-5);
@@ -500,25 +474,21 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   background-color: var(--c-bg-muted);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
-.about-page__job-period,
-.about-page__degree-period {
+.about-page__job-period {
   margin: 0;
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--c-accent-strong);
   font-variant-numeric: tabular-nums;
 }
-.about-page__job-body,
-.about-page__degree-body { min-width: 0; }
-.about-page__job-role,
-.about-page__degree-name {
+.about-page__job-body { min-width: 0; }
+.about-page__job-role {
   margin: 0 0 var(--space-2);
   font-size: 1rem;
   color: var(--c-text);
   font-weight: 400;
 }
-.about-page__job-meta,
-.about-page__degree-meta {
+.about-page__job-meta {
   margin: 0 0 var(--space-2);
   color: var(--c-text-subtle);
   font-size: 0.85rem;
@@ -528,48 +498,6 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   color: var(--c-text-muted);
   font-size: 0.95rem;
   line-height: 1.55;
-}
-
-.about-page__projects {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-.about-page__project {
-  padding: var(--space-4);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-md);
-  background-color: var(--c-bg-muted);
-}
-.about-page__project-title {
-  margin: 0 0 var(--space-2);
-  font-size: 1rem;
-  font-weight: 400;
-}
-.about-page__project-description {
-  margin: 0 0 var(--space-2);
-  color: var(--c-text-muted);
-  font-size: 0.95rem;
-  line-height: 1.55;
-}
-.about-page__project-links {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--c-text-subtle);
-}
-.about-page__project-links a {
-  margin-right: var(--space-2);
-}
-
-.about-page__hobbies {
-  margin: 0;
-  color: var(--c-text-muted);
-  font-size: 1rem;
-  font-style: italic;
-  line-height: 1.6;
 }
 
 .about-page__footer {
@@ -837,9 +765,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 
   .about-page { padding: var(--space-5) var(--space-4); }
   .about-page__contact-list { grid-template-columns: 1fr; }
-  .about-page__skills { grid-template-columns: 1fr; }
-  .about-page__job,
-  .about-page__degree {
+  .about-page__job {
     grid-template-columns: 1fr;
     gap: var(--space-2);
     padding: var(--space-3) var(--space-4);
