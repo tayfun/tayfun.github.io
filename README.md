@@ -11,6 +11,7 @@ of [Tayfun Şen](https://tayfunsen.com). The site is built with
 .
 ├── _config.yml          # Jekyll configuration (permalinks, plugins, feed, …)
 ├── _layouts/            # Liquid templates (default, home, post, about)
+├── _includes/           # Reusable partials (post-card, tweet-card, tweet-page)
 ├── _data/               # Site data files (cv.yml — About page source)
 ├── _posts/              # Blog posts, named `YYYY-MM-DD-slug.md`
 ├── assets/              # Static assets: CSS, JS, images, favicon
@@ -18,7 +19,8 @@ of [Tayfun Şen](https://tayfunsen.com). The site is built with
 │   ├── js/main.js       # Vanilla JS (no jQuery); relative post dates
 │   ├── images/initials.png
 │   └── favicon.png
-├── index.html           # Home page (uses the `home` layout, just post list)
+├── scripts/             # Maintenance scripts (e.g. tweet scraper)
+├── index.html           # Home page (uses the `home` layout, post + tweet list)
 ├── about.md             # About page — renders the full CV data
 ├── tags.html            # Tags index
 ├── cv.html              # Legacy standalone CV page (served at /cv.html)
@@ -60,6 +62,56 @@ Post body goes here…
 
 After merging to `main`, the GitHub Actions workflow builds the site and
 publishes it. Posts appear at `https://blog.tayfunsen.com/YYYY/MM/slug.html`.
+
+## Tweets
+
+Tweets are first-class content alongside regular blog posts. Each tweet
+becomes a normal Jekyll post with `type: tweet` in the front matter; the
+home page list and the post page branch on `type` and render a
+[`tweet-card`](_includes/tweet-card.html) /
+[`tweet-page`](_includes/tweet-page.html) instead of the usual blog card.
+
+To publish a tweet manually, create `_posts/YYYY-MM-DD-tweet-<id>.md` with
+front matter like:
+
+```yaml
+---
+layout: post
+title: 'Short title'
+date: 2026-08-20 14:40:00 +0000
+type: tweet
+tweet_id: '2090448885080625290'
+tweet_url: 'https://x.com/tayfunsen/status/2090448885080625290'
+tweet_handle: 'tayfunsen'
+tweet_author: 'Tayfun Şen 🍉'
+tweet_pinned: false
+tweet_likes: 0
+tweet_reposts: 0
+tweet_replies: 0
+tweet_views: 25
+tweet_display_date: 'Aug 20, 2026'
+tweet_images:
+  - 'https://pbs.twimg.com/media/<media-id>.jpg'
+tags: [tweets]
+---
+
+<div class="tweet-body">
+<p class="tweet-text">…</p>
+<div class="tweet-media"><a class="tweet-media__item" href="…" target="_blank" rel="noopener"><img loading="lazy" src="…" alt=""></a></div>
+</div>
+```
+
+For multi-image tweets, use `<div class="tweet-media tweet-media--grid">`
+instead — the CSS handles the Twitter-style 2×2 / 1-large-+-2-stacked
+layout automatically.
+
+To refresh the latest tweets automatically, run
+[`scripts/scrape-tweets.js`](scripts/scrape-tweets.js) (requires
+[Playwright](https://playwright.dev/)):
+
+```bash
+node scripts/scrape-tweets.js tayfunsen 5
+```
 
 ## Local development
 

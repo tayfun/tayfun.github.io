@@ -1,6 +1,9 @@
 ---
 layout: default
 ---
+{%- if page.type == 'tweet' -%}
+{%- include tweet-page.html -%}
+{%- else -%}
 <article class="post">
   <header class="post__header">
     <h1 class="post__title">{{ page.title | escape }}</h1>
@@ -22,3 +25,4 @@ layout: default
     <a class="post__back" href="{{ '/' | relative_url }}">&larr; Back to all posts</a>
   </footer>
 </article>
+{%- endif -%}
