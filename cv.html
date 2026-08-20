@@ -155,6 +155,131 @@ li {
     box-shadow: none;
   }
 }
+
+@media (max-width: 768px) {
+  body {
+    line-height: 1.5;
+    font-size: 16px;
+  }
+
+  #wrap {
+    padding: 1.5em 1em;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  /* Person section stacks vertically */
+  #person {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25em;
+  }
+
+  #intro .name {
+    font-size: 2.25em;
+    line-height: 1.1;
+  }
+
+  #intro .accent {
+    font-size: 1.15em;
+    margin-left: 0;
+    display: block;
+    margin-top: 0.3em;
+  }
+
+  #intro .currently {
+    font-size: 0.85em;
+    margin-top: 0.4em;
+  }
+
+  #contact {
+    text-align: left;
+    font-size: 0.95em;
+  }
+
+  #contact .line {
+    line-height: 1.5;
+  }
+
+  #objective {
+    width: auto;
+    max-width: 100%;
+    margin: 1.25em 0;
+    font-size: 0.95em;
+    text-align: left;
+  }
+
+  /* Info-table: collapse into stacked cards */
+  #info-table,
+  #info-table tbody,
+  #info-table tr,
+  #info-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #info-table {
+    border-spacing: 0;
+  }
+
+  #info-table tr {
+    margin-bottom: 0.25em;
+  }
+
+  /* First column of data rows -> label */
+  #info-table td[data-label] {
+    text-align: left;
+    font-weight: 700;
+    color: #4FA019;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 1.25em;
+    padding: 0;
+  }
+
+  /* Empty first cell (e.g. Hobbies): hide it */
+  #info-table td:first-child:empty {
+    display: none;
+  }
+
+  /* Section title rows */
+  #info-table td.info-section-title {
+    padding-left: 0;
+    font-size: 1.15em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  #info-table .info-section-hr {
+    width: 5em;
+    height: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  /* Content cells */
+  #info-table td.info-section-answer {
+    padding-left: 0;
+    text-align: left;
+  }
+
+  /* Prevent long URLs from overflowing the viewport */
+  a {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  ul {
+    list-style-position: outside;
+    padding-left: 1.2em;
+  }
+
+  #last-updated {
+    font-size: 0.8em;
+    margin-top: 1.5em;
+  }
+}
 </style>
 </head>
 <body>
@@ -180,19 +305,19 @@ li {
         <td class="info-section-title">Skills</td>
     </tr>
     <tr>
-        <td>Fundamentals</td>
+        <td data-label="Fundamentals">Fundamentals</td>
         <td class="info-section-answer">Algorithms &amp; Data Structures, ML/AI/LLMs, e-commerce under high load and high availability</td>
     </tr>
     <tr>
-        <td>Languages</td>
+        <td data-label="Languages">Languages</td>
         <td class="info-section-answer">Python, JavaScript, TypeScript, C/C++, SQL, Bash</td>
     </tr>
     <tr>
-        <td>Frameworks</td>
+        <td data-label="Frameworks">Frameworks</td>
         <td class="info-section-answer">React, Next.js, Django, FastAPI</td>
     </tr>
     <tr>
-        <td>Tools</td>
+        <td data-label="Tools">Tools</td>
         <td class="info-section-answer">Source control (git), vim, Databases (MySQL and PostgreSQL), Docker, Kubernetes, Terraform, AWS, CI/CD, observability, terminal tools</td>
     </tr>
     <tr>
@@ -200,7 +325,7 @@ li {
         <td class="info-section-title">Work</td>
     </tr>
     <tr>
-        <td>10/2025 – Present</td>
+        <td data-label="10/2025 – Present">10/2025 – Present</td>
 	<td class="info-section-answer"><b>Founder</b>, London, UK<br>
           <ul>
             <li>
@@ -216,7 +341,7 @@ li {
         </td>
     </tr>
     <tr>
-        <td>10/2023 – 10/2025</td>
+        <td data-label="10/2023 – 10/2025">10/2023 – 10/2025</td>
 	<td class="info-section-answer"><b>Senior Software Engineer</b>, <a href="https://oaknorth.co.uk/" target="_blank" rel="noopener">OakNorth Bank</a>, London, UK<br>
           <ul>
 	    <li>
@@ -229,7 +354,7 @@ li {
         </td>
     </tr>
     <tr>
-        <td>04/2022 – 09/2023</td>
+        <td data-label="04/2022 – 09/2023">04/2022 – 09/2023</td>
         <td class="info-section-answer"><b>Contract Software Engineer</b>, Various Startups, London, UK<br>
           <ul>
 	    <li>
@@ -245,7 +370,7 @@ li {
         </td>
     </tr>
     <tr>
-        <td>10/2021 – 02/2022</td>
+        <td data-label="10/2021 – 02/2022">10/2021 – 02/2022</td>
         <td class="info-section-answer"><b>Senior Software Engineer</b>, <a href="https://rasa.com" target="_blank" rel="noopener">Rasa</a>, Remote from London, UK<br>
           <ul>
             <li>
@@ -264,7 +389,7 @@ li {
         </td>
     </tr>
     <tr>
-        <td>02/2018 – 02/2021</td>
+        <td data-label="02/2018 – 02/2021">02/2018 – 02/2021</td>
         <td class="info-section-answer"><b>Senior Software Engineer</b>, <a href="https://plentific.com" target="_blank" rel="noopener">Plentific</a>, London, UK<br>
           <ul>
             <li>
@@ -283,7 +408,7 @@ li {
         </td>
     </tr>
     <tr style="page-break-after:always">
-        <td>06/2015 – 02/2018</td>
+        <td data-label="06/2015 – 02/2018">06/2015 – 02/2018</td>
         <td class="info-section-answer"><b>Software Engineer</b>, <a href="https://www.skyscanner.net/" target="_blank" rel="noopener">Skyscanner</a>, Edinburgh, UK<br>
           <ul>
             <li>
@@ -302,7 +427,7 @@ li {
         </td>
     </tr>
     <tr>
-        <td>04/2014 – 05/2015</td>
+        <td data-label="04/2014 – 05/2015">04/2014 – 05/2015</td>
         <td class="info-section-answer"><b>Software Engineer</b>, <a href="https://www.booking.com" target="_blank" rel="noopener">Booking.com</a>, Amsterdam, Netherlands<br>
           <ul>
             <li>
@@ -315,7 +440,7 @@ li {
         </td>
     </tr>
     <tr>
-        <td>06/2013 – 03/2014</td>
+        <td data-label="06/2013 – 03/2014">06/2013 – 03/2014</td>
         <td class="info-section-answer"><b>Web Developer</b>, <a href="https://www.redbeacon.com" target="_blank" rel="noopener">Redbeacon</a>, Istanbul (Remote work)<br>
         <ul>
           <li>
@@ -328,7 +453,7 @@ li {
         </td>
     </tr>
     <tr>
-      <td>09/2011 – 03/2013</td>
+      <td data-label="09/2011 – 03/2013">09/2011 – 03/2013</td>
       <td class="info-section-answer">
         <b>Web Developer</b>,
         <a href="https://www.markafoni.com" target="_blank" rel="noopener">Markafoni</a>,
@@ -347,7 +472,7 @@ li {
       </td>
     </tr>
     <tr>
-        <td>08/2009 – 08/2010</td>
+        <td data-label="08/2009 – 08/2010">08/2009 – 08/2010</td>
         <td class="info-section-answer"><b>Web Developer</b>, <a href="https://www.jotform.com/" target="_blank" rel="noopener">JotForm</a>, Ankara, Turkey.<br>
         <ul>
           <li>
@@ -361,12 +486,12 @@ li {
         <td class="info-section-title">Education</td>
     </tr>
     <tr>
-        <td>2006–2009</td>
+        <td data-label="2006–2009">2006–2009</td>
         <td class="info-section-answer"><b>M.Sc. in Computer Engineering</b>, <a href="https://metu.edu" target="_blank" rel="noopener">Middle East Technical University</a>, <a href="https://www.ceng.metu.edu.tr/" target="_blank" rel="noopener">Department of Computer Engineering</a>, Ankara, Turkey<br>
         </td>
     </tr>
     <tr>
-        <td>2002–2006</td>
+        <td data-label="2002–2006">2002–2006</td>
         <td class="info-section-answer"><b>B.Sc. in Computer Engineering</b>, <a href="https://metu.edu" target="_blank" rel="noopener">Middle East Technical University</a>, <a href="https://www.ceng.metu.edu.tr/" target="_blank" rel="noopener">Department of Computer Engineering</a>, Ankara, Turkey<br>
         </td>
     </tr>
@@ -375,7 +500,7 @@ li {
         <td class="info-section-title">Open Source &amp; Side Projects</td>
     </tr>
     <tr>
-        <td>Projects</td>
+        <td data-label="Projects">Projects</td>
         <td class="info-section-answer">
           <ul>
             <li>
