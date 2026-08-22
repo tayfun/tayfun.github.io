@@ -1,6 +1,6 @@
-# blog.tayfunsen.com
+# tayfunsen.com
 
-Source for [blog.tayfunsen.com](https://blog.tayfunsen.com), the personal blog
+Source for [tayfunsen.com](https://tayfunsen.com), the personal blog
 of [Tayfun Şen](https://tayfunsen.com). The site is built with
 [Jekyll](https://jekyllrb.com/) and deployed to
 [GitHub Pages](https://pages.github.com/) via a GitHub Actions workflow.
@@ -24,7 +24,6 @@ of [Tayfun Şen](https://tayfunsen.com). The site is built with
 ├── about.md             # About page — renders the full CV data
 ├── tags.html            # Tags index
 ├── cv.html              # Legacy standalone CV page (served at /cv.html)
-├── CNAME                # Custom domain for GitHub Pages (blog.tayfunsen.com)
 ├── Gemfile              # Ruby gem manifest
 ├── .github/workflows/
 │   └── jekyll.yml       # Build & deploy to GitHub Pages
@@ -61,7 +60,7 @@ Post body goes here…
 ```
 
 After merging to `main`, the GitHub Actions workflow builds the site and
-publishes it. Posts appear at `https://blog.tayfunsen.com/YYYY/MM/slug.html`.
+publishes it. Posts appear at `https://tayfunsen.com/YYYY/MM/slug.html`.
 
 ## Tweets
 
@@ -140,18 +139,6 @@ push to `main` the workflow:
 The deployment job requires the `github-pages` environment to exist in the
 repository settings (it is created automatically the first time GitHub Pages
 is enabled for the repo).
-
-## Custom domain (CNAME)
-
-The `CNAME` file at the repository root contains `blog.tayfunsen.com`. When
-Jekyll builds the site, the file is copied to `_site/CNAME` and GitHub Pages
-uses it to serve the site from the custom domain. **Without this file the
-site would only be reachable via `<user>.github.io`**, so it must remain in
-the repository root and must not be excluded from the build.
-
-The standalone CV page is also served from the site root (`cv.html`) so the
-URL [blog.tayfunsen.com/cv.html](https://blog.tayfunsen.com/cv.html) keeps
-working without any rewrites.
 
 ## Template modernisation notes
 

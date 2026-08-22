@@ -8,7 +8,7 @@ tagline: Software Engineer
 location: London, UK
 email: tayfun.sen@gmail.com
 github: https://github.com/tayfun
-website: https://blog.tayfunsen.com
+website: https://tayfunsen.com
 cv_url: /cv.html
 
 # What the author is focused on right now. Shown as the headline of the
@@ -153,7 +153,6 @@ open_source:
     url: https://github.com/RasaHQ/rasa/pull/10641
   - title: "Tatlı Sözlük"
     description: "A simple Turkish dictionary page built by web scraping, served via AWS Lambda"
-    url: https://blog.tayfunsen.com/sozluk/
   - title: "django-extensions runserver_plus SSL support"
     description: "Added SSL support to the runserver_plus management command"
     links:

@@ -1,11 +1,11 @@
-# Jekyll configuration for blog.tayfunsen.com
+# Jekyll configuration for tayfunsen.com
 # See: https://jekyllrb.com/docs/configuration/
 
 title: "ramblings of an embodied consciousness"
 tagline: "not a stochastic silicon parrot"
 description: "Tayfun Şen's personal blog — software, travel, books, observations."
 author: "Tayfun Şen"
-url: "https://blog.tayfunsen.com"
+url: "https://tayfunsen.com"
 baseurl: ""
 lang: "en"
 

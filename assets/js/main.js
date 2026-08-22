@@ -1,6 +1,6 @@
 /*
  * Author:  Tayfun Sen
- * URL:     https://blog.tayfunsen.com
+ * URL:     https://tayfunsen.com
  *
  * Modernized: no jQuery dependency, uses vanilla JS and
  * `Intl.RelativeTimeFormat` for friendlier post dates.
