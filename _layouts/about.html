@@ -49,6 +49,21 @@ layout: default
     </p>
   </section>
 
+  <section class="about-page__section" aria-labelledby="about-page-hobbies">
+    <h2 id="about-page-hobbies" class="about-page__section-title">Off the Clock</h2>
+    <ul class="about-page__hobbies">
+      {%- for hobby in cv.hobbies -%}
+        <li class="about-page__hobby">
+          <span class="about-page__hobby-icon" aria-hidden="true">{{ hobby.icon }}</span>
+          <div class="about-page__hobby-body">
+            <span class="about-page__hobby-title">{{ hobby.title | escape }}</span>
+            <span class="about-page__hobby-blurb">{{ hobby.blurb | escape }}</span>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </section>
+
   <footer class="about-page__footer">
     <p class="about-page__updated">Last updated: {{ cv.last_updated | escape }}</p>
   </footer>

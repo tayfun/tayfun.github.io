@@ -508,6 +508,51 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   line-height: 1.6;
 }
 
+.about-page__hobbies {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-3);
+  padding: 0;
+  margin: 0;
+}
+.about-page__hobby {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--c-bg-muted);
+  border-radius: var(--radius-md);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.about-page__hobby-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background-color: var(--c-accent-soft);
+  border-radius: var(--radius-sm);
+  font-size: 1.2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.about-page__hobby-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.about-page__hobby-title {
+  font-weight: 600;
+  color: var(--c-text);
+}
+.about-page__hobby-blurb {
+  color: var(--c-text-muted);
+  font-size: 0.88rem;
+}
+
 .about-page__footer {
   margin-top: var(--space-6);
   padding-top: var(--space-5);
@@ -1016,6 +1061,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 
   .about-page { padding: var(--space-5) var(--space-4); }
   .about-page__contact-list { grid-template-columns: 1fr; }
+  .about-page__hobbies { grid-template-columns: 1fr; }
   .about-page__intro { gap: var(--space-2); }
 
   .post-card { padding: var(--space-4); }

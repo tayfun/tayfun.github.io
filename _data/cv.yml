@@ -132,10 +132,27 @@ education:
     department_url: https://www.ceng.metu.edu.tr/
     location: Ankara, Turkey
 
-# A short, single-line teaser about hobbies, shown on the home page.
-hobbies: >-
-  Meeting new people and cultures, seeing new places. I have lived in a
-  few different countries around the world.
+# Off-the-clock interests shown as cards on the About page (and a
+# matching bulleted list on the legacy cv.html). Each item has a single
+# emoji icon, a short title, and a one-line blurb in the author's voice.
+# Order is the display order.
+hobbies:
+  - icon: "🚲"
+    title: Biking
+    blurb: >-
+      Mostly commuting across London. Slowly getting faster, or so I tell myself.
+  - icon: "📚"
+    title: Reading
+    blurb: >-
+      Always three books deep: one I should read, one I am reading, one I abandoned at page 40.
+  - icon: "🌍"
+    title: Meeting people
+    blurb: >-
+      Lived in a few countries; the best things in life are free.
+  - icon: "🧠"
+    title: Curiosity
+    blurb: >-
+      Infinitely curious. Reading encyclopedias before wikis.
 
 # Open-source work and side projects. Each item has a title, an optional
 # description, and either a single `url` or an array of labelled `links`.
