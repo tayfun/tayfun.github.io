@@ -1,5 +1,5 @@
 ---
 layout: about
-title: About
+title: About Tayfun Şen
 permalink: /about/
 ---
