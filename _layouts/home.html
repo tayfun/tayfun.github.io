@@ -1,26 +1,51 @@
 ---
 layout: default
 ---
+{%- assign photos = site.data.photos -%}
 <section class="post-list-section" aria-labelledby="post-list-heading">
   <h1 id="post-list-heading" class="visually-hidden">Tokens &mdash; Page {{ paginator.page }}</h1>
 
-  {%- assign tweet_grid_open = false -%}
+  {%- assign grid_open = false -%}
+  {%- assign photo_index = 0 -%}
   {%- for post in paginator.posts -%}
     {%- if post.type == 'tweet' -%}
-      {%- unless tweet_grid_open -%}
+      {%- unless grid_open -%}
         <div class="tweet-grid">
-        {%- assign tweet_grid_open = true -%}
+        {%- assign grid_open = true -%}
       {%- endunless -%}
       {%- include tweet-card.html post=post -%}
     {%- else -%}
-      {%- if tweet_grid_open -%}
+      {%- if grid_open -%}
         </div>
-        {%- assign tweet_grid_open = false -%}
+        {%- assign grid_open = false -%}
       {%- endif -%}
       {%- include post-card.html post=post -%}
     {%- endif -%}
+
+    {%- comment -%}
+      Sprinkle photos into the first page only, after every other post,
+      so the home page reads: post, photo, post, post, photo, post, post, photo.
+      Photos are rendered inside the same 2-column grid as tweets so that
+      every row holds two cards (tweet/photo in any combination).
+      The pattern falls back gracefully when there are fewer posts than
+      expected (or when site.data.photos is missing/empty).
+    {%- endcomment -%}
+    {%- if paginator.page == 1 -%}
+      {%- assign post_index = forloop.index -%}
+      {%- if post_index == 1 or post_index == 3 or post_index == 5 -%}
+        {%- if photo_index < photos.size -%}
+          {%- unless grid_open -%}
+            <div class="tweet-grid">
+            {%- assign grid_open = true -%}
+          {%- endunless -%}
+          {%- assign current_photo = photos[photo_index] -%}
+          {%- include photo-card.html photo=current_photo -%}
+          {%- assign photo_index = photo_index | plus: 1 -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
   {%- endfor -%}
-  {%- if tweet_grid_open -%}
+  {%- if grid_open -%}
     </div>
   {%- endif -%}
 

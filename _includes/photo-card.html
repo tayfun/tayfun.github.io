@@ -1,0 +1,15 @@
+{%- assign photo = include.photo -%}
+<figure class="photo-card">
+  <a class="photo-card__link" href="{{ photo.image | relative_url }}" target="_blank" rel="noopener">
+    <img class="photo-card__image"
+         src="{{ photo.image | relative_url }}"
+         alt="{{ photo.caption | escape }}"
+         loading="lazy"
+         decoding="async"
+         width="1200" height="800">
+  </a>
+  <figcaption class="photo-card__caption">
+    <span class="photo-card__location">{{ photo.location | escape }}</span>
+    <span class="photo-card__caption-text">{{ photo.caption | escape }}</span>
+  </figcaption>
+</figure>

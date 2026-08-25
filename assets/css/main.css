@@ -650,6 +650,68 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 }
 .post-card__excerpt > *:last-child { margin-bottom: 0; }
 
+/* ---------- Photo card (home-page list) ----------
+   Sprinkled between posts on the first page. Keeps the same outer
+   surface as a post-card / tweet-card so the list feels consistent,
+   but centres the photo and gives it a caption underneath. */
+.photo-card {
+  background-color: var(--c-bg-elevated);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition), box-shadow var(--transition);
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 640px;
+}
+.photo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+.photo-card__link {
+  display: block;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background-color: var(--c-bg-muted);
+  line-height: 0;
+}
+.photo-card__link:hover, .photo-card__link:focus-visible {
+  text-decoration: none;
+}
+.photo-card__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin: 0;
+}
+.photo-card__caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--c-border);
+  color: var(--c-text-muted);
+  font-size: 0.92rem;
+}
+.photo-card__location {
+  font-weight: 700;
+  color: var(--c-text);
+  letter-spacing: 0.01em;
+}
+.photo-card__caption-text {
+  font-style: italic;
+}
+.photo-card__caption-text:empty { display: none; }
+
 /* ---------- Tweet grid (home-page list) ---------- */
 .tweet-grid {
   display: grid;
@@ -658,7 +720,8 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   gap: var(--space-4);
   margin-bottom: var(--space-5);
 }
-.tweet-grid .tweet-card:only-child { grid-column: 1 / -1; }
+.tweet-grid .tweet-card:only-child,
+.tweet-grid .photo-card:only-child { grid-column: 1 / -1; }
 
 /* Compact tweet cards inside the grid */
 .tweet-grid .tweet-card {
@@ -676,6 +739,26 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 .tweet-grid .tweet-card__body .tweet-media--grid .tweet-media__item img { max-height: 200px; }
 .tweet-grid .tweet-card__stats { gap: var(--space-3); font-size: 0.8rem; }
 .tweet-grid .tweet-card__source { font-size: 0.8rem; }
+
+/* Compact photo cards inside the grid (sit alongside tweet cards) */
+.tweet-grid .photo-card {
+  margin-bottom: 0;
+  padding: var(--space-3);
+  max-width: none;
+}
+.tweet-grid .photo-card__image {
+  /* Let portrait images render at their natural aspect ratio so they
+     don't get cropped/squashed. Landscape images still respect the
+     default max-height from .photo-card__image (520px) but render
+     shorter in practice because of their aspect ratio. */
+  max-height: none;
+}
+.tweet-grid .photo-card__caption {
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  font-size: 0.85rem;
+  gap: var(--space-1) var(--space-2);
+}
 
 /* ---------- Tweet card (home-page list) ---------- */
 .tweet-card {
@@ -1082,6 +1165,9 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   .post-card__meta { flex-direction: column; gap: var(--space-1); }
   .post-card__tags { padding-left: 0; border-left: none; margin-left: 0; }
 
+  .photo-card { padding: var(--space-3); max-width: none; }
+  .photo-card__image { max-height: 400px; }
+
   .post { padding: var(--space-5) var(--space-4); }
   .post__tags { padding-left: 0; border-left: none; }
 
@@ -1108,4 +1194,5 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   .about-page__currently-dot { animation: none; }
   .post-card:hover { transform: none; }
   .tweet-card:hover { transform: none; }
+  .photo-card:hover { transform: none; }
 }

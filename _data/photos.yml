@@ -1,0 +1,13 @@
+# Personal photos sprinkled through the home-page post list to add some
+# colour. Each entry becomes a `.photo-card` rendered between posts.
+# Order is the display order.
+
+- image: /assets/photos/tayfun-jaipur.jpg
+  location: Jaipur, India
+  caption: Amber Palace
+- image: /assets/photos/tayfun-japan.jpg
+  location: Tokyo, Japan
+  caption: What better way to spend a Tokyo night than karaoke?
+- image: /assets/photos/tayfun-sup.jpg
+  location: Hampton Court
+  caption: A lazy afternoon, paddleboarding.
