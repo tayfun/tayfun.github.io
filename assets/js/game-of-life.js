@@ -37,11 +37,11 @@
   var STABLE_LIMIT = 30;      // generations with no change → pause
   var DEAD_THRESHOLD = 0.015; // <1.5% of cells alive → re-seed
   var INITIAL_DENSITY = 0.18; // 18% live cells in a fresh random seed
-  var MIN_COLS = 80;
-  var MAX_COLS = 220;
-  var MIN_ROWS = 14;
-  var MAX_ROWS = 36;
-  var CELL_TARGET_PX = 6;     // display size of one cell after CSS scaling
+  var MIN_COLS = 40;
+  var MAX_COLS = 110;
+  var MIN_ROWS = 7;
+  var MAX_ROWS = 18;
+  var CELL_TARGET_PX = 12;    // display size of one cell after CSS scaling
 
   // --- State ---
   var cols = 0;
