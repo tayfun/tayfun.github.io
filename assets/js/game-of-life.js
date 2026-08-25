@@ -58,6 +58,10 @@
   var reducedMotion = false;
   var timer = null;
   var resizeRaf = 0;
+  var hoverEl = null;       // overlay that previews the hover-targeted cell
+  var hoverX = -1;          // current hover cell (grid coords), -1 = hidden
+  var hoverY = -1;
+  hoverEl = document.getElementById("header-gol-hover");
 
   // --- Helpers ---
   function makeGrid() { return new Uint8Array(cols * rows); }
@@ -260,6 +264,10 @@
     lastHash = hash();
     stableCount = 0;
     paused = false;
+    // Keep the hover preview sized to the new cell dimensions; if its
+    // cell now falls outside the grid, hide it.
+    if (hoverX >= cols || hoverY >= rows) hideHover();
+    syncHoverSize();
     draw();
     sync();
   }
@@ -321,6 +329,68 @@
     draw();
     sync();
   });
+
+  // --- Hover preview: highlight the grid cell under the cursor so the
+  // user can see which cell the next click will turn alive. The overlay
+  // is a sibling <div> styled in CSS with a dashed --c-accent border; we
+  // just position and size it here. Reduced motion disables the preview
+  // since the simulation itself isn't running.
+  function clientToGrid(e) {
+    var rect = canvas.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return null;
+    var gx = Math.floor((e.clientX - rect.left) / rect.width * cols);
+    var gy = Math.floor((e.clientY - rect.top) / rect.height * rows);
+    if (gx < 0 || gx >= cols || gy < 0 || gy >= rows) return null;
+    return [gx, gy];
+  }
+
+  function syncHoverSize() {
+    if (!hoverEl || !cols || !rows) return;
+    var host = canvas.parentElement;
+    if (!host) return;
+    var rect = host.getBoundingClientRect();
+    var cellW = rect.width / cols;
+    var cellH = rect.height / rows;
+    hoverEl.style.width = cellW + "px";
+    hoverEl.style.height = cellH + "px";
+    if (hoverX >= 0) {
+      hoverEl.style.transform =
+        "translate(" + (hoverX * cellW) + "px," + (hoverY * cellH) + "px)";
+    }
+  }
+
+  function showHover(x, y) {
+    hoverX = x;
+    hoverY = y;
+    if (!hoverEl) return;
+    var host = canvas.parentElement;
+    if (!host) return;
+    var rect = host.getBoundingClientRect();
+    var cellW = rect.width / cols;
+    var cellH = rect.height / rows;
+    hoverEl.style.width = cellW + "px";
+    hoverEl.style.height = cellH + "px";
+    hoverEl.style.transform =
+      "translate(" + (x * cellW) + "px," + (y * cellH) + "px)";
+    hoverEl.style.opacity = "1";
+  }
+
+  function hideHover() {
+    hoverX = -1;
+    hoverY = -1;
+    if (hoverEl) hoverEl.style.opacity = "0";
+  }
+
+  if (hoverEl) {
+    canvas.addEventListener("mousemove", function (e) {
+      if (reducedMotion) { hideHover(); return; }
+      if (!cur) return;
+      var g = clientToGrid(e);
+      if (!g) { hideHover(); return; }
+      if (g[0] !== hoverX || g[1] !== hoverY) showHover(g[0], g[1]);
+    });
+    canvas.addEventListener("mouseleave", hideHover);
+  }
 
   // --- Boot ---
 

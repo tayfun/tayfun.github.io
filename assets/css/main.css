@@ -240,9 +240,28 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
      Brand/nav sit at z-index 1 above the canvas, so interactive UI
      receives clicks normally. */
   pointer-events: auto;
+  cursor: pointer;
   opacity: 0.55;
   image-rendering: pixelated;
   image-rendering: crisp-edges; /* Firefox */
+}
+/* Hover preview: a tinted cell with a solid outline that follows the
+   cursor over the grid to show which cell the next click would turn
+   alive. z-index: 1 puts it above the canvas (z-index 0); the brand/nav
+   (z-index 1, later in DOM) still render on top via document order, so
+   the title/links never get a preview overlay drawn over them. */
+.site-header__gol-hover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 2px solid var(--c-accent);
+  background-color: var(--c-accent-soft);
+  opacity: 0;
+  transition: opacity 80ms linear;
+  will-change: transform, opacity;
 }
 .site-header__inner { position: relative; z-index: 1; }
 .site-header::after {
