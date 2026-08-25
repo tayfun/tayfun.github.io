@@ -245,8 +245,21 @@
     var h = Math.max(1, Math.floor(rect.height));
     if (w === 0 || h === 0) return;
 
-    var newCols = Math.max(MIN_COLS, Math.min(MAX_COLS, Math.round(w / CELL_TARGET_PX)));
-    var newRows = Math.max(MIN_ROWS, Math.min(MAX_ROWS, Math.round(h / CELL_TARGET_PX)));
+    // Pick a single cellPx that satisfies the MIN/MAX bounds on *both*
+    // dimensions so the canvas cells stay square on screen (independent
+    // per-dimension math would let the MIN_COLS clamp on narrow viewports
+    // produce rectangular cells). CELL_TARGET_PX is the design target;
+    // we step up if either bound's MAX would be exceeded, down if either
+    // bound's MIN would be missed.
+    var cellPx = CELL_TARGET_PX;
+    var lowerBound = Math.max(w / MAX_COLS, h / MAX_ROWS);
+    var upperBound = Math.min(w / MIN_COLS, h / MIN_ROWS);
+    if (CELL_TARGET_PX < lowerBound) cellPx = lowerBound;
+    else if (CELL_TARGET_PX > upperBound) cellPx = upperBound;
+    // Infeasible aspect ratios (lowerBound > upperBound) keep lowerBound;
+    // one of the bounds will be violated — the clamp below is a safety net.
+    var newCols = Math.max(MIN_COLS, Math.min(MAX_COLS, Math.round(w / cellPx)));
+    var newRows = Math.max(MIN_ROWS, Math.min(MAX_ROWS, Math.round(h / cellPx)));
 
     // Always refresh the mask; the title block or nav can move / wrap even
     // if the header's outer dimensions don't change.
