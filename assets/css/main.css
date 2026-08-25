@@ -226,7 +226,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   overflow: hidden; /* clip the drifting gradient line + GoL canvas */
   border-bottom: 1px solid var(--c-border);
   background-color: var(--c-bg-elevated);
-  padding: var(--space-5) var(--space-6);
+  padding: var(--space-7) var(--space-6);
 }
 /* Game of Life: a small canvas scaled up by CSS, so the simulation
    itself runs on a tiny grid (~150 × ~22 cells). Purely decorative. */
@@ -1151,7 +1151,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 /* ---------- Responsive tweaks ---------- */
 @media (max-width: 640px) {
   body { font-size: 16px; }
-  .site-header { padding: var(--space-4) var(--space-4); }
+  .site-header { padding: var(--space-5) var(--space-4); }
   .site-header__inner { gap: var(--space-3); }
   .site-header__text { min-width: 0; }
   .site-header__title { font-size: 1.15rem; white-space: normal; overflow-wrap: break-word; }
