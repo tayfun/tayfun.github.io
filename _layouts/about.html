@@ -3,7 +3,7 @@ layout: default
 ---
 {%- assign cv = site.data.cv -%}
 <article class="about-page" aria-labelledby="about-page-name">
-  <header class="about-page__intro">
+  <header class="about-page__intro" role="banner">
     <h1 id="about-page-name" class="about-page__name">{{ cv.name | escape }}</h1>
     <p class="about-page__tagline">{{ cv.tagline | escape }}</p>
     <p class="about-page__currently">
