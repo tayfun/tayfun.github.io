@@ -301,6 +301,27 @@
     window.addEventListener("resize", scheduleResize);
   }
 
+  // --- Interaction: click on the header adds a living cell at the
+  // clicked grid position. The new cell is rendered with the same
+  // --c-accent fill + 0.55 canvas opacity as any other living cell, and
+  // it immediately participates in the next step (we reset the stability
+  // counter and hash, redraw, and resume the loop if it had paused).
+  canvas.addEventListener("click", function (e) {
+    if (reducedMotion) return;
+    if (!cur) return;
+    var rect = canvas.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+    var gx = Math.floor((e.clientX - rect.left) / rect.width * cols);
+    var gy = Math.floor((e.clientY - rect.top) / rect.height * rows);
+    if (gx < 0 || gx >= cols || gy < 0 || gy >= rows) return;
+    cur[gy * cols + gx] = 1;
+    lastHash = hash();
+    stableCount = 0;
+    paused = false;
+    draw();
+    sync();
+  });
+
   // --- Boot ---
 
   function init() {
