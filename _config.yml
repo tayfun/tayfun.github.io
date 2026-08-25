@@ -26,6 +26,11 @@ defaults:
     values:
       layout: post
       comments: false
+  - scope:
+      path: ""
+    values:
+      # Default Open Graph / Twitter card image (used by jekyll-seo-tag)
+      image: /assets/images/og-image.png
 
 # Plugins (whitelisted on GitHub Pages: https://pages.github.com/versions/)
 plugins:
