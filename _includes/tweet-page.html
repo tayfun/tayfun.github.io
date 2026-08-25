@@ -1,6 +1,7 @@
 {%- assign tweet_url = page.tweet_url | default: '' -%}
 {%- assign avatar = page.tweet_avatar | default: 'https://pbs.twimg.com/profile_images/851331378364862464/YfgD54D0_normal.jpg' -%}
 <article class="tweet-card tweet-card--page{% if page.tweet_pinned %} tweet-card--pinned{% endif %}" aria-label="Tweet by {{ page.tweet_author | escape }}">
+  <h1 class="visually-hidden">Tweet by {{ page.tweet_author | escape }}{%- if page.tweet_handle %} ({{ page.tweet_handle | escape }}){%- endif %}</h1>
   {%- if page.tweet_pinned %}
   <div class="tweet-card__pin" aria-hidden="true">
     <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true" focusable="false">

@@ -1,7 +1,8 @@
 ---
 layout: default
 ---
-<section class="post-list-section">
+<section class="post-list-section" aria-labelledby="post-list-heading">
+  <h1 id="post-list-heading" class="page-title">Posts</h1>
 
   {%- assign tweet_grid_open = false -%}
   {%- for post in paginator.posts -%}
