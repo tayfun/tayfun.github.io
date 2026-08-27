@@ -25,7 +25,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // ---------- scene basics ----------
 const scene = new THREE.Scene();
-scene.scale.setScalar(0.5);
+scene.scale.setScalar(5.0);
 scene.background = new THREE.Color(0xaee3f5);
 scene.fog = new THREE.Fog(0xaee3f5, 260, 820);
 
@@ -215,6 +215,10 @@ const COLORS = {
   roofred: 0x8a2a1e, darkwood: 0x4a3623, grass: 0x2f8a4e,
   door: 0x3a2a1c
 };
+
+// Global scale factor for every building, the bridge, and towers.
+// Applied uniformly so the city stays readable while everything is bigger.
+const BUILDING_SCALE = 1.5;
 
 // ---------- helpers ----------
 // A solid block — base at group y=0, top at y=h. No studs.
@@ -476,7 +480,7 @@ for (let x = -210; x <= 210; x += 24) {
     if (distToSegment(jx, jz, TRAM_A.x, TRAM_A.z, TRAM_B.x, TRAM_B.z) < 3.5) continue;
     // Sparser city: keep roughly 35% of grid cells.
     if (rng() < 0.65) continue;
-    const w = 5 + rng() * 4, d = 5 + rng() * 4, h = 4 + rng() * 14;
+    const w = (5 + rng() * 4) * BUILDING_SCALE, d = (5 + rng() * 4) * BUILDING_SCALE, h = (4 + rng() * 14) * BUILDING_SCALE;
     const c = palette[Math.floor(rng() * palette.length)];
     const b = block(w, h, d, c);
     addWindows(b, w, h, d);
@@ -561,8 +565,8 @@ scene.add(bridgeGroup);
       // 1) measure the unscaled model
       const rawBox = new THREE.Box3().setFromObject(model);
       const rawSize = rawBox.getSize(new THREE.Vector3());
-      // 2) uniform scale so the long axis (~58 scene units) crosses the strait
-      const target = 58;
+      // 2) uniform scale so the long axis crosses the strait
+      const target = 58 * BUILDING_SCALE;
       const s = rawSize.x > 0 ? target / rawSize.x : 1;
       model.scale.setScalar(s);
       // 3) re-measure (scale + rotation included), then center horizontally
@@ -606,7 +610,7 @@ scene.add(kizkulesiGroup);
       const rawSize = rawBox.getSize(new THREE.Vector3());
       // 2) pick a uniform scale so the widest footprint dimension is ~12 units
       const longest = Math.max(rawSize.x, rawSize.z);
-      const target = 16;
+      const target = 16 * BUILDING_SCALE;
       const s = longest > 0 ? Math.min(target / longest, 50) : 1;
       model.scale.setScalar(s);
       // 3) re-measure (the scale is now baked into the world-space box),
@@ -646,7 +650,7 @@ scene.add(hagiaGroup);
       const rawSize = rawBox.getSize(new THREE.Vector3());
       // 2) pick a uniform scale so the widest footprint dimension is ~32 units
       const longest = Math.max(rawSize.x, rawSize.z);
-      const target = 32;
+      const target = 32 * BUILDING_SCALE;
       const s = longest > 0 ? Math.min(target / longest, 50) : 1;
       model.scale.setScalar(s);
       // 3) re-measure (the scale is now baked into the world-space box),
@@ -685,7 +689,7 @@ scene.add(galataGroup);
       const rawSize = rawBox.getSize(new THREE.Vector3());
       // 2) pick a uniform scale so the widest footprint dimension is ~4 units
       const longest = Math.max(rawSize.x, rawSize.z);
-      const target = 6;
+      const target = 6 * BUILDING_SCALE;
       const s = longest > 0 ? Math.min(target / longest, 50) : 1;
       model.scale.setScalar(s);
       // 3) re-measure (the scale is now baked into the world-space box),
