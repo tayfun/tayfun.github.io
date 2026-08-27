@@ -21,6 +21,7 @@
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // ---------- scene basics ----------
 const scene = new THREE.Scene();
@@ -625,65 +626,45 @@ for (let i = 0; i < 60; i++) {
   scene.add(g);
 })();
 
-// ---------- Hagia Sophia (European side) ----------
-(function hagiaSophia() {
-  const g = new THREE.Group();
-  // stepped base
-  const baseLow = block(24, 1.2, 16, COLORS.stone);
-  baseLow.position.y = 0.6;
-  g.add(baseLow);
-  const base = block(22, 1.8, 14, COLORS.cream);
-  base.position.y = 1.2 + 0.9;
-  g.add(base);
-  // main body with windows
-  const bodyY = 1.2 + 1.8;
-  const body = block(18, 8, 10, COLORS.cream);
-  body.position.y = bodyY + 4;
-  addWindows(body, 18, 8, 10, COLORS.window, 2);
-  g.add(body);
-  // arched portals front & back
-  const portalMat = new THREE.MeshStandardMaterial({ color: COLORS.door, roughness: 0.8 });
-  for (const sign of [-1, 1]) {
-    const arch = new THREE.Mesh(new THREE.BoxGeometry(2.4, 3.4, 0.18), portalMat);
-    arch.position.set(0, bodyY + 1.7, sign * 5.04);
-    g.add(arch);
-    // arched top — half-cylinder facing forward
-    const archTop = new THREE.Mesh(
-      new THREE.CylinderGeometry(1.2, 1.2, 0.18, 18, 1, false, 0, Math.PI),
-      portalMat
-    );
-    archTop.position.set(0, bodyY + 3.4, sign * 5.04);
-    archTop.rotation.x = Math.PI / 2;
-    archTop.rotation.y = Math.PI / 2;
-    g.add(archTop);
-  }
-  // main dome + semi-domes + flanking small domes
-  const domeY = bodyY + 8;
-  g.add(dome(5.5, COLORS.gray, domeY));
-  for (const x of [-9, 9]) g.add(dome(3.2, COLORS.gray, domeY, 2.4));
-  for (const x of [-13, 13]) {
-    const sm = new THREE.Mesh(
-      new THREE.SphereGeometry(1.8, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2),
-      new THREE.MeshStandardMaterial({ color: COLORS.gray, roughness: 0.6 })
-    );
-    sm.position.set(x, domeY, 0);
-    sm.castShadow = true;
-    g.add(sm);
-    const f = new THREE.Mesh(
-      new THREE.ConeGeometry(0.1, 0.5, 6),
-      new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.6 })
-    );
-    f.position.set(x, domeY + 1.8 + 0.25, 0);
-    g.add(f);
-  }
-  // 4 minarets at corners — shaft base sits at group y=0
-  for (const [mx, mz] of [[-12, -7], [-12, 7], [12, -7], [12, 7]]) {
-    g.add(minaret(mx, mz, 18, COLORS.cream));
-  }
-  g.position.set(-14, 2, -SEA_Z_HALF - 26);
-  g.rotation.y = 0.15;
-  scene.add(g);
-})();
+// ---------- Hagia Sophia (European side) — loaded from GLB ----------
+const hagiaGroup = new THREE.Group();
+hagiaGroup.position.set(-14, 2, -SEA_Z_HALF - 26);
+hagiaGroup.rotation.y = 0.15;
+scene.add(hagiaGroup);
+
+{
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.load(
+    'assets/models/hagia-sophia.glb',
+    (gltf) => {
+      const model = gltf.scene;
+      // 1) measure the unscaled model
+      const rawBox = new THREE.Box3().setFromObject(model);
+      const rawSize = rawBox.getSize(new THREE.Vector3());
+      // 2) pick a uniform scale so the widest footprint dimension is ~32 units
+      const longest = Math.max(rawSize.x, rawSize.z);
+      const target = 32;
+      const s = longest > 0 ? Math.min(target / longest, 50) : 1;
+      model.scale.setScalar(s);
+      // 3) re-measure (the scale is now baked into the world-space box),
+      //    then center horizontally and plant the base at local y=0
+      const box = new THREE.Box3().setFromObject(model);
+      model.position.x -= (box.min.x + box.max.x) / 2;
+      model.position.z -= (box.min.z + box.max.z) / 2;
+      model.position.y -= box.min.y;
+      // 4) enable shadows on every mesh in the model
+      model.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+        }
+      });
+      hagiaGroup.add(model);
+    },
+    undefined,
+    (err) => console.error('Failed to load Hagia Sophia model:', err)
+  );
+}
 
 // ---------- Galata Tower (European side, near the water) ----------
 (function galata() {
