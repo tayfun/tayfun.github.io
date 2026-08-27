@@ -368,8 +368,8 @@ const BRIDGE_T = 0.62;
 const KIZKULESI_T = 0.22;
 
 // Tram endpoints (declared early so the building scatter can keep cells off the track).
-const TRAM_A = new THREE.Vector3(-140, 2,  -25); // northern stop
-const TRAM_B = new THREE.Vector3( -70, 2, -150); // southern stop
+const TRAM_A = new THREE.Vector3(-140, 10,  -25); // northern stop
+const TRAM_B = new THREE.Vector3( -70, 10, -150); // southern stop
 
 // Sea: large flat circular disc that sits underneath the land and shows
 // through wherever the land has a hole (the Bosphorus).
@@ -766,16 +766,16 @@ const TRAM_ROT_Y = Math.atan2(-tramDir.z, tramDir.x);
 const trackGroup = new THREE.Group();
 trackGroup.position.set(
   (TRAM_A.x + TRAM_B.x) / 2,
-  2,
+  10,
   (TRAM_A.z + TRAM_B.z) / 2
 );
 trackGroup.rotation.y = TRAM_ROT_Y;
 
 const bed = new THREE.Mesh(
-  new THREE.BoxGeometry(TRAM_LEN + 4, 0.15, 4.2),
+  new THREE.BoxGeometry(TRAM_LEN + 4, 0.8, 4.2),
   new THREE.MeshStandardMaterial({ color: 0x3b3a36, roughness: 0.95 })
 );
-bed.position.y = 0.075;
+bed.position.y = 0.4;
 bed.receiveShadow = true;
 trackGroup.add(bed);
 
@@ -784,7 +784,7 @@ for (const offset of [-1.55, 1.55]) {
     new THREE.BoxGeometry(TRAM_LEN + 4, 0.12, 0.22),
     new THREE.MeshStandardMaterial({ color: 0x9a9a9a, roughness: 0.55, metalness: 0.55 })
   );
-  rail.position.set(0, 0.18, offset);
+  rail.position.set(0, 0.86, offset);
   rail.castShadow = true;
   rail.receiveShadow = true;
   trackGroup.add(rail);
@@ -795,7 +795,7 @@ for (let s = -TRAM_LEN / 2 + 1; s <= TRAM_LEN / 2 - 1; s += 2.2) {
     new THREE.BoxGeometry(0.32, 0.08, 4.4),
     new THREE.MeshStandardMaterial({ color: 0x4a3623, roughness: 0.9 })
   );
-  sleeper.position.set(s, 0.16, 0);
+  sleeper.position.set(s, 0.84, 0);
   sleeper.receiveShadow = true;
   trackGroup.add(sleeper);
 }
