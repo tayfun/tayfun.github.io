@@ -11,7 +11,7 @@
 </style>
 </head>
 <body>
-<div id="info">🏙️ Istanbul — drag to orbit, scroll to zoom</div>
+<div id="info">🏙️ Istanbul — drag (or 2‑finger ↔) to orbit · scroll (or 2‑finger ↕) to zoom</div>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -44,6 +44,153 @@ controls.maxPolarAngle = Math.PI / 2.05;
 controls.minDistance = 25;
 controls.maxDistance = 260;
 controls.enableDamping = true;
+
+// ---------- custom touch handling ----------
+// OrbitControls already drives single-finger drag for rotation. For
+// two-finger gestures we override the default so that:
+//   - horizontal swipe → orbit (rotate)
+//   - vertical swipe   → dolly (zoom in / zoom out)
+//   - pinch (spread)   → zoom (same direction as the vertical dolly)
+// We register on document with capture:true so these listeners fire
+// BEFORE OrbitControls' target listeners on the canvas; calling
+// stopPropagation then keeps OrbitControls from also handling the same
+// gesture.
+const dom = renderer.domElement;
+const twoFinger = { active: false, mode: null, cx: 0, cy: 0, startDist: 0 };
+
+// OrbitControls in three@0.160 does NOT expose rotateLeft / dollyIn /
+// dollyOut / getDollyScale on `this` — they're closure-internal. We
+// apply rotations and dolly directly to the camera position; the next
+// controls.update() tick re-syncs from there. The math matches what
+// OrbitControls does internally (rotate around camera.up, which is the
+// default world (0,1,0) in this scene).
+const _camOffset = new THREE.Vector3();
+const _worldUp = new THREE.Vector3(0, 1, 0);
+
+function rotateHorizontal(dx) {
+  // Same magnitude formula OrbitControls uses for mouse-drag rotate.
+  // The sign is flipped so applyAxisAngle produces the same direction
+  // as OrbitControls' rotateLeft(positive) — clockwise around +Y.
+  const angle = 2 * Math.PI * dx / dom.clientHeight;
+  _camOffset.copy(camera.position).sub(controls.target);
+  _camOffset.applyAxisAngle(_worldUp, -angle);
+  camera.position.copy(controls.target).add(_camOffset);
+}
+
+function dollyBy(dy) {
+  // dy > 0 (drag down) → zoom out
+  // dy < 0 (drag up)   → zoom in
+  const dollyDelta = (Math.abs(dy) / dom.clientHeight) * 20;
+  const dollyScale = Math.pow(0.95, dollyDelta);
+  _camOffset.copy(camera.position).sub(controls.target);
+  if (dy > 0) _camOffset.multiplyScalar(1 / dollyScale);
+  else        _camOffset.multiplyScalar(dollyScale);
+  // Respect OrbitControls' min/max distance clamps
+  const clamped = Math.max(controls.minDistance,
+                  Math.min(controls.maxDistance, _camOffset.length()));
+  _camOffset.setLength(clamped);
+  camera.position.copy(controls.target).add(_camOffset);
+}
+
+function pinchBy(curDist, startDist) {
+  const scale = curDist / startDist;
+  _camOffset.copy(camera.position).sub(controls.target);
+  _camOffset.multiplyScalar(1 / scale);
+  const clamped = Math.max(controls.minDistance,
+                  Math.min(controls.maxDistance, _camOffset.length()));
+  _camOffset.setLength(clamped);
+  camera.position.copy(controls.target).add(_camOffset);
+}
+
+function tsStart(e) {
+  if (e.target !== dom || e.touches.length !== 2) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const t0 = e.touches[0], t1 = e.touches[1];
+  twoFinger.active = true;
+  twoFinger.mode = null;
+  twoFinger.startDist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+  twoFinger.cx = (t0.clientX + t1.clientX) / 2;
+  twoFinger.cy = (t0.clientY + t1.clientY) / 2;
+}
+
+function tsMove(e) {
+  if (!twoFinger.active || e.touches.length !== 2) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const t0 = e.touches[0], t1 = e.touches[1];
+  const cx = (t0.clientX + t1.clientX) / 2;
+  const cy = (t0.clientY + t1.clientY) / 2;
+  const curDist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+  const dx = cx - twoFinger.cx;
+  const dy = cy - twoFinger.cy;
+
+  // Lock the gesture to its dominant flavour on the first move
+  if (twoFinger.mode === null) {
+    const distChange = Math.abs(curDist - twoFinger.startDist);
+    if (distChange > 10)            twoFinger.mode = 'pinch';
+    else if (Math.abs(dx) > Math.abs(dy)) twoFinger.mode = 'rotate';
+    else                             twoFinger.mode = 'dolly';
+  }
+
+  if (twoFinger.mode === 'rotate') {
+    rotateHorizontal(dx);
+  } else if (twoFinger.mode === 'dolly') {
+    dollyBy(dy);
+  } else { // pinch
+    pinchBy(curDist, twoFinger.startDist);
+    twoFinger.startDist = curDist; // incremental so each move scales from the last
+  }
+
+  twoFinger.cx = cx;
+  twoFinger.cy = cy;
+}
+
+function tsEnd(e) {
+  if (twoFinger.active && e.touches.length < 2) {
+    twoFinger.active = false;
+    twoFinger.mode = null;
+  }
+}
+
+document.addEventListener('touchstart',  tsStart, { passive: false, capture: true });
+document.addEventListener('touchmove',   tsMove,  { passive: false, capture: true });
+document.addEventListener('touchend',    tsEnd,   { capture: true });
+document.addEventListener('touchcancel', tsEnd,   { capture: true });
+
+// ---------- horizontal trackpad / wheel handling ----------
+// On a trackpad (or Magic Mouse), a two-finger horizontal swipe arrives
+// as a `wheel` event with a non-zero deltaX — not as touch events.
+// Firefox and some Linux setups instead send horizontal motion as
+// vertical wheel + Shift. We catch both, while leaving vertical wheel
+// and pinch (ctrl+wheel) zoom for OrbitControls to handle.
+//
+// Registered on `document` with `capture:true` so we run BEFORE
+// OrbitControls' own canvas wheel listener; `stopPropagation` then
+// stops the gesture from being doubled as a zoom.
+document.addEventListener('wheel', (e) => {
+  // Pinch on macOS trackpad: ctrlKey + deltaY. Pass through to OrbitControls.
+  if (e.ctrlKey) return;
+
+  // Horizontal-dominant wheel (macOS / Windows / Magic Mouse trackpads)
+  if (e.deltaX !== 0 && Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+    e.preventDefault();
+    e.stopPropagation();
+    rotateHorizontal(e.deltaX);
+    return;
+  }
+
+  // Shift+vertical wheel (Firefox / some Linux setups treat this as horizontal)
+  if (e.shiftKey && e.deltaX === 0 && e.deltaY !== 0) {
+    e.preventDefault();
+    e.stopPropagation();
+    rotateHorizontal(e.deltaY);
+    return;
+  }
+
+  // Anything else (plain vertical wheel / pinch handled above) — let
+  // OrbitControls deal with it as a zoom.
+}, { passive: false, capture: true });
 
 scene.add(new THREE.AmbientLight(0xffffff, 0.55));
 const sun = new THREE.DirectionalLight(0xfff3d6, 1.5);
