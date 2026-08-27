@@ -288,62 +288,6 @@ function addParapet(g, w, d, baseY, color, thickness = 0.3) {
   g.add(par);
 }
 
-// A traditional minaret: tapered shaft + bands + balcony + cap + finial.
-// The returned group has its shaft base at local y=0; caller positions the group.
-function minaret(x, z, h, color = COLORS.cream) {
-  const g = new THREE.Group();
-  const bandMat = new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.55, roughness: 0.4 });
-  // tapered shaft
-  const shaft = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.85, 1.0, h, 16),
-    new THREE.MeshStandardMaterial({ color, roughness: 0.7 })
-  );
-  shaft.position.y = h / 2;
-  shaft.castShadow = true;
-  g.add(shaft);
-  // decorative bands
-  for (const yBand of [h * 0.28, h * 0.55]) {
-    const ring = new THREE.Mesh(
-      new THREE.CylinderGeometry(1.06, 1.06, 0.18, 16),
-      bandMat
-    );
-    ring.position.y = yBand;
-    g.add(ring);
-  }
-  // balcony platform
-  const balc = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.45, 1.45, 0.3, 16),
-    new THREE.MeshStandardMaterial({ color, roughness: 0.7 })
-  );
-  balc.position.y = h * 0.74;
-  balc.castShadow = true;
-  g.add(balc);
-  // balcony railing
-  const rail = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.5, 1.5, 0.6, 16, 1, true),
-    new THREE.MeshStandardMaterial({ color: COLORS.darkgray, side: THREE.DoubleSide })
-  );
-  rail.position.y = h * 0.74 + 0.45;
-  g.add(rail);
-  // conical cap
-  const cap = new THREE.Mesh(
-    new THREE.ConeGeometry(1.15, 2.2, 12),
-    bandMat
-  );
-  cap.position.y = h + 1.1;
-  cap.castShadow = true;
-  g.add(cap);
-  // finial spike + ball
-  const spike = new THREE.Mesh(new THREE.ConeGeometry(0.18, 1.6, 6), bandMat);
-  spike.position.y = h + 2.9;
-  g.add(spike);
-  const orb = new THREE.Mesh(new THREE.SphereGeometry(0.22, 10, 8), bandMat);
-  orb.position.y = h + 3.85;
-  g.add(orb);
-  g.position.set(x, 0, z);
-  return g;
-}
-
 // A hemispherical dome with base ring and gold finial. Sits at local y = baseY.
 function dome(radius, color, baseY, height = null) {
   const g = new THREE.Group();
@@ -376,34 +320,6 @@ function dome(radius, color, baseY, height = null) {
   return g;
 }
 
-// A conifer-style tree planted at world (x, z), sitting on ground at y=2.
-function tree(x, z, scale = 1) {
-  const g = new THREE.Group();
-  const trunk = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.25 * scale, 0.35 * scale, 1.5 * scale, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.darkwood, roughness: 0.9 })
-  );
-  trunk.position.y = 0.75 * scale;
-  trunk.castShadow = true;
-  g.add(trunk);
-  const fol1 = new THREE.Mesh(
-    new THREE.ConeGeometry(1.4 * scale, 2.4 * scale, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.green, roughness: 0.8 })
-  );
-  fol1.position.y = 1.8 * scale;
-  fol1.castShadow = true;
-  g.add(fol1);
-  const fol2 = new THREE.Mesh(
-    new THREE.ConeGeometry(1.0 * scale, 1.8 * scale, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.grass, roughness: 0.8 })
-  );
-  fol2.position.y = 2.95 * scale;
-  fol2.castShadow = true;
-  g.add(fol2);
-  g.position.set(x, 2, z);
-  return g;
-}
-
 // ---------- ground & sea ----------
 const SEA_Z_HALF = 18;
 const sea = new THREE.Mesh(
@@ -422,33 +338,6 @@ function land(zCenter, depth, color) {
 land(-SEA_Z_HALF - 22, 44, 0x8fbd6b); // European side
 land( SEA_Z_HALF + 22, 44, 0x9cc77a); // Asian side
 
-// roads + lane dashes + sidewalks
-for (const z of [-SEA_Z_HALF - 6, SEA_Z_HALF + 6]) {
-  const road = new THREE.Mesh(
-    new THREE.BoxGeometry(320, 0.15, 6),
-    new THREE.MeshStandardMaterial({ color: 0x58595b })
-  );
-  road.position.set(0, 2.1, z);
-  road.receiveShadow = true;
-  scene.add(road);
-  for (let x = -150; x <= 150; x += 6) {
-    const dash = new THREE.Mesh(
-      new THREE.BoxGeometry(3, 0.17, 0.18),
-      new THREE.MeshStandardMaterial({ color: 0xfff5b0 })
-    );
-    dash.position.set(x, 2.2, z);
-    scene.add(dash);
-  }
-  for (const sOff of [-3.5, 3.5]) {
-    const sidewalk = new THREE.Mesh(
-      new THREE.BoxGeometry(320, 0.2, 1.6),
-      new THREE.MeshStandardMaterial({ color: 0xb8b8b8 })
-    );
-    sidewalk.position.set(0, 2.2, z + sOff);
-    scene.add(sidewalk);
-  }
-}
-
 // ---------- generic buildings ----------
 const rng = (seed => () => (seed = (seed * 16807) % 2147483647) / 2147483647)(42);
 const palette = [COLORS.red, COLORS.blue, COLORS.yellow, COLORS.white, COLORS.orange, COLORS.pink, COLORS.teal, COLORS.cream, COLORS.tan];
@@ -460,30 +349,6 @@ function buildings(zCenter, sign) {
     if (x > 40 && x < 62 && zCenter > 0) continue;    // Maiden's Tower water spot
     if (x < -55 && x > -70 && zCenter < 0) continue;  // Galata spot
     const w = 5 + rng() * 4, d = 5 + rng() * 4, h = 4 + rng() * 14;
-    const roll = rng();
-    if (roll < 0.1) {
-      // small mosque-like building with dome + minaret
-      const b = block(w, h, d, COLORS.cream);
-      addWindows(b, w, h, d, COLORS.window, 2);
-      // small dome on top
-      const dr = Math.min(w, d) * 0.45;
-      const dTop = dome(dr, COLORS.gray, h);
-      b.add(dTop);
-      // drum
-      // corner minaret
-      b.add(minaret(w / 2 + 0.6, d / 2 + 0.6, h + 4, COLORS.cream));
-      // door
-      const door = new THREE.Mesh(
-        new THREE.BoxGeometry(0.9, 1.5, 0.06),
-        new THREE.MeshStandardMaterial({ color: COLORS.door, roughness: 0.7 })
-      );
-      door.position.set(0, 0.75, d / 2 + 0.03);
-      b.add(door);
-      b.position.set(x + (rng() - 0.5) * 2, 2, zCenter + sign * (10 + rng() * 12));
-      b.rotation.y = (rng() - 0.5) * 0.3;
-      scene.add(b);
-      continue;
-    }
     const c = palette[Math.floor(rng() * palette.length)];
     const b = block(w, h, d, c);
     addWindows(b, w, h, d);
@@ -547,33 +412,12 @@ function buildings(zCenter, sign) {
 buildings(-SEA_Z_HALF - 22, -1);
 buildings( SEA_Z_HALF + 22,  1);
 
-// ---------- trees on land (avoiding roads & landmarks) ----------
-for (let i = 0; i < 60; i++) {
-  const side = rng() < 0.5 ? -1 : 1;
-  const x = (rng() - 0.5) * 300;
-  // pick a z somewhere on the land (avoid the road strip)
-  let z;
-  const lane = rng();
-  if (lane < 0.5) {
-    // water-side strip
-    z = side * (SEA_Z_HALF + 1.2 + rng() * 3.5);
-  } else {
-    // behind/inland area (but stay on land)
-    z = side * (SEA_Z_HALF + 9 + rng() * 28);
-  }
-  // landmark exclusions
-  if (Math.abs(x) < 34 && z < 0) continue;
-  if (x > 40 && x < 62 && z > 0) continue;
-  if (x < -55 && x > -70 && z < 0) continue;
-  scene.add(tree(x, z, 0.7 + rng() * 0.5));
-}
-
 // ---------- Bosphorus Bridge — loaded from GLB ----------
 // The source model's long axis runs along +X (length 1.0, height 0.487,
 // width 0.215). In this scene the Bosphorus runs along Z and the strait
 // is crossed in the Z direction, so we rotate the model 90° around Y
 // so its length spans the water, scale the long axis to ~52 units, and
-// plant the base at the level of the surrounding roads.
+// plant the base at ground level.
 const bridgeGroup = new THREE.Group();
 bridgeGroup.position.set(0, 2, 0);
 scene.add(bridgeGroup);
