@@ -421,128 +421,50 @@ for (let i = 0; i < 60; i++) {
   scene.add(tree(x, z, 0.7 + rng() * 0.5));
 }
 
-// ---------- Bosphorus Bridge ----------
-(function bridge() {
-  const g = new THREE.Group();
-  const deckY = 14, spanHalf = SEA_Z_HALF + 4;
-  // towers: base + tapered shaft + cap + antenna
-  for (const tz of [-spanHalf, spanHalf]) {
-    const base = block(4.5, 3, 4.5, COLORS.gray);
-    base.position.y = 1.5;
-    g.add(base);
-    const shaftH = deckY + 11;
-    const shaft = block(3.2, shaftH, 3.2, COLORS.gray);
-    shaft.position.y = 1.5 + 3 + shaftH / 2;
-    g.add(shaft);
-    const cap = block(4.6, 1.4, 4.6, COLORS.darkgray);
-    cap.position.y = 1.5 + 3 + shaftH + 0.7;
-    g.add(cap);
-    const ant = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.08, 0.08, 1.4, 6),
-      new THREE.MeshStandardMaterial({ color: 0x2c2c2c })
-    );
-    ant.position.y = 1.5 + 3 + shaftH + 1.4 + 0.7;
-    g.add(ant);
-  }
-  // crossbeam connecting tower tops
-  const crossTop = block(6.8, 0.7, spanHalf * 2 + 4, COLORS.darkgray);
-  crossTop.position.y = 1.5 + 3 + (deckY + 11) + 1.4 + 0.35;
-  g.add(crossTop);
-  // deck
-  const deck = new THREE.Mesh(
-    new THREE.BoxGeometry(7, 1.2, spanHalf * 2 + 8),
-    new THREE.MeshStandardMaterial({ color: 0x4b5a5e })
+// ---------- Bosphorus Bridge — loaded from GLB ----------
+// The source model's long axis runs along +X (length 1.0, height 0.487,
+// width 0.215). In this scene the Bosphorus runs along Z and the strait
+// is crossed in the Z direction, so we rotate the model 90° around Y
+// so its length spans the water, scale the long axis to ~52 units, and
+// plant the base at the level of the surrounding roads.
+const bridgeGroup = new THREE.Group();
+bridgeGroup.position.set(0, 2, 0);
+scene.add(bridgeGroup);
+
+{
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.load(
+    'assets/models/suspension-bridge.glb',
+    (gltf) => {
+      const model = gltf.scene;
+      // 1) measure the unscaled model
+      const rawBox = new THREE.Box3().setFromObject(model);
+      const rawSize = rawBox.getSize(new THREE.Vector3());
+      // 2) uniform scale so the long axis (~52 scene units) crosses the strait
+      const target = 52;
+      const s = rawSize.x > 0 ? target / rawSize.x : 1;
+      model.scale.setScalar(s);
+      // 3) rotate so the long axis runs along +Z (crossing the Bosphorus)
+      model.rotation.y = -Math.PI / 2;
+      // 4) re-measure (scale + rotation included), then center horizontally
+      //    and plant the base at local y=0
+      const box = new THREE.Box3().setFromObject(model);
+      model.position.x -= (box.min.x + box.max.x) / 2;
+      model.position.z -= (box.min.z + box.max.z) / 2;
+      model.position.y -= box.min.y;
+      // 5) enable shadows on every mesh in the model
+      model.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+        }
+      });
+      bridgeGroup.add(model);
+    },
+    undefined,
+    (err) => console.error('Failed to load bridge model:', err)
   );
-  deck.position.y = deckY;
-  deck.castShadow = deck.receiveShadow = true;
-  g.add(deck);
-  // lane stripes
-  for (let z = -spanHalf - 2; z <= spanHalf + 2; z += 4) {
-    const stripe = new THREE.Mesh(
-      new THREE.BoxGeometry(0.15, 1.22, 1.4),
-      new THREE.MeshStandardMaterial({ color: 0xfff5b0 })
-    );
-    stripe.position.set(0, deckY, z);
-    g.add(stripe);
-  }
-  // railings
-  for (const xR of [-3.4, 3.4]) {
-    const rail = new THREE.Mesh(
-      new THREE.BoxGeometry(0.12, 0.9, spanHalf * 2 + 8),
-      new THREE.MeshStandardMaterial({ color: 0x2c2c2c })
-    );
-    rail.position.set(xR, deckY + 1.2, 0);
-    g.add(rail);
-  }
-  // parabolic suspension cables + hangers
-  const cableMat = new THREE.MeshStandardMaterial({ color: 0x1f1f1f, roughness: 0.4 });
-  const towerTopY = 1.5 + 3 + (deckY + 11) + 1.4;
-  for (const sideX of [-3.4, 3.4]) {
-    const N = 28;
-    for (let s = 0; s < N; s++) {
-      const t0 = s / N, t1 = (s + 1) / N;
-      const y0 = towerTopY - 4 * t0 * (1 - t0) * (towerTopY - deckY - 2);
-      const y1 = towerTopY - 4 * t1 * (1 - t1) * (towerTopY - deckY - 2);
-      const z0 = THREE.MathUtils.lerp(-spanHalf, spanHalf, t0);
-      const z1 = THREE.MathUtils.lerp(-spanHalf, spanHalf, t1);
-      const len = Math.hypot(y1 - y0, z1 - z0);
-      const seg = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.16, len), cableMat);
-      seg.position.set(sideX, (y0 + y1) / 2, (z0 + z1) / 2);
-      seg.lookAt(new THREE.Vector3(sideX, y1, z1));
-      g.add(seg);
-    }
-    for (let s = 1; s < N; s++) {
-      const t = s / N;
-      const yTop = towerTopY - 4 * t * (1 - t) * (towerTopY - deckY - 2);
-      const z = THREE.MathUtils.lerp(-spanHalf, spanHalf, t);
-      const h = yTop - deckY - 0.6;
-      const hg = new THREE.Mesh(new THREE.BoxGeometry(0.06, h, 0.06), cableMat);
-      hg.position.set(sideX, deckY + 0.6 + h / 2, z);
-      g.add(hg);
-    }
-  }
-  // cars on deck
-  const carColors = [COLORS.red, COLORS.blue, COLORS.yellow, COLORS.white, COLORS.darkgray, COLORS.teal, COLORS.orange];
-  for (let i = 0; i < 10; i++) {
-    const car = new THREE.Group();
-    const body = new THREE.Mesh(
-      new THREE.BoxGeometry(1.5, 0.7, 2.6),
-      new THREE.MeshStandardMaterial({ color: carColors[i % carColors.length], roughness: 0.4 })
-    );
-    body.position.y = 0.5;
-    body.castShadow = true;
-    car.add(body);
-    // darker cabin
-    const cab = new THREE.Mesh(
-      new THREE.BoxGeometry(1.3, 0.55, 1.5),
-      new THREE.MeshStandardMaterial({ color: 0x2c3a4a, roughness: 0.3 })
-    );
-    cab.position.y = 1.1;
-    car.add(cab);
-    // windshield + rear window
-    const winMat = new THREE.MeshStandardMaterial({
-      color: COLORS.window, emissive: COLORS.window, emissiveIntensity: 0.25, roughness: 0.2
-    });
-    const w1 = new THREE.Mesh(new THREE.BoxGeometry(1.31, 0.4, 0.55), winMat);
-    w1.position.set(0, 1.15, -0.45);
-    car.add(w1);
-    const w2 = new THREE.Mesh(new THREE.BoxGeometry(1.31, 0.4, 0.55), winMat);
-    w2.position.set(0, 1.15, 0.45);
-    car.add(w2);
-    // headlights
-    const headMat = new THREE.MeshStandardMaterial({
-      color: 0xfff8d0, emissive: 0xfff8d0, emissiveIntensity: 0.6
-    });
-    for (const hx of [-0.55, 0.55]) {
-      const hl = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.18, 0.06), headMat);
-      hl.position.set(hx, 0.55, -1.32);
-      car.add(hl);
-    }
-    car.position.set((i % 2 ? 1.6 : -1.6), deckY + 0.6, -spanHalf + 4 + i * 4);
-    g.add(car);
-  }
-  scene.add(g);
-})();
+}
 
 // ---------- Kızkulesi (Maiden's Tower) ----------
 (function kizkulesi() {
