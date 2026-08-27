@@ -372,6 +372,11 @@ function bosphorusRotationAtT(t) {
 // around them by calling bosphorusCenterXAtT().
 const BRIDGE_T = 0.62;
 const KIZKULESI_T = 0.22;
+// The real Kızkulesi sits just off the Üsküdar (Asian, +X) shore rather than
+// mid-channel, so push it away from the centerline towards that shore.
+const KIZKULESI_SHORE_OFFSET = STRAIT_HALF * 0.7;
+const KIZKULESI_X = bosphorusCenterXAtT(KIZKULESI_T) + KIZKULESI_SHORE_OFFSET;
+const KIZKULESI_Z = -STRAIT_SOUTH_Y - STRAIT_LEN * KIZKULESI_T;
 
 // Tram endpoints (declared early so the building scatter can keep cells off the track).
 const TRAM_A = new THREE.Vector3(-140, 6,  -25); // northern stop
@@ -461,7 +466,7 @@ function distToSegment(px, pz, ax, az, bx, bz) {
 const landmarkExclusions = [
   { x: -100, z:  -90, r: 22 },   // Hagia Sophia
   { x: -135, z:  -55, r: 14 },   // Galata Tower
-  { x: bosphorusCenterXAtT(KIZKULESI_T), z: -STRAIT_SOUTH_Y - STRAIT_LEN * KIZKULESI_T, r: 16 }, // Maiden's Tower
+  { x: KIZKULESI_X, z: KIZKULESI_Z, r: 16 },                                                    // Maiden's Tower
   { x: bosphorusCenterXAtT(BRIDGE_T),     z: -STRAIT_SOUTH_Y - STRAIT_LEN * BRIDGE_T,     r: 30 }, // Bridge approaches
 ];
 function nearLandmark(x, z) {
@@ -592,13 +597,10 @@ scene.add(bridgeGroup);
 }
 
 // ---------- Kızkulesi (Maiden's Tower) — loaded from GLB ----------
-// Sits inside the Bosphorus, near the south end where the real tower stands.
+// Sits in the Bosphorus near the south end, close to the Asian shore where
+// the real tower stands (see KIZKULESI_X/Z above).
 const kizkulesiGroup = new THREE.Group();
-kizkulesiGroup.position.set(
-  bosphorusCenterXAtT(KIZKULESI_T),
-  0,
-  -STRAIT_SOUTH_Y - STRAIT_LEN * KIZKULESI_T
-);
+kizkulesiGroup.position.set(KIZKULESI_X, 0, KIZKULESI_Z);
 scene.add(kizkulesiGroup);
 
 {
@@ -725,10 +727,11 @@ const boats = [];
       // 1) measure the unscaled model
       const rawBox = new THREE.Box3().setFromObject(template);
       const rawSize = rawBox.getSize(new THREE.Vector3());
-      // 2) pick a uniform scale so the longest axis is ~14 scene units
-      //    (the source model is assumed to have its length along +X)
+      // 2) pick a uniform scale so the longest axis is ~14 units before the
+      //    global BUILDING_SCALE is applied, keeping the ferries in proportion
+      //    with the city (the source model has its length along +X)
       const longest = Math.max(rawSize.x, rawSize.y, rawSize.z);
-      const target = 14;
+      const target = 14 * BUILDING_SCALE;
       const s = longest > 0 ? target / longest : 1;
       template.scale.setScalar(s);
       // 3) re-measure (the scale is now baked into the world-space box),
@@ -744,11 +747,17 @@ const boats = [];
           obj.receiveShadow = true;
         }
       });
-      // 5) spawn four vapurs spread along the curved centerline, alternating directions
-      for (let i = 0; i < 4; i++) {
+      // 5) spawn two vapurs, each on its own lateral lane offset from the
+      //    centerline so their routes never cross and they can't collide.
+      //    STRAIT_HALF is 48 and the vapur is ~14 long, so ±12 keeps a
+      //    safe gap between the two lanes while staying well clear of shore.
+      const VAPUR_LANES = [
+        { t: 0.30, speed: 0.00070, dir:  1, lane:  12 }, // north-bound, east lane
+        { t: 0.80, speed: 0.00065, dir: -1, lane: -12 }, // south-bound, west lane
+      ];
+      for (const cfg of VAPUR_LANES) {
         const b = template.clone();
-        const t0 = (i + 0.5) / 4;
-        b.userData = { t: t0, speed: 0.00055 + i * 0.00012, dir: i % 2 ? 1 : -1 };
+        b.userData = { t: cfg.t, speed: cfg.speed, dir: cfg.dir, lane: cfg.lane };
         boats.push(b);
         scene.add(b);
       }
@@ -889,11 +898,7 @@ for (let i = 0; i < 6; i++) {
   gull.userData = { r: 8 + i * 2, a: i * 1.3, y: 18 + i * 1.5, s: 0.5 + rng() * 0.5, flap: rng() * Math.PI * 2 };
   gulls.add(gull);
 }
-gulls.position.set(
-  bosphorusCenterXAtT(KIZKULESI_T),
-  0,
-  -STRAIT_SOUTH_Y - STRAIT_LEN * KIZKULESI_T
-);
+gulls.position.set(KIZKULESI_X, 0, KIZKULESI_Z);
 scene.add(gulls);
 
 // ---------- animation loop ----------
@@ -903,7 +908,9 @@ function tick() {
     b.userData.t += b.userData.speed * b.userData.dir;
     if (b.userData.t > 1) b.userData.t -= 1;
     if (b.userData.t < 0) b.userData.t += 1;
-    b.position.x = bosphorusCenterXAtT(b.userData.t);
+    // Lane offset keeps each vapur on its own parallel route; the channel's
+    // X-wiggle is small enough that a constant X shift reads as a separate lane.
+    b.position.x = bosphorusCenterXAtT(b.userData.t) + (b.userData.lane || 0);
     b.position.z = -STRAIT_SOUTH_Y - STRAIT_LEN * b.userData.t;
     b.rotation.y = bosphorusRotationAtT(b.userData.t);
   }
