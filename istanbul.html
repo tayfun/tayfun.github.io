@@ -368,8 +368,8 @@ const BRIDGE_T = 0.62;
 const KIZKULESI_T = 0.22;
 
 // Tram endpoints (declared early so the building scatter can keep cells off the track).
-const TRAM_A = new THREE.Vector3(-140, 10,  -25); // northern stop
-const TRAM_B = new THREE.Vector3( -70, 10, -150); // southern stop
+const TRAM_A = new THREE.Vector3(-140, 6,  -25); // northern stop
+const TRAM_B = new THREE.Vector3( -70, 6, -150); // southern stop
 
 // Sea: large flat circular disc that sits underneath the land and shows
 // through wherever the land has a hole (the Bosphorus).
@@ -766,7 +766,7 @@ const TRAM_ROT_Y = Math.atan2(-tramDir.z, tramDir.x);
 const trackGroup = new THREE.Group();
 trackGroup.position.set(
   (TRAM_A.x + TRAM_B.x) / 2,
-  10,
+  6,
   (TRAM_A.z + TRAM_B.z) / 2
 );
 trackGroup.rotation.y = TRAM_ROT_Y;
