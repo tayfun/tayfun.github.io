@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Istanbul</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #aee3f5; font-family: sans-serif; }
+  #info { position: absolute; top: 12px; left: 12px; color: #234; background: rgba(255,255,255,.75);
+          padding: 8px 12px; border-radius: 8px; font-size: 13px; user-select: none; }
+</style>
+</head>
+<body>
+<div id="info">🏙️ Istanbul — drag to orbit, scroll to zoom</div>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ---------- scene basics ----------
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xaee3f5);
+scene.fog = new THREE.Fog(0xaee3f5, 140, 450);
+
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 1000);
+camera.position.set(70, 55, 90);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 6, 0);
+controls.maxPolarAngle = Math.PI / 2.05;
+controls.minDistance = 25;
+controls.maxDistance = 260;
+controls.enableDamping = true;
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const sun = new THREE.DirectionalLight(0xfff3d6, 1.5);
+sun.position.set(60, 90, 40);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -130; sun.shadow.camera.right = 130;
+sun.shadow.camera.top = 130; sun.shadow.camera.bottom = -130;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0xc4d8ff, 0.35);
+fill.position.set(-50, 30, -40);
+scene.add(fill);
+
+// ---------- palette ----------
+const COLORS = {
+  red: 0xc4281c, blue: 0x0d69ab, yellow: 0xf2cd37, green: 0x237841,
+  white: 0xf4f4f4, cream: 0xeedfb5, tan: 0xe4cd9e, gray: 0x9ba19d,
+  darkgray: 0x6c6e68, darkred: 0x8a2a1e, brown: 0x7b5d41,
+  orange: 0xfe8a18, pink: 0xfc97ac, teal: 0x008f9b, gold: 0xc5a224,
+  domered: 0xa44a3c, stone: 0xc9b58a, window: 0x7fb6d9,
+  roofred: 0x8a2a1e, darkwood: 0x4a3623, grass: 0x2f8a4e,
+  door: 0x3a2a1c
+};
+
+// ---------- helpers ----------
+// A solid block — base at group y=0, top at y=h. No studs.
+function block(w, h, d, color, opts = {}) {
+  const g = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({
+    color, roughness: opts.roughness ?? 0.75, metalness: opts.metalness ?? 0.04
+  });
+  const box = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  box.position.y = h / 2;
+  box.castShadow = box.receiveShadow = true;
+  g.add(box);
+  g.userData.mat = mat;
+  return g;
+}
+
+// Window grid applied to a box at group origin (base y=0, top y=h)
+function addWindows(g, w, h, d, color = COLORS.window, floors = null) {
+  const winW = 0.55, winH = 0.75, winD = 0.05;
+  const winMat = new THREE.MeshStandardMaterial({
+    color, roughness: 0.25, metalness: 0.4,
+    emissive: color, emissiveIntensity: 0.25
+  });
+  const fl = floors ?? Math.max(1, Math.floor((h - 1) / 1.5));
+  const yStart = 1.0;
+  const usable = Math.max(0.5, h - yStart - 0.4);
+  const step = usable / fl;
+  const colsX = Math.max(1, Math.round(w / 1.3));
+  const colsZ = Math.max(1, Math.round(d / 1.3));
+  for (let r = 0; r < fl; r++) {
+    const y = yStart + r * step + step / 2;
+    for (let i = 0; i < colsX; i++) {
+      const x = -w / 2 + (i + 0.5) * (w / colsX);
+      for (const sign of [-1, 1]) {
+        const win = new THREE.Mesh(new THREE.BoxGeometry(winW, winH, winD), winMat);
+        win.position.set(x, y, sign * (d / 2 + 0.02));
+        g.add(win);
+      }
+    }
+    for (let i = 0; i < colsZ; i++) {
+      const z = -d / 2 + (i + 0.5) * (d / colsZ);
+      for (const sign of [-1, 1]) {
+        const win = new THREE.Mesh(new THREE.BoxGeometry(winD, winH, winW), winMat);
+        win.position.set(sign * (w / 2 + 0.02), y, z);
+        g.add(win);
+      }
+    }
+  }
+}
+
+// Small pyramidal roof on top of a block whose top is at baseY
+function addPyramid(g, w, d, baseY, color, height = null) {
+  const roofH = height ?? Math.min(2.5, Math.min(w, d) * 0.65);
+  const roof = new THREE.Mesh(
+    new THREE.ConeGeometry(Math.hypot(w, d) * 0.5 + 0.2, roofH, 4),
+    new THREE.MeshStandardMaterial({ color, roughness: 0.6 })
+  );
+  roof.position.y = baseY + roofH / 2;
+  roof.rotation.y = Math.PI / 4;
+  roof.castShadow = true;
+  g.add(roof);
+}
+
+// Flat parapet raised on the edge of a block whose top is at baseY
+function addParapet(g, w, d, baseY, color, thickness = 0.3) {
+  const par = new THREE.Mesh(
+    new THREE.BoxGeometry(w + thickness * 2, thickness, d + thickness * 2),
+    new THREE.MeshStandardMaterial({ color, roughness: 0.8 })
+  );
+  par.position.y = baseY + thickness / 2;
+  par.castShadow = true;
+  g.add(par);
+}
+
+// A traditional minaret: tapered shaft + bands + balcony + cap + finial.
+// The returned group has its shaft base at local y=0; caller positions the group.
+function minaret(x, z, h, color = COLORS.cream) {
+  const g = new THREE.Group();
+  const bandMat = new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.55, roughness: 0.4 });
+  // tapered shaft
+  const shaft = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.85, 1.0, h, 16),
+    new THREE.MeshStandardMaterial({ color, roughness: 0.7 })
+  );
+  shaft.position.y = h / 2;
+  shaft.castShadow = true;
+  g.add(shaft);
+  // decorative bands
+  for (const yBand of [h * 0.28, h * 0.55]) {
+    const ring = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.06, 1.06, 0.18, 16),
+      bandMat
+    );
+    ring.position.y = yBand;
+    g.add(ring);
+  }
+  // balcony platform
+  const balc = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.45, 1.45, 0.3, 16),
+    new THREE.MeshStandardMaterial({ color, roughness: 0.7 })
+  );
+  balc.position.y = h * 0.74;
+  balc.castShadow = true;
+  g.add(balc);
+  // balcony railing
+  const rail = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.5, 1.5, 0.6, 16, 1, true),
+    new THREE.MeshStandardMaterial({ color: COLORS.darkgray, side: THREE.DoubleSide })
+  );
+  rail.position.y = h * 0.74 + 0.45;
+  g.add(rail);
+  // conical cap
+  const cap = new THREE.Mesh(
+    new THREE.ConeGeometry(1.15, 2.2, 12),
+    bandMat
+  );
+  cap.position.y = h + 1.1;
+  cap.castShadow = true;
+  g.add(cap);
+  // finial spike + ball
+  const spike = new THREE.Mesh(new THREE.ConeGeometry(0.18, 1.6, 6), bandMat);
+  spike.position.y = h + 2.9;
+  g.add(spike);
+  const orb = new THREE.Mesh(new THREE.SphereGeometry(0.22, 10, 8), bandMat);
+  orb.position.y = h + 3.85;
+  g.add(orb);
+  g.position.set(x, 0, z);
+  return g;
+}
+
+// A hemispherical dome with base ring and gold finial. Sits at local y = baseY.
+function dome(radius, color, baseY, height = null) {
+  const g = new THREE.Group();
+  const h = height ?? radius * 0.7;
+  const d = new THREE.Mesh(
+    new THREE.SphereGeometry(radius, 24, 14, 0, Math.PI * 2, 0, Math.PI / 2),
+    new THREE.MeshStandardMaterial({ color, roughness: 0.55 })
+  );
+  d.position.y = baseY;
+  d.castShadow = true;
+  g.add(d);
+  // base ring (drum)
+  const ring = new THREE.Mesh(
+    new THREE.CylinderGeometry(radius * 1.04, radius * 1.04, 0.35, 24),
+    new THREE.MeshStandardMaterial({ color: COLORS.cream, roughness: 0.7 })
+  );
+  ring.position.y = baseY - 0.18;
+  g.add(ring);
+  // gold finial: stem + orb + spike
+  const finialMat = new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.65, roughness: 0.35 });
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.2, 0.8, 8), finialMat);
+  stem.position.y = baseY + h + 0.4;
+  g.add(stem);
+  const orb = new THREE.Mesh(new THREE.SphereGeometry(0.22, 12, 10), finialMat);
+  orb.position.y = baseY + h + 0.95;
+  g.add(orb);
+  const spike = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.6, 6), finialMat);
+  spike.position.y = baseY + h + 1.4;
+  g.add(spike);
+  return g;
+}
+
+// A conifer-style tree planted at world (x, z), sitting on ground at y=2.
+function tree(x, z, scale = 1) {
+  const g = new THREE.Group();
+  const trunk = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.25 * scale, 0.35 * scale, 1.5 * scale, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.darkwood, roughness: 0.9 })
+  );
+  trunk.position.y = 0.75 * scale;
+  trunk.castShadow = true;
+  g.add(trunk);
+  const fol1 = new THREE.Mesh(
+    new THREE.ConeGeometry(1.4 * scale, 2.4 * scale, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.green, roughness: 0.8 })
+  );
+  fol1.position.y = 1.8 * scale;
+  fol1.castShadow = true;
+  g.add(fol1);
+  const fol2 = new THREE.Mesh(
+    new THREE.ConeGeometry(1.0 * scale, 1.8 * scale, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.grass, roughness: 0.8 })
+  );
+  fol2.position.y = 2.95 * scale;
+  fol2.castShadow = true;
+  g.add(fol2);
+  g.position.set(x, 2, z);
+  return g;
+}
+
+// ---------- ground & sea ----------
+const SEA_Z_HALF = 18;
+const sea = new THREE.Mesh(
+  new THREE.BoxGeometry(320, 2, SEA_Z_HALF * 2),
+  new THREE.MeshStandardMaterial({ color: 0x2f7bb5, roughness: 0.25, metalness: 0.2 })
+);
+sea.position.y = -1;
+sea.receiveShadow = true;
+scene.add(sea);
+
+function land(zCenter, depth, color) {
+  const l = block(320, 2, depth, color);
+  l.position.set(0, 0, zCenter);
+  scene.add(l);
+}
+land(-SEA_Z_HALF - 22, 44, 0x8fbd6b); // European side
+land( SEA_Z_HALF + 22, 44, 0x9cc77a); // Asian side
+
+// roads + lane dashes + sidewalks
+for (const z of [-SEA_Z_HALF - 6, SEA_Z_HALF + 6]) {
+  const road = new THREE.Mesh(
+    new THREE.BoxGeometry(320, 0.15, 6),
+    new THREE.MeshStandardMaterial({ color: 0x58595b })
+  );
+  road.position.set(0, 2.1, z);
+  road.receiveShadow = true;
+  scene.add(road);
+  for (let x = -150; x <= 150; x += 6) {
+    const dash = new THREE.Mesh(
+      new THREE.BoxGeometry(3, 0.17, 0.18),
+      new THREE.MeshStandardMaterial({ color: 0xfff5b0 })
+    );
+    dash.position.set(x, 2.2, z);
+    scene.add(dash);
+  }
+  for (const sOff of [-3.5, 3.5]) {
+    const sidewalk = new THREE.Mesh(
+      new THREE.BoxGeometry(320, 0.2, 1.6),
+      new THREE.MeshStandardMaterial({ color: 0xb8b8b8 })
+    );
+    sidewalk.position.set(0, 2.2, z + sOff);
+    scene.add(sidewalk);
+  }
+}
+
+// ---------- generic buildings ----------
+const rng = (seed => () => (seed = (seed * 16807) % 2147483647) / 2147483647)(42);
+const palette = [COLORS.red, COLORS.blue, COLORS.yellow, COLORS.white, COLORS.orange, COLORS.pink, COLORS.teal, COLORS.cream, COLORS.tan];
+
+function buildings(zCenter, sign) {
+  for (let x = -130; x <= 130; x += 11) {
+    // landmark exclusions
+    if (Math.abs(x) < 34 && zCenter < 0) continue;   // Hagia Sophia plaza
+    if (x > 40 && x < 62 && zCenter > 0) continue;    // Maiden's Tower water spot
+    if (x < -55 && x > -70 && zCenter < 0) continue;  // Galata spot
+    const w = 5 + rng() * 4, d = 5 + rng() * 4, h = 4 + rng() * 14;
+    const roll = rng();
+    if (roll < 0.1) {
+      // small mosque-like building with dome + minaret
+      const b = block(w, h, d, COLORS.cream);
+      addWindows(b, w, h, d, COLORS.window, 2);
+      // small dome on top
+      const dr = Math.min(w, d) * 0.45;
+      const dTop = dome(dr, COLORS.gray, h);
+      b.add(dTop);
+      // drum
+      // corner minaret
+      b.add(minaret(w / 2 + 0.6, d / 2 + 0.6, h + 4, COLORS.cream));
+      // door
+      const door = new THREE.Mesh(
+        new THREE.BoxGeometry(0.9, 1.5, 0.06),
+        new THREE.MeshStandardMaterial({ color: COLORS.door, roughness: 0.7 })
+      );
+      door.position.set(0, 0.75, d / 2 + 0.03);
+      b.add(door);
+      b.position.set(x + (rng() - 0.5) * 2, 2, zCenter + sign * (10 + rng() * 12));
+      b.rotation.y = (rng() - 0.5) * 0.3;
+      scene.add(b);
+      continue;
+    }
+    const c = palette[Math.floor(rng() * palette.length)];
+    const b = block(w, h, d, c);
+    addWindows(b, w, h, d);
+    // roof variety
+    const roofType = rng();
+    if (roofType < 0.45) {
+      addParapet(b, w, d, h, 0xd8d4cc);
+    } else if (roofType < 0.8) {
+      addPyramid(b, w, d, h, COLORS.roofred);
+    } else {
+      addParapet(b, w, d, h, 0xd8d4cc);
+      // rooftop hut (water tank / utility room)
+      const hutW = w * 0.3, hutD = d * 0.3;
+      const hut = block(hutW, 1.2, hutD, COLORS.darkgray);
+      hut.position.y = h + 0.3 + 0.6;
+      b.add(hut);
+      const hutRoof = new THREE.Mesh(
+        new THREE.ConeGeometry(Math.hypot(hutW, hutD) * 0.5 + 0.1, 0.7, 4),
+        new THREE.MeshStandardMaterial({ color: COLORS.roofred })
+      );
+      hutRoof.position.y = h + 0.3 + 1.2 + 0.35;
+      hutRoof.rotation.y = Math.PI / 4;
+      b.add(hutRoof);
+    }
+    // door
+    const door = new THREE.Mesh(
+      new THREE.BoxGeometry(0.9, 1.4, 0.06),
+      new THREE.MeshStandardMaterial({ color: COLORS.door, roughness: 0.7 })
+    );
+    door.position.set(0, 0.7, d / 2 + 0.03);
+    b.add(door);
+    // occasional mid-height balcony on tall buildings
+    if (h > 11 && rng() < 0.5) {
+      const balcony = new THREE.Mesh(
+        new THREE.BoxGeometry(w * 0.55, 0.15, 0.6),
+        new THREE.MeshStandardMaterial({ color: 0xd0d0d0 })
+      );
+      balcony.position.set(0, h * 0.6, d / 2 + 0.3);
+      b.add(balcony);
+      const rail = new THREE.Mesh(
+        new THREE.BoxGeometry(w * 0.55, 0.5, 0.05),
+        new THREE.MeshStandardMaterial({ color: 0x3a3a3a })
+      );
+      rail.position.set(0, h * 0.6 + 0.32, d / 2 + 0.6);
+      b.add(rail);
+    }
+    // antenna on some roofs
+    if (rng() < 0.25) {
+      const ant = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.05, 0.05, 1.5, 6),
+        new THREE.MeshStandardMaterial({ color: 0x2c2c2c })
+      );
+      ant.position.y = h + 0.75;
+      b.add(ant);
+    }
+    b.position.set(x + (rng() - 0.5) * 2, 2, zCenter + sign * (10 + rng() * 12));
+    b.rotation.y = (rng() - 0.5) * 0.3;
+    scene.add(b);
+  }
+}
+buildings(-SEA_Z_HALF - 22, -1);
+buildings( SEA_Z_HALF + 22,  1);
+
+// ---------- trees on land (avoiding roads & landmarks) ----------
+for (let i = 0; i < 60; i++) {
+  const side = rng() < 0.5 ? -1 : 1;
+  const x = (rng() - 0.5) * 300;
+  // pick a z somewhere on the land (avoid the road strip)
+  let z;
+  const lane = rng();
+  if (lane < 0.5) {
+    // water-side strip
+    z = side * (SEA_Z_HALF + 1.2 + rng() * 3.5);
+  } else {
+    // behind/inland area (but stay on land)
+    z = side * (SEA_Z_HALF + 9 + rng() * 28);
+  }
+  // landmark exclusions
+  if (Math.abs(x) < 34 && z < 0) continue;
+  if (x > 40 && x < 62 && z > 0) continue;
+  if (x < -55 && x > -70 && z < 0) continue;
+  scene.add(tree(x, z, 0.7 + rng() * 0.5));
+}
+
+// ---------- Bosphorus Bridge ----------
+(function bridge() {
+  const g = new THREE.Group();
+  const deckY = 14, spanHalf = SEA_Z_HALF + 4;
+  // towers: base + tapered shaft + cap + antenna
+  for (const tz of [-spanHalf, spanHalf]) {
+    const base = block(4.5, 3, 4.5, COLORS.gray);
+    base.position.y = 1.5;
+    g.add(base);
+    const shaftH = deckY + 11;
+    const shaft = block(3.2, shaftH, 3.2, COLORS.gray);
+    shaft.position.y = 1.5 + 3 + shaftH / 2;
+    g.add(shaft);
+    const cap = block(4.6, 1.4, 4.6, COLORS.darkgray);
+    cap.position.y = 1.5 + 3 + shaftH + 0.7;
+    g.add(cap);
+    const ant = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.08, 0.08, 1.4, 6),
+      new THREE.MeshStandardMaterial({ color: 0x2c2c2c })
+    );
+    ant.position.y = 1.5 + 3 + shaftH + 1.4 + 0.7;
+    g.add(ant);
+  }
+  // crossbeam connecting tower tops
+  const crossTop = block(6.8, 0.7, spanHalf * 2 + 4, COLORS.darkgray);
+  crossTop.position.y = 1.5 + 3 + (deckY + 11) + 1.4 + 0.35;
+  g.add(crossTop);
+  // deck
+  const deck = new THREE.Mesh(
+    new THREE.BoxGeometry(7, 1.2, spanHalf * 2 + 8),
+    new THREE.MeshStandardMaterial({ color: 0x4b5a5e })
+  );
+  deck.position.y = deckY;
+  deck.castShadow = deck.receiveShadow = true;
+  g.add(deck);
+  // lane stripes
+  for (let z = -spanHalf - 2; z <= spanHalf + 2; z += 4) {
+    const stripe = new THREE.Mesh(
+      new THREE.BoxGeometry(0.15, 1.22, 1.4),
+      new THREE.MeshStandardMaterial({ color: 0xfff5b0 })
+    );
+    stripe.position.set(0, deckY, z);
+    g.add(stripe);
+  }
+  // railings
+  for (const xR of [-3.4, 3.4]) {
+    const rail = new THREE.Mesh(
+      new THREE.BoxGeometry(0.12, 0.9, spanHalf * 2 + 8),
+      new THREE.MeshStandardMaterial({ color: 0x2c2c2c })
+    );
+    rail.position.set(xR, deckY + 1.2, 0);
+    g.add(rail);
+  }
+  // parabolic suspension cables + hangers
+  const cableMat = new THREE.MeshStandardMaterial({ color: 0x1f1f1f, roughness: 0.4 });
+  const towerTopY = 1.5 + 3 + (deckY + 11) + 1.4;
+  for (const sideX of [-3.4, 3.4]) {
+    const N = 28;
+    for (let s = 0; s < N; s++) {
+      const t0 = s / N, t1 = (s + 1) / N;
+      const y0 = towerTopY - 4 * t0 * (1 - t0) * (towerTopY - deckY - 2);
+      const y1 = towerTopY - 4 * t1 * (1 - t1) * (towerTopY - deckY - 2);
+      const z0 = THREE.MathUtils.lerp(-spanHalf, spanHalf, t0);
+      const z1 = THREE.MathUtils.lerp(-spanHalf, spanHalf, t1);
+      const len = Math.hypot(y1 - y0, z1 - z0);
+      const seg = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.16, len), cableMat);
+      seg.position.set(sideX, (y0 + y1) / 2, (z0 + z1) / 2);
+      seg.lookAt(new THREE.Vector3(sideX, y1, z1));
+      g.add(seg);
+    }
+    for (let s = 1; s < N; s++) {
+      const t = s / N;
+      const yTop = towerTopY - 4 * t * (1 - t) * (towerTopY - deckY - 2);
+      const z = THREE.MathUtils.lerp(-spanHalf, spanHalf, t);
+      const h = yTop - deckY - 0.6;
+      const hg = new THREE.Mesh(new THREE.BoxGeometry(0.06, h, 0.06), cableMat);
+      hg.position.set(sideX, deckY + 0.6 + h / 2, z);
+      g.add(hg);
+    }
+  }
+  // cars on deck
+  const carColors = [COLORS.red, COLORS.blue, COLORS.yellow, COLORS.white, COLORS.darkgray, COLORS.teal, COLORS.orange];
+  for (let i = 0; i < 10; i++) {
+    const car = new THREE.Group();
+    const body = new THREE.Mesh(
+      new THREE.BoxGeometry(1.5, 0.7, 2.6),
+      new THREE.MeshStandardMaterial({ color: carColors[i % carColors.length], roughness: 0.4 })
+    );
+    body.position.y = 0.5;
+    body.castShadow = true;
+    car.add(body);
+    // darker cabin
+    const cab = new THREE.Mesh(
+      new THREE.BoxGeometry(1.3, 0.55, 1.5),
+      new THREE.MeshStandardMaterial({ color: 0x2c3a4a, roughness: 0.3 })
+    );
+    cab.position.y = 1.1;
+    car.add(cab);
+    // windshield + rear window
+    const winMat = new THREE.MeshStandardMaterial({
+      color: COLORS.window, emissive: COLORS.window, emissiveIntensity: 0.25, roughness: 0.2
+    });
+    const w1 = new THREE.Mesh(new THREE.BoxGeometry(1.31, 0.4, 0.55), winMat);
+    w1.position.set(0, 1.15, -0.45);
+    car.add(w1);
+    const w2 = new THREE.Mesh(new THREE.BoxGeometry(1.31, 0.4, 0.55), winMat);
+    w2.position.set(0, 1.15, 0.45);
+    car.add(w2);
+    // headlights
+    const headMat = new THREE.MeshStandardMaterial({
+      color: 0xfff8d0, emissive: 0xfff8d0, emissiveIntensity: 0.6
+    });
+    for (const hx of [-0.55, 0.55]) {
+      const hl = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.18, 0.06), headMat);
+      hl.position.set(hx, 0.55, -1.32);
+      car.add(hl);
+    }
+    car.position.set((i % 2 ? 1.6 : -1.6), deckY + 0.6, -spanHalf + 4 + i * 4);
+    g.add(car);
+  }
+  scene.add(g);
+})();
+
+// ---------- Kızkulesi (Maiden's Tower) ----------
+(function kizkulesi() {
+  const g = new THREE.Group();
+  // small island
+  const island = new THREE.Mesh(
+    new THREE.CylinderGeometry(5.5, 6.5, 2, 18),
+    new THREE.MeshStandardMaterial({ color: COLORS.stone, roughness: 0.9 })
+  );
+  island.position.y = 0.8;
+  island.castShadow = island.receiveShadow = true;
+  g.add(island);
+  // stone plinth
+  const plinth = block(5, 1.2, 5, COLORS.stone);
+  plinth.position.y = 2;
+  g.add(plinth);
+  // cylindrical main shaft (slightly tapered)
+  const shaft = new THREE.Mesh(
+    new THREE.CylinderGeometry(2.2, 2.4, 9, 24),
+    new THREE.MeshStandardMaterial({ color: COLORS.white, roughness: 0.65 })
+  );
+  shaft.position.y = 2 + 1.2 + 4.5;
+  shaft.castShadow = shaft.receiveShadow = true;
+  g.add(shaft);
+  // arched window slits around the shaft
+  const slitMat = new THREE.MeshStandardMaterial({
+    color: 0x2a2a2a, emissive: COLORS.window, emissiveIntensity: 0.25
+  });
+  for (let i = 0; i < 5; i++) {
+    const angle = (i / 5) * Math.PI * 2 + 0.3;
+    for (let row = 0; row < 3; row++) {
+      const slit = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.75, 0.06), slitMat);
+      slit.position.set(Math.cos(angle) * 2.32, 4 + row * 2.2, Math.sin(angle) * 2.32);
+      slit.rotation.y = -angle;
+      g.add(slit);
+    }
+  }
+  // balcony ring on top of shaft
+  const balcony = new THREE.Mesh(
+    new THREE.CylinderGeometry(2.75, 2.75, 0.3, 24),
+    new THREE.MeshStandardMaterial({ color: COLORS.white, roughness: 0.6 })
+  );
+  balcony.position.y = 2 + 1.2 + 9 + 0.15;
+  balcony.castShadow = true;
+  g.add(balcony);
+  const balcRail = new THREE.Mesh(
+    new THREE.CylinderGeometry(2.8, 2.8, 0.7, 24, 1, true),
+    new THREE.MeshStandardMaterial({ color: COLORS.darkgray, side: THREE.DoubleSide })
+  );
+  balcRail.position.y = 2 + 1.2 + 9 + 0.65;
+  g.add(balcRail);
+  // upper room
+  const upperBaseY = 2 + 1.2 + 9 + 0.3 + 0.7;
+  const upper = block(3.6, 3.2, 3.6, COLORS.white);
+  upper.position.y = upperBaseY + 1.6;
+  addWindows(upper, 3.6, 3.2, 3.6, COLORS.window, 1);
+  g.add(upper);
+  // pyramidal roof
+  const roof = new THREE.Mesh(
+    new THREE.ConeGeometry(3.0, 2.8, 4),
+    new THREE.MeshStandardMaterial({ color: COLORS.domered, roughness: 0.5 })
+  );
+  roof.position.y = upperBaseY + 3.2 + 1.4;
+  roof.rotation.y = Math.PI / 4;
+  roof.castShadow = true;
+  g.add(roof);
+  // gold finial
+  const stem = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.1, 0.18, 0.8, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.6, roughness: 0.4 })
+  );
+  stem.position.y = upperBaseY + 3.2 + 2.8 + 0.4;
+  g.add(stem);
+  const orb = new THREE.Mesh(
+    new THREE.SphereGeometry(0.22, 10, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.7, roughness: 0.3 })
+  );
+  orb.position.y = upperBaseY + 3.2 + 2.8 + 0.95;
+  g.add(orb);
+  g.position.set(45, 0, 8);
+  scene.add(g);
+})();
+
+// ---------- Hagia Sophia (European side) ----------
+(function hagiaSophia() {
+  const g = new THREE.Group();
+  // stepped base
+  const baseLow = block(24, 1.2, 16, COLORS.stone);
+  baseLow.position.y = 0.6;
+  g.add(baseLow);
+  const base = block(22, 1.8, 14, COLORS.cream);
+  base.position.y = 1.2 + 0.9;
+  g.add(base);
+  // main body with windows
+  const bodyY = 1.2 + 1.8;
+  const body = block(18, 8, 10, COLORS.cream);
+  body.position.y = bodyY + 4;
+  addWindows(body, 18, 8, 10, COLORS.window, 2);
+  g.add(body);
+  // arched portals front & back
+  const portalMat = new THREE.MeshStandardMaterial({ color: COLORS.door, roughness: 0.8 });
+  for (const sign of [-1, 1]) {
+    const arch = new THREE.Mesh(new THREE.BoxGeometry(2.4, 3.4, 0.18), portalMat);
+    arch.position.set(0, bodyY + 1.7, sign * 5.04);
+    g.add(arch);
+    // arched top — half-cylinder facing forward
+    const archTop = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.2, 1.2, 0.18, 18, 1, false, 0, Math.PI),
+      portalMat
+    );
+    archTop.position.set(0, bodyY + 3.4, sign * 5.04);
+    archTop.rotation.x = Math.PI / 2;
+    archTop.rotation.y = Math.PI / 2;
+    g.add(archTop);
+  }
+  // main dome + semi-domes + flanking small domes
+  const domeY = bodyY + 8;
+  g.add(dome(5.5, COLORS.gray, domeY));
+  for (const x of [-9, 9]) g.add(dome(3.2, COLORS.gray, domeY, 2.4));
+  for (const x of [-13, 13]) {
+    const sm = new THREE.Mesh(
+      new THREE.SphereGeometry(1.8, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2),
+      new THREE.MeshStandardMaterial({ color: COLORS.gray, roughness: 0.6 })
+    );
+    sm.position.set(x, domeY, 0);
+    sm.castShadow = true;
+    g.add(sm);
+    const f = new THREE.Mesh(
+      new THREE.ConeGeometry(0.1, 0.5, 6),
+      new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.6 })
+    );
+    f.position.set(x, domeY + 1.8 + 0.25, 0);
+    g.add(f);
+  }
+  // 4 minarets at corners — shaft base sits at group y=0
+  for (const [mx, mz] of [[-12, -7], [-12, 7], [12, -7], [12, 7]]) {
+    g.add(minaret(mx, mz, 18, COLORS.cream));
+  }
+  g.position.set(-14, 2, -SEA_Z_HALF - 26);
+  g.rotation.y = 0.15;
+  scene.add(g);
+})();
+
+// ---------- Galata Tower (European side, near the water) ----------
+(function galata() {
+  const g = new THREE.Group();
+  // base plinth
+  const plinth = block(8, 1, 8, COLORS.stone);
+  plinth.position.y = 0.5;
+  g.add(plinth);
+  // tapered cylindrical shaft
+  const tower = new THREE.Mesh(
+    new THREE.CylinderGeometry(2.8, 3.2, 16, 28),
+    new THREE.MeshStandardMaterial({ color: COLORS.cream, roughness: 0.7 })
+  );
+  tower.position.y = 1 + 8;
+  tower.castShadow = tower.receiveShadow = true;
+  g.add(tower);
+  // arched window slits around shaft
+  for (let i = 0; i < 6; i++) {
+    const angle = (i / 6) * Math.PI * 2;
+    for (let row = 0; row < 4; row++) {
+      const win = new THREE.Mesh(
+        new THREE.BoxGeometry(0.55, 0.85, 0.06),
+        new THREE.MeshStandardMaterial({ color: 0x2a2a2a, emissive: COLORS.window, emissiveIntensity: 0.22 })
+      );
+      win.position.set(Math.cos(angle) * 3.02, 2.5 + row * 3, Math.sin(angle) * 3.02);
+      win.rotation.y = -angle;
+      g.add(win);
+    }
+  }
+  // observation deck (conical lower / wider top section)
+  const obsDeck = new THREE.Mesh(
+    new THREE.CylinderGeometry(3.85, 3.6, 2, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.gray, roughness: 0.7 })
+  );
+  obsDeck.position.y = 17 + 1;
+  obsDeck.castShadow = true;
+  g.add(obsDeck);
+  // observation deck roof lip
+  const lip = new THREE.Mesh(
+    new THREE.CylinderGeometry(4.0, 3.85, 0.25, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.darkgray, roughness: 0.6 })
+  );
+  lip.position.y = 17 + 2 + 0.12;
+  g.add(lip);
+  // windows around the deck
+  for (let i = 0; i < 8; i++) {
+    const angle = (i / 8) * Math.PI * 2 + Math.PI / 8;
+    const win = new THREE.Mesh(
+      new THREE.BoxGeometry(0.7, 1.2, 0.08),
+      new THREE.MeshStandardMaterial({ color: COLORS.window, emissive: COLORS.window, emissiveIntensity: 0.3 })
+    );
+    win.position.set(Math.cos(angle) * 3.78, 18, Math.sin(angle) * 3.78);
+    win.rotation.y = -angle;
+    g.add(win);
+  }
+  // conical roof
+  const roof = new THREE.Mesh(
+    new THREE.ConeGeometry(5.2, 5, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.domered, roughness: 0.55 })
+  );
+  roof.position.y = 19 + 2.5;
+  roof.castShadow = true;
+  g.add(roof);
+  // finial: spike + orb
+  const spike = new THREE.Mesh(
+    new THREE.ConeGeometry(0.25, 1.8, 6),
+    new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.7, roughness: 0.3 })
+  );
+  spike.position.y = 19 + 5 + 0.9;
+  g.add(spike);
+  const orb = new THREE.Mesh(
+    new THREE.SphereGeometry(0.25, 10, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.7 })
+  );
+  orb.position.y = 19 + 5 + 1.95;
+  g.add(orb);
+  g.position.set(-62, 2, -SEA_Z_HALF - 20);
+  scene.add(g);
+})();
+
+// ---------- boats on the Bosphorus ----------
+const boats = [];
+for (let i = 0; i < 4; i++) {
+  const b = new THREE.Group();
+  const hullColor = [COLORS.white, COLORS.yellow, COLORS.red, COLORS.teal][i];
+  const hullMat = new THREE.MeshStandardMaterial({ color: hullColor, roughness: 0.5 });
+  // main hull
+  const hull = new THREE.Mesh(new THREE.BoxGeometry(7, 1.2, 2.4), hullMat);
+  hull.position.y = 0.6;
+  hull.castShadow = true;
+  b.add(hull);
+  // prow wedge (rotated cone so it points forward)
+  const prow = new THREE.Mesh(new THREE.ConeGeometry(1.2, 2, 4), hullMat);
+  prow.rotation.z = -Math.PI / 2;
+  prow.rotation.y = Math.PI / 4;
+  prow.position.set(4, 0.6, 0);
+  prow.castShadow = true;
+  b.add(prow);
+  // waterline stripe
+  const stripe = new THREE.Mesh(
+    new THREE.BoxGeometry(7, 0.1, 2.42),
+    new THREE.MeshStandardMaterial({ color: COLORS.darkgray })
+  );
+  stripe.position.y = 1.25;
+  b.add(stripe);
+  // cabin
+  const cabin = block(3, 1.4, 1.6, COLORS.blue);
+  cabin.position.y = 1.3;
+  addWindows(cabin, 3, 1.4, 1.6, COLORS.window, 1);
+  b.add(cabin);
+  // small smokestack
+  const stack = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.18, 0.22, 1.2, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.darkred })
+  );
+  stack.position.set(-2, 2.1, 0);
+  b.add(stack);
+  const stackRim = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.26, 0.26, 0.12, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.darkgray })
+  );
+  stackRim.position.set(-2, 2.75, 0);
+  b.add(stackRim);
+  b.position.set(-100 + i * 60, 0.6, (i % 2 ? -1 : 1) * 8);
+  b.userData = { speed: 0.06 + i * 0.02, dir: i % 2 ? 1 : -1 };
+  boats.push(b);
+  scene.add(b);
+}
+
+// seagulls circling Kızkulesi with flapping wings
+const gulls = new THREE.Group();
+for (let i = 0; i < 6; i++) {
+  const gull = new THREE.Group();
+  const body = new THREE.Mesh(
+    new THREE.BoxGeometry(0.7, 0.2, 0.3),
+    new THREE.MeshStandardMaterial({ color: 0xffffff })
+  );
+  gull.add(body);
+  const wingMat = new THREE.MeshStandardMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+  const wingL = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.04, 0.45), wingMat);
+  wingL.position.set(-0.6, 0.05, 0);
+  gull.add(wingL);
+  const wingR = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.04, 0.45), wingMat);
+  wingR.position.set(0.6, 0.05, 0);
+  gull.add(wingR);
+  gull.userData = { r: 8 + i * 2, a: i * 1.3, y: 18 + i * 1.5, s: 0.5 + rng() * 0.5, flap: rng() * Math.PI * 2 };
+  gulls.add(gull);
+}
+gulls.position.set(45, 0, 8);
+scene.add(gulls);
+
+// ---------- animation loop ----------
+function tick() {
+  requestAnimationFrame(tick);
+  for (const b of boats) {
+    b.position.x += b.userData.speed * b.userData.dir;
+    if (b.position.x > 140) b.position.x = -140;
+    if (b.position.x < -140) b.position.x = 140;
+  }
+  for (const gull of gulls.children) {
+    const u = gull.userData;
+    u.a += 0.02 * u.s;
+    u.flap += 0.18;
+    gull.position.set(Math.cos(u.a) * u.r, u.y + Math.sin(u.a * 3) * 0.8, Math.sin(u.a) * u.r);
+    gull.rotation.y = -u.a;
+    gull.children[1].rotation.z = Math.sin(u.flap) * 0.7;
+    gull.children[2].rotation.z = -Math.sin(u.flap) * 0.7;
+  }
+  controls.update();
+  renderer.render(scene, camera);
+}
+tick();
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>
