@@ -584,53 +584,48 @@ scene.add(galataGroup);
   );
 }
 
-// ---------- boats on the Bosphorus ----------
+// ---------- vapur ferries on the Bosphorus — loaded from GLB ----------
 const boats = [];
-for (let i = 0; i < 4; i++) {
-  const b = new THREE.Group();
-  const hullColor = [COLORS.white, COLORS.yellow, COLORS.red, COLORS.teal][i];
-  const hullMat = new THREE.MeshStandardMaterial({ color: hullColor, roughness: 0.5 });
-  // main hull
-  const hull = new THREE.Mesh(new THREE.BoxGeometry(7, 1.2, 2.4), hullMat);
-  hull.position.y = 0.6;
-  hull.castShadow = true;
-  b.add(hull);
-  // prow wedge (rotated cone so it points forward)
-  const prow = new THREE.Mesh(new THREE.ConeGeometry(1.2, 2, 4), hullMat);
-  prow.rotation.z = -Math.PI / 2;
-  prow.rotation.y = Math.PI / 4;
-  prow.position.set(4, 0.6, 0);
-  prow.castShadow = true;
-  b.add(prow);
-  // waterline stripe
-  const stripe = new THREE.Mesh(
-    new THREE.BoxGeometry(7, 0.1, 2.42),
-    new THREE.MeshStandardMaterial({ color: COLORS.darkgray })
+{
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.load(
+    'assets/models/vapur.glb',
+    (gltf) => {
+      const template = gltf.scene;
+      // 1) measure the unscaled model
+      const rawBox = new THREE.Box3().setFromObject(template);
+      const rawSize = rawBox.getSize(new THREE.Vector3());
+      // 2) pick a uniform scale so the longest axis is ~14 scene units
+      //    (the source model is assumed to have its length along +X)
+      const longest = Math.max(rawSize.x, rawSize.y, rawSize.z);
+      const target = 14;
+      const s = longest > 0 ? target / longest : 1;
+      template.scale.setScalar(s);
+      // 3) re-measure (the scale is now baked into the world-space box),
+      //    then center horizontally and plant the base at local y=0
+      const box = new THREE.Box3().setFromObject(template);
+      template.position.x -= (box.min.x + box.max.x) / 2;
+      template.position.z -= (box.min.z + box.max.z) / 2;
+      template.position.y -= box.min.y;
+      // 4) enable shadows on every mesh in the template (clones inherit)
+      template.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+        }
+      });
+      // 5) spawn four vapurs spread along the strait, alternating sides
+      for (let i = 0; i < 4; i++) {
+        const b = template.clone();
+        b.position.set(-100 + i * 60, 5, (i % 2 ? -1 : 1) * 8);
+        b.userData = { speed: 0.06 + i * 0.02, dir: i % 2 ? 1 : -1 };
+        boats.push(b);
+        scene.add(b);
+      }
+    },
+    undefined,
+    (err) => console.error('Failed to load vapur model:', err)
   );
-  stripe.position.y = 1.25;
-  b.add(stripe);
-  // cabin
-  const cabin = block(3, 1.4, 1.6, COLORS.blue);
-  cabin.position.y = 1.3;
-  addWindows(cabin, 3, 1.4, 1.6, COLORS.window, 1);
-  b.add(cabin);
-  // small smokestack
-  const stack = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.18, 0.22, 1.2, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.darkred })
-  );
-  stack.position.set(-2, 2.1, 0);
-  b.add(stack);
-  const stackRim = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.26, 0.26, 0.12, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.darkgray })
-  );
-  stackRim.position.set(-2, 2.75, 0);
-  b.add(stackRim);
-  b.position.set(-100 + i * 60, 0.6, (i % 2 ? -1 : 1) * 8);
-  b.userData = { speed: 0.06 + i * 0.02, dir: i % 2 ? 1 : -1 };
-  boats.push(b);
-  scene.add(b);
 }
 
 // seagulls circling Kızkulesi with flapping wings
