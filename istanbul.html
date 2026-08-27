@@ -482,7 +482,7 @@ scene.add(kizkulesiGroup);
       const rawSize = rawBox.getSize(new THREE.Vector3());
       // 2) pick a uniform scale so the widest footprint dimension is ~12 units
       const longest = Math.max(rawSize.x, rawSize.z);
-      const target = 12;
+      const target = 16;
       const s = longest > 0 ? Math.min(target / longest, 50) : 1;
       model.scale.setScalar(s);
       // 3) re-measure (the scale is now baked into the world-space box),
@@ -545,84 +545,44 @@ scene.add(hagiaGroup);
   );
 }
 
-// ---------- Galata Tower (European side, near the water) ----------
-(function galata() {
-  const g = new THREE.Group();
-  // base plinth
-  const plinth = block(8, 1, 8, COLORS.stone);
-  plinth.position.y = 0.5;
-  g.add(plinth);
-  // tapered cylindrical shaft
-  const tower = new THREE.Mesh(
-    new THREE.CylinderGeometry(2.8, 3.2, 16, 28),
-    new THREE.MeshStandardMaterial({ color: COLORS.cream, roughness: 0.7 })
+// ---------- Galata Tower (European side, near the water) — loaded from GLB ----------
+const galataGroup = new THREE.Group();
+galataGroup.position.set(-62, 2, -SEA_Z_HALF - 20);
+scene.add(galataGroup);
+
+{
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.load(
+    'assets/models/galata-tower.glb',
+    (gltf) => {
+      const model = gltf.scene;
+      // 1) measure the unscaled model
+      const rawBox = new THREE.Box3().setFromObject(model);
+      const rawSize = rawBox.getSize(new THREE.Vector3());
+      // 2) pick a uniform scale so the widest footprint dimension is ~4 units
+      const longest = Math.max(rawSize.x, rawSize.z);
+      const target = 6;
+      const s = longest > 0 ? Math.min(target / longest, 50) : 1;
+      model.scale.setScalar(s);
+      // 3) re-measure (the scale is now baked into the world-space box),
+      //    then center horizontally and plant the base at local y=0
+      const box = new THREE.Box3().setFromObject(model);
+      model.position.x -= (box.min.x + box.max.x) / 2;
+      model.position.z -= (box.min.z + box.max.z) / 2;
+      model.position.y -= box.min.y;
+      // 4) enable shadows on every mesh in the model
+      model.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+        }
+      });
+      galataGroup.add(model);
+    },
+    undefined,
+    (err) => console.error('Failed to load Galata Tower model:', err)
   );
-  tower.position.y = 1 + 8;
-  tower.castShadow = tower.receiveShadow = true;
-  g.add(tower);
-  // arched window slits around shaft
-  for (let i = 0; i < 6; i++) {
-    const angle = (i / 6) * Math.PI * 2;
-    for (let row = 0; row < 4; row++) {
-      const win = new THREE.Mesh(
-        new THREE.BoxGeometry(0.55, 0.85, 0.06),
-        new THREE.MeshStandardMaterial({ color: 0x2a2a2a, emissive: COLORS.window, emissiveIntensity: 0.22 })
-      );
-      win.position.set(Math.cos(angle) * 3.02, 2.5 + row * 3, Math.sin(angle) * 3.02);
-      win.rotation.y = -angle;
-      g.add(win);
-    }
-  }
-  // observation deck (conical lower / wider top section)
-  const obsDeck = new THREE.Mesh(
-    new THREE.CylinderGeometry(3.85, 3.6, 2, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.gray, roughness: 0.7 })
-  );
-  obsDeck.position.y = 17 + 1;
-  obsDeck.castShadow = true;
-  g.add(obsDeck);
-  // observation deck roof lip
-  const lip = new THREE.Mesh(
-    new THREE.CylinderGeometry(4.0, 3.85, 0.25, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.darkgray, roughness: 0.6 })
-  );
-  lip.position.y = 17 + 2 + 0.12;
-  g.add(lip);
-  // windows around the deck
-  for (let i = 0; i < 8; i++) {
-    const angle = (i / 8) * Math.PI * 2 + Math.PI / 8;
-    const win = new THREE.Mesh(
-      new THREE.BoxGeometry(0.7, 1.2, 0.08),
-      new THREE.MeshStandardMaterial({ color: COLORS.window, emissive: COLORS.window, emissiveIntensity: 0.3 })
-    );
-    win.position.set(Math.cos(angle) * 3.78, 18, Math.sin(angle) * 3.78);
-    win.rotation.y = -angle;
-    g.add(win);
-  }
-  // conical roof
-  const roof = new THREE.Mesh(
-    new THREE.ConeGeometry(5.2, 5, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.domered, roughness: 0.55 })
-  );
-  roof.position.y = 19 + 2.5;
-  roof.castShadow = true;
-  g.add(roof);
-  // finial: spike + orb
-  const spike = new THREE.Mesh(
-    new THREE.ConeGeometry(0.25, 1.8, 6),
-    new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.7, roughness: 0.3 })
-  );
-  spike.position.y = 19 + 5 + 0.9;
-  g.add(spike);
-  const orb = new THREE.Mesh(
-    new THREE.SphereGeometry(0.25, 10, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.7 })
-  );
-  orb.position.y = 19 + 5 + 1.95;
-  g.add(orb);
-  g.position.set(-62, 2, -SEA_Z_HALF - 20);
-  scene.add(g);
-})();
+}
 
 // ---------- boats on the Bosphorus ----------
 const boats = [];
