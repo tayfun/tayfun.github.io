@@ -1,0 +1,361 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lego Istanbul</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #aee3f5; font-family: sans-serif; }
+  #info { position: absolute; top: 12px; left: 12px; color: #234; background: rgba(255,255,255,.75);
+          padding: 8px 12px; border-radius: 8px; font-size: 13px; user-select: none; }
+</style>
+</head>
+<body>
+<div id="info">🧱 Lego Istanbul — drag to orbit, scroll to zoom</div>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ---------- scene basics ----------
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xaee3f5);
+scene.fog = new THREE.Fog(0xaee3f5, 120, 400);
+
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 1000);
+camera.position.set(70, 55, 90);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 4, 0);
+controls.maxPolarAngle = Math.PI / 2.05;
+controls.minDistance = 25;
+controls.maxDistance = 260;
+controls.enableDamping = true;
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const sun = new THREE.DirectionalLight(0xfff3d6, 1.6);
+sun.position.set(60, 90, 40);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -120; sun.shadow.camera.right = 120;
+sun.shadow.camera.top = 120; sun.shadow.camera.bottom = -120;
+scene.add(sun);
+
+// ---------- lego helpers ----------
+// A brick: box + studs (small cylinders) on top
+const studGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.22, 12);
+function brick(w, h, d, color, studs = true) {
+  const g = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.35, metalness: 0.05 });
+  const box = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  box.position.y = h / 2;
+  box.castShadow = box.receiveShadow = true;
+  g.add(box);
+  if (studs) {
+    const smat = mat;
+    const nx = Math.max(1, Math.round(w / 1.6));
+    const nz = Math.max(1, Math.round(d / 1.6));
+    for (let i = 0; i < nx; i++) for (let j = 0; j < nz; j++) {
+      const s = new THREE.Mesh(studGeo, smat);
+      s.position.set(-w/2 + (i + 0.5) * (w / nx), h + 0.11, -d/2 + (j + 0.5) * (d / nz));
+      s.castShadow = true;
+      g.add(s);
+    }
+  }
+  return g;
+}
+
+const COLORS = {
+  red: 0xc4281c, blue: 0x0d69ab, yellow: 0xf2cd37, green: 0x237841,
+  white: 0xf4f4f4, tan: 0xe4cd9e, gray: 0x9ba19d, darkgray: 0x6c6e68,
+  darkred: 0x8a2a1e, brown: 0x7b5d41, orange: 0xfe8a18,
+  pink: 0xfc97ac, teal: 0x008f9b, gold: 0xc5a224
+};
+
+// ---------- ground & sea ----------
+// sea = Bosphorus running along X axis, land on both sides
+const SEA_Z_HALF = 18;
+const sea = new THREE.Mesh(
+  new THREE.BoxGeometry(300, 2, SEA_Z_HALF * 2),
+  new THREE.MeshStandardMaterial({ color: 0x2f7bb5, roughness: 0.25 })
+);
+sea.position.y = -1;
+sea.receiveShadow = true;
+scene.add(sea);
+
+function land(zCenter, depth, color) {
+  const l = brick(300, 2, depth, color);
+  l.position.set(0, 0, zCenter);
+  scene.add(l);
+}
+land(-SEA_Z_HALF - 22, 44, 0x8fbd6b); // European side (north)
+land( SEA_Z_HALF + 22, 44, 0x9cc77a); // Asian side (south)
+
+// roads on each side
+for (const z of [-SEA_Z_HALF - 6, SEA_Z_HALF + 6]) {
+  const road = new THREE.Mesh(
+    new THREE.BoxGeometry(300, 0.15, 6),
+    new THREE.MeshStandardMaterial({ color: 0x58595b })
+  );
+  road.position.set(0, 2.1, z);
+  road.receiveShadow = true;
+  scene.add(road);
+}
+
+// ---------- generic buildings ----------
+const rng = (seed => () => (seed = (seed * 16807) % 2147483647) / 2147483647)(42);
+const palette = [COLORS.red, COLORS.blue, COLORS.yellow, COLORS.green, COLORS.white, COLORS.orange, COLORS.pink, COLORS.teal];
+function buildings(zCenter, sign) {
+  for (let x = -130; x <= 130; x += 11) {
+    // keep gaps for landmarks (landmark zones handled below by placement)
+    if (Math.abs(x) < 34 && zCenter < 0) continue;   // Hagia Sophia plaza (Europe)
+    if (x > 40 && x < 62 && zCenter > 0) continue;    // Galata spot (Asia side here)
+    const w = 5 + rng() * 4, d = 5 + rng() * 4, h = 4 + rng() * 14;
+    const c = palette[Math.floor(rng() * palette.length)];
+    const b = brick(w, h, d, c);
+    b.position.set(x + (rng() - 0.5) * 2, 2, zCenter + sign * (10 + rng() * 12));
+    b.rotation.y = (rng() - 0.5) * 0.3;
+    scene.add(b);
+  }
+}
+buildings(-SEA_Z_HALF - 22, -1);
+buildings( SEA_Z_HALF + 22,  1);
+
+// ---------- Bosphorus Bridge ----------
+(function bridge() {
+  const g = new THREE.Group();
+  const deckY = 14, spanHalf = SEA_Z_HALF + 4;
+  // towers
+  for (const z of [-spanHalf, spanHalf]) {
+    const tower = brick(3, deckY + 14, 3, COLORS.darkgray);
+    tower.position.set(0, 2, z);
+    g.add(tower);
+  }
+  // deck
+  const deck = new THREE.Mesh(
+    new THREE.BoxGeometry(7, 1.2, spanHalf * 2 + 8),
+    new THREE.MeshStandardMaterial({ color: 0x4b5a5e })
+  );
+  deck.position.y = deckY;
+  deck.castShadow = deck.receiveShadow = true;
+  g.add(deck);
+  // suspension cables (simple lines as thin boxes)
+  const cableMat = new THREE.MeshStandardMaterial({ color: 0x2c2c2c });
+  for (const sideX of [-3.4, 3.4]) {
+    for (let i = -1; i <= 1; i += 2) {
+      // main catenary-ish: segments from tower tops to deck mid
+      const N = 8;
+      for (let s = 0; s < N; s++) {
+        const t0 = s / N, t1 = (s + 1) / N; // 0..1 tower->mid
+        const y0 = THREE.MathUtils.lerp(deckY + 14, deckY + 2.5, t0);
+        const y1 = THREE.MathUtils.lerp(deckY + 14, deckY + 2.5, t1);
+        const z0 = THREE.MathUtils.lerp(i * spanHalf, 0, t0);
+        const z1 = THREE.MathUtils.lerp(i * spanHalf, 0, t1);
+        const len = Math.hypot(y1 - y0, z1 - z0);
+        const seg = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.25, len), cableMat);
+        seg.position.set(sideX, (y0 + y1) / 2, (z0 + z1) / 2);
+        seg.lookAt(new THREE.Vector3(sideX, y1, z1));
+        g.add(seg);
+      }
+      // hangers
+      for (let s = 1; s < 8; s++) {
+        const t = s / 8;
+        const yTop = THREE.MathUtils.lerp(deckY + 14, deckY + 2.5, t);
+        const z = THREE.MathUtils.lerp(i * spanHalf, 0, t);
+        const h = yTop - deckY;
+        const hg = new THREE.Mesh(new THREE.BoxGeometry(0.15, h, 0.15), cableMat);
+        hg.position.set(sideX, deckY + h / 2, z);
+        g.add(hg);
+      }
+    }
+  }
+  // little cars on deck
+  for (let i = 0; i < 6; i++) {
+    const car = brick(1.2, 0.9, 2.2, palette[Math.floor(rng() * palette.length)], false);
+    car.position.set((i % 2 ? 1.5 : -1.5), deckY + 1.2, -spanHalf + 4 + i * 6);
+    g.add(car);
+  }
+  scene.add(g);
+})();
+
+// ---------- Kızkulesi (Maiden's Tower) ----------
+(function kizkulesi() {
+  const g = new THREE.Group();
+  // small island
+  const island = new THREE.Mesh(
+    new THREE.CylinderGeometry(5.5, 6.5, 2, 16),
+    new THREE.MeshStandardMaterial({ color: 0xb9a380 })
+  );
+  island.position.y = 0.8;
+  island.castShadow = island.receiveShadow = true;
+  g.add(island);
+  // main tower
+  const shaft = brick(4, 9, 4, COLORS.white);
+  shaft.position.y = 2;
+  g.add(shaft);
+  // balcony / platform
+  const plat = brick(5.4, 1, 5.4, COLORS.white);
+  plat.position.y = 11;
+  g.add(plat);
+  // upper room
+  const upper = brick(3.4, 3, 3.4, COLORS.white);
+  upper.position.y = 12;
+  g.add(upper);
+  // roof
+  const roof = new THREE.Mesh(
+    new THREE.ConeGeometry(2.6, 2.6, 4),
+    new THREE.MeshStandardMaterial({ color: COLORS.darkred })
+  );
+  roof.position.y = 15.3;
+  roof.rotation.y = Math.PI / 4;
+  roof.castShadow = true;
+  g.add(roof);
+  // spire
+  const spire = new THREE.Mesh(
+    new THREE.ConeGeometry(0.25, 2.4, 6),
+    new THREE.MeshStandardMaterial({ color: COLORS.gold })
+  );
+  spire.position.y = 17.2;
+  g.add(spire);
+  g.position.set(45, 0, 8); // in the water, east side
+  scene.add(g);
+})();
+
+// ---------- Hagia Sophia (European side) ----------
+(function hagiaSophia() {
+  const g = new THREE.Group();
+  const base = brick(22, 3, 14, COLORS.tan);
+  base.position.y = 2;
+  g.add(base);
+  const body = brick(18, 8, 10, COLORS.tan);
+  body.position.y = 5;
+  g.add(body);
+  // big dome
+  const dome = new THREE.Mesh(
+    new THREE.SphereGeometry(5.5, 20, 12, 0, Math.PI * 2, 0, Math.PI / 2),
+    new THREE.MeshStandardMaterial({ color: COLORS.gray })
+  );
+  dome.position.y = 13;
+  dome.castShadow = true;
+  g.add(dome);
+  // semi-domes
+  for (const x of [-9, 9]) {
+    const sd = new THREE.Mesh(
+      new THREE.SphereGeometry(3.2, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2),
+      new THREE.MeshStandardMaterial({ color: COLORS.gray })
+    );
+    sd.position.set(x, 13, 0);
+    sd.castShadow = true;
+    g.add(sd);
+  }
+  // 4 minarets
+  for (const [mx, mz] of [[-12, -7], [-12, 7], [12, -7], [12, 7]]) {
+    const m = brick(1.8, 18, 1.8, COLORS.white);
+    m.position.set(mx, 2, mz);
+    g.add(m);
+    const cap = new THREE.Mesh(
+      new THREE.ConeGeometry(1.3, 2.4, 8),
+      new THREE.MeshStandardMaterial({ color: COLORS.gold })
+    );
+    cap.position.set(mx, 21.2, mz);
+    cap.castShadow = true;
+    g.add(cap);
+  }
+  g.position.set(-14, 2, -SEA_Z_HALF - 26);
+  g.rotation.y = 0.15;
+  scene.add(g);
+})();
+
+// ---------- Galata Tower (also European side, near the water) ----------
+(function galata() {
+  const g = new THREE.Group();
+  const tower = brick(6, 16, 6, COLORS.gray);
+  tower.position.y = 2;
+  g.add(tower);
+  const upper = brick(7, 3.5, 7, COLORS.gray);
+  upper.position.y = 18;
+  g.add(upper);
+  const roof = new THREE.Mesh(
+    new THREE.ConeGeometry(5, 4.5, 8),
+    new THREE.MeshStandardMaterial({ color: COLORS.darkgray })
+  );
+  roof.position.y = 22;
+  roof.castShadow = true;
+  g.add(roof);
+  g.position.set(-62, 2, -SEA_Z_HALF - 20);
+  scene.add(g);
+})();
+
+// ---------- boats on the Bosphorus ----------
+const boats = [];
+for (let i = 0; i < 4; i++) {
+  const b = new THREE.Group();
+  const hull = new THREE.Mesh(
+    new THREE.BoxGeometry(6, 1.2, 2),
+    new THREE.MeshStandardMaterial({ color: [COLORS.white, COLORS.yellow, COLORS.red, COLORS.teal][i] })
+  );
+  hull.castShadow = true;
+  b.add(hull);
+  const cabin = brick(2.5, 1.4, 1.4, COLORS.blue, false);
+  cabin.position.y = 1.2;
+  b.add(cabin);
+  b.position.set(-100 + i * 60, 0.6, (i % 2 ? -1 : 1) * 8);
+  b.userData = { speed: 0.06 + i * 0.02, dir: i % 2 ? 1 : -1 };
+  boats.push(b);
+  scene.add(b);
+}
+
+// seagulls (tiny white bricks circling Kızkulesi)
+const gulls = new THREE.Group();
+for (let i = 0; i < 5; i++) {
+  const gm = new THREE.Mesh(
+    new THREE.BoxGeometry(0.9, 0.2, 0.3),
+    new THREE.MeshStandardMaterial({ color: 0xffffff })
+  );
+  gm.userData = { r: 8 + i * 2, a: i * 1.3, y: 18 + i * 1.5, s: 0.5 + rng() * 0.5 };
+  gulls.add(gm);
+}
+gulls.position.set(45, 0, 8);
+scene.add(gulls);
+
+// ---------- animation loop ----------
+function tick() {
+  requestAnimationFrame(tick);
+  for (const b of boats) {
+    b.position.x += b.userData.speed * b.userData.dir;
+    if (b.position.x > 140) b.position.x = -140;
+    if (b.position.x < -140) b.position.x = 140;
+  }
+  for (const gm of gulls.children) {
+    const u = gm.userData;
+    u.a += 0.02 * u.s;
+    gm.position.set(Math.cos(u.a) * u.r, u.y + Math.sin(u.a * 3) * 0.8, Math.sin(u.a) * u.r);
+    gm.rotation.y = -u.a;
+  }
+  controls.update();
+  renderer.render(scene, camera);
+}
+tick();
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>
