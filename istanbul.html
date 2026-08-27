@@ -466,87 +466,44 @@ scene.add(bridgeGroup);
   );
 }
 
-// ---------- Kızkulesi (Maiden's Tower) ----------
-(function kizkulesi() {
-  const g = new THREE.Group();
-  // small island
-  const island = new THREE.Mesh(
-    new THREE.CylinderGeometry(5.5, 6.5, 2, 18),
-    new THREE.MeshStandardMaterial({ color: COLORS.stone, roughness: 0.9 })
+// ---------- Kızkulesi (Maiden's Tower) — loaded from GLB ----------
+const kizkulesiGroup = new THREE.Group();
+kizkulesiGroup.position.set(45, 0, 8);
+scene.add(kizkulesiGroup);
+
+{
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.load(
+    'assets/models/maidens-tower.glb',
+    (gltf) => {
+      const model = gltf.scene;
+      // 1) measure the unscaled model
+      const rawBox = new THREE.Box3().setFromObject(model);
+      const rawSize = rawBox.getSize(new THREE.Vector3());
+      // 2) pick a uniform scale so the widest footprint dimension is ~12 units
+      const longest = Math.max(rawSize.x, rawSize.z);
+      const target = 12;
+      const s = longest > 0 ? Math.min(target / longest, 50) : 1;
+      model.scale.setScalar(s);
+      // 3) re-measure (the scale is now baked into the world-space box),
+      //    then center horizontally and plant the base at local y=0
+      const box = new THREE.Box3().setFromObject(model);
+      model.position.x -= (box.min.x + box.max.x) / 2;
+      model.position.z -= (box.min.z + box.max.z) / 2;
+      model.position.y -= box.min.y;
+      // 4) enable shadows on every mesh in the model
+      model.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+        }
+      });
+      kizkulesiGroup.add(model);
+    },
+    undefined,
+    (err) => console.error('Failed to load Maiden\u2019s Tower model:', err)
   );
-  island.position.y = 0.8;
-  island.castShadow = island.receiveShadow = true;
-  g.add(island);
-  // stone plinth
-  const plinth = block(5, 1.2, 5, COLORS.stone);
-  plinth.position.y = 2;
-  g.add(plinth);
-  // cylindrical main shaft (slightly tapered)
-  const shaft = new THREE.Mesh(
-    new THREE.CylinderGeometry(2.2, 2.4, 9, 24),
-    new THREE.MeshStandardMaterial({ color: COLORS.white, roughness: 0.65 })
-  );
-  shaft.position.y = 2 + 1.2 + 4.5;
-  shaft.castShadow = shaft.receiveShadow = true;
-  g.add(shaft);
-  // arched window slits around the shaft
-  const slitMat = new THREE.MeshStandardMaterial({
-    color: 0x2a2a2a, emissive: COLORS.window, emissiveIntensity: 0.25
-  });
-  for (let i = 0; i < 5; i++) {
-    const angle = (i / 5) * Math.PI * 2 + 0.3;
-    for (let row = 0; row < 3; row++) {
-      const slit = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.75, 0.06), slitMat);
-      slit.position.set(Math.cos(angle) * 2.32, 4 + row * 2.2, Math.sin(angle) * 2.32);
-      slit.rotation.y = -angle;
-      g.add(slit);
-    }
-  }
-  // balcony ring on top of shaft
-  const balcony = new THREE.Mesh(
-    new THREE.CylinderGeometry(2.75, 2.75, 0.3, 24),
-    new THREE.MeshStandardMaterial({ color: COLORS.white, roughness: 0.6 })
-  );
-  balcony.position.y = 2 + 1.2 + 9 + 0.15;
-  balcony.castShadow = true;
-  g.add(balcony);
-  const balcRail = new THREE.Mesh(
-    new THREE.CylinderGeometry(2.8, 2.8, 0.7, 24, 1, true),
-    new THREE.MeshStandardMaterial({ color: COLORS.darkgray, side: THREE.DoubleSide })
-  );
-  balcRail.position.y = 2 + 1.2 + 9 + 0.65;
-  g.add(balcRail);
-  // upper room
-  const upperBaseY = 2 + 1.2 + 9 + 0.3 + 0.7;
-  const upper = block(3.6, 3.2, 3.6, COLORS.white);
-  upper.position.y = upperBaseY + 1.6;
-  addWindows(upper, 3.6, 3.2, 3.6, COLORS.window, 1);
-  g.add(upper);
-  // pyramidal roof
-  const roof = new THREE.Mesh(
-    new THREE.ConeGeometry(3.0, 2.8, 4),
-    new THREE.MeshStandardMaterial({ color: COLORS.domered, roughness: 0.5 })
-  );
-  roof.position.y = upperBaseY + 3.2 + 1.4;
-  roof.rotation.y = Math.PI / 4;
-  roof.castShadow = true;
-  g.add(roof);
-  // gold finial
-  const stem = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.1, 0.18, 0.8, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.6, roughness: 0.4 })
-  );
-  stem.position.y = upperBaseY + 3.2 + 2.8 + 0.4;
-  g.add(stem);
-  const orb = new THREE.Mesh(
-    new THREE.SphereGeometry(0.22, 10, 8),
-    new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.7, roughness: 0.3 })
-  );
-  orb.position.y = upperBaseY + 3.2 + 2.8 + 0.95;
-  g.add(orb);
-  g.position.set(45, 0, 8);
-  scene.add(g);
-})();
+}
 
 // ---------- Hagia Sophia (European side) — loaded from GLB ----------
 const hagiaGroup = new THREE.Group();
