@@ -25,11 +25,12 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // ---------- scene basics ----------
 const scene = new THREE.Scene();
+scene.scale.setScalar(0.5);
 scene.background = new THREE.Color(0xaee3f5);
 scene.fog = new THREE.Fog(0xaee3f5, 260, 820);
 
 const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 2400);
-camera.position.set(170, 130, 230);
+camera.position.set(85, 65, 115);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(innerWidth, innerHeight);
@@ -39,10 +40,10 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 6, 0);
+controls.target.set(0, 3, 0);
 controls.maxPolarAngle = Math.PI / 2.05;
 controls.minDistance = 40;
-controls.maxDistance = 520;
+controls.maxDistance = 260;
 controls.enableDamping = true;
 
 // ---------- custom touch handling ----------
@@ -325,7 +326,7 @@ function dome(radius, color, baseY, height = null) {
 // extruded shape, so the curve is genuinely curved (not just a straight
 // channel) and the strait shows the sea underneath.
 const LAND_RADIUS = 230;
-const STRAIT_HALF = 24;
+const STRAIT_HALF = 48;
 // In shape coordinates: +Y is north, -Y is south (after rotateX(-π/2),
 // shape +Y maps to world -Z).
 const STRAIT_SOUTH_Y = -LAND_RADIUS + 30;
