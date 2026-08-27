@@ -27,10 +27,10 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 const scene = new THREE.Scene();
 scene.scale.setScalar(5.0);
 scene.background = new THREE.Color(0xaee3f5);
-scene.fog = new THREE.Fog(0xaee3f5, 260, 820);
+scene.fog = null;
 
-const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 2400);
-camera.position.set(85, 65, 115);
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 6000);
+camera.position.set(160, 220, 220);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(innerWidth, innerHeight);
@@ -42,9 +42,11 @@ document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 3, 0);
 controls.maxPolarAngle = Math.PI / 2.05;
-controls.minDistance = 40;
-controls.maxDistance = 260;
+controls.minDistance = 60;
+controls.maxDistance = 2500;
 controls.enableDamping = true;
+// Each scroll tick / pinch step moves the camera further along the dolly axis.
+controls.zoomSpeed = 4.0;
 
 // ---------- custom touch handling ----------
 // OrbitControls already drives single-finger drag for rotation. For
