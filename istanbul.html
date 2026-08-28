@@ -53,8 +53,8 @@ const controls = new OrbitControls(camera, renderer.domElement);
 // foregrounds the city rather than the Bosphorus.
 controls.target.set(-60, 10, -40);
 controls.maxPolarAngle = Math.PI / 2.05;
-controls.minDistance = 60;
-controls.maxDistance = 2500;
+controls.minDistance = 5;
+controls.maxDistance = 5000;
 controls.enableDamping = true;
 // Each scroll tick / pinch step moves the camera further along the dolly axis.
 controls.zoomSpeed = 4.0;
