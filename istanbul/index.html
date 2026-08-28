@@ -516,6 +516,7 @@ const LANDMARKS = Object.freeze({
   topkapiPalace:  { x:   -4,  z:  110 },
   haydarpasaGar:  { x:  194,  z:   10 },
 });
+const HAYDARPASA_ROTATION = THREE.MathUtils.degToRad(-68);
 
 // ---------- circular sea & land with a winding Bosphorus ----------
 // We carve the Bosphorus out of a circular landmass as a hole in the
@@ -917,6 +918,41 @@ const cobblestoneMaterial = new THREE.MeshStandardMaterial({
   roughness: 0.96,
   metalness: 0,
 });
+// Precinct meshes can extend past the irregular shoreline, especially on the
+// narrow Asian bank. Clip those fragments against the same mathematical
+// Bosphorus curve used to build the land, so paving never renders on water.
+cobblestoneMaterial.onBeforeCompile = shader => {
+  shader.vertexShader = shader.vertexShader
+    .replace(
+      '#include <common>',
+      `#include <common>
+       varying vec3 vPrecinctWorldPosition;`
+    )
+    .replace(
+      '#include <begin_vertex>',
+      `#include <begin_vertex>
+       vPrecinctWorldPosition = (modelMatrix * vec4(transformed, 1.0)).xyz / 5.0;`
+    );
+  shader.fragmentShader = shader.fragmentShader
+    .replace(
+      '#include <common>',
+      `#include <common>
+       varying vec3 vPrecinctWorldPosition;`
+    )
+    .replace(
+      '#include <map_fragment>',
+      `vec2 precinctPosition = vPrecinctWorldPosition.xz;
+       if (dot(precinctPosition, precinctPosition) > 52900.0) discard;
+       float precinctShapeY = -precinctPosition.y;
+       float precinctT = (precinctShapeY + 200.0) / 400.0;
+       float precinctCentreX = 28.0 * sin(precinctT * 6.28318530718)
+                             + 15.0 * sin(precinctT * 3.76991118431 + 0.3)
+                             + 80.0;
+       if (precinctPosition.x > precinctCentreX - 48.0
+           && precinctPosition.x < precinctCentreX + 72.0) discard;
+       #include <map_fragment>`
+    );
+};
 const pavedPrecincts = [
   {
     x: LANDMARKS.hagiaSophia.x, z: LANDMARKS.hagiaSophia.z, rotation: 0.15,
@@ -939,6 +975,12 @@ const pavedPrecincts = [
     x: LANDMARKS.topkapiPalace.x, z: LANDMARKS.topkapiPalace.z,
     rotation: THREE.MathUtils.degToRad(80),
     points: [[-68, -46], [-34, -62], [18, -59], [62, -40], [72, 5], [56, 52], [14, 64], [-36, 57], [-70, 28]],
+  },
+  {
+    x: LANDMARKS.haydarpasaGar.x, z: LANDMARKS.haydarpasaGar.z,
+    rotation: HAYDARPASA_ROTATION,
+    // An elongated station-shaped apron whose angled ends follow the building.
+    points: [[-44, -20], [-39, -32], [39, -32], [44, -20], [44, 20], [39, 32], [-39, 32], [-44, 20]],
   },
 ];
 
@@ -1284,7 +1326,7 @@ scene.add(aqueductGroup);
 // diorama edge, north of Kızkulesi without encroaching on the water channel.
 const haydarpasaGroup = new THREE.Group();
 haydarpasaGroup.position.set(LANDMARKS.haydarpasaGar.x, 2, LANDMARKS.haydarpasaGar.z);
-haydarpasaGroup.rotation.y = THREE.MathUtils.degToRad(-68);
+haydarpasaGroup.rotation.y = HAYDARPASA_ROTATION;
 scene.add(haydarpasaGroup);
 
 {
