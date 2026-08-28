@@ -5,7 +5,7 @@
 <title>Istanbul</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #f5d9b8; font-family: sans-serif; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #f3c1b5; font-family: sans-serif; }
   #info { position: absolute; top: 12px; left: 12px; color: #5b4636; background: rgba(255, 250, 240, 0.88);
           padding: 8px 12px; border-radius: 12px; font-size: 13px; user-select: none;
           border: 1px solid #c97b5e; z-index: 10; }
@@ -63,11 +63,11 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // ---------- scene basics ----------
 const scene = new THREE.Scene();
 scene.scale.setScalar(5.0);
-scene.background = new THREE.Color(0xf5d9b8);
+scene.background = new THREE.Color(0xf3c1b5);
 // Warm distance fog so the horizon dissolves into the golden-hour sky —
 // keeps distant shapes readable without hard edges, and reinforces the
 // soft ambient occlusion feel across the chunky pastel cityscape.
-scene.fog = new THREE.Fog(0xf5d9b8, 1800, 4200);
+scene.fog = new THREE.Fog(0xf3c1b5, 1800, 4200);
 
 const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 6000);
 // Pulled back and up so the camera sits just outside the (5×-scaled) land
@@ -307,7 +307,7 @@ document.addEventListener('wheel', (e) => {
 // Hemisphere light gives a soft sky/ground gradient — a cheap stand-in for
 // baked ambient occlusion that fills the chunky matte surfaces with warmth
 // from above and a hint of sage bounce from the ground.
-const hemi = new THREE.HemisphereLight(0xfae0c0, 0xa8c69b, 0.65);
+const hemi = new THREE.HemisphereLight(0xffd4c2, 0xa8c69b, 0.65);
 scene.add(hemi);
 // Warm ambient fill so even shadow-side surfaces stay readable.
 scene.add(new THREE.AmbientLight(0xffeacd, 0.35));
