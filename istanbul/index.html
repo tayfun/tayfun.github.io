@@ -1390,9 +1390,15 @@ const boats = [];
         { t: 0.30, speed: 0.00070, dir:  1, lane:  12 }, // north-bound, east lane
         { t: 0.80, speed: 0.00065, dir: -1, lane: -12 }, // south-bound, west lane
       ];
-      for (const cfg of VAPUR_LANES) {
+      for (const [index, cfg] of VAPUR_LANES.entries()) {
         const b = template.clone();
         b.userData = { t: cfg.t, speed: cfg.speed, dir: cfg.dir, lane: cfg.lane };
+        b.traverse((obj) => {
+          if (!b.userData.flagMorphMesh && obj.isMesh && obj.morphTargetInfluences?.length >= 2) {
+            b.userData.flagMorphMesh = obj;
+          }
+        });
+        b.userData.flagPhase = index * Math.PI;
         registerClickableObject(b, 'pasabahceFerry');
         boats.push(b);
         scene.add(b);
@@ -1613,6 +1619,12 @@ function tick(now = performance.now()) {
     // Turn the northbound vapur around so its flag sits at the rear.
     b.rotation.y = bosphorusRotationAtT(b.userData.t)
                  + (b.userData.dir > 0 ? Math.PI : 0);
+    const flagMesh = b.userData.flagMorphMesh;
+    if (flagMesh) {
+      const wavePhase = now * (Math.PI * 2 / 1150) + b.userData.flagPhase;
+      flagMesh.morphTargetInfluences[0] = Math.cos(wavePhase);
+      flagMesh.morphTargetInfluences[1] = Math.sin(wavePhase);
+    }
   }
   if (tramReady) {
     tramT = (tramT + TRAM_SPEED) % 1;
