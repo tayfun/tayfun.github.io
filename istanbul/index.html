@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Istanbul</title>
+<title>Istanbul Landmarks</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   html, body { margin: 0; height: 100%; overflow: hidden; background: #f3c1b5; font-family: sans-serif; }
@@ -1355,19 +1355,26 @@ const TRAM_SPEED = 0.0009; // fraction of track length per frame
 
 // seagulls circling Kızkulesi with flapping wings
 const gulls = new THREE.Group();
+const SEAGULL_SCALE = 4;
 for (let i = 0; i < 6; i++) {
   const gull = new THREE.Group();
   const body = new THREE.Mesh(
-    new THREE.BoxGeometry(0.7, 0.2, 0.3),
+    new THREE.BoxGeometry(0.7 * SEAGULL_SCALE, 0.2 * SEAGULL_SCALE, 0.3 * SEAGULL_SCALE),
     new THREE.MeshStandardMaterial({ color: 0xfaf3e7 })
   );
   gull.add(body);
   const wingMat = new THREE.MeshStandardMaterial({ color: 0xfaf3e7, side: THREE.DoubleSide });
-  const wingL = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.04, 0.45), wingMat);
-  wingL.position.set(-0.6, 0.05, 0);
+  const wingL = new THREE.Mesh(
+    new THREE.BoxGeometry(0.7 * SEAGULL_SCALE, 0.04 * SEAGULL_SCALE, 0.45 * SEAGULL_SCALE),
+    wingMat
+  );
+  wingL.position.set(-0.6 * SEAGULL_SCALE, 0.05 * SEAGULL_SCALE, 0);
   gull.add(wingL);
-  const wingR = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.04, 0.45), wingMat);
-  wingR.position.set(0.6, 0.05, 0);
+  const wingR = new THREE.Mesh(
+    new THREE.BoxGeometry(0.7 * SEAGULL_SCALE, 0.04 * SEAGULL_SCALE, 0.45 * SEAGULL_SCALE),
+    wingMat
+  );
+  wingR.position.set(0.6 * SEAGULL_SCALE, 0.05 * SEAGULL_SCALE, 0);
   gull.add(wingR);
   gull.userData = { r: 8 + i * 2, a: i * 1.3, yOffset: i * 3, s: 0.5 + rng() * 0.5, flap: rng() * Math.PI * 2 };
   gulls.add(gull);
@@ -1378,7 +1385,7 @@ gulls.position.set(KIZKULESI_X, 0, KIZKULESI_Z);
 // A transparent shared hit area makes the small, moving birds easy to select
 // without changing their visible geometry or animation.
 gullPickVolume = new THREE.Mesh(
-  new THREE.SphereGeometry(20, 16, 10),
+  new THREE.SphereGeometry(24, 16, 10),
   new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false })
 );
 gullPickVolume.position.set(KIZKULESI_X, kizkulesiBirdBaseY + 7.5, KIZKULESI_Z);
@@ -1420,7 +1427,7 @@ function tick(now = performance.now()) {
     );
     gull.rotation.y = -u.a;
     gull.children[1].rotation.z = Math.sin(u.flap) * 0.7;
-    gull.children[2].rotation.z = -Math.sin(u.flap) * 0.7;
+  gull.children[2].rotation.z = -Math.sin(u.flap) * 0.7;
   }
   controls.update();
   renderer.render(scene, camera);
