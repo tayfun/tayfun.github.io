@@ -8,11 +8,17 @@
   html, body { margin: 0; height: 100%; overflow: hidden; background: #f5d9b8; font-family: sans-serif; }
   #info { position: absolute; top: 12px; left: 12px; color: #5b4636; background: rgba(255, 250, 240, 0.88);
           padding: 8px 12px; border-radius: 12px; font-size: 13px; user-select: none;
-          border: 1px solid #c97b5e; }
+          border: 1px solid #c97b5e; z-index: 10; }
+  #debug { display: none; position: absolute; top: 12px; right: 12px; min-width: 290px; margin: 0;
+           padding: 12px 14px; color: #f8ead8; background: rgba(40, 31, 27, 0.9);
+           border: 1px solid rgba(244, 196, 154, 0.75); border-radius: 10px; z-index: 10;
+           font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+           white-space: pre; pointer-events: none; user-select: text; }
 </style>
 </head>
 <body>
-<div id="info">🏙️ Istanbul — drag (or 2‑finger ↔) to orbit · scroll (or 2‑finger ↕) to zoom</div>
+<div id="info">🏙️ Istanbul — drag (or 2‑finger ↔) to orbit · scroll (or 2‑finger ↕) to zoom · ` debug</div>
+<pre id="debug" aria-hidden="true"></pre>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -57,6 +63,68 @@ controls.maxDistance = 5000;
 controls.enableDamping = true;
 // Each scroll tick / pinch step moves the camera further along the dolly axis.
 controls.zoomSpeed = 4.0;
+
+// ---------- debug overlay ----------
+// Backquote is commonly used for developer consoles and does not conflict
+// with any of the scene's pointer/touch controls.
+const debugPanel = document.getElementById('debug');
+let debugVisible = false;
+let debugFrames = 0;
+let debugFps = 0;
+let debugLastSample = performance.now();
+
+function formatVector(v) {
+  return `${v.x.toFixed(2)}, ${v.y.toFixed(2)}, ${v.z.toFixed(2)}`;
+}
+
+function updateDebugPanel(now) {
+  debugFrames++;
+  const elapsed = now - debugLastSample;
+  if (elapsed >= 500) {
+    debugFps = debugFrames * 1000 / elapsed;
+    debugFrames = 0;
+    debugLastSample = now;
+  }
+  if (!debugVisible) return;
+
+  const renderInfo = renderer.info.render;
+  const memoryInfo = renderer.info.memory;
+  const azimuth = THREE.MathUtils.radToDeg(controls.getAzimuthalAngle());
+  const polar = THREE.MathUtils.radToDeg(controls.getPolarAngle());
+  const cameraDistance = camera.position.distanceTo(controls.target);
+
+  debugPanel.textContent = [
+    'ISTANBUL DEBUG  [` to close]',
+    '',
+    `FPS              ${debugFps.toFixed(1)}`,
+    `Camera position  ${formatVector(camera.position)}`,
+    `Camera target    ${formatVector(controls.target)}`,
+    `Camera distance  ${cameraDistance.toFixed(2)}`,
+    `Orbit azimuth    ${azimuth.toFixed(2)}°`,
+    `Orbit polar      ${polar.toFixed(2)}°`,
+    `Viewport         ${innerWidth} × ${innerHeight}`,
+    `Pixel ratio      ${renderer.getPixelRatio().toFixed(2)}`,
+    '',
+    `Scene children   ${scene.children.length}`,
+    `Draw calls       ${renderInfo.calls}`,
+    `Triangles        ${renderInfo.triangles.toLocaleString()}`,
+    `Geometries       ${memoryInfo.geometries}`,
+    `Textures         ${memoryInfo.textures}`,
+    '',
+    `Tram progress    ${(tramT * 100).toFixed(1)}%`,
+    `Tram position    ${formatVector(tramGroup.position)}`,
+    `Ferries active   ${boats.length}`,
+  ].join('\n');
+}
+
+document.addEventListener('keydown', (event) => {
+  if (event.code !== 'Backquote' || event.repeat) return;
+  event.preventDefault();
+  debugVisible = !debugVisible;
+  debugPanel.style.display = debugVisible ? 'block' : 'none';
+  debugPanel.setAttribute('aria-hidden', String(!debugVisible));
+  if (debugVisible) updateDebugPanel(performance.now());
+});
 
 // ---------- custom touch handling ----------
 // OrbitControls already drives single-finger drag for rotation. For
@@ -1031,7 +1099,7 @@ gulls.position.set(KIZKULESI_X, 0, KIZKULESI_Z);
 scene.add(gulls);
 
 // ---------- animation loop ----------
-function tick() {
+function tick(now = performance.now()) {
   requestAnimationFrame(tick);
   for (const b of boats) {
     b.userData.t += b.userData.speed * b.userData.dir;
@@ -1062,6 +1130,7 @@ function tick() {
   }
   controls.update();
   renderer.render(scene, camera);
+  updateDebugPanel(now);
 }
 tick();
 
