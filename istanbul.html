@@ -398,9 +398,18 @@ const STRAIT_LEN = STRAIT_NORTH_Y - STRAIT_SOUTH_Y; // length along shape-Y axis
 
 // Wavy centerline of the Bosphorus, parameterised 0→1 from south end to north end.
 // Two superposed sine waves give a recognisable S-bend plus smaller wiggle.
+//
+// A constant offset shifts the centreline toward the Asian (positive-X) edge
+// of the land, so the strait no longer runs through the middle of the island.
+// Hagia Sophia / Galata / the Valens Aqueduct all sit on the European side
+// (negative X), so pushing the strait in the +X direction pushes it AWAY from
+// them. The bridge, the vapur ferries and the Maiden's Tower all read their
+// position from this function, so they shift in lock-step.
+const BOSPHORUS_X_OFFSET = 60;
 function bosphorusCenterXAtT(t) {
   return 28 * Math.sin(t * Math.PI * 2.0)
-       + 15 * Math.sin(t * Math.PI * 1.2 + 0.3);
+       + 15 * Math.sin(t * Math.PI * 1.2 + 0.3)
+       + BOSPHORUS_X_OFFSET;
 }
 function bosphorusCenterXAtZ(z) {
   // Given a world z, return the shape-x of the centerline at that z (or null).
