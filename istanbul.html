@@ -505,6 +505,112 @@ const TRAM_B = TRAM_PATH[TRAM_PATH.length - 1];
 // avoids loops/cusps where the tram takes sharp turns.
 const tramCurve = new THREE.CatmullRomCurve3(TRAM_PATH, false, 'centripetal', 0.5);
 
+// Rocky foundation beneath the complete diorama disc. The procedural texture
+// is drawn as a tile and repeated around the cylinder, keeping this standalone
+// page free of another external asset while still giving the edge real detail.
+function createRockTexture() {
+  const size = 256;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  const rockRng = (seed => () => (seed = (seed * 16807) % 2147483647) / 2147483647)(731);
+
+  ctx.fillStyle = '#766452';
+  ctx.fillRect(0, 0, size, size);
+
+  // Fine mineral grain softens the broad colour areas.
+  for (let i = 0; i < 2600; i++) {
+    const shade = 75 + Math.floor(rockRng() * 70);
+    ctx.fillStyle = `rgba(${shade}, ${Math.floor(shade * 0.88)}, ${Math.floor(shade * 0.72)}, 0.18)`;
+    const grain = 0.5 + rockRng() * 1.5;
+    ctx.fillRect(rockRng() * size, rockRng() * size, grain, grain);
+  }
+
+  // Draw each larger fragment into neighbouring tiles as well. Features that
+  // cross an edge therefore continue cleanly when RepeatWrapping is enabled.
+  for (let i = 0; i < 72; i++) {
+    const cx = rockRng() * size;
+    const cy = rockRng() * size;
+    const radius = 5 + rockRng() * 13;
+    const points = 5 + Math.floor(rockRng() * 4);
+    const shade = 82 + Math.floor(rockRng() * 52);
+    const vertices = [];
+    for (let p = 0; p < points; p++) {
+      const angle = p / points * Math.PI * 2;
+      const r = radius * (0.72 + rockRng() * 0.38);
+      vertices.push({ x: Math.cos(angle) * r, y: Math.sin(angle) * r * 0.65 });
+    }
+
+    for (const ox of [-size, 0, size]) {
+      for (const oy of [-size, 0, size]) {
+        ctx.beginPath();
+        for (let p = 0; p < vertices.length; p++) {
+          const x = cx + ox + vertices[p].x;
+          const y = cy + oy + vertices[p].y;
+          if (p === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = `rgba(${shade}, ${Math.floor(shade * 0.86)}, ${Math.floor(shade * 0.68)}, 0.34)`;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(55, 44, 35, 0.28)';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+    }
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(10, 2);
+  texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  return texture;
+}
+
+const ROCK_BASE_HEIGHT = 16;
+const rockGeom = new THREE.CylinderGeometry(
+  LAND_RADIUS + 2,
+  LAND_RADIUS + 3,
+  ROCK_BASE_HEIGHT,
+  96,
+  3
+);
+
+// Small periodic offsets break the machine-perfect cylindrical silhouette,
+// while the minimum radius remains outside the sea/land circle above it.
+const rockPositions = rockGeom.attributes.position;
+for (let i = 0; i < rockPositions.count; i++) {
+  const x = rockPositions.getX(i);
+  const y = rockPositions.getY(i);
+  const z = rockPositions.getZ(i);
+  const radius = Math.hypot(x, z);
+  if (radius < LAND_RADIUS * 0.5) continue; // cap centre vertices
+  const angle = Math.atan2(z, x);
+  const roughness = 0.85 * Math.sin(angle * 7 + y * 0.12)
+                  + 0.5 * Math.sin(angle * 17 - y * 0.2);
+  const scale = (radius + roughness) / radius;
+  rockPositions.setXYZ(i, x * scale, y, z * scale);
+}
+rockPositions.needsUpdate = true;
+rockGeom.computeVertexNormals();
+
+const rockTexture = createRockTexture();
+const rockSideMaterial = new THREE.MeshStandardMaterial({
+  map: rockTexture,
+  bumpMap: rockTexture,
+  bumpScale: 0.7,
+  roughness: 1,
+  metalness: 0,
+  flatShading: true
+});
+const rockCapMaterial = new THREE.MeshStandardMaterial({ color: 0x6f5d4b, roughness: 1 });
+const rockBase = new THREE.Mesh(rockGeom, [rockSideMaterial, rockCapMaterial, rockCapMaterial]);
+rockBase.position.y = -1 - ROCK_BASE_HEIGHT / 2;
+rockBase.castShadow = true;
+rockBase.receiveShadow = true;
+scene.add(rockBase);
+
 // Sea: flat circular disc that sits underneath the land and shows through
 // wherever the land has a hole (the Bosphorus). Sized to match the land
 // circle exactly so neither land nor sea extends outside the original
