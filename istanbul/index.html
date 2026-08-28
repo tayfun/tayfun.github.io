@@ -240,7 +240,7 @@ const TRAM_TRACK_RIDE_HEIGHT = (0.8 + 0.12) * TRAM_SYSTEM_SCALE;
 
 // Shared anchors for the imported European-side landmarks.
 const LANDMARKS = Object.freeze({
-  blueMosque:     { x: -65,  z: -110 },
+  blueMosque:     { x: -105, z: -110 },
   hagiaSophia:    { x: -116, z:  -15 },
   galataTower:    { x: -78,  z:   55 },
   valensAqueduct: { x: -90,  z:  120 },
@@ -334,9 +334,7 @@ function bosphorusRotationAtT(t) {
   return Math.atan2(STRAIT_LEN, dcx);
 }
 
-// Where each landmark sits along the strait's parameter t (0 = south, 1 = north).
-// Declared here so the building scatter (which comes next) can carve out plazas
-// around them by calling bosphorusCenterXAtT().
+// Where each water landmark sits along the strait (0 = south, 1 = north).
 const BRIDGE_T = 0.62;
 const KIZKULESI_T = 0.22;
 // The real Kızkulesi sits just off the Üsküdar (Asian, +X) shore rather than
@@ -345,19 +343,26 @@ const KIZKULESI_SHORE_OFFSET = STRAIT_HALF * 0.7;
 const KIZKULESI_X = bosphorusCenterXAtT(KIZKULESI_T) + KIZKULESI_SHORE_OFFSET;
 const KIZKULESI_Z = -STRAIT_SOUTH_Y - STRAIT_LEN * KIZKULESI_T;
 
-// Cyclic tram route on the European side. The first eight points restore the
-// original winding northbound line and its original starting position. The
-// remaining points form a separate shoreline-side return leg, closing the
-// route without crossing the Bosphorus or reversing the tram.
+// Cyclic tram route on the European side. The western half follows the round
+// landmass circumference, while the eastern half preserves the winding route
+// beside the Bosphorus exactly as laid out previously.
+const TRAM_A = new THREE.Vector3(-60, 6, +190); // south stop / route start
+const TRAM_B = new THREE.Vector3(-80, 6, -200); // north stop
+const TRAM_OUTER_ARC_RADIUS = 205;
+const tramOuterArc = Array.from({ length: 14 }, (_, index) => {
+  const angle = THREE.MathUtils.degToRad(115 + index * 10);
+  return new THREE.Vector3(
+    Math.cos(angle) * TRAM_OUTER_ARC_RADIUS,
+    6,
+    Math.sin(angle) * TRAM_OUTER_ARC_RADIUS
+  );
+});
+
 const TRAM_PATH = [
-  new THREE.Vector3( -60, 6, +190), // original south stop / route start
-  new THREE.Vector3(-130, 6, +140),
-  new THREE.Vector3(-185, 6,  +80),
-  new THREE.Vector3(-130, 6,  +10),
-  new THREE.Vector3(-190, 6,  -50),
-  new THREE.Vector3(-140, 6, -110),
-  new THREE.Vector3(-140, 6, -170),
-  new THREE.Vector3( -80, 6, -200), // north stop
+  TRAM_A,
+  ...tramOuterArc,
+  TRAM_B,
+  // Untouched Bosphorus-side winding leg, north to south.
   new THREE.Vector3( -48, 6, -176),
   new THREE.Vector3( -38, 6, -125),
   new THREE.Vector3( -42, 6,  -75),
@@ -366,9 +371,6 @@ const TRAM_PATH = [
   new THREE.Vector3( -32, 6, +105),
   new THREE.Vector3( -45, 6, +160),
 ];
-// Stops remain at the original south and north endpoints.
-const TRAM_A = TRAM_PATH[0];
-const TRAM_B = TRAM_PATH[7];
 const tramCurve = new THREE.CatmullRomCurve3(TRAM_PATH, true, 'centripetal', 0.5);
 
 // Rocky foundation beneath the complete diorama disc. The procedural texture
