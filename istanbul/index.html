@@ -312,6 +312,7 @@ const LANDMARKS = Object.freeze({
   hagiaSophia:    { x: -116, z:  -15 },
   galataTower:    { x: -78,  z:   55 },
   valensAqueduct: { x: -90,  z:  120 },
+  topkapiPalace:  { x:   7,  z:  110 },
 });
 
 // ---------- circular sea & land with a winding Bosphorus ----------
@@ -749,8 +750,7 @@ scene.add(hagiaGroup);
 }
 
 // ---------- Blue Mosque (Sultan Ahmed Mosque) — loaded from GLB ----------
-// Positioned southeast of Hagia Sophia with a shared open precinct between
-// them. The surrounding low-rise blocks are laid out in the city pass above.
+// Positioned with an open precinct between it and Hagia Sophia.
 const blueMosqueGroup = new THREE.Group();
 blueMosqueGroup.position.set(LANDMARKS.blueMosque.x, 2, LANDMARKS.blueMosque.z);
 blueMosqueGroup.rotation.y = -0.18;
@@ -765,7 +765,7 @@ scene.add(blueMosqueGroup);
       const rawBox = new THREE.Box3().setFromObject(model);
       const rawSize = rawBox.getSize(new THREE.Vector3());
       // Slightly smaller than Hagia Sophia's footprint, leaving room for the
-      // six-minaret silhouette and the neighbouring historic-quarter blocks.
+      // six-minaret silhouette and the neighbouring landmark precinct.
       const longest = Math.max(rawSize.x, rawSize.z);
       const target = 28 * BUILDING_SCALE;
       const s = longest > 0 ? Math.min(target / longest, 50) : 1;
@@ -785,6 +785,44 @@ scene.add(blueMosqueGroup);
     },
     undefined,
     (err) => console.error('Failed to load Blue Mosque model:', err)
+  );
+}
+
+// ---------- Topkapı Palace (between Bozdoğan Kemeri and the Bosphorus) ----------
+const topkapiGroup = new THREE.Group();
+topkapiGroup.position.set(LANDMARKS.topkapiPalace.x, 2, LANDMARKS.topkapiPalace.z);
+topkapiGroup.rotation.y = THREE.MathUtils.degToRad(80);
+scene.add(topkapiGroup);
+
+{
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.load(
+    '/assets/models/topkapi-palace.glb',
+    (gltf) => {
+      const model = gltf.scene;
+      const rawBox = new THREE.Box3().setFromObject(model);
+      const rawSize = rawBox.getSize(new THREE.Vector3());
+      // A 75-unit final footprint brings the palace precinct close to the
+      // Bosphorus while retaining the shared imported-model emphasis.
+      const longest = Math.max(rawSize.x, rawSize.z);
+      const target = 27 * BUILDING_SCALE;
+      const s = longest > 0 ? target / longest : 1;
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
+
+      const box = new THREE.Box3().setFromObject(model);
+      model.position.x -= (box.min.x + box.max.x) / 2;
+      model.position.z -= (box.min.z + box.max.z) / 2;
+      model.position.y -= box.min.y;
+      model.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+        }
+      });
+      topkapiGroup.add(model);
+    },
+    undefined,
+    (err) => console.error('Failed to load Topkapı Palace model:', err)
   );
 }
 
