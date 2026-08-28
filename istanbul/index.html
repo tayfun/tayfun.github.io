@@ -14,11 +14,41 @@
            border: 1px solid rgba(244, 196, 154, 0.75); border-radius: 10px; z-index: 10;
            font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
            white-space: pre; pointer-events: none; user-select: text; }
+  #landmark-dialog { width: min(430px, calc(100vw - 32px)); padding: 0; color: #49372c;
+                     background: #fff8ea; border: 1px solid #c97b5e; border-radius: 18px;
+                     box-shadow: 0 22px 70px rgba(55, 35, 25, 0.38); }
+  #landmark-dialog::backdrop { background: rgba(49, 38, 32, 0.46); backdrop-filter: blur(3px); }
+  .landmark-dialog__content { position: relative; padding: 28px 30px 30px; }
+  .landmark-dialog__eyebrow { margin: 0 0 6px; color: #a45843; font-size: 12px;
+                              font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  #landmark-title { margin: 0 36px 12px 0; color: #5b4636; font-family: Georgia, serif;
+                    font-size: clamp(25px, 5vw, 34px); line-height: 1.08; }
+  #landmark-description { margin: 0; font-size: 15px; line-height: 1.65; }
+  .landmark-dialog__close { position: absolute; top: 16px; right: 16px; display: grid;
+                            width: 34px; height: 34px; padding: 0; place-items: center;
+                            color: #5b4636; background: #f3dfc7; border: 0; border-radius: 50%;
+                            font-size: 22px; line-height: 1; cursor: pointer; }
+  .landmark-dialog__close:hover { background: #e9c9aa; }
+  .landmark-dialog__close:focus-visible { outline: 3px solid #4f8f8b; outline-offset: 2px; }
+  @media (max-width: 520px) {
+    #info { right: 12px; font-size: 12px; }
+    .landmark-dialog__content { padding: 24px 22px 26px; }
+  }
 </style>
 </head>
 <body>
-<div id="info">🏙️ Istanbul — drag (or 2‑finger ↔) to orbit · scroll (or 2‑finger ↕) to zoom · ` debug</div>
+<div id="info">🏙️ Istanbul — click an icon · drag to orbit · scroll to zoom · ` debug</div>
 <pre id="debug" aria-hidden="true"></pre>
+<dialog id="landmark-dialog" aria-labelledby="landmark-title" aria-describedby="landmark-description">
+  <div class="landmark-dialog__content">
+    <form method="dialog">
+      <button class="landmark-dialog__close" value="close" aria-label="Close landmark information">×</button>
+    </form>
+    <p class="landmark-dialog__eyebrow">Istanbul icon</p>
+    <h2 id="landmark-title"></h2>
+    <p id="landmark-description"></p>
+  </div>
+</dialog>
 <script type="importmap">
 { "imports": {
   "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -680,6 +710,7 @@ const KIZKULESI_BIRD_CLEARANCE = 12;
 // the GLB is ready so future tower scale changes also raise the birds.
 let kizkulesiBirdBaseY = KIZKULESI_TARGET_FOOTPRINT * IMPORTED_MODEL_SCALE
                        + KIZKULESI_BIRD_CLEARANCE;
+let gullPickVolume = null;
 
 {
   const gltfLoader = new GLTFLoader();
@@ -702,6 +733,7 @@ let kizkulesiBirdBaseY = KIZKULESI_TARGET_FOOTPRINT * IMPORTED_MODEL_SCALE
       model.position.z -= (box.min.z + box.max.z) / 2;
       model.position.y -= box.min.y;
       kizkulesiBirdBaseY = box.max.y - box.min.y + KIZKULESI_BIRD_CLEARANCE;
+      if (gullPickVolume) gullPickVolume.position.y = kizkulesiBirdBaseY + 7.5;
       // 4) enable shadows on every mesh in the model
       model.traverse((obj) => {
         if (obj.isMesh) {
@@ -916,6 +948,136 @@ scene.add(aqueductGroup);
   );
 }
 
+// ---------- clickable landmark information ----------
+const LANDMARK_DETAILS = Object.freeze({
+  bosphorusBridge: {
+    title: 'Bosphorus Bridge',
+    description: 'Now officially called the 15 July Martyrs Bridge, it opened in 1973 as the first permanent road crossing between Istanbul’s European and Asian sides. Its long suspension span has become one of the defining silhouettes of the Bosphorus.'
+  },
+  maidensTower: {
+    title: 'Maiden’s Tower',
+    description: 'Kız Kulesi stands on a tiny islet near Üsküdar at the southern entrance to the Bosphorus. Across its long history it has served as a lookout, lighthouse and quarantine station, while inspiring many Istanbul legends.'
+  },
+  hagiaSophia: {
+    title: 'Hagia Sophia',
+    description: 'Completed in the sixth century under Byzantine emperor Justinian I, Hagia Sophia is celebrated for its vast dome and luminous interior. Its centuries as a cathedral and an imperial mosque embody the layered history of Constantinople and Istanbul.'
+  },
+  blueMosque: {
+    title: 'Blue Mosque',
+    description: 'Sultan Ahmed Mosque was built in the early seventeenth century opposite Hagia Sophia. It is known as the Blue Mosque for the thousands of blue-toned İznik tiles decorating its interior, and its six minarets shape Istanbul’s historic skyline.'
+  },
+  topkapiPalace: {
+    title: 'Topkapı Palace',
+    description: 'Topkapı Palace was the Ottoman court’s principal residence and administrative centre for nearly four centuries. Its courtyards, pavilions and gardens occupy a commanding promontory overlooking the Bosphorus and Golden Horn.'
+  },
+  galataTower: {
+    title: 'Galata Tower',
+    description: 'The Genoese built the present stone tower in 1348 as part of Galata’s fortifications. Rising above Beyoğlu, it has served as a watchtower and fire lookout and remains one of the city’s most recognisable viewpoints.'
+  },
+  valensAqueduct: {
+    title: 'Bozdoğan Kemeri',
+    description: 'Also known as the Aqueduct of Valens, this monumental fourth-century structure carried water into Constantinople. Its surviving arches still cross the modern city, preserving a visible section of the capital’s vast Roman water system.'
+  },
+  beyogluTram: {
+    title: 'Beyoğlu Nostalgic Tram',
+    description: 'The red heritage tram runs for 1.64 kilometres along İstiklal Avenue between Tünel and Taksim. Restored museum cars returned to the pedestrianised avenue at the end of 1990, reviving one of Beyoğlu’s best-loved street scenes.'
+  },
+  pasabahceFerry: {
+    title: 'Paşabahçe Ferry',
+    description: 'Built in Taranto, Italy, in 1952, Paşabahçe became one of Istanbul’s swift and elegant “garden-type” ferries and carried passengers for 58 years. After a major restoration at Haliç Shipyard, the 73.84-metre vessel returned to the city’s waters in 2022.'
+  },
+  marti: {
+    title: 'Martı — Istanbul Seagull',
+    description: 'Martı means “seagull” in Turkish. These familiar birds follow the city’s ferries across the Bosphorus and Golden Horn, gathering around the wakes and waterfronts where generations of Istanbul residents have shared simit with them.'
+  }
+});
+
+const clickableLandmarks = [
+  [bridgeGroup, 'bosphorusBridge'],
+  [kizkulesiGroup, 'maidensTower'],
+  [hagiaGroup, 'hagiaSophia'],
+  [blueMosqueGroup, 'blueMosque'],
+  [topkapiGroup, 'topkapiPalace'],
+  [galataGroup, 'galataTower'],
+  [aqueductGroup, 'valensAqueduct'],
+];
+const clickableLandmarkGroups = [];
+function registerClickableObject(group, landmarkId) {
+  group.userData.landmarkId = landmarkId;
+  if (!clickableLandmarkGroups.includes(group)) clickableLandmarkGroups.push(group);
+}
+for (const [group, landmarkId] of clickableLandmarks) {
+  registerClickableObject(group, landmarkId);
+}
+
+const landmarkDialog = document.getElementById('landmark-dialog');
+const landmarkTitle = document.getElementById('landmark-title');
+const landmarkDescription = document.getElementById('landmark-description');
+const landmarkRaycaster = new THREE.Raycaster();
+const landmarkPointer = new THREE.Vector2();
+let landmarkPointerDown = null;
+
+function landmarkAtClientPoint(clientX, clientY) {
+  const bounds = dom.getBoundingClientRect();
+  landmarkPointer.set(
+    (clientX - bounds.left) / bounds.width * 2 - 1,
+    -(clientY - bounds.top) / bounds.height * 2 + 1
+  );
+  landmarkRaycaster.setFromCamera(landmarkPointer, camera);
+  const hit = landmarkRaycaster.intersectObjects(clickableLandmarkGroups, true)[0];
+  if (!hit) return null;
+
+  let object = hit.object;
+  while (object) {
+    if (object.userData.landmarkId) return LANDMARK_DETAILS[object.userData.landmarkId];
+    object = object.parent;
+  }
+  return null;
+}
+
+function showLandmarkDialog(landmark) {
+  landmarkTitle.textContent = landmark.title;
+  landmarkDescription.textContent = landmark.description;
+  controls.enabled = false;
+  if (!landmarkDialog.open) landmarkDialog.showModal();
+}
+
+dom.addEventListener('pointerdown', (event) => {
+  if (!event.isPrimary || event.button !== 0) return;
+  landmarkPointerDown = { id: event.pointerId, x: event.clientX, y: event.clientY };
+});
+
+dom.addEventListener('pointerup', (event) => {
+  const start = landmarkPointerDown;
+  landmarkPointerDown = null;
+  if (!start || start.id !== event.pointerId) return;
+  if (Math.hypot(event.clientX - start.x, event.clientY - start.y) > 7) return;
+
+  const landmark = landmarkAtClientPoint(event.clientX, event.clientY);
+  if (landmark) showLandmarkDialog(landmark);
+});
+
+dom.addEventListener('pointercancel', () => {
+  landmarkPointerDown = null;
+});
+
+dom.addEventListener('pointermove', (event) => {
+  if (event.pointerType !== 'mouse' || event.buttons !== 0) return;
+  dom.style.cursor = landmarkAtClientPoint(event.clientX, event.clientY) ? 'pointer' : 'grab';
+});
+
+dom.addEventListener('pointerleave', () => {
+  dom.style.cursor = '';
+});
+
+landmarkDialog.addEventListener('click', (event) => {
+  if (event.target === landmarkDialog) landmarkDialog.close();
+});
+
+landmarkDialog.addEventListener('close', () => {
+  controls.enabled = true;
+});
+
 // ---------- vapur ferries on the Bosphorus — loaded from GLB ----------
 const boats = [];
 {
@@ -958,6 +1120,7 @@ const boats = [];
       for (const cfg of VAPUR_LANES) {
         const b = template.clone();
         b.userData = { t: cfg.t, speed: cfg.speed, dir: cfg.dir, lane: cfg.lane };
+        registerClickableObject(b, 'pasabahceFerry');
         boats.push(b);
         scene.add(b);
       }
@@ -1082,6 +1245,7 @@ tramGroup.position.set(TRAM_A.x, TRAM_A.y + TRAM_TRACK_RIDE_HEIGHT, TRAM_A.z);
   tramGroup.rotation.y = Math.atan2(-t0.z, t0.x);
 }
 scene.add(tramGroup);
+registerClickableObject(tramGroup, 'beyogluTram');
 
 let tramReady = false;
 {
@@ -1141,7 +1305,18 @@ for (let i = 0; i < 6; i++) {
   gull.userData = { r: 8 + i * 2, a: i * 1.3, yOffset: i * 3, s: 0.5 + rng() * 0.5, flap: rng() * Math.PI * 2 };
   gulls.add(gull);
 }
+registerClickableObject(gulls, 'marti');
 gulls.position.set(KIZKULESI_X, 0, KIZKULESI_Z);
+
+// A transparent shared hit area makes the small, moving birds easy to select
+// without changing their visible geometry or animation.
+gullPickVolume = new THREE.Mesh(
+  new THREE.SphereGeometry(20, 16, 10),
+  new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false })
+);
+gullPickVolume.position.set(KIZKULESI_X, kizkulesiBirdBaseY + 7.5, KIZKULESI_Z);
+scene.add(gullPickVolume);
+registerClickableObject(gullPickVolume, 'marti');
 scene.add(gulls);
 
 // ---------- animation loop ----------
