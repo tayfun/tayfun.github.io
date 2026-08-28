@@ -429,6 +429,7 @@ scene.add(fill);
 // puffs so the low-poly style stays consistent while the silhouettes remain
 // irregular and more natural than a single plane or billboard.
 const cloudMaterials = [];
+const clouds = [];
 function addCloud(position, scale, opacity = 0.52) {
   const cloud = new THREE.Group();
   const material = new THREE.MeshStandardMaterial({
@@ -456,6 +457,11 @@ function addCloud(position, scale, opacity = 0.52) {
   cloud.position.set(position.x, position.y, position.z);
   cloud.scale.setScalar(scale);
   cloud.rotation.y = position.x * 0.003;
+  const cloudIndex = clouds.length;
+  cloud.userData.basePosition = position.clone();
+  cloud.userData.driftPhase = cloudIndex * 1.73;
+  cloud.userData.driftSpeed = 1 + cloudIndex * 0.006;
+  clouds.push(cloud);
   scene.add(cloud);
 }
 
@@ -1661,6 +1667,14 @@ function tick(now = performance.now()) {
   requestAnimationFrame(tick);
   if (waterShaderState.shader) {
     waterShaderState.shader.uniforms.waterTime.value = now * 0.001;
+  }
+  const cloudTime = now * 0.001;
+  for (const cloud of clouds) {
+    const { basePosition, driftPhase, driftSpeed } = cloud.userData;
+    const drift = cloudTime * driftSpeed + driftPhase;
+    cloud.position.x = basePosition.x + Math.sin(drift) * 10;
+    cloud.position.z = basePosition.z + Math.cos(drift * 0.72) * 4;
+    cloud.position.y = basePosition.y + Math.sin(drift * 1.4) * 1.5;
   }
   for (const b of boats) {
     b.userData.t += b.userData.speed * b.userData.dir;
