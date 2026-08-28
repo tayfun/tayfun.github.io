@@ -5,9 +5,10 @@
 <title>Istanbul</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #aee3f5; font-family: sans-serif; }
-  #info { position: absolute; top: 12px; left: 12px; color: #234; background: rgba(255,255,255,.75);
-          padding: 8px 12px; border-radius: 8px; font-size: 13px; user-select: none; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #f5d9b8; font-family: sans-serif; }
+  #info { position: absolute; top: 12px; left: 12px; color: #5b4636; background: rgba(255, 250, 240, 0.88);
+          padding: 8px 12px; border-radius: 12px; font-size: 13px; user-select: none;
+          border: 1px solid #c97b5e; }
 </style>
 </head>
 <body>
@@ -22,12 +23,16 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // ---------- scene basics ----------
 const scene = new THREE.Scene();
 scene.scale.setScalar(5.0);
-scene.background = new THREE.Color(0xaee3f5);
-scene.fog = null;
+scene.background = new THREE.Color(0xf5d9b8);
+// Warm distance fog so the horizon dissolves into the golden-hour sky —
+// keeps distant shapes readable without hard edges, and reinforces the
+// soft ambient occlusion feel across the chunky pastel cityscape.
+scene.fog = new THREE.Fog(0xf5d9b8, 1800, 4200);
 
 const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 6000);
 // Pulled back and up so the camera sits just outside the (5×-scaled) land
@@ -201,27 +206,59 @@ document.addEventListener('wheel', (e) => {
   // OrbitControls deal with it as a zoom.
 }, { passive: false, capture: true });
 
-scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-const sun = new THREE.DirectionalLight(0xfff3d6, 1.5);
-sun.position.set(60, 90, 40);
+// ---------- golden hour lighting ----------
+// Hemisphere light gives a soft sky/ground gradient — a cheap stand-in for
+// baked ambient occlusion that fills the chunky matte surfaces with warmth
+// from above and a hint of sage bounce from the ground.
+const hemi = new THREE.HemisphereLight(0xfae0c0, 0xa8c69b, 0.65);
+scene.add(hemi);
+// Warm ambient fill so even shadow-side surfaces stay readable.
+scene.add(new THREE.AmbientLight(0xffeacd, 0.35));
+// Low-angle amber sun — directional source doing the heavy lifting for
+// golden-hour shadows. Positioned near the horizon so shadows stretch long.
+const sun = new THREE.DirectionalLight(0xffb778, 1.6);
+sun.position.set(80, 38, 60);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 sun.shadow.camera.left = -280; sun.shadow.camera.right = 280;
 sun.shadow.camera.top = 280; sun.shadow.camera.bottom = -280;
+sun.shadow.bias = -0.0005;
 scene.add(sun);
-const fill = new THREE.DirectionalLight(0xc4d8ff, 0.35);
+// Soft peach fill from the opposite side, just enough to keep shadowed
+// faces from going flat without erasing the directional contrast.
+const fill = new THREE.DirectionalLight(0xf4c89a, 0.22);
 fill.position.set(-50, 30, -40);
 scene.add(fill);
 
-// ---------- palette ----------
+// ---------- warm pastel palette ----------
+// Cream, terracotta, soft turquoise, sage green, dusty rose — kept matte
+// and muted so the whole city reads as one pastel cityscape under golden
+// hour. Same key names as before, values remapped onto the new palette so
+// the rest of the scene (roofs, windows, doors, domes, finials…) inherits
+// the retheme without per-call rewrites.
 const COLORS = {
-  red: 0xc4281c, blue: 0x0d69ab, yellow: 0xf2cd37, green: 0x237841,
-  white: 0xf4f4f4, cream: 0xeedfb5, tan: 0xe4cd9e, gray: 0x9ba19d,
-  darkgray: 0x6c6e68, darkred: 0x8a2a1e, brown: 0x7b5d41,
-  orange: 0xfe8a18, pink: 0xfc97ac, teal: 0x008f9b, gold: 0xc5a224,
-  domered: 0xa44a3c, stone: 0xc9b58a, window: 0x7fb6d9,
-  roofred: 0x8a2a1e, darkwood: 0x4a3623, grass: 0x2f8a4e,
-  door: 0x3a2a1c
+  red:      0xc97b5e,   // terracotta (was vibrant red)
+  blue:     0x8ec8c4,   // soft turquoise (was vibrant sky blue)
+  yellow:   0xf4e4c1,   // cream (was sunny yellow)
+  green:    0xa8c69b,   // sage green (was bright grass green)
+  white:    0xfaf3e7,   // off-white cream
+  cream:    0xeac4a0,   // peach (was warm orange)
+  tan:      0xd9a3a3,   // dusty rose (was soft lavender)
+  gray:     0xb5c4a2,   // light sage (was soft blue)
+  darkgray: 0x6b5d54,   // warm taupe
+  darkred:  0xa55d44,   // deep terracotta
+  brown:    0xa07856,   // warm walnut
+  orange:   0xe8a368,   // soft amber
+  pink:     0xd9a3a3,   // dusty rose (was bubblegum)
+  teal:     0x8ec8c4,   // soft turquoise
+  gold:     0xe6b86b,   // warm honey
+  domered:  0xc97b5e,   // terracotta
+  stone:    0xeac9a0,   // cream stone
+  window:   0xfae6b8,   // warm cream glow
+  roofred:  0xb8745a,   // muted terracotta
+  darkwood: 0x7a5439,   // warm wood
+  grass:    0xa8c69b,   // sage
+  door:     0x7a4a2c    // dark wood
 };
 
 // Global scale factor for every building, the bridge, and towers.
@@ -232,10 +269,19 @@ const BUILDING_SCALE = 1.5;
 // A solid block — base at group y=0, top at y=h. No studs.
 function block(w, h, d, color, opts = {}) {
   const g = new THREE.Group();
+  // Matte pastel: high roughness, zero metalness, so chunky surfaces pick
+  // up the warm golden-hour light softly without specular hot spots.
   const mat = new THREE.MeshStandardMaterial({
-    color, roughness: opts.roughness ?? 0.75, metalness: opts.metalness ?? 0.04
+    color, roughness: opts.roughness ?? 0.92, metalness: opts.metalness ?? 0.0
   });
-  const box = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  // Chunky rounded geometry: softened corners via RoundedBoxGeometry. The
+  // radius is small relative to the smallest dimension so the building
+  // still reads as a block, but edges no longer feel sharp / plastic.
+  const r = Math.min(0.25, Math.min(w, d) * 0.18);
+  const box = new THREE.Mesh(
+    new RoundedBoxGeometry(w, h, d, 4, Math.max(0.05, r)),
+    mat
+  );
   box.position.y = h / 2;
   box.castShadow = box.receiveShadow = true;
   g.add(box);
@@ -246,9 +292,11 @@ function block(w, h, d, color, opts = {}) {
 // Window grid applied to a box at group origin (base y=0, top y=h)
 function addWindows(g, w, h, d, color = COLORS.window, floors = null) {
   const winW = 0.55, winH = 0.75, winD = 0.05;
+  // Slightly matte windows — still catch the warm light with a faint glow
+  // but no longer read as bright plastic stickers on the facade.
   const winMat = new THREE.MeshStandardMaterial({
-    color, roughness: 0.25, metalness: 0.4,
-    emissive: color, emissiveIntensity: 0.25
+    color, roughness: 0.4, metalness: 0.15,
+    emissive: color, emissiveIntensity: 0.35
   });
   const fl = floors ?? Math.max(1, Math.floor((h - 1) / 1.5));
   const yStart = 1.0;
@@ -282,7 +330,7 @@ function addPyramid(g, w, d, baseY, color, height = null) {
   const roofH = height ?? Math.min(2.5, Math.min(w, d) * 0.65);
   const roof = new THREE.Mesh(
     new THREE.ConeGeometry(Math.hypot(w, d) * 0.5 + 0.2, roofH, 4),
-    new THREE.MeshStandardMaterial({ color, roughness: 0.6 })
+    new THREE.MeshStandardMaterial({ color, roughness: 0.82 })
   );
   roof.position.y = baseY + roofH / 2;
   roof.rotation.y = Math.PI / 4;
@@ -292,9 +340,10 @@ function addPyramid(g, w, d, baseY, color, height = null) {
 
 // Flat parapet raised on the edge of a block whose top is at baseY
 function addParapet(g, w, d, baseY, color, thickness = 0.3) {
+  // Rounded parapet rim — chunky and soft, consistent with the building bodies.
   const par = new THREE.Mesh(
-    new THREE.BoxGeometry(w + thickness * 2, thickness, d + thickness * 2),
-    new THREE.MeshStandardMaterial({ color, roughness: 0.8 })
+    new RoundedBoxGeometry(w + thickness * 2, thickness, d + thickness * 2, 3, 0.08),
+    new THREE.MeshStandardMaterial({ color, roughness: 0.9 })
   );
   par.position.y = baseY + thickness / 2;
   par.castShadow = true;
@@ -307,20 +356,22 @@ function dome(radius, color, baseY, height = null) {
   const h = height ?? radius * 0.7;
   const d = new THREE.Mesh(
     new THREE.SphereGeometry(radius, 24, 14, 0, Math.PI * 2, 0, Math.PI / 2),
-    new THREE.MeshStandardMaterial({ color, roughness: 0.55 })
+    new THREE.MeshStandardMaterial({ color, roughness: 0.78 })
   );
   d.position.y = baseY;
   d.castShadow = true;
   g.add(d);
-  // base ring (drum)
+  // base ring (drum) — warm peach so it harmonises with the pastel cityscape.
   const ring = new THREE.Mesh(
     new THREE.CylinderGeometry(radius * 1.04, radius * 1.04, 0.35, 24),
-    new THREE.MeshStandardMaterial({ color: COLORS.cream, roughness: 0.7 })
+    new THREE.MeshStandardMaterial({ color: COLORS.cream, roughness: 0.85 })
   );
   ring.position.y = baseY - 0.18;
   g.add(ring);
-  // gold finial: stem + orb + spike
-  const finialMat = new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.65, roughness: 0.35 });
+  // Honey-toned finial: stem + orb + spike. A touch of metalness so it
+  // catches the golden-hour sun, but matte enough to read with the rest of
+  // the pastel cityscape rather than glaring as a chrome accent.
+  const finialMat = new THREE.MeshStandardMaterial({ color: COLORS.gold, metalness: 0.35, roughness: 0.5 });
   const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.2, 0.8, 8), finialMat);
   stem.position.y = baseY + h + 0.4;
   g.add(stem);
@@ -410,7 +461,9 @@ const tramCurve = new THREE.CatmullRomCurve3(TRAM_PATH, false, 'centripetal', 0.
 // through wherever the land has a hole (the Bosphorus).
 const sea = new THREE.Mesh(
   new THREE.CircleGeometry(LAND_RADIUS + 80, 96),
-  new THREE.MeshStandardMaterial({ color: 0x2f7bb5, roughness: 0.25, metalness: 0.2 })
+  // Soft turquoise water — matte so it doesn't read as plastic, but still
+  // picks up the warm sky tone from the hemisphere light above.
+  new THREE.MeshStandardMaterial({ color: 0xa8d4ce, roughness: 0.55, metalness: 0.05 })
 );
 sea.rotation.x = -Math.PI / 2;
 sea.position.y = 0;
@@ -457,7 +510,9 @@ const landGeom = new THREE.ExtrudeGeometry(landShape, {
 landGeom.rotateX(-Math.PI / 2); // shape +Y → world -Z (north); extrusion goes downward
 const land = new THREE.Mesh(
   landGeom,
-  new THREE.MeshStandardMaterial({ color: 0x9cc77a, roughness: 0.85 })
+  // Sage-green landmass — slightly warmer than pure sage so the whole
+  // island glows gently under the golden-hour sun.
+  new THREE.MeshStandardMaterial({ color: 0xc4cea0, roughness: 0.95 })
 );
 land.position.y = 2; // top surface at y=2 (above sea), base at y=-1 (below sea)
 land.receiveShadow = true;
@@ -530,11 +585,11 @@ for (let x = -210; x <= 210; x += 24) {
     // roof variety
     const roofType = rng();
     if (roofType < 0.45) {
-      addParapet(b, w, d, h, 0xd8d4cc);
+      addParapet(b, w, d, h, 0xe0d4c0);
     } else if (roofType < 0.8) {
       addPyramid(b, w, d, h, COLORS.roofred);
     } else {
-      addParapet(b, w, d, h, 0xd8d4cc);
+      addParapet(b, w, d, h, 0xe0d4c0);
       // rooftop hut (water tank / utility room)
       const hutW = w * 0.3, hutD = d * 0.3;
       const hut = block(hutW, 1.2, hutD, COLORS.darkgray);
@@ -559,13 +614,13 @@ for (let x = -210; x <= 210; x += 24) {
     if (h > 11 && rng() < 0.5) {
       const balcony = new THREE.Mesh(
         new THREE.BoxGeometry(w * 0.55, 0.15, 0.6),
-        new THREE.MeshStandardMaterial({ color: 0xd0d0d0 })
+        new THREE.MeshStandardMaterial({ color: 0xe0d4c0 })
       );
       balcony.position.set(0, h * 0.6, d / 2 + 0.3);
       b.add(balcony);
       const rail = new THREE.Mesh(
         new THREE.BoxGeometry(w * 0.55, 0.5, 0.05),
-        new THREE.MeshStandardMaterial({ color: 0x3a3a3a })
+        new THREE.MeshStandardMaterial({ color: 0x4a3c30 })
       );
       rail.position.set(0, h * 0.6 + 0.32, d / 2 + 0.6);
       b.add(rail);
@@ -574,7 +629,7 @@ for (let x = -210; x <= 210; x += 24) {
     if (rng() < 0.25) {
       const ant = new THREE.Mesh(
         new THREE.CylinderGeometry(0.05, 0.05, 1.5, 6),
-        new THREE.MeshStandardMaterial({ color: 0x2c2c2c })
+        new THREE.MeshStandardMaterial({ color: 0x3a3028 })
       );
       ant.position.y = h + 0.75;
       b.add(ant);
@@ -866,9 +921,12 @@ const trackGroup = new THREE.Group();
   // units comes out close to SLEEPER_PITCH.
   const sleeperEvery = Math.max(1, Math.round(SLEEPER_PITCH / TRACK_STEP));
 
-  const bedMat = new THREE.MeshStandardMaterial({ color: 0x3b3a36, roughness: 0.95 });
-  const railMat = new THREE.MeshStandardMaterial({ color: 0x9a9a9a, roughness: 0.55, metalness: 0.55 });
-  const sleeperMat = new THREE.MeshStandardMaterial({ color: 0x4a3623, roughness: 0.9 });
+  // Warm walnut track bed, brushed-pewter rails, honey sleepers — the tram
+  // reads as a quiet pastel line threading the city rather than a hard
+  // industrial stripe.
+  const bedMat = new THREE.MeshStandardMaterial({ color: 0x5a4d40, roughness: 0.95 });
+  const railMat = new THREE.MeshStandardMaterial({ color: 0xb5a89a, roughness: 0.65, metalness: 0.35 });
+  const sleeperMat = new THREE.MeshStandardMaterial({ color: 0x6b4a30, roughness: 0.9 });
 
   for (let i = 0; i < segCount; i++) {
     const t0 = i / segCount;
@@ -924,14 +982,14 @@ scene.add(trackGroup);
 for (const stop of [TRAM_A, TRAM_B]) {
   const post = new THREE.Mesh(
     new THREE.CylinderGeometry(0.12, 0.12, 3.2, 6),
-    new THREE.MeshStandardMaterial({ color: 0x2a2a2a })
+    new THREE.MeshStandardMaterial({ color: 0x4a3c30 })
   );
   post.position.set(stop.x, stop.y + 1.6, stop.z);
   post.castShadow = true;
   scene.add(post);
   const sign = new THREE.Mesh(
     new THREE.BoxGeometry(1.4, 0.7, 0.1),
-    new THREE.MeshStandardMaterial({ color: 0x2f7bb5, roughness: 0.4 })
+    new THREE.MeshStandardMaterial({ color: 0x8eb4b0, roughness: 0.6 })
   );
   sign.position.set(stop.x, stop.y + 2.9, stop.z);
   scene.add(sign);
@@ -994,10 +1052,10 @@ for (let i = 0; i < 6; i++) {
   const gull = new THREE.Group();
   const body = new THREE.Mesh(
     new THREE.BoxGeometry(0.7, 0.2, 0.3),
-    new THREE.MeshStandardMaterial({ color: 0xffffff })
+    new THREE.MeshStandardMaterial({ color: 0xfaf3e7 })
   );
   gull.add(body);
-  const wingMat = new THREE.MeshStandardMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+  const wingMat = new THREE.MeshStandardMaterial({ color: 0xfaf3e7, side: THREE.DoubleSide });
   const wingL = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.04, 0.45), wingMat);
   wingL.position.set(-0.6, 0.05, 0);
   gull.add(wingL);
