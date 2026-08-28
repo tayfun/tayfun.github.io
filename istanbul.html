@@ -411,13 +411,52 @@ function bosphorusCenterXAtT(t) {
        + 15 * Math.sin(t * Math.PI * 1.2 + 0.3)
        + BOSPHORUS_X_OFFSET;
 }
+function bosphorusCenterXAtShapeY(shapeY) {
+  // Keep the same curve outside the main animation range so each shore can
+  // continue naturally until it meets the circular edge of the land.
+  const t = (shapeY - STRAIT_SOUTH_Y) / STRAIT_LEN;
+  return bosphorusCenterXAtT(t);
+}
+function bosphorusShoreXAtShapeY(shapeY, side) {
+  return bosphorusCenterXAtShapeY(shapeY) + side * STRAIT_HALF;
+}
+
+// Locate a shore's exact intersection with the land circle. The first Y is
+// known to be inside the circle and the second is at its outer edge; bisection
+// avoids hard-coded end-cap positions and keeps the join free of slivers.
+function findShoreCircleIntersection(side, insideY, outsideY) {
+  const circleDelta = y => {
+    const x = bosphorusShoreXAtShapeY(y, side);
+    return x * x + y * y - LAND_RADIUS * LAND_RADIUS;
+  };
+
+  let inside = insideY;
+  let outside = outsideY;
+  for (let i = 0; i < 48; i++) {
+    const mid = (inside + outside) * 0.5;
+    if (circleDelta(mid) <= 0) inside = mid;
+    else outside = mid;
+  }
+
+  const y = (inside + outside) * 0.5;
+  return { x: bosphorusShoreXAtShapeY(y, side), y };
+}
+
+const BOSPHORUS_EDGES = {
+  westSouth: findShoreCircleIntersection(-1, STRAIT_SOUTH_Y, -LAND_RADIUS),
+  westNorth: findShoreCircleIntersection(-1, STRAIT_NORTH_Y,  LAND_RADIUS),
+  eastSouth: findShoreCircleIntersection( 1, STRAIT_SOUTH_Y, -LAND_RADIUS),
+  eastNorth: findShoreCircleIntersection( 1, STRAIT_NORTH_Y,  LAND_RADIUS),
+};
+
 function bosphorusCenterXAtZ(z) {
   // Given a world z, return the shape-x of the centerline at that z (or null).
-  // shape-y = -world-z, normalised to t ∈ [0,1] over the strait's length.
+  // Include the short extrapolated sections where the shores meet the circle.
   const shapeY = -z;
-  const t = (shapeY - STRAIT_SOUTH_Y) / STRAIT_LEN;
-  if (t < -0.02 || t > 1.02) return null;
-  return bosphorusCenterXAtT(Math.max(0, Math.min(1, t)));
+  const southEdge = Math.min(BOSPHORUS_EDGES.westSouth.y, BOSPHORUS_EDGES.eastSouth.y);
+  const northEdge = Math.max(BOSPHORUS_EDGES.westNorth.y, BOSPHORUS_EDGES.eastNorth.y);
+  if (shapeY < southEdge || shapeY > northEdge) return null;
+  return bosphorusCenterXAtShapeY(shapeY);
 }
 function bosphorusRotationAtT(t) {
   // Bridge / vapur Y-rotation so their long axis aligns with / across the channel.
@@ -481,39 +520,46 @@ sea.position.y = 0;
 sea.receiveShadow = true;
 scene.add(sea);
 
-// Land: a large circular disc with the wavy Bosphorus cut out as a hole.
-const landShape = new THREE.Shape();
-landShape.absarc(0, 0, LAND_RADIUS, 0, Math.PI * 2, false);
-
-// Bosphorus hole — traced clockwise (opposite to the outer circle) so it
-// is recognised as a hole by the triangulator.
-const bosphorusPath = new THREE.Path();
+// Land: two shapes bounded by the circle and the corresponding Bosphorus
+// shore. A closed hole cannot safely cross an outer Shape boundary, so making
+// the European and Asian sides independent leaves a genuine opening to sea.
 const STEPS = 90;
-// Right (east) shore going south: from (cx+half, NORTH) down to (cx+half, SOUTH)
-for (let i = STEPS; i >= 0; i--) {
-  const t = i / STEPS;
-  const y = STRAIT_SOUTH_Y + STRAIT_LEN * t;
-  const cx = bosphorusCenterXAtT(t);
-  const x = cx + STRAIT_HALF;
-  if (i === STEPS) bosphorusPath.moveTo(x, y);
-  else bosphorusPath.lineTo(x, y);
+function positiveArcEnd(start, end) {
+  while (end <= start) end += Math.PI * 2;
+  return end;
 }
-// South cap: arc east → west via south (-Y in shape). Clockwise: 0 → -π/2 → -π.
-bosphorusPath.absarc(bosphorusCenterXAtT(0), STRAIT_SOUTH_Y, STRAIT_HALF, 0, -Math.PI, true);
-// Left (west) shore going north: from (cx-half, SOUTH) up to (cx-half, NORTH)
+
+const westLandShape = new THREE.Shape();
+const westNorthAngle = Math.atan2(BOSPHORUS_EDGES.westNorth.y, BOSPHORUS_EDGES.westNorth.x);
+const westSouthAngle = positiveArcEnd(
+  westNorthAngle,
+  Math.atan2(BOSPHORUS_EDGES.westSouth.y, BOSPHORUS_EDGES.westSouth.x)
+);
+westLandShape.moveTo(BOSPHORUS_EDGES.westNorth.x, BOSPHORUS_EDGES.westNorth.y);
+westLandShape.absarc(0, 0, LAND_RADIUS, westNorthAngle, westSouthAngle, false);
 for (let i = 0; i <= STEPS; i++) {
-  const t = i / STEPS;
-  const y = STRAIT_SOUTH_Y + STRAIT_LEN * t;
-  const cx = bosphorusCenterXAtT(t);
-  const x = cx - STRAIT_HALF;
-  bosphorusPath.lineTo(x, y);
+  const f = i / STEPS;
+  const y = THREE.MathUtils.lerp(BOSPHORUS_EDGES.westSouth.y, BOSPHORUS_EDGES.westNorth.y, f);
+  westLandShape.lineTo(bosphorusShoreXAtShapeY(y, -1), y);
 }
-// North cap: arc west → east via north (+Y in shape). Clockwise: π → π/2 → 0.
-bosphorusPath.absarc(bosphorusCenterXAtT(1), STRAIT_NORTH_Y, STRAIT_HALF, Math.PI, 0, true);
+westLandShape.closePath();
 
-landShape.holes.push(bosphorusPath);
+const eastLandShape = new THREE.Shape();
+const eastSouthAngle = Math.atan2(BOSPHORUS_EDGES.eastSouth.y, BOSPHORUS_EDGES.eastSouth.x);
+const eastNorthAngle = positiveArcEnd(
+  eastSouthAngle,
+  Math.atan2(BOSPHORUS_EDGES.eastNorth.y, BOSPHORUS_EDGES.eastNorth.x)
+);
+eastLandShape.moveTo(BOSPHORUS_EDGES.eastSouth.x, BOSPHORUS_EDGES.eastSouth.y);
+eastLandShape.absarc(0, 0, LAND_RADIUS, eastSouthAngle, eastNorthAngle, false);
+for (let i = STEPS; i >= 0; i--) {
+  const f = i / STEPS;
+  const y = THREE.MathUtils.lerp(BOSPHORUS_EDGES.eastSouth.y, BOSPHORUS_EDGES.eastNorth.y, f);
+  eastLandShape.lineTo(bosphorusShoreXAtShapeY(y, 1), y);
+}
+eastLandShape.closePath();
 
-const landGeom = new THREE.ExtrudeGeometry(landShape, {
+const landGeom = new THREE.ExtrudeGeometry([westLandShape, eastLandShape], {
   depth: 3,
   bevelEnabled: false,
   curveSegments: 96
