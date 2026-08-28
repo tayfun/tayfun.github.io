@@ -1819,7 +1819,13 @@ registerClickableObject(gullPickVolume, 'marti');
 scene.add(gulls);
 
 // ---------- animation loop ----------
+// Tab visibility drives both the rAF loop and the audio: when the page is
+// hidden we stop the rAF chain and pause every audio element (clearing the
+// pending ship-horn timer so a horn can't fire while the tab is inactive),
+// then on return we resume audio if it was active and re-seed the loop.
+let pageVisible = !document.hidden;
 function tick(now = performance.now()) {
+  if (!pageVisible) return;
   requestAnimationFrame(tick);
   if (waterShaderState.shader) {
     waterShaderState.shader.uniforms.waterTime.value = now * 0.001;
@@ -1881,6 +1887,25 @@ function tick(now = performance.now()) {
   updateDebugPanel(now);
 }
 tick();
+
+document.addEventListener('visibilitychange', () => {
+  pageVisible = !document.hidden;
+  if (pageVisible) {
+    if (soundStarted && !soundMuted) {
+      // Resume the harbour ambience from its paused offset and re-arm the
+      // random ship-horn schedule so the next horn isn't pinned to the
+      // original schedule started before the tab was hidden.
+      harborAmbience.play().catch(() => {});
+      scheduleShipHorn();
+    }
+    // Re-seed the rAF chain that bailed when the page became hidden.
+    requestAnimationFrame(tick);
+  } else {
+    harborAmbience.pause();
+    shipHorn.pause();
+    clearTimeout(shipHornTimer);
+  }
+});
 
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
