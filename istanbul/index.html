@@ -13,7 +13,13 @@
            padding: 12px 14px; color: #f8ead8; background: rgba(40, 31, 27, 0.9);
            border: 1px solid rgba(244, 196, 154, 0.75); border-radius: 10px; z-index: 10;
            font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-           white-space: pre; pointer-events: none; user-select: text; }
+           pointer-events: auto; user-select: text; }
+  #debug-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+                    color: #f8ead8; font: 12px/1.4 sans-serif; }
+  #debug-controls select { color: #49372c; background: #fff3df; border: 1px solid #d39a78;
+                           border-radius: 5px; padding: 4px 7px; font: inherit; cursor: pointer; }
+  #debug-controls select:focus-visible { outline: 2px solid #f3c1b5; outline-offset: 2px; }
+  #debug-readout { margin: 0; color: inherit; font: inherit; white-space: pre; }
   #landmark-dialog { width: min(430px, calc(100vw - 32px)); padding: 0; color: #49372c;
                      background: #fff8ea; border: 1px solid #c97b5e; border-radius: 18px;
                      box-shadow: 0 22px 70px rgba(55, 35, 25, 0.38); }
@@ -38,7 +44,17 @@
 </head>
 <body>
 <div id="info">🏙️ Istanbul — click an icon · drag to orbit · scroll to zoom · ` debug</div>
-<pre id="debug" aria-hidden="true"></pre>
+<div id="debug" aria-hidden="true">
+  <div id="debug-controls">
+    <label for="debug-time">Time of day</label>
+    <select id="debug-time">
+      <option value="earlyMorning">Early morning</option>
+      <option value="goldenHour" selected>Golden hour</option>
+      <option value="midnight">Midnight</option>
+    </select>
+  </div>
+  <pre id="debug-readout"></pre>
+</div>
 <dialog id="landmark-dialog" aria-labelledby="landmark-title" aria-describedby="landmark-description">
   <div class="landmark-dialog__content">
     <form method="dialog">
@@ -63,31 +79,77 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // ---------- scene basics ----------
 const scene = new THREE.Scene();
 scene.scale.setScalar(5.0);
-function createSkyTexture() {
+const TIME_OF_DAY_PRESETS = Object.freeze({
+  earlyMorning: {
+    label: 'Early morning',
+    top: '#7188bb', middle: '#c697b1', lower: '#e8ad9f', horizon: '#f4c8a6',
+    sunX: 0.20, sunY: 0.57, glowInner: 'rgba(255, 226, 190, 0.82)',
+    glowOuter: 'rgba(247, 175, 171, 0)', fog: 0xe6b9ae,
+    hemiSky: 0xb7c7e7, sunColor: 0xffc39f, sunIntensity: 0.95,
+    sunPosition: [-80, 48, 110], fillColor: 0xf0c2bb, fillIntensity: 0.28,
+    ambientIntensity: 0.38, cloudColor: 0xffe8e3, cloudOpacity: 0.44, stars: false,
+  },
+  goldenHour: {
+    label: 'Golden hour',
+    top: '#9b91c7', middle: '#d79db6', lower: '#efb2a8', horizon: '#f6d1ad',
+    sunX: 0.73, sunY: 0.56, glowInner: 'rgba(255, 239, 196, 0.9)',
+    glowOuter: 'rgba(255, 183, 170, 0)', fog: 0xf3c1b5,
+    hemiSky: 0xffd4c2, sunColor: 0xffb778, sunIntensity: 1.6,
+    sunPosition: [80, 38, 60], fillColor: 0xf4c89a, fillIntensity: 0.22,
+    ambientIntensity: 0.35, cloudColor: 0xffeee7, cloudOpacity: 0.52, stars: false,
+  },
+  midnight: {
+    label: 'Midnight',
+    top: '#10182f', middle: '#222c51', lower: '#3d466d', horizon: '#686985',
+    sunX: 0.76, sunY: 0.58, glowInner: 'rgba(154, 174, 235, 0.2)',
+    glowOuter: 'rgba(73, 93, 170, 0)', fog: 0x4d506c,
+    hemiSky: 0x35436d, sunColor: 0x8392c9, sunIntensity: 0.12,
+    sunPosition: [-100, 120, -80], fillColor: 0x6472a3, fillIntensity: 0.16,
+    ambientIntensity: 0.2, cloudColor: 0x737b9d, cloudOpacity: 0.28, stars: true,
+  },
+});
+
+function createSkyTexture(preset = TIME_OF_DAY_PRESETS.goldenHour) {
   const canvas = document.createElement('canvas');
   canvas.width = 1600;
   canvas.height = 900;
   const ctx = canvas.getContext('2d');
 
-  // Lavender-pink zenith fading through rose into a warm, hazy horizon.
+  // A vertical gradient gives the sky depth instead of a single flat color.
   const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  gradient.addColorStop(0, '#9b91c7');
-  gradient.addColorStop(0.34, '#d79db6');
-  gradient.addColorStop(0.7, '#efb2a8');
-  gradient.addColorStop(1, '#f6d1ad');
+  gradient.addColorStop(0, preset.top);
+  gradient.addColorStop(0.34, preset.middle);
+  gradient.addColorStop(0.7, preset.lower);
+  gradient.addColorStop(1, preset.horizon);
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Diffuse low sun glow, softened so it blends into the warm sky.
   const sunGlow = ctx.createRadialGradient(
-    canvas.width * 0.73, canvas.height * 0.56, 8,
-    canvas.width * 0.73, canvas.height * 0.56, canvas.height * 0.34
+    canvas.width * preset.sunX, canvas.height * preset.sunY, 8,
+    canvas.width * preset.sunX, canvas.height * preset.sunY, canvas.height * 0.34
   );
-  sunGlow.addColorStop(0, 'rgba(255, 239, 196, 0.9)');
-  sunGlow.addColorStop(0.18, 'rgba(255, 214, 178, 0.42)');
-  sunGlow.addColorStop(1, 'rgba(255, 183, 170, 0)');
+  sunGlow.addColorStop(0, preset.glowInner);
+  sunGlow.addColorStop(0.18, preset.glowInner);
+  sunGlow.addColorStop(1, preset.glowOuter);
   ctx.fillStyle = sunGlow;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  if (preset.stars) {
+    // Deterministic pinpricks keep midnight calm rather than noisy.
+    let seed = 17;
+    for (let i = 0; i < 90; i++) {
+      seed = (seed * 16807) % 2147483647;
+      const x = (seed / 2147483647) * canvas.width;
+      seed = (seed * 16807) % 2147483647;
+      const y = (seed / 2147483647) * canvas.height * 0.62;
+      const radius = 0.35 + (seed / 2147483647) * 0.9;
+      ctx.fillStyle = `rgba(236, 231, 255, ${0.35 + radius * 0.35})`;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -128,6 +190,9 @@ controls.zoomSpeed = 4.0;
 // Backquote is commonly used for developer consoles and does not conflict
 // with any of the scene's pointer/touch controls.
 const debugPanel = document.getElementById('debug');
+const debugReadout = document.getElementById('debug-readout');
+const timeOfDaySelect = document.getElementById('debug-time');
+let currentTimeOfDay = 'goldenHour';
 let debugVisible = false;
 let debugFrames = 0;
 let debugFps = 0;
@@ -153,9 +218,10 @@ function updateDebugPanel(now) {
   const polar = THREE.MathUtils.radToDeg(controls.getPolarAngle());
   const cameraDistance = camera.position.distanceTo(controls.target);
 
-  debugPanel.textContent = [
+  debugReadout.textContent = [
     'ISTANBUL DEBUG  [` to close]',
     '',
+    `Time of day      ${TIME_OF_DAY_PRESETS[currentTimeOfDay].label}`,
     `FPS              ${debugFps.toFixed(1)}`,
     `Camera position  ${formatVector(camera.position)}`,
     `Camera target    ${formatVector(controls.target)}`,
@@ -340,7 +406,8 @@ document.addEventListener('wheel', (e) => {
 const hemi = new THREE.HemisphereLight(0xffd4c2, 0xa8c69b, 0.65);
 scene.add(hemi);
 // Warm ambient fill so even shadow-side surfaces stay readable.
-scene.add(new THREE.AmbientLight(0xffeacd, 0.35));
+const ambient = new THREE.AmbientLight(0xffeacd, 0.35);
+scene.add(ambient);
 // Low-angle amber sun — directional source doing the heavy lifting for
 // golden-hour shadows. Positioned near the horizon so shadows stretch long.
 const sun = new THREE.DirectionalLight(0xffb778, 1.6);
@@ -360,6 +427,7 @@ scene.add(fill);
 // Soft, hovering cloud banks. Each bank is built from overlapping flattened
 // puffs so the low-poly style stays consistent while the silhouettes remain
 // irregular and more natural than a single plane or billboard.
+const cloudMaterials = [];
 function addCloud(position, scale, opacity = 0.52) {
   const cloud = new THREE.Group();
   const material = new THREE.MeshStandardMaterial({
@@ -370,6 +438,7 @@ function addCloud(position, scale, opacity = 0.52) {
     opacity,
     depthWrite: false,
   });
+  cloudMaterials.push(material);
   const puffs = [
     [-12, 0,  2, 1.15],
     [ -5, 3,  0, 1.35],
@@ -393,6 +462,34 @@ addCloud(new THREE.Vector3(-175, 148, -150), 1.15, 0.46);
 addCloud(new THREE.Vector3(  55, 182,  -80), 1.35, 0.42);
 addCloud(new THREE.Vector3( 165, 132,   55), 0.92, 0.38);
 addCloud(new THREE.Vector3( -15, 226,  175), 1.1, 0.34);
+
+let skyTexture = scene.background;
+function applyTimeOfDay(timeOfDay) {
+  const preset = TIME_OF_DAY_PRESETS[timeOfDay] || TIME_OF_DAY_PRESETS.goldenHour;
+  currentTimeOfDay = TIME_OF_DAY_PRESETS[timeOfDay] ? timeOfDay : 'goldenHour';
+  const nextTexture = createSkyTexture(preset);
+  if (skyTexture && skyTexture !== nextTexture) skyTexture.dispose();
+  skyTexture = nextTexture;
+  scene.background = skyTexture;
+  scene.fog.color.setHex(preset.fog);
+  hemi.color.setHex(preset.hemiSky);
+  hemi.intensity = preset.hemiIntensity || 0.65;
+  ambient.color.setHex(preset.ambientColor || 0xffeacd);
+  ambient.intensity = preset.ambientIntensity;
+  sun.color.setHex(preset.sunColor);
+  sun.intensity = preset.sunIntensity;
+  sun.position.set(...preset.sunPosition);
+  fill.color.setHex(preset.fillColor);
+  fill.intensity = preset.fillIntensity;
+  for (const material of cloudMaterials) {
+    material.color.setHex(preset.cloudColor);
+    material.opacity = preset.cloudOpacity;
+  }
+  if (timeOfDaySelect.value !== currentTimeOfDay) timeOfDaySelect.value = currentTimeOfDay;
+}
+
+timeOfDaySelect.addEventListener('change', () => applyTimeOfDay(timeOfDaySelect.value));
+applyTimeOfDay(currentTimeOfDay);
 
 // Base target scale for the imported landmark and vehicle models.
 const BUILDING_SCALE = 1.75;
