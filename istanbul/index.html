@@ -63,7 +63,37 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // ---------- scene basics ----------
 const scene = new THREE.Scene();
 scene.scale.setScalar(5.0);
-scene.background = new THREE.Color(0xf3c1b5);
+function createSkyTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1600;
+  canvas.height = 900;
+  const ctx = canvas.getContext('2d');
+
+  // Lavender-pink zenith fading through rose into a warm, hazy horizon.
+  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  gradient.addColorStop(0, '#9b91c7');
+  gradient.addColorStop(0.34, '#d79db6');
+  gradient.addColorStop(0.7, '#efb2a8');
+  gradient.addColorStop(1, '#f6d1ad');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Diffuse low sun glow, softened so it blends into the warm sky.
+  const sunGlow = ctx.createRadialGradient(
+    canvas.width * 0.73, canvas.height * 0.56, 8,
+    canvas.width * 0.73, canvas.height * 0.56, canvas.height * 0.34
+  );
+  sunGlow.addColorStop(0, 'rgba(255, 239, 196, 0.9)');
+  sunGlow.addColorStop(0.18, 'rgba(255, 214, 178, 0.42)');
+  sunGlow.addColorStop(1, 'rgba(255, 183, 170, 0)');
+  ctx.fillStyle = sunGlow;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+scene.background = createSkyTexture();
 // Warm distance fog so the horizon dissolves into the golden-hour sky —
 // keeps distant shapes readable without hard edges, and reinforces the
 // soft ambient occlusion feel across the chunky pastel cityscape.
@@ -326,6 +356,43 @@ scene.add(sun);
 const fill = new THREE.DirectionalLight(0xf4c89a, 0.22);
 fill.position.set(-50, 30, -40);
 scene.add(fill);
+
+// Soft, hovering cloud banks. Each bank is built from overlapping flattened
+// puffs so the low-poly style stays consistent while the silhouettes remain
+// irregular and more natural than a single plane or billboard.
+function addCloud(position, scale, opacity = 0.52) {
+  const cloud = new THREE.Group();
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xffeee7,
+    roughness: 1,
+    metalness: 0,
+    transparent: true,
+    opacity,
+    depthWrite: false,
+  });
+  const puffs = [
+    [-12, 0,  2, 1.15],
+    [ -5, 3,  0, 1.35],
+    [  4, 5,  1, 1.55],
+    [ 13, 1, -1, 1.1],
+    [ 21, 0,  2, 0.78],
+  ];
+  for (const [x, y, z, size] of puffs) {
+    const puff = new THREE.Mesh(new THREE.SphereGeometry(10, 12, 8), material);
+    puff.position.set(x, y, z);
+    puff.scale.set(size, 0.42 + size * 0.16, 0.72 + size * 0.12);
+    cloud.add(puff);
+  }
+  cloud.position.set(position.x, position.y, position.z);
+  cloud.scale.setScalar(scale);
+  cloud.rotation.y = position.x * 0.003;
+  scene.add(cloud);
+}
+
+addCloud(new THREE.Vector3(-175, 148, -150), 1.15, 0.46);
+addCloud(new THREE.Vector3(  55, 182,  -80), 1.35, 0.42);
+addCloud(new THREE.Vector3( 165, 132,   55), 0.92, 0.38);
+addCloud(new THREE.Vector3( -15, 226,  175), 1.1, 0.34);
 
 // Base target scale for the imported landmark and vehicle models.
 const BUILDING_SCALE = 1.75;
