@@ -36,6 +36,18 @@
                             font-size: 22px; line-height: 1; cursor: pointer; }
   .landmark-dialog__close:hover { background: #e9c9aa; }
   .landmark-dialog__close:focus-visible { outline: 3px solid #4f8f8b; outline-offset: 2px; }
+  #sound-toggle { position: absolute; right: 16px; bottom: 16px; display: grid;
+                  width: 42px; height: 42px; padding: 0; place-items: center; color: #5b4636;
+                  background: rgba(255, 250, 240, 0.88); border: 1px solid #c97b5e;
+                  border-radius: 50%; box-shadow: 0 5px 18px rgba(55, 35, 25, 0.18);
+                  cursor: pointer; z-index: 10; }
+  #sound-toggle:hover { background: #fff8ea; }
+  #sound-toggle:focus-visible { outline: 3px solid #4f8f8b; outline-offset: 3px; }
+  #sound-toggle svg { width: 21px; height: 21px; fill: none; stroke: currentColor;
+                      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  #sound-toggle .sound-off { display: none; }
+  #sound-toggle[aria-pressed="true"] .sound-on { display: none; }
+  #sound-toggle[aria-pressed="true"] .sound-off { display: block; }
   @media (max-width: 520px) {
     #info { right: 12px; font-size: 12px; }
     .landmark-dialog__content { padding: 24px 22px 26px; }
@@ -44,6 +56,14 @@
 </head>
 <body>
 <div id="info">🏙️ Istanbul — click an icon · drag to orbit · scroll to zoom · ` debug</div>
+<button id="sound-toggle" type="button" aria-label="Mute Bosphorus ambience" aria-pressed="false" title="Mute sound">
+  <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M5 9v6h4l5 4V5L9 9H5z"></path><path d="M17 9.5a4 4 0 0 1 0 5"></path><path d="M19.5 7a7.5 7.5 0 0 1 0 10"></path>
+  </svg>
+  <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M5 9v6h4l5 4V5L9 9H5z"></path><path d="m17 9 5 6"></path><path d="m22 9-5 6"></path>
+  </svg>
+</button>
 <div id="debug" aria-hidden="true">
   <div id="debug-controls">
     <label for="debug-time">Time of day</label>
@@ -265,6 +285,55 @@ document.addEventListener('keydown', (event) => {
 // gesture.
 const dom = renderer.domElement;
 const twoFinger = { active: false, mode: null, cx: 0, cy: 0, startDist: 0 };
+
+// CC0 Freesound recordings:
+// Harbor Ambience 1 by clif_creates — https://freesound.org/s/254125/
+// Ship Horn by germboss — https://freesound.org/s/726544/
+const soundToggle = document.getElementById('sound-toggle');
+const harborAmbience = new Audio('/assets/audio/harbor-ambience.mp3');
+const shipHorn = new Audio('/assets/audio/ship-horn.mp3');
+harborAmbience.loop = true;
+harborAmbience.volume = 0.2;
+shipHorn.volume = 0.13;
+let soundMuted = false;
+let soundStarted = false;
+let shipHornTimer = null;
+
+function scheduleShipHorn() {
+  clearTimeout(shipHornTimer);
+  shipHornTimer = setTimeout(() => {
+    if (soundStarted && !soundMuted && !document.hidden) {
+      shipHorn.currentTime = 0;
+      shipHorn.play().catch(() => {});
+    }
+    scheduleShipHorn();
+  }, 22000 + Math.random() * 26000);
+}
+
+function startBosphorusSound() {
+  if (soundStarted || soundMuted) return;
+  soundStarted = true;
+  harborAmbience.play().catch(() => { soundStarted = false; });
+  scheduleShipHorn();
+}
+
+function updateSoundToggle() {
+  harborAmbience.muted = soundMuted;
+  shipHorn.muted = soundMuted;
+  soundToggle.setAttribute('aria-pressed', String(soundMuted));
+  soundToggle.setAttribute('aria-label', soundMuted ? 'Play Bosphorus ambience' : 'Mute Bosphorus ambience');
+  soundToggle.title = soundMuted ? 'Play sound' : 'Mute sound';
+}
+
+// Browsers require a user gesture before audio starts. The first interaction
+// with the scene unlocks the ambience; the control remains an explicit mute.
+dom.addEventListener('pointerdown', startBosphorusSound, { once: true });
+soundToggle.addEventListener('click', () => {
+  soundMuted = !soundMuted;
+  updateSoundToggle();
+  if (!soundMuted) startBosphorusSound();
+});
+updateSoundToggle();
 
 // OrbitControls in three@0.160 does NOT expose rotateLeft / dollyIn /
 // dollyOut / getDollyScale on `this` — they're closure-internal. We
