@@ -278,7 +278,7 @@ const LANDMARKS = Object.freeze({
   blueMosque:     { x: -65,  z: -150, plazaRadius: 50 },
   hagiaSophia:    { x: -116, z:  -55, plazaRadius: 56 },
   galataTower:    { x: -78,  z:   15, plazaRadius: 24 },
-  valensAqueduct: { x: -175, z:   35, plazaRadius: 60 },
+  valensAqueduct: { x: -120, z:   80, plazaRadius: 34 },
 });
 
 // ---------- helpers ----------
@@ -740,7 +740,6 @@ function distToPolyline(px, pz, points, closed = false) {
 // below builds them as a loose ring with clear views into both plazas.
 const historicBuildingSites = [
   { x: -42,  z:  -48, w: 7, d: 8, h:  9, rotation:  0.12, color: COLORS.pink },
-  { x: -118, z:   15, w: 8, d: 7, h: 10, rotation: -0.18, color: COLORS.orange },
 ];
 
 function nearHistoricBuildingSite(x, z) {
@@ -1074,14 +1073,13 @@ scene.add(galataGroup);
   );
 }
 
-// ---------- Valens Aqueduct (Bozdoğan Kemeri, European side, inland west of Hagia Sophia) — loaded from GLB ----------
-// The source model's long axis runs along +X. We scale it so its long axis
-// is ~70 units and place it on the European side, well clear of the tram
-// track and the Hagia Sophia / Galata Tower plazas.
+// ---------- Valens Aqueduct (Bozdoğan Kemeri, beside Galata Tower) — loaded from GLB ----------
+// The source model's long axis runs along +X. Its base target is 70 units
+// before the shared building scale and aqueduct-specific half-size multiplier.
 const aqueductGroup = new THREE.Group();
 aqueductGroup.position.set(LANDMARKS.valensAqueduct.x, 2, LANDMARKS.valensAqueduct.z);
-// Turn the doubled aqueduct along the island's long axis so it remains fully
-// on the European landmass and frames the other landmarks from behind.
+// Run the aqueduct lengthwise beside Galata Tower, leaving the tower visible
+// while grouping the two landmarks into the same west-side precinct.
 aqueductGroup.rotation.y = Math.PI / 2;
 scene.add(aqueductGroup);
 
@@ -1097,7 +1095,7 @@ scene.add(aqueductGroup);
       // 2) uniform scale so the long axis is ~70 units
       const target = 70 * BUILDING_SCALE;
       const s = rawSize.x > 0 ? target / rawSize.x : 1;
-      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE * 0.5);
       // 3) re-measure (scale + rotation included), then center horizontally
       //    and plant the base at local y=0
       const box = new THREE.Box3().setFromObject(model);
