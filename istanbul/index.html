@@ -746,11 +746,58 @@ scene.add(rockBase);
 // wherever the land has a hole (the Bosphorus). Sized to match the land
 // circle exactly so neither land nor sea extends outside the original
 // circle that contains the Bosphorus.
+const waterMaterial = new THREE.MeshStandardMaterial({
+  color: 0x78b9b7,
+  roughness: 0.48,
+  metalness: 0.04,
+});
+
+// Keep the physically lit Standard material, but vary its colour with several
+// slowly travelling wave fields. Crossing waves avoid the obvious look of a
+// texture sliding in one direction, while the narrow pale crests catch the
+// scene lighting like small Bosphorus ripples.
+const waterShaderState = { shader: null };
+waterMaterial.onBeforeCompile = shader => {
+  shader.uniforms.waterTime = { value: 0 };
+  shader.vertexShader = shader.vertexShader
+    .replace(
+      '#include <common>',
+      `#include <common>
+       varying vec2 vWaterUv;`
+    )
+    .replace(
+      '#include <begin_vertex>',
+      `#include <begin_vertex>
+       vWaterUv = uv;`
+    );
+  shader.fragmentShader = shader.fragmentShader
+    .replace(
+      '#include <common>',
+      `#include <common>
+       uniform float waterTime;
+       varying vec2 vWaterUv;`
+    )
+    .replace(
+      '#include <map_fragment>',
+      `#include <map_fragment>
+       vec2 waterUv = vWaterUv;
+       float longSwell = sin((waterUv.y * 8.0 + waterUv.x * 2.2) * 6.28318 - waterTime * 0.42);
+       float crossRipple = sin((waterUv.x * 13.0 - waterUv.y * 5.0) * 6.28318 + waterTime * 0.63);
+       float fineRipple = sin((waterUv.x * 24.0 + waterUv.y * 17.0) * 6.28318 - waterTime * 0.88);
+       float waveMix = longSwell * 0.56 + crossRipple * 0.29 + fineRipple * 0.15;
+       vec3 troughColour = vec3(0.19, 0.48, 0.53);
+       vec3 bodyColour = vec3(0.39, 0.68, 0.68);
+       vec3 crestColour = vec3(0.72, 0.84, 0.79);
+       vec3 waterColour = mix(troughColour, bodyColour, smoothstep(-0.78, 0.48, waveMix));
+       waterColour = mix(waterColour, crestColour, smoothstep(0.68, 0.92, waveMix) * 0.42);
+       diffuseColor.rgb *= waterColour / vec3(0.47, 0.73, 0.72);`
+    );
+  waterShaderState.shader = shader;
+};
+
 const sea = new THREE.Mesh(
   new THREE.CircleGeometry(LAND_RADIUS, 96),
-  // Soft turquoise water — matte so it doesn't read as plastic, but still
-  // picks up the warm sky tone from the hemisphere light above.
-  new THREE.MeshStandardMaterial({ color: 0xa8d4ce, roughness: 0.55, metalness: 0.05 })
+  waterMaterial
 );
 sea.rotation.x = -Math.PI / 2;
 sea.position.y = 0;
@@ -1612,6 +1659,9 @@ scene.add(gulls);
 // ---------- animation loop ----------
 function tick(now = performance.now()) {
   requestAnimationFrame(tick);
+  if (waterShaderState.shader) {
+    waterShaderState.shader.uniforms.waterTime.value = now * 0.001;
+  }
   for (const b of boats) {
     b.userData.t += b.userData.speed * b.userData.dir;
     if (b.userData.t > 1) b.userData.t -= 1;
