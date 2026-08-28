@@ -1397,7 +1397,9 @@ function tick(now = performance.now()) {
     // X-wiggle is small enough that a constant X shift reads as a separate lane.
     b.position.x = bosphorusCenterXAtT(b.userData.t) + (b.userData.lane || 0);
     b.position.z = -STRAIT_SOUTH_Y - STRAIT_LEN * b.userData.t;
-    b.rotation.y = bosphorusRotationAtT(b.userData.t);
+    // Turn the northbound vapur around so its flag sits at the rear.
+    b.rotation.y = bosphorusRotationAtT(b.userData.t)
+                 + (b.userData.dir > 0 ? Math.PI : 0);
   }
   if (tramReady) {
     tramT = (tramT + TRAM_SPEED) % 1;
