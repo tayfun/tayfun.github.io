@@ -266,6 +266,10 @@ const BUILDING_SCALE = 1.5;
 // Extra emphasis for authored GLB assets (landmarks, ferries and tram). This
 // deliberately does not affect the procedural city blocks below.
 const IMPORTED_MODEL_SCALE = 2.0;
+// Additional scale for the tram system. The route stays unchanged; only the
+// vehicle and track cross-section grow so they read clearly from a distance.
+const TRAM_SYSTEM_SCALE = 1.5;
+const TRAM_TRACK_RIDE_HEIGHT = (0.8 + 0.12) * TRAM_SYSTEM_SCALE;
 
 // Landmark anchors are shared by the city-layout pass and the GLB loaders.
 // Keeping them in one place makes it much harder for the procedural buildings
@@ -495,27 +499,31 @@ const KIZKULESI_SHORE_OFFSET = STRAIT_HALF * 0.7;
 const KIZKULESI_X = bosphorusCenterXAtT(KIZKULESI_T) + KIZKULESI_SHORE_OFFSET;
 const KIZKULESI_Z = -STRAIT_SOUTH_Y - STRAIT_LEN * KIZKULESI_T;
 
-// Tram route: a winding path along the European side of the land, running
-// from the southern edge to the northern edge. Declared early so the
-// building scatter (which runs just below the strait code) can keep cells
-// off the track via distToPolyline().
+// Cyclic tram route on the European side. The first eight points restore the
+// original winding northbound line and its original starting position. The
+// remaining points form a separate shoreline-side return leg, closing the
+// route without crossing the Bosphorus or reversing the tram.
 const TRAM_PATH = [
-  new THREE.Vector3( -60, 6, +190), // south end (near the southern shore)
+  new THREE.Vector3( -60, 6, +190), // original south stop / route start
   new THREE.Vector3(-130, 6, +140),
   new THREE.Vector3(-185, 6,  +80),
   new THREE.Vector3(-130, 6,  +10),
   new THREE.Vector3(-190, 6,  -50),
   new THREE.Vector3(-140, 6, -110),
   new THREE.Vector3(-140, 6, -170),
-  new THREE.Vector3( -80, 6, -200), // north end (near the northern shore)
+  new THREE.Vector3( -80, 6, -200), // north stop
+  new THREE.Vector3( -48, 6, -176),
+  new THREE.Vector3( -38, 6, -125),
+  new THREE.Vector3( -42, 6,  -75),
+  new THREE.Vector3( -30, 6,  -20),
+  new THREE.Vector3( -38, 6,  +45),
+  new THREE.Vector3( -32, 6, +105),
+  new THREE.Vector3( -45, 6, +160),
 ];
-// Endpoint aliases, kept so the stop markers and initial tram placement
-// don't need to know about the full polyline.
+// Stops remain at the original south and north endpoints.
 const TRAM_A = TRAM_PATH[0];
-const TRAM_B = TRAM_PATH[TRAM_PATH.length - 1];
-// Smooth Catmull-Rom curve through the waypoints; centripetal parameter
-// avoids loops/cusps where the tram takes sharp turns.
-const tramCurve = new THREE.CatmullRomCurve3(TRAM_PATH, false, 'centripetal', 0.5);
+const TRAM_B = TRAM_PATH[7];
+const tramCurve = new THREE.CatmullRomCurve3(TRAM_PATH, true, 'centripetal', 0.5);
 
 // Rocky foundation beneath the complete diorama disc. The procedural texture
 // is drawn as a tile and repeated around the cylinder, keeping this standalone
@@ -717,11 +725,11 @@ function distToSegment(px, pz, ax, az, bx, bz) {
   return Math.hypot(px - (ax + t * dx), pz - (az + t * dz));
 }
 // Distance from point (px, pz) to a polyline given as an array of Vector3.
-// Used to keep buildings off the winding tram track.
-function distToPolyline(px, pz, points) {
+function distToPolyline(px, pz, points, closed = false) {
   let best = Infinity;
-  for (let i = 0; i < points.length - 1; i++) {
-    const a = points[i], b = points[i + 1];
+  const segmentCount = closed ? points.length : points.length - 1;
+  for (let i = 0; i < segmentCount; i++) {
+    const a = points[i], b = points[(i + 1) % points.length];
     const d = distToSegment(px, pz, a.x, a.z, b.x, b.z);
     if (d < best) best = d;
   }
@@ -731,8 +739,6 @@ function distToPolyline(px, pz, points) {
 // precinct. The procedural scatter reserves these plots, then the second pass
 // below builds them as a loose ring with clear views into both plazas.
 const historicBuildingSites = [
-  { x: -34,  z: -202, w: 7, d: 8, h:  8, rotation: -0.20, color: COLORS.cream },
-  { x: -126, z: -185, w: 8, d: 8, h: 10, rotation:  0.18, color: COLORS.tan },
   { x: -42,  z:  -48, w: 7, d: 8, h:  9, rotation:  0.12, color: COLORS.pink },
   { x: -118, z:   15, w: 8, d: 7, h: 10, rotation: -0.18, color: COLORS.orange },
 ];
@@ -770,7 +776,7 @@ for (let x = -210; x <= 210; x += 24) {
     if (isInBosphorus(jx, jz)) continue;
     if (nearLandmark(jx, jz)) continue;
     if (nearHistoricBuildingSite(jx, jz)) continue;
-    if (distToPolyline(jx, jz, TRAM_PATH) < 3.5) continue;
+    if (distToPolyline(jx, jz, TRAM_PATH, true) < 3.5 * TRAM_SYSTEM_SCALE) continue;
     // Sparse city: keep roughly 18% of grid cells so the landmark models
     // dominate the diorama rather than disappearing into a blocky skyline.
     if (rng() < 0.82) continue;
@@ -1164,18 +1170,19 @@ const boats = [];
 }
 
 // ---------- tram & tramway ----------
-// The track follows tramCurve (declared up top), winding from one end of
-// the land to the other. We sample the curve at small intervals and lay
-// short straight segments (bed + two rails + occasional sleepers) oriented
-// along each sample's tangent.
+// The track follows the closed tramCurve declared above. We sample the loop at
+// small intervals and lay short segments (bed, rails and sleepers) along each
+// tangent.
 const trackGroup = new THREE.Group();
 {
   const TRACK_STEP   = 1.0;   // length of each straight segment along the curve
-  const RAIL_GAUGE   = 1.55;  // half-distance between the two rails
-  const BED_WIDTH    = 4.2;
-  const BED_HEIGHT   = 0.8;
-  const RAIL_HEIGHT  = 0.12;
-  const RAIL_WIDTH   = 0.22;
+  const RAIL_GAUGE   = 1.55 * TRAM_SYSTEM_SCALE;  // half-distance between the two rails
+  const BED_WIDTH    = 4.2  * TRAM_SYSTEM_SCALE;
+  const BED_HEIGHT   = 0.8  * TRAM_SYSTEM_SCALE;
+  const RAIL_HEIGHT  = 0.12 * TRAM_SYSTEM_SCALE;
+  const RAIL_WIDTH   = 0.22 * TRAM_SYSTEM_SCALE;
+  const SLEEPER_WIDTH = 0.32 * TRAM_SYSTEM_SCALE;
+  const SLEEPER_HEIGHT = 0.08 * TRAM_SYSTEM_SCALE;
   const SLEEPER_PITCH = 2.2;  // one sleeper roughly every 2.2 world units
 
   const totalLen = tramCurve.getLength();
@@ -1230,10 +1237,10 @@ const trackGroup = new THREE.Group();
 
     if (i % sleeperEvery === 0) {
       const sleeper = new THREE.Mesh(
-        new THREE.BoxGeometry(0.32, 0.08, BED_WIDTH + 0.2),
+        new THREE.BoxGeometry(SLEEPER_WIDTH, SLEEPER_HEIGHT, BED_WIDTH + 0.2 * TRAM_SYSTEM_SCALE),
         sleeperMat
       );
-      sleeper.position.set(0, BED_HEIGHT - 0.04, 0);
+      sleeper.position.set(0, BED_HEIGHT - SLEEPER_HEIGHT / 2, 0);
       sleeper.receiveShadow = true;
       seg.add(sleeper);
     }
@@ -1244,23 +1251,32 @@ scene.add(trackGroup);
 // Two small stop markers at the endpoints.
 for (const stop of [TRAM_A, TRAM_B]) {
   const post = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.12, 0.12, 3.2, 6),
+    new THREE.CylinderGeometry(
+      0.12 * TRAM_SYSTEM_SCALE,
+      0.12 * TRAM_SYSTEM_SCALE,
+      3.2 * TRAM_SYSTEM_SCALE,
+      6
+    ),
     new THREE.MeshStandardMaterial({ color: 0x4a3c30 })
   );
-  post.position.set(stop.x, stop.y + 1.6, stop.z);
+  post.position.set(stop.x, stop.y + 1.6 * TRAM_SYSTEM_SCALE, stop.z);
   post.castShadow = true;
   scene.add(post);
   const sign = new THREE.Mesh(
-    new THREE.BoxGeometry(1.4, 0.7, 0.1),
+    new THREE.BoxGeometry(
+      1.4 * TRAM_SYSTEM_SCALE,
+      0.7 * TRAM_SYSTEM_SCALE,
+      0.1 * TRAM_SYSTEM_SCALE
+    ),
     new THREE.MeshStandardMaterial({ color: 0x8eb4b0, roughness: 0.6 })
   );
-  sign.position.set(stop.x, stop.y + 2.9, stop.z);
+  sign.position.set(stop.x, stop.y + 2.9 * TRAM_SYSTEM_SCALE, stop.z);
   scene.add(sign);
 }
 
-// Tram vehicle — loaded from GLB and animated to shuttle along the track.
+// Tram vehicle — loaded from GLB and animated continuously around the loop.
 const tramGroup = new THREE.Group();
-tramGroup.position.copy(TRAM_A);
+tramGroup.position.set(TRAM_A.x, TRAM_A.y + TRAM_TRACK_RIDE_HEIGHT, TRAM_A.z);
 // Initial facing matches the curve's tangent at the start, so the model
 // doesn't pop into a new orientation the first frame after loading.
 {
@@ -1283,7 +1299,7 @@ let tramReady = false;
       const longest = Math.max(rawSize.x, rawSize.y, rawSize.z);
       const target = 14;
       const s = longest > 0 ? target / longest : 1;
-      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE * TRAM_SYSTEM_SCALE);
       // 3) centre horizontally and plant the base at local y=0
       const box = new THREE.Box3().setFromObject(model);
       model.position.x -= (box.min.x + box.max.x) / 2;
@@ -1304,9 +1320,8 @@ let tramReady = false;
   );
 }
 
-// Shuttle state: tramT runs 0 → 1 (A→B) then 1 → 0 (B→A) and repeats.
+// Loop state: tramT wraps from 1 back to 0 for continuous circulation.
 let tramT = 0;
-let tramDirSign = 1; // +1 going A→B, -1 going B→A
 const TRAM_SPEED = 0.0009; // fraction of track length per frame
 
 // seagulls circling Kızkulesi with flapping wings
@@ -1345,15 +1360,12 @@ function tick() {
     b.rotation.y = bosphorusRotationAtT(b.userData.t);
   }
   if (tramReady) {
-    tramT += TRAM_SPEED * tramDirSign;
-    if (tramT >= 1) { tramT = 1; tramDirSign = -1; }
-    if (tramT <= 0) { tramT = 0; tramDirSign =  1; }
+    tramT = (tramT + TRAM_SPEED) % 1;
     const p = tramCurve.getPoint(tramT);
     const tan = tramCurve.getTangent(tramT);
-    // Heading: face along the curve's tangent, flipped 180° when the tram
-    // is travelling the reverse direction so the model never backs up.
-    tramGroup.position.set(p.x, TRAM_A.y, p.z);
-    tramGroup.rotation.y = Math.atan2(-tan.z, tan.x) + (tramDirSign < 0 ? Math.PI : 0);
+    // Face continuously along the cyclic route's tangent.
+    tramGroup.position.set(p.x, p.y + TRAM_TRACK_RIDE_HEIGHT, p.z);
+    tramGroup.rotation.y = Math.atan2(-tan.z, tan.x);
   }
   for (const gull of gulls.children) {
     const u = gull.userData;
