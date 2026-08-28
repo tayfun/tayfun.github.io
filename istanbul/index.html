@@ -165,7 +165,8 @@ const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 60
 // Pulled back and up so the camera sits just outside the (5×-scaled) land
 // disc and looks diagonally at the scene, rather than hovering low over
 // the Bosphorus and looking straight down the water.
-camera.position.set(1988, 1068, 370);
+// camera.position.set(1988, 1068, 370);
+camera.position.set(1159, 634, 1870);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(innerWidth, innerHeight);
@@ -800,16 +801,124 @@ const landGeom = new THREE.ExtrudeGeometry([westLandShape, eastLandShape], {
   bevelEnabled: false,
   curveSegments: 96
 });
-landGeom.rotateX(-Math.PI / 2); // shape +Y → world -Z (north); extrusion goes downward
+landGeom.rotateX(-Math.PI / 2); // shape +Y → world -Z; extrusion becomes world +Y
 const land = new THREE.Mesh(
   landGeom,
   // Sage-green landmass — slightly warmer than pure sage so the whole
   // island glows gently under the golden-hour sun.
   new THREE.MeshStandardMaterial({ color: 0xc4cea0, roughness: 0.95 })
 );
-land.position.y = 2; // top surface at y=2 (above sea), base at y=-1 (below sea)
+land.position.y = 2;
+const LAND_SURFACE_Y = land.position.y + 3; // upward-facing extruded cap
 land.receiveShadow = true;
 scene.add(land);
+
+// Cobblestone precincts break up the continuous green land and give each
+// historic landmark a readable paved setting without another external asset.
+function createCobblestoneTexture() {
+  const size = 256;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  let seed = 9187;
+  const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  ctx.fillStyle = '#e8ddc7';
+  ctx.fillRect(0, 0, size, size);
+  const rows = 9;
+  const cols = 9;
+  const cellW = size / cols;
+  const cellH = size / rows;
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const cx = (col + 0.5 + (row % 2) * 0.18) * cellW + (random() - 0.5) * 9;
+      const cy = (row + 0.5) * cellH + (random() - 0.5) * 8;
+      const w = cellW * (0.72 + random() * 0.2);
+      const h = cellH * (0.64 + random() * 0.22);
+      const shade = 216 + Math.floor(random() * 28);
+      ctx.fillStyle = `rgb(${shade}, ${shade - 6}, ${shade - 18})`;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(cx - w / 2, cy - h / 2, w, h, 4);
+      else ctx.rect(cx - w / 2, cy - h / 2, w, h);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(113, 91, 67, 0.34)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(1, 1);
+  return texture;
+}
+
+const cobblestoneTexture = createCobblestoneTexture();
+const cobblestoneMaterial = new THREE.MeshStandardMaterial({
+  map: cobblestoneTexture,
+  color: 0xfff1d6,
+  emissive: 0x3a2d20,
+  emissiveIntensity: 0.08,
+  roughness: 0.96,
+  metalness: 0,
+});
+const pavedPrecincts = [
+  {
+    x: LANDMARKS.hagiaSophia.x, z: LANDMARKS.hagiaSophia.z, rotation: 0.15,
+    points: [[-64, -44], [-48, -62], [42, -62], [64, -44], [66, 38], [46, 60], [-44, 60], [-66, 38]],
+  },
+  {
+    x: LANDMARKS.blueMosque.x, z: LANDMARKS.blueMosque.z, rotation: -0.18,
+    points: [[-64, -38], [-48, -55], [-22, -50], [0, -62], [22, -50], [48, -55], [64, -38],
+             [64, 34], [47, 52], [22, 47], [0, 58], [-22, 47], [-47, 52], [-64, 34]],
+  },
+  {
+    x: LANDMARKS.galataTower.x, z: LANDMARKS.galataTower.z, rotation: 0,
+    points: [[-25, -10], [-10, -25], [10, -25], [25, -10], [25, 10], [10, 25], [-10, 25], [-25, 10]],
+  },
+  {
+    x: LANDMARKS.valensAqueduct.x, z: LANDMARKS.valensAqueduct.z, rotation: 2.1,
+    points: [[-78, -16], [76, -16], [86, -8], [86, 8], [76, 16], [-78, 16], [-86, 8], [-86, -8]],
+  },
+  {
+    x: LANDMARKS.topkapiPalace.x, z: LANDMARKS.topkapiPalace.z,
+    rotation: THREE.MathUtils.degToRad(80),
+    points: [[-68, -46], [-34, -62], [18, -59], [62, -40], [72, 5], [56, 52], [14, 64], [-36, 57], [-70, 28]],
+  },
+];
+
+function createPrecinctGeometry(points) {
+  const shape = new THREE.Shape();
+  // Shape +Y maps to world -Z after rotation, hence the negated local Z.
+  shape.moveTo(points[0][0], -points[0][1]);
+  for (let i = 1; i < points.length; i++) shape.lineTo(points[i][0], -points[i][1]);
+  shape.closePath();
+
+  const geometry = new THREE.ShapeGeometry(shape);
+  const positions = geometry.attributes.position;
+  const uvs = geometry.attributes.uv;
+  // World-scaled UVs keep individual cobbles the same size on every custom
+  // footprint, regardless of whether the precinct is long, square or round.
+  for (let i = 0; i < positions.count; i++) {
+    uvs.setXY(i, positions.getX(i) / 48, positions.getY(i) / 48);
+  }
+  uvs.needsUpdate = true;
+  geometry.rotateX(-Math.PI / 2);
+  return geometry;
+}
+
+for (const precinct of pavedPrecincts) {
+  const road = new THREE.Mesh(
+    createPrecinctGeometry(precinct.points),
+    cobblestoneMaterial
+  );
+  road.position.set(precinct.x, LAND_SURFACE_Y + 0.12, precinct.z);
+  road.rotation.y = precinct.rotation;
+  road.renderOrder = 2;
+  road.receiveShadow = true;
+  scene.add(road);
+}
 
 // Deterministic randomness for the gull animation.
 const rng = (seed => () => (seed = (seed * 16807) % 2147483647) / 2147483647)(42);
