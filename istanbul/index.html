@@ -298,11 +298,11 @@ fill.position.set(-50, 30, -40);
 scene.add(fill);
 
 // Base target scale for the imported landmark and vehicle models.
-const BUILDING_SCALE = 1.5;
+const BUILDING_SCALE = 1.75;
 // Extra emphasis for authored GLB assets (landmarks, ferries and tram).
 const IMPORTED_MODEL_SCALE = 2.0;
-// Additional scale for the tram system. The route stays unchanged; only the
-// vehicle and track cross-section grow so they read clearly from a distance.
+// Additional scale for the tram system so the vehicle and track cross-section
+// read clearly from a distance.
 const TRAM_SYSTEM_SCALE = 1.5;
 const TRAM_TRACK_RIDE_HEIGHT = (0.8 + 0.12) * TRAM_SYSTEM_SCALE;
 
@@ -310,9 +310,9 @@ const TRAM_TRACK_RIDE_HEIGHT = (0.8 + 0.12) * TRAM_SYSTEM_SCALE;
 const LANDMARKS = Object.freeze({
   blueMosque:     { x: -105, z: -110 },
   hagiaSophia:    { x: -116, z:  -15 },
-  galataTower:    { x: -78,  z:   55 },
-  valensAqueduct: { x: -90,  z:  120 },
-  topkapiPalace:  { x:   7,  z:  110 },
+  galataTower:    { x: -98,  z:   65 },
+  valensAqueduct: { x: -99,  z:  140 },
+  topkapiPalace:  { x:   -4,  z:  110 },
 });
 
 // ---------- circular sea & land with a winding Bosphorus ----------
@@ -320,7 +320,10 @@ const LANDMARKS = Object.freeze({
 // extruded shape, so the curve is genuinely curved (not just a straight
 // channel) and the strait shows the sea underneath.
 const LAND_RADIUS = 230;
-const STRAIT_HALF = 48;
+const STRAIT_WEST_HALF = 48;
+// Preserve the current asymmetric Bosphorus width while shifting both banks
+// together; changing the centreline offset below does not resize the water.
+const STRAIT_EAST_HALF = 72;
 // In shape coordinates: +Y is north, -Y is south (after rotateX(-π/2),
 // shape +Y maps to world -Z).
 const STRAIT_SOUTH_Y = -LAND_RADIUS + 30;
@@ -336,7 +339,7 @@ const STRAIT_LEN = STRAIT_NORTH_Y - STRAIT_SOUTH_Y; // length along shape-Y axis
 // (negative X), so pushing the strait in the +X direction pushes it AWAY from
 // them. The bridge, the vapur ferries and the Maiden's Tower all read their
 // position from this function, so they shift in lock-step.
-const BOSPHORUS_X_OFFSET = 60;
+const BOSPHORUS_X_OFFSET = 80;
 function bosphorusCenterXAtT(t) {
   return 28 * Math.sin(t * Math.PI * 2.0)
        + 15 * Math.sin(t * Math.PI * 1.2 + 0.3)
@@ -349,7 +352,8 @@ function bosphorusCenterXAtShapeY(shapeY) {
   return bosphorusCenterXAtT(t);
 }
 function bosphorusShoreXAtShapeY(shapeY, side) {
-  return bosphorusCenterXAtShapeY(shapeY) + side * STRAIT_HALF;
+  const halfWidth = side < 0 ? STRAIT_WEST_HALF : STRAIT_EAST_HALF;
+  return bosphorusCenterXAtShapeY(shapeY) + side * halfWidth;
 }
 
 // Locate a shore's exact intersection with the land circle. The first Y is
@@ -376,8 +380,10 @@ function findShoreCircleIntersection(side, insideY, outsideY) {
 const BOSPHORUS_EDGES = {
   westSouth: findShoreCircleIntersection(-1, STRAIT_SOUTH_Y, -LAND_RADIUS),
   westNorth: findShoreCircleIntersection(-1, STRAIT_NORTH_Y,  LAND_RADIUS),
-  eastSouth: findShoreCircleIntersection( 1, STRAIT_SOUTH_Y, -LAND_RADIUS),
-  eastNorth: findShoreCircleIntersection( 1, STRAIT_NORTH_Y,  LAND_RADIUS),
+  // The wider east shore lies outside the circle at the old ±200-unit seed,
+  // so start these searches from the circle centre, which is safely on land.
+  eastSouth: findShoreCircleIntersection( 1, 0, -LAND_RADIUS),
+  eastNorth: findShoreCircleIntersection( 1, 0,  LAND_RADIUS),
 };
 
 function bosphorusCenterXAtZ(z) {
@@ -405,41 +411,34 @@ function bosphorusRotationAtT(t) {
 
 // Where each water landmark sits along the strait (0 = south, 1 = north).
 const BRIDGE_T = 0.62;
+const BRIDGE_EAST_OFFSET = (STRAIT_EAST_HALF - STRAIT_WEST_HALF) / 2;
 const KIZKULESI_T = 0.22;
 // The real Kızkulesi sits just off the Üsküdar (Asian, +X) shore rather than
 // mid-channel, so push it away from the centerline towards that shore.
-const KIZKULESI_SHORE_OFFSET = STRAIT_HALF * 0.7;
+const KIZKULESI_COAST_GAP = 14;
+const KIZKULESI_SHORE_OFFSET = STRAIT_EAST_HALF - KIZKULESI_COAST_GAP;
 const KIZKULESI_X = bosphorusCenterXAtT(KIZKULESI_T) + KIZKULESI_SHORE_OFFSET;
 const KIZKULESI_Z = -STRAIT_SOUTH_Y - STRAIT_LEN * KIZKULESI_T;
 
-// Cyclic tram route on the European side. The western half follows the round
-// landmass circumference, while the eastern half preserves the winding route
-// beside the Bosphorus exactly as laid out previously.
-const TRAM_A = new THREE.Vector3(-60, 6, +190); // south stop / route start
-const TRAM_B = new THREE.Vector3(-80, 6, -200); // north stop
-const TRAM_OUTER_ARC_RADIUS = 205;
-const tramOuterArc = Array.from({ length: 14 }, (_, index) => {
-  const angle = THREE.MathUtils.degToRad(115 + index * 10);
-  return new THREE.Vector3(
-    Math.cos(angle) * TRAM_OUTER_ARC_RADIUS,
-    6,
-    Math.sin(angle) * TRAM_OUTER_ARC_RADIUS
-  );
-});
-
+// Compact cyclic tram route around only Hagia Sophia and the Blue Mosque.
+// Its angled north side passes below Galata Tower, leaving every other
+// landmark outside the loop, while the southwest bend stays on the landmass.
 const TRAM_PATH = [
-  TRAM_A,
-  ...tramOuterArc,
-  TRAM_B,
-  // Untouched Bosphorus-side winding leg, north to south.
-  new THREE.Vector3( -48, 6, -176),
-  new THREE.Vector3( -38, 6, -125),
-  new THREE.Vector3( -42, 6,  -75),
-  new THREE.Vector3( -30, 6,  -20),
-  new THREE.Vector3( -38, 6,  +45),
-  new THREE.Vector3( -32, 6, +105),
-  new THREE.Vector3( -45, 6, +160),
+  new THREE.Vector3( -25, 6,  -65),
+  new THREE.Vector3( -30, 6,  -15),
+  new THREE.Vector3( -45, 6,   30),
+  new THREE.Vector3(-116, 6,   55),
+  new THREE.Vector3(-180, 6,   35),
+  new THREE.Vector3(-190, 6,  -15),
+  new THREE.Vector3(-190, 6,  -75),
+  new THREE.Vector3(-180, 6, -125),
+  new THREE.Vector3(-150, 6, -165),
+  new THREE.Vector3(-105, 6, -180),
+  new THREE.Vector3( -60, 6, -165),
+  new THREE.Vector3( -30, 6, -125),
 ];
+const TRAM_A = TRAM_PATH[0];
+const TRAM_B = TRAM_PATH[6];
 const tramCurve = new THREE.CatmullRomCurve3(TRAM_PATH, true, 'centripetal', 0.5);
 
 // Rocky foundation beneath the complete diorama disc. The procedural texture
@@ -628,7 +627,7 @@ const rng = (seed => () => (seed = (seed * 16807) % 2147483647) / 2147483647)(42
 // channel direction at BRIDGE_T.
 const bridgeGroup = new THREE.Group();
 bridgeGroup.position.set(
-  bosphorusCenterXAtT(BRIDGE_T),
+  bosphorusCenterXAtT(BRIDGE_T) + BRIDGE_EAST_OFFSET,
   2,
   -STRAIT_SOUTH_Y - STRAIT_LEN * BRIDGE_T
 );
@@ -675,6 +674,13 @@ const kizkulesiGroup = new THREE.Group();
 kizkulesiGroup.position.set(KIZKULESI_X, 0, KIZKULESI_Z);
 scene.add(kizkulesiGroup);
 
+const KIZKULESI_TARGET_FOOTPRINT = 20 * BUILDING_SCALE;
+const KIZKULESI_BIRD_CLEARANCE = 12;
+// Safe loading-time fallback; replaced with the model's measured height once
+// the GLB is ready so future tower scale changes also raise the birds.
+let kizkulesiBirdBaseY = KIZKULESI_TARGET_FOOTPRINT * IMPORTED_MODEL_SCALE
+                       + KIZKULESI_BIRD_CLEARANCE;
+
 {
   const gltfLoader = new GLTFLoader();
   gltfLoader.load(
@@ -684,9 +690,9 @@ scene.add(kizkulesiGroup);
       // 1) measure the unscaled model
       const rawBox = new THREE.Box3().setFromObject(model);
       const rawSize = rawBox.getSize(new THREE.Vector3());
-      // 2) pick a uniform scale so the widest footprint dimension is ~12 units
+      // 2) make the tower 25% larger than its previous 16-unit base target
       const longest = Math.max(rawSize.x, rawSize.z);
-      const target = 16 * BUILDING_SCALE;
+      const target = KIZKULESI_TARGET_FOOTPRINT;
       const s = longest > 0 ? Math.min(target / longest, 50) : 1;
       model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
       // 3) re-measure (the scale is now baked into the world-space box),
@@ -695,6 +701,7 @@ scene.add(kizkulesiGroup);
       model.position.x -= (box.min.x + box.max.x) / 2;
       model.position.z -= (box.min.z + box.max.z) / 2;
       model.position.y -= box.min.y;
+      kizkulesiBirdBaseY = box.max.y - box.min.y + KIZKULESI_BIRD_CLEARANCE;
       // 4) enable shadows on every mesh in the model
       model.traverse((obj) => {
         if (obj.isMesh) {
@@ -805,7 +812,7 @@ scene.add(topkapiGroup);
       // A 75-unit final footprint brings the palace precinct close to the
       // Bosphorus while retaining the shared imported-model emphasis.
       const longest = Math.max(rawSize.x, rawSize.z);
-      const target = 27 * BUILDING_SCALE;
+      const target = 33 * BUILDING_SCALE;
       const s = longest > 0 ? target / longest : 1;
       model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
 
@@ -829,6 +836,7 @@ scene.add(topkapiGroup);
 // ---------- Galata Tower (European side, near the water) — loaded from GLB ----------
 const galataGroup = new THREE.Group();
 galataGroup.position.set(LANDMARKS.galataTower.x, 2, LANDMARKS.galataTower.z);
+galataGroup.rotation.y = THREE.MathUtils.degToRad(90);
 scene.add(galataGroup);
 
 {
@@ -872,7 +880,7 @@ const aqueductGroup = new THREE.Group();
 aqueductGroup.position.set(LANDMARKS.valensAqueduct.x, 2, LANDMARKS.valensAqueduct.z);
 // Run the aqueduct lengthwise beside Galata Tower, leaving the tower visible
 // while grouping the two landmarks into the same west-side precinct.
-aqueductGroup.rotation.y = Math.PI / 2;
+aqueductGroup.rotation.y = 2.1;
 scene.add(aqueductGroup);
 
 {
@@ -941,7 +949,7 @@ const boats = [];
       });
       // 5) spawn two vapurs, each on its own lateral lane offset from the
       //    centerline so their routes never cross and they can't collide.
-      //    STRAIT_HALF is 48 and the vapur is ~14 long, so ±12 keeps a
+      //    The narrow western half is 48 and the vapur is ~14 long, so ±12 keeps a
       //    safe gap between the two lanes while staying well clear of shore.
       const VAPUR_LANES = [
         { t: 0.30, speed: 0.00070, dir:  1, lane:  12 }, // north-bound, east lane
@@ -1130,7 +1138,7 @@ for (let i = 0; i < 6; i++) {
   const wingR = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.04, 0.45), wingMat);
   wingR.position.set(0.6, 0.05, 0);
   gull.add(wingR);
-  gull.userData = { r: 8 + i * 2, a: i * 1.3, y: 18 + i * 1.5, s: 0.5 + rng() * 0.5, flap: rng() * Math.PI * 2 };
+  gull.userData = { r: 8 + i * 2, a: i * 1.3, yOffset: i * 3, s: 0.5 + rng() * 0.5, flap: rng() * Math.PI * 2 };
   gulls.add(gull);
 }
 gulls.position.set(KIZKULESI_X, 0, KIZKULESI_Z);
@@ -1161,7 +1169,11 @@ function tick(now = performance.now()) {
     const u = gull.userData;
     u.a += 0.02 * u.s;
     u.flap += 0.18;
-    gull.position.set(Math.cos(u.a) * u.r, u.y + Math.sin(u.a * 3) * 0.8, Math.sin(u.a) * u.r);
+    gull.position.set(
+      Math.cos(u.a) * u.r,
+      kizkulesiBirdBaseY + u.yOffset + Math.sin(u.a * 3) * 0.8,
+      Math.sin(u.a) * u.r
+    );
     gull.rotation.y = -u.a;
     gull.children[1].rotation.z = Math.sin(u.flap) * 0.7;
     gull.children[2].rotation.z = -Math.sin(u.flap) * 0.7;
