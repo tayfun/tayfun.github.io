@@ -514,6 +514,7 @@ const LANDMARKS = Object.freeze({
   galataTower:    { x: -98,  z:   65 },
   valensAqueduct: { x: -99,  z:  140 },
   topkapiPalace:  { x:   -4,  z:  110 },
+  haydarpasaGar:  { x:  194,  z:   10 },
 });
 
 // ---------- circular sea & land with a winding Bosphorus ----------
@@ -1278,6 +1279,45 @@ scene.add(aqueductGroup);
   );
 }
 
+// ---------- Haydarpaşa Garı (Asian side, above Maiden's Tower) ----------
+// The station sits on the east-bank land between the Bosphorus shore and the
+// diorama edge, north of Kızkulesi without encroaching on the water channel.
+const haydarpasaGroup = new THREE.Group();
+haydarpasaGroup.position.set(LANDMARKS.haydarpasaGar.x, 2, LANDMARKS.haydarpasaGar.z);
+haydarpasaGroup.rotation.y = THREE.MathUtils.degToRad(-68);
+scene.add(haydarpasaGroup);
+
+{
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.load(
+    '/assets/models/haydarpasa-gari.glb',
+    (gltf) => {
+      const model = gltf.scene;
+      const rawBox = new THREE.Box3().setFromObject(model);
+      const rawSize = rawBox.getSize(new THREE.Vector3());
+      const longest = Math.max(rawSize.x, rawSize.z);
+      // Keep the final footprint compact enough for the narrow Asian bank.
+      const target = 16 * BUILDING_SCALE;
+      const s = longest > 0 ? Math.min(target / longest, 50) : 1;
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
+
+      const box = new THREE.Box3().setFromObject(model);
+      model.position.x -= (box.min.x + box.max.x) / 2;
+      model.position.z -= (box.min.z + box.max.z) / 2;
+      model.position.y -= box.min.y;
+      model.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+        }
+      });
+      haydarpasaGroup.add(model);
+    },
+    undefined,
+    (err) => console.error('Failed to load Haydarpaşa Garı model:', err)
+  );
+}
+
 // ---------- clickable landmark information ----------
 const LANDMARK_DETAILS = Object.freeze({
   bosphorusBridge: {
@@ -1308,6 +1348,10 @@ const LANDMARK_DETAILS = Object.freeze({
     title: 'Bozdoğan Kemeri',
     description: 'Also known as the Aqueduct of Valens, this monumental fourth-century structure carried water into Constantinople. Its surviving arches still cross the modern city, preserving a visible section of the capital’s vast Roman water system.'
   },
+  haydarpasaGar: {
+    title: 'Haydarpaşa Garı',
+    description: 'Opened in 1908 on Istanbul’s Asian shore, Haydarpaşa railway station became the western terminus of rail routes into Anatolia and beyond. Its waterfront setting, monumental façade and twin towers make it one of Kadıköy’s defining landmarks.'
+  },
   beyogluTram: {
     title: 'Beyoğlu Nostalgic Tram',
     description: 'The red heritage tram runs for 1.64 kilometres along İstiklal Avenue between Tünel and Taksim. Restored museum cars returned to the pedestrianised avenue at the end of 1990, reviving one of Beyoğlu’s best-loved street scenes.'
@@ -1330,6 +1374,7 @@ const clickableLandmarks = [
   [topkapiGroup, 'topkapiPalace'],
   [galataGroup, 'galataTower'],
   [aqueductGroup, 'valensAqueduct'],
+  [haydarpasaGroup, 'haydarpasaGar'],
 ];
 const clickableLandmarkGroups = [];
 function registerClickableObject(group, landmarkId) {
