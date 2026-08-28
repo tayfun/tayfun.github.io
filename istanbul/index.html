@@ -261,9 +261,21 @@ const COLORS = {
   door:     0x7a4a2c    // dark wood
 };
 
-// Global scale factor for every building, the bridge, and towers.
-// Applied uniformly so the city stays readable while everything is bigger.
+// Base scale for procedural buildings and the imported models' target sizes.
 const BUILDING_SCALE = 1.5;
+// Extra emphasis for authored GLB assets (landmarks, ferries and tram). This
+// deliberately does not affect the procedural city blocks below.
+const IMPORTED_MODEL_SCALE = 2.0;
+
+// Landmark anchors are shared by the city-layout pass and the GLB loaders.
+// Keeping them in one place makes it much harder for the procedural buildings
+// to drift into a monument when the diorama is rearranged.
+const LANDMARKS = Object.freeze({
+  blueMosque:     { x: -65,  z: -150, plazaRadius: 50 },
+  hagiaSophia:    { x: -116, z:  -55, plazaRadius: 56 },
+  galataTower:    { x: -78,  z:   15, plazaRadius: 24 },
+  valensAqueduct: { x: -175, z:   35, plazaRadius: 60 },
+});
 
 // ---------- helpers ----------
 // A solid block — base at group y=0, top at y=h. No studs.
@@ -715,13 +727,32 @@ function distToPolyline(px, pz, points) {
   }
   return best;
 }
+// Low-rise blocks placed deliberately around the Blue Mosque / Hagia Sophia
+// precinct. The procedural scatter reserves these plots, then the second pass
+// below builds them as a loose ring with clear views into both plazas.
+const historicBuildingSites = [
+  { x: -34,  z: -202, w: 7, d: 8, h:  8, rotation: -0.20, color: COLORS.cream },
+  { x: -126, z: -185, w: 8, d: 8, h: 10, rotation:  0.18, color: COLORS.tan },
+  { x: -42,  z:  -48, w: 7, d: 8, h:  9, rotation:  0.12, color: COLORS.pink },
+  { x: -118, z:   15, w: 8, d: 7, h: 10, rotation: -0.18, color: COLORS.orange },
+];
+
+function nearHistoricBuildingSite(x, z) {
+  return historicBuildingSites.some((site) => {
+    const dx = x - site.x, dz = z - site.z;
+    const clearance = Math.hypot(site.w, site.d) * BUILDING_SCALE * 0.5 + 7;
+    return dx * dx + dz * dz < clearance * clearance;
+  });
+}
+
 // Plaza exclusion zones around the major landmarks (radius in world units)
 const landmarkExclusions = [
-  { x: -100, z:  -90, r: 22 },   // Hagia Sophia
-  { x: -135, z:  -55, r: 14 },   // Galata Tower
+  { x: LANDMARKS.blueMosque.x, z: LANDMARKS.blueMosque.z, r: LANDMARKS.blueMosque.plazaRadius },
+  { x: LANDMARKS.hagiaSophia.x, z: LANDMARKS.hagiaSophia.z, r: LANDMARKS.hagiaSophia.plazaRadius },
+  { x: LANDMARKS.galataTower.x, z: LANDMARKS.galataTower.z, r: LANDMARKS.galataTower.plazaRadius },
   { x: KIZKULESI_X, z: KIZKULESI_Z, r: 16 },                                                    // Maiden's Tower
   { x: bosphorusCenterXAtT(BRIDGE_T),     z: -STRAIT_SOUTH_Y - STRAIT_LEN * BRIDGE_T,     r: 30 }, // Bridge approaches
-  { x: -170, z:  -95, r: 32 },   // Valens Aqueduct (Bozdoğan Kemeri)
+  { x: LANDMARKS.valensAqueduct.x, z: LANDMARKS.valensAqueduct.z, r: LANDMARKS.valensAqueduct.plazaRadius },
 ];
 function nearLandmark(x, z) {
   for (const lm of landmarkExclusions) {
@@ -738,9 +769,11 @@ for (let x = -210; x <= 210; x += 24) {
     if (!isOnLand(jx, jz)) continue;
     if (isInBosphorus(jx, jz)) continue;
     if (nearLandmark(jx, jz)) continue;
+    if (nearHistoricBuildingSite(jx, jz)) continue;
     if (distToPolyline(jx, jz, TRAM_PATH) < 3.5) continue;
-    // Sparser city: keep roughly 35% of grid cells.
-    if (rng() < 0.65) continue;
+    // Sparse city: keep roughly 18% of grid cells so the landmark models
+    // dominate the diorama rather than disappearing into a blocky skyline.
+    if (rng() < 0.82) continue;
     const w = (5 + rng() * 4) * BUILDING_SCALE, d = (5 + rng() * 4) * BUILDING_SCALE, h = (4 + rng() * 14) * BUILDING_SCALE;
     const c = palette[Math.floor(rng() * palette.length)];
     const b = block(w, h, d, c);
@@ -803,6 +836,31 @@ for (let x = -210; x <= 210; x += 24) {
   }
 }
 
+// Build the reserved historic-quarter plots. These are intentionally shorter
+// than the random skyline so the Blue Mosque's domes and minarets remain the
+// visual focus from the initial camera angle.
+historicBuildingSites.forEach((site, index) => {
+  const w = site.w * BUILDING_SCALE;
+  const d = site.d * BUILDING_SCALE;
+  const h = site.h * BUILDING_SCALE;
+  const building = block(w, h, d, site.color);
+  addWindows(building, w, h, d);
+
+  if (index % 3 === 1) addPyramid(building, w, d, h, COLORS.roofred, 1.6 * BUILDING_SCALE);
+  else                 addParapet(building, w, d, h, COLORS.stone);
+
+  const door = new THREE.Mesh(
+    new THREE.BoxGeometry(0.9, 1.4, 0.06),
+    new THREE.MeshStandardMaterial({ color: COLORS.door, roughness: 0.75 })
+  );
+  door.position.set(0, 0.7, d / 2 + 0.03);
+  building.add(door);
+
+  building.position.set(site.x, 2, site.z);
+  building.rotation.y = site.rotation;
+  scene.add(building);
+});
+
 // ---------- Bosphorus Bridge — loaded from GLB ----------
 // The source model's long axis runs along +X. We scale it so its long
 // axis is ~58 units (spanning the curved strait with a little overhang)
@@ -829,7 +887,7 @@ scene.add(bridgeGroup);
       // 2) uniform scale so the long axis crosses the strait
       const target = 58 * BUILDING_SCALE;
       const s = rawSize.x > 0 ? target / rawSize.x : 1;
-      model.scale.setScalar(s);
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
       // 3) re-measure (scale + rotation included), then center horizontally
       //    and plant the base at local y=0
       const box = new THREE.Box3().setFromObject(model);
@@ -870,7 +928,7 @@ scene.add(kizkulesiGroup);
       const longest = Math.max(rawSize.x, rawSize.z);
       const target = 16 * BUILDING_SCALE;
       const s = longest > 0 ? Math.min(target / longest, 50) : 1;
-      model.scale.setScalar(s);
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
       // 3) re-measure (the scale is now baked into the world-space box),
       //    then center horizontally and plant the base at local y=0
       const box = new THREE.Box3().setFromObject(model);
@@ -893,7 +951,7 @@ scene.add(kizkulesiGroup);
 
 // ---------- Hagia Sophia (European side) — loaded from GLB ----------
 const hagiaGroup = new THREE.Group();
-hagiaGroup.position.set(-100, 2, -90);
+hagiaGroup.position.set(LANDMARKS.hagiaSophia.x, 2, LANDMARKS.hagiaSophia.z);
 hagiaGroup.rotation.y = 0.15;
 scene.add(hagiaGroup);
 
@@ -910,7 +968,7 @@ scene.add(hagiaGroup);
       const longest = Math.max(rawSize.x, rawSize.z);
       const target = 32 * BUILDING_SCALE;
       const s = longest > 0 ? Math.min(target / longest, 50) : 1;
-      model.scale.setScalar(s);
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
       // 3) re-measure (the scale is now baked into the world-space box),
       //    then center horizontally and plant the base at local y=0
       const box = new THREE.Box3().setFromObject(model);
@@ -931,9 +989,49 @@ scene.add(hagiaGroup);
   );
 }
 
+// ---------- Blue Mosque (Sultan Ahmed Mosque) — loaded from GLB ----------
+// Positioned southeast of Hagia Sophia with a shared open precinct between
+// them. The surrounding low-rise blocks are laid out in the city pass above.
+const blueMosqueGroup = new THREE.Group();
+blueMosqueGroup.position.set(LANDMARKS.blueMosque.x, 2, LANDMARKS.blueMosque.z);
+blueMosqueGroup.rotation.y = -0.18;
+scene.add(blueMosqueGroup);
+
+{
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.load(
+    '/assets/models/blue-mosque.glb',
+    (gltf) => {
+      const model = gltf.scene;
+      const rawBox = new THREE.Box3().setFromObject(model);
+      const rawSize = rawBox.getSize(new THREE.Vector3());
+      // Slightly smaller than Hagia Sophia's footprint, leaving room for the
+      // six-minaret silhouette and the neighbouring historic-quarter blocks.
+      const longest = Math.max(rawSize.x, rawSize.z);
+      const target = 28 * BUILDING_SCALE;
+      const s = longest > 0 ? Math.min(target / longest, 50) : 1;
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
+
+      const box = new THREE.Box3().setFromObject(model);
+      model.position.x -= (box.min.x + box.max.x) / 2;
+      model.position.z -= (box.min.z + box.max.z) / 2;
+      model.position.y -= box.min.y;
+      model.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+        }
+      });
+      blueMosqueGroup.add(model);
+    },
+    undefined,
+    (err) => console.error('Failed to load Blue Mosque model:', err)
+  );
+}
+
 // ---------- Galata Tower (European side, near the water) — loaded from GLB ----------
 const galataGroup = new THREE.Group();
-galataGroup.position.set(-135, 2, -55);
+galataGroup.position.set(LANDMARKS.galataTower.x, 2, LANDMARKS.galataTower.z);
 scene.add(galataGroup);
 
 {
@@ -949,7 +1047,7 @@ scene.add(galataGroup);
       const longest = Math.max(rawSize.x, rawSize.z);
       const target = 6 * BUILDING_SCALE;
       const s = longest > 0 ? Math.min(target / longest, 50) : 1;
-      model.scale.setScalar(s);
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
       // 3) re-measure (the scale is now baked into the world-space box),
       //    then center horizontally and plant the base at local y=0
       const box = new THREE.Box3().setFromObject(model);
@@ -975,8 +1073,10 @@ scene.add(galataGroup);
 // is ~70 units and place it on the European side, well clear of the tram
 // track and the Hagia Sophia / Galata Tower plazas.
 const aqueductGroup = new THREE.Group();
-aqueductGroup.position.set(-170, 2, -95);
-aqueductGroup.rotation.y = 0.1;
+aqueductGroup.position.set(LANDMARKS.valensAqueduct.x, 2, LANDMARKS.valensAqueduct.z);
+// Turn the doubled aqueduct along the island's long axis so it remains fully
+// on the European landmass and frames the other landmarks from behind.
+aqueductGroup.rotation.y = Math.PI / 2;
 scene.add(aqueductGroup);
 
 {
@@ -991,7 +1091,7 @@ scene.add(aqueductGroup);
       // 2) uniform scale so the long axis is ~70 units
       const target = 70 * BUILDING_SCALE;
       const s = rawSize.x > 0 ? target / rawSize.x : 1;
-      model.scale.setScalar(s);
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
       // 3) re-measure (scale + rotation included), then center horizontally
       //    and plant the base at local y=0
       const box = new THREE.Box3().setFromObject(model);
@@ -1029,7 +1129,7 @@ const boats = [];
       const longest = Math.max(rawSize.x, rawSize.y, rawSize.z);
       const target = 14 * BUILDING_SCALE;
       const s = longest > 0 ? target / longest : 1;
-      template.scale.setScalar(s);
+      template.scale.setScalar(s * IMPORTED_MODEL_SCALE);
       // 3) re-measure (the scale is now baked into the world-space box),
       //    then center horizontally and plant the base at local y=0
       const box = new THREE.Box3().setFromObject(template);
@@ -1183,7 +1283,7 @@ let tramReady = false;
       const longest = Math.max(rawSize.x, rawSize.y, rawSize.z);
       const target = 14;
       const s = longest > 0 ? target / longest : 1;
-      model.scale.setScalar(s);
+      model.scale.setScalar(s * IMPORTED_MODEL_SCALE);
       // 3) centre horizontally and plant the base at local y=0
       const box = new THREE.Box3().setFromObject(model);
       model.position.x -= (box.min.x + box.max.x) / 2;
