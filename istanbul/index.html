@@ -984,6 +984,7 @@ const KIZKULESI_BIRD_CLEARANCE = 12;
 let kizkulesiBirdBaseY = KIZKULESI_TARGET_FOOTPRINT * IMPORTED_MODEL_SCALE
                        + KIZKULESI_BIRD_CLEARANCE;
 let gullPickVolume = null;
+let kizkulesiFlagMesh = null;
 
 {
   const gltfLoader = new GLTFLoader();
@@ -1012,6 +1013,9 @@ let gullPickVolume = null;
         if (obj.isMesh) {
           obj.castShadow = true;
           obj.receiveShadow = true;
+          if (!kizkulesiFlagMesh && obj.morphTargetInfluences?.length >= 2) {
+            kizkulesiFlagMesh = obj;
+          }
         }
       });
       kizkulesiGroup.add(model);
@@ -1625,6 +1629,11 @@ function tick(now = performance.now()) {
       flagMesh.morphTargetInfluences[0] = Math.cos(wavePhase);
       flagMesh.morphTargetInfluences[1] = Math.sin(wavePhase);
     }
+  }
+  if (kizkulesiFlagMesh) {
+    const wavePhase = now * (Math.PI * 2 / 1350);
+    kizkulesiFlagMesh.morphTargetInfluences[0] = Math.cos(wavePhase);
+    kizkulesiFlagMesh.morphTargetInfluences[1] = Math.sin(wavePhase);
   }
   if (tramReady) {
     tramT = (tramT + TRAM_SPEED) % 1;
