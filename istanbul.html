@@ -466,10 +466,12 @@ const TRAM_B = TRAM_PATH[TRAM_PATH.length - 1];
 // avoids loops/cusps where the tram takes sharp turns.
 const tramCurve = new THREE.CatmullRomCurve3(TRAM_PATH, false, 'centripetal', 0.5);
 
-// Sea: large flat circular disc that sits underneath the land and shows
-// through wherever the land has a hole (the Bosphorus).
+// Sea: flat circular disc that sits underneath the land and shows through
+// wherever the land has a hole (the Bosphorus). Sized to match the land
+// circle exactly so neither land nor sea extends outside the original
+// circle that contains the Bosphorus.
 const sea = new THREE.Mesh(
-  new THREE.CircleGeometry(LAND_RADIUS + 80, 96),
+  new THREE.CircleGeometry(LAND_RADIUS, 96),
   // Soft turquoise water — matte so it doesn't read as plastic, but still
   // picks up the warm sky tone from the hemisphere light above.
   new THREE.MeshStandardMaterial({ color: 0xa8d4ce, roughness: 0.55, metalness: 0.05 })
