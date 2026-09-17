@@ -6,11 +6,23 @@
   <meta name="theme-color" content="#0d6b6b">
   <link rel="icon" href="data:,">
   <title>Istanbul Kart · Golden Horn</title>
-  <script type="module" crossorigin src="./assets/index-BwpERe9X.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-B6dUgxDq.css">
+  <script type="module" crossorigin src="./assets/index-DCW0XrJV.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-_LlJ0xl9.css">
 </head>
 <body>
   <main id="game" aria-label="Istanbul Kart race course"></main>
+  <aside id="touch-controls" aria-label="Touch driving controls" hidden>
+    <div class="touch-cluster touch-steer">
+      <button type="button" class="touch-btn touch-left" data-key="KeyA" aria-label="Steer left">◀<small>STEER</small></button>
+      <button type="button" class="touch-btn touch-right" data-key="KeyD" aria-label="Steer right">▶<small>STEER</small></button>
+    </div>
+    <div class="touch-cluster touch-actions">
+      <button type="button" class="touch-btn touch-boost" data-key="ShiftLeft" aria-label="Nitro">NITRO</button>
+      <button type="button" class="touch-btn touch-drift" data-key="Space" aria-label="Drift">DRIFT</button>
+      <button type="button" class="touch-btn touch-brake" data-key="KeyS" aria-label="Brake or reverse">REV</button>
+      <button type="button" class="touch-btn touch-throttle" data-key="KeyW" aria-label="Accelerate">GAS</button>
+    </div>
+  </aside>
   <header><span class="eyebrow">ISTANBUL KART · GOLDEN HORN</span><h1>Driving lab<span>01</span></h1><p>Find the feeling. Then build the city.</p></header>
   <aside class="map-panel"><canvas id="minimap" width="320" height="320" aria-label="North-up Istanbul map"></canvas><span id="zone">GRAYBOX CIRCUIT</span></aside>
   <section id="race-panel"><span id="position-label">POS 1 / 8</span><span id="lap-label">LAP 1 / 3</span><strong id="lap-time">00:00.00</strong><span id="route-label">SULTANAHMET</span><div id="trial-hud" hidden><div id="trial-best"></div><div id="trial-splits"></div><div id="trial-status"></div></div></section>
