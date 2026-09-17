@@ -1,0 +1,42 @@
+ISTANBUL KART — SOUND CREDITS
+Downloaded 2026-09-16. No endorsement by the original creators is implied.
+
+engine.wav
+“racing car engine sound loops” / loop_0.wav by domasx2.
+Source: https://opengameart.org/content/racing-car-engine-sound-loops
+Download: https://opengameart.org/sites/default/files/loop_0.wav
+License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+The author identifies the source recording as public domain and confirms the
+replacement with a public-domain sample in the page's comments.
+Changes: mono 22050 Hz PCM16 conversion, peak normalization, 20 ms loop crossfade.
+
+ drift.wav
+“Car tire squeal skid loop” — original recording by audible-edge (Tom Haigh),
+loop edit/submission by qubodup.
+Source: https://opengameart.org/content/car-tire-squeal-skid-loop
+Original: https://www.freesound.org/people/audible-edge/sounds/71739/
+Download: https://opengameart.org/sites/default/files/tires_squal_loop.wav
+License: Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+https://creativecommons.org/licenses/by/3.0/
+Changes for Istanbul Kart: mono 22050 Hz PCM16 conversion, peak normalization,
+20 ms loop crossfade. Original loop was made from seconds 4–7 of the recording.
+Retain this attribution and license link when redistributing this asset.
+
+boost.wav, impact.wav
+Kenney — Sci-Fi Sounds (1.0).
+Source: https://kenney.nl/assets/sci-fi-sounds
+Original files: Audio/thrusterFire_000.ogg, Audio/impactMetal_000.ogg.
+License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+Original pack license: KENNEY-SCIFI-LICENSE.txt (alongside this file).
+Changes: mono 22050 Hz PCM16, peak normalization; boost uses seconds 1–4 and a
+20 ms loop crossfade. The thruster effect is repurposed as a nitro rush.
+
+pickup.wav, countdown.wav, start.wav, finish.wav
+Kenney — Interface Sounds (1.0).
+Source: https://kenney.nl/assets/interface-sounds
+Original files, respectively: Audio/confirmation_001.ogg, Audio/tick_001.ogg,
+Audio/confirmation_002.ogg, Audio/confirmation_004.ogg.
+License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+Original pack license: KENNEY-INTERFACE-LICENSE.txt (alongside this file).
+Changes: mono 22050 Hz PCM16 conversion and peak normalization.
+The pickup sample is also used at a higher playback rate for drift charge.

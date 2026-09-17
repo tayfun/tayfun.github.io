@@ -1,0 +1,50 @@
+[
+  {
+    "file": "boost.wav",
+    "bytes": 131462,
+    "sha256": "c475da3620d21b1ce49902874276e89d4c83bfc3475ebcc5b61f4427c38fd48c",
+    "seconds": 2.98
+  },
+  {
+    "file": "countdown.wav",
+    "bytes": 2028,
+    "sha256": "9f2fd578029c7fcf2af8397a446504335c5cf253cbb7fe427d06ccc7cf521c96",
+    "seconds": 0.04498866213151927
+  },
+  {
+    "file": "drift.wav",
+    "bytes": 131462,
+    "sha256": "5df7399be7ed8623312eddc5e269e30904bf7edd1bcdcf3bf98123d98e62e344",
+    "seconds": 2.98
+  },
+  {
+    "file": "engine.wav",
+    "bytes": 37268,
+    "sha256": "2bd48b89ea401d28e541230bc52cabdd5d56f13b1598289923826c7951904d76",
+    "seconds": 0.8440816326530612
+  },
+  {
+    "file": "finish.wav",
+    "bytes": 21672,
+    "sha256": "3ac50b666ad461d03662a5613140df53f73549d888f2b4de5ede0f2473f66abb",
+    "seconds": 0.4904308390022676
+  },
+  {
+    "file": "impact.wav",
+    "bytes": 28044,
+    "sha256": "a9316cff79e9278223aef04934b5a5cd06c5cdc4d8ec227a9254cec2c27ac703",
+    "seconds": 0.6349206349206349
+  },
+  {
+    "file": "pickup.wav",
+    "bytes": 12826,
+    "sha256": "b0318453e6ace107fe2a5d0cbb7e4839462f8673b0b309b291378acc2f0de520",
+    "seconds": 0.28984126984126984
+  },
+  {
+    "file": "start.wav",
+    "bytes": 23814,
+    "sha256": "05c20859133f985875d0fe3296b4fb7d59537e039b83649e57b42b82b5928e35",
+    "seconds": 0.5390022675736962
+  }
+]

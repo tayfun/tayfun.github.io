@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0d6b6b">
+  <link rel="icon" href="data:,">
+  <title>Istanbul Kart · Golden Horn</title>
+  <script type="module" crossorigin src="/assets/index-D_SpnBpW.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-DTsdoQJY.css">
+</head>
+<body>
+  <main id="game" aria-label="Istanbul Kart race course"></main>
+  <header><span class="eyebrow">ISTANBUL KART · GOLDEN HORN</span><h1>Driving lab<span>01</span></h1><p>Find the feeling. Then build the city.</p></header>
+  <aside class="map-panel"><canvas id="minimap" width="320" height="320" aria-label="North-up Istanbul map"></canvas><span id="zone">GRAYBOX CIRCUIT</span></aside>
+  <section id="race-panel"><span id="position-label">POS 1 / 8</span><span id="lap-label">LAP 1 / 3</span><strong id="lap-time">00:00.00</strong><span id="route-label">SULTANAHMET</span><div id="trial-hud" hidden><div id="trial-best"></div><div id="trial-splits"></div><div id="trial-status"></div></div></section>
+  <section id="results" aria-labelledby="results-title" hidden><span class="eyebrow">GOLDEN HORN · RACE</span><h2 id="results-title" tabindex="-1">Race finished!</h2><p id="result-time"></p><p id="result-laps"></p><ol id="result-order" aria-label="Race standings"></ol><p id="result-status"></p><button id="race-again">Race again</button><button id="results-home">Main menu</button><section id="trial-results" hidden><h3>Session leaderboard</h3><p id="trial-empty"></p><ol id="trial-records"></ol><p id="trial-storage-note">Best ghost and top ten laps stay in this browser tab. Recovery invalidates an attempt.</p></section><section id="tour-recap" aria-label="Tour recap"></section></section>
+  <nav aria-label="Test areas"><a id="mode-link" href="?lab">Driving lab</a><label id="mode-control">Mode <select id="game-mode" aria-label="Game mode"><option value="grand-prix">Grand Prix</option><option value="time-trial">Time Trial</option></select></label><button id="restart">Restart run</button><label id="pace-control">AI pace <select id="pace-select" aria-label="AI pace (starts a new race)"><option value="relaxed">Relaxed</option><option value="standard" selected>Standard</option><option value="fast">Fast</option></select></label><button data-area="circuit" class="active">1 · Circuit</button><button data-area="hill">2 · 12° hill</button><button data-area="jump">3 · Jump</button><button id="pause-open">Pause · Esc</button><button id="sound-toggle" aria-pressed="true" title="Enable or mute game sound">Sound on</button><button id="graphics-open">Graphics</button><button id="reset">↺ Reset</button></nav>
+  <dialog id="main-menu" aria-labelledby="menu-title">
+    <div class="menu-layout">
+      <section class="menu-content">
+        <span class="eyebrow">A LITTLE CHAOS. A LOT OF ISTANBUL.</span>
+        <h2 id="menu-title">Istanbul<span>Kart.</span></h2>
+        <p class="menu-intro">Race the waterfront. Dodge the trams.<br>Take the scenic route to first place.</p>
+        <fieldset class="mode-cards"><legend>Choose your ride</legend>
+          <label><input type="radio" name="menu-mode" value="grand-prix" checked><span><strong>Grand Prix</strong><small>3 laps · 8 racers · all the action</small></span><b aria-hidden="true">01</b></label>
+          <label><input type="radio" name="menu-mode" value="time-trial"><span><strong>Time Trial</strong><small>One lap. You against your best ghost.</small></span><b aria-hidden="true">02</b></label>
+        </fieldset>
+        <label id="menu-pace-row">Rival pace <select id="menu-pace"><option value="relaxed">Relaxed</option><option value="standard" selected>Standard</option><option value="fast">Fast</option></select></label>
+        <button id="menu-start" autofocus>Start Grand Prix <span aria-hidden="true">→</span></button>
+        <button id="menu-resume" hidden>Resume current run</button>
+        <div class="menu-options"><button id="menu-graphics">Graphics</button><button id="menu-sound" aria-pressed="true">Sound on</button><a href="audio/CREDITS.txt" target="_blank" rel="noopener">Credits ↗</a></div>
+      </section>
+      <aside class="menu-postcard" aria-label="Golden Horn circuit">
+        <div class="postcard-top"><span>THE GOLDEN HORN CIRCUIT</span><span>İSTANBUL, TÜRKİYE</span></div>
+        <div class="postcard-map" role="img" aria-label="Illustrated Istanbul circuit around the Bosphorus"></div>
+        <div class="postcard-caption"><span>Two shores.<br>One unforgettable race.</span><small>1.6 KM / 14 TURNS / ENDLESS BUMPS</small></div>
+        <div class="menu-controls"><span><kbd>WASD</kbd> / <kbd>↑ ↓ ← →</kbd> Drive</span><span><kbd>Space</kbd> Drift</span><span><kbd>Shift</kbd> Nitro</span><span><kbd>R</kbd> Recover</span><span><kbd>Esc</kbd> Pause</span></div>
+      </aside>
+    </div>
+  </dialog>
+  <dialog id="pause-dialog" aria-labelledby="pause-title">
+    <form method="dialog"><h2 id="pause-title">Paused</h2>
+      <p>The race, opponents and timers are paused.</p>
+      <button value="resume" autofocus>Resume</button>
+      <button id="pause-restart" type="button">Restart run</button><button id="pause-home" type="button">Main menu</button>
+      <p><a href="audio/CREDITS.txt" target="_blank" rel="noopener">Sound credits and licenses</a></p>
+      <p id="pause-controls">WASD / arrows · Drive<br>Space · Drift &nbsp; Shift · Boost<br>R · Recover &nbsp; Esc · Pause / resume</p>
+    </form>
+  </dialog>
+  <dialog id="graphics-dialog" aria-labelledby="graphics-title">
+    <form method="dialog"><h2 id="graphics-title">Graphics</h2>
+      <label for="graphics-preset">Rendering quality</label>
+      <select id="graphics-preset"><option value="low">Low · fewer pixels</option><option value="balanced">Balanced</option><option value="high">High · sharper image</option></select>
+      <p>Lower quality reduces 3D resolution. Text stays sharp; handling and race rules stay the same. The race is paused while this panel is open.</p>
+      <p id="graphics-resolution"></p><p id="graphics-save-note" role="status">Changes apply immediately without restarting.</p>
+      <button value="close">Back to game</button>
+    </form>
+  </dialog>
+  <section class="nitro-panel"><div id="tour-banner" role="status" aria-hidden="true"><small></small><strong></strong><p></p></div><div id="clean-reward" role="status" hidden></div><div id="draft-label" role="status" hidden></div><div id="track-hint" hidden></div><div class="drift-tiers" aria-label="Drift charge"><span data-tier="1">I · BLUE</span><span data-tier="2">II · ORANGE</span><span data-tier="3">III · RED</span></div><div class="drift-meter"><div id="drift-fill"></div></div><div class="eyebrow">NITRO <span id="nitro-label">100%</span></div><div class="meter"><div id="nitro-fill"></div></div><p id="state">Loading physics…</p></section>
+  <section class="speed-panel"><span id="speed">0</span><span class="unit">KM/H</span><div id="telemetry">4 WHEELS / 60 HZ</div></section>
+  <div id="pickup-toast" role="status" hidden></div>
+  <footer>WASD / arrows <b>Drive</b><i>·</i> Space <b>Drift</b><i>·</i> Shift <b>Boost</b><i>·</i> R <b>Reset</b></footer>
+  <div id="lap-banner" role="status" hidden></div>
+  <div id="message" role="status">Getting Istanbul ready…</div>
+</body>
+</html>
