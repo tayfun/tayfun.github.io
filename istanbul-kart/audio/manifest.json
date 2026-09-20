@@ -6,6 +6,12 @@
     "seconds": 2.98
   },
   {
+    "file": "collision.wav",
+    "bytes": 24300,
+    "sha256": "ce701c81317be7f43be3b1ac9cde2ff80b6f695d9d328389e60f633873e51a99",
+    "seconds": 0.5500226757369614
+  },
+  {
     "file": "countdown.wav",
     "bytes": 2028,
     "sha256": "9f2fd578029c7fcf2af8397a446504335c5cf253cbb7fe427d06ccc7cf521c96",
@@ -46,5 +52,11 @@
     "bytes": 23814,
     "sha256": "05c20859133f985875d0fe3296b4fb7d59537e039b83649e57b42b82b5928e35",
     "seconds": 0.5390022675736962
+  },
+  {
+    "file": "ferryHorn.wav",
+    "bytes": 88278,
+    "sha256": "429a17d805fafe1ff1a96ea7ddbb5391d34cbf17493b70870692861ce7fcc755",
+    "seconds": 2.0
   }
 ]
