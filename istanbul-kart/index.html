@@ -5,11 +5,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0d6b6b">
   <link rel="icon" href="data:,">
+  <style>body[data-loading=true]>:not(#loading-screen):not(script){visibility:hidden}#loading-screen{z-index:10000;color:#173c37;text-align:center;background:#e5ddc9;flex-direction:column;justify-content:center;align-items:center;padding:24px;font-family:Arial,sans-serif;display:flex;position:fixed;inset:0}#loading-screen[hidden]{display:none}#loading-screen progress{accent-color:#0d6b6b;width:min(320px,80vw)}</style>
   <title>Istanbul Kart · Golden Horn</title>
-  <script type="module" crossorigin src="./assets/index-CZmw9kVF.js"></script>
+  <script type="module" crossorigin src="./assets/index-Bn22zb5f.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-DF8rRSrf.css">
 </head>
-<body data-debug="false">
+<body data-debug="false" data-loading="true">
+  <section id="loading-screen" aria-labelledby="loading-title">
+    <h1 id="loading-title">Istanbul Kart</h1>
+    <p id="loading-label" role="status" aria-live="polite">Getting Istanbul ready…</p>
+    <progress id="loading-progress" max="100" value="0" aria-label="Loading progress"></progress>
+    <button id="loading-retry" hidden>Try again</button>
+  </section>
   <main id="game" aria-label="Istanbul Kart race course"></main>
   <header><span class="eyebrow">ISTANBUL KART · GOLDEN HORN</span><h1>Golden Horn<span>03</span></h1><p>Three laps · eight racers · bumper to bumper.</p></header>
   <aside class="map-panel"><canvas id="minimap" width="320" height="320" aria-label="North-up Istanbul map"></canvas><span id="zone">HISTORIC PENINSULA</span></aside>
