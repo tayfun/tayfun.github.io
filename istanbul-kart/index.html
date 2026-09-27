@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0d6b6b">
   <link rel="icon" href="data:,">
-  <style>body[data-loading=true]>:not(#loading-screen):not(script){visibility:hidden}#loading-screen{z-index:10000;color:#173c37;text-align:center;background:#e5ddc9;flex-direction:column;justify-content:center;align-items:center;padding:24px;font-family:Arial,sans-serif;display:flex;position:fixed;inset:0}#loading-screen[hidden]{display:none}#loading-screen progress{accent-color:#0d6b6b;width:min(320px,80vw)}</style>
+  <link rel="preload" href="fonts/lilita-one-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>body[data-loading=true]>:not(#loading-screen):not(script){visibility:hidden}#loading-screen{z-index:10000;color:#dce8ff;text-align:center;background:repeating-conic-gradient(#fff 0 25%,#12264a 0 50%) left top/18px 18px repeat-x,repeating-conic-gradient(#fff 0 25%,#12264a 0 50%) left bottom/18px 18px repeat-x,linear-gradient(165deg,#1a3868,#0b1a33 70%);flex-direction:column;justify-content:center;align-items:center;padding:24px;font-family:Arial,sans-serif;display:flex;position:fixed;inset:0}#loading-screen h1{color:#ffd21f;text-shadow:0 3px #0f1f3a,0 0 24px #ffd21f55;margin:0 0 12px;font:400 64px/1 Lilita One,Arial Black,Impact,sans-serif}#loading-screen[hidden]{display:none}#loading-screen progress{accent-color:#ffd21f;width:min(320px,80vw);height:14px}#loading-retry{color:#12264a;background:#ffd21f;border:0;border-radius:12px;margin-top:16px;padding:12px 28px;font:20px Lilita One,Arial Black,sans-serif;box-shadow:0 4px #b86e00}</style>
   <title>Istanbul Kart · Golden Horn</title>
-  <script type="module" crossorigin src="./assets/index-CG_e7uxi.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BxBgDV04.css">
+  <script type="module" crossorigin src="./assets/index-_s3V5tUp.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DClITsEm.css">
 </head>
 <body data-debug="false" data-loading="true">
   <section id="loading-screen" aria-labelledby="loading-title">
@@ -20,8 +21,8 @@
   <main id="game" aria-label="Istanbul Kart race course"></main>
   <header><span class="eyebrow">ISTANBUL KART · GOLDEN HORN</span><h1>Golden Horn<span>03</span></h1><p>Three laps · eight racers · bumper to bumper.</p></header>
   <aside class="map-panel"><canvas id="minimap" width="320" height="320" aria-label="North-up Istanbul map"></canvas><span id="zone">HISTORIC PENINSULA</span></aside>
-  <section id="race-panel"><span id="position-label">POS 1 / 8</span><span id="lap-label">LAP 1 / 3</span><strong id="lap-time">00:00.00</strong><span id="route-label">SULTANAHMET</span><div id="trial-hud" hidden><div id="trial-best"></div><div id="trial-splits"></div><div id="trial-status"></div></div></section>
-  <section id="results" aria-labelledby="results-title" hidden><span class="eyebrow">GOLDEN HORN · RACE</span><h2 id="results-title" tabindex="-1">Race finished!</h2><p id="result-time"></p><p id="result-laps"></p><ol id="result-order" aria-label="Race standings"></ol><p id="result-status"></p><button id="race-again">Race again</button><button id="results-home">Main menu</button><section id="trial-results" hidden><h3>Session leaderboard</h3><p id="trial-empty"></p><ol id="trial-records"></ol><p id="trial-storage-note">Best ghost and top ten laps stay in this browser tab. Recovery invalidates an attempt.</p></section><section id="tour-recap" aria-label="Tour recap"></section></section>
+  <section id="race-panel"><div class="player-tag"><b>P1</b><span id="player-name">Driver</span></div><span id="position-label"><b>1<sup>st</sup></b><small>/ 8</small></span><div class="lap-chip"><span>TIME</span><strong id="lap-time">00:00.00</strong></div><span id="route-label">SULTANAHMET</span><div id="trial-hud" hidden><div id="trial-best"></div><div id="trial-splits"></div><div id="trial-status"></div></div></section>
+  <section id="results" aria-labelledby="results-title" hidden><div id="confetti" aria-hidden="true"></div><span class="eyebrow">GOLDEN HORN · RACE</span><h2 id="results-title" tabindex="-1">Race finished!</h2><p id="result-place" hidden></p><p id="result-time"></p><p id="result-laps"></p><ol id="result-order" aria-label="Race standings"></ol><p id="result-status"></p><button id="race-again">Race again</button><button id="results-home">Main menu</button><section id="trial-results" hidden><h3>Session leaderboard</h3><p id="trial-empty"></p><ol id="trial-records"></ol><p id="trial-storage-note">Best ghost and top ten laps stay in this browser tab. Recovery invalidates an attempt.</p></section><section id="tour-recap" aria-label="Tour recap"></section></section>
   <nav aria-label="Race controls"><a id="mode-link" href="?lab&amp;debug">Driving lab</a><label id="mode-control">Mode <select id="game-mode" aria-label="Game mode"><option value="grand-prix">Grand Prix</option><option value="time-trial">Time Trial</option></select></label><button id="restart">Restart run</button><label id="pace-control">AI pace <select id="pace-select" aria-label="AI pace (starts a new race)"><option value="relaxed">Relaxed</option><option value="standard" selected>Standard</option><option value="fast">Fast</option></select></label><button data-area="circuit" class="active">1 · Circuit</button><button data-area="hill">2 · 12° hill</button><button data-area="jump">3 · Jump</button><button id="pause-open">Pause · Esc</button><button id="sound-toggle" aria-pressed="true" title="Enable or mute game sound">Sound on</button><button id="graphics-open">Graphics</button><button id="reset">↺ Reset</button></nav>
   <dialog id="main-menu" aria-labelledby="menu-title">
     <div class="menu-layout">
@@ -29,12 +30,37 @@
         <span class="eyebrow">A LITTLE CHAOS. A LOT OF ISTANBUL.</span>
         <h2 id="menu-title">Istanbul<span>Kart.</span></h2>
         <p class="menu-intro">Race the waterfront. Dodge the trams.<br>Take the scenic route to first place.</p>
-        <fieldset class="mode-cards"><legend>Choose your ride</legend>
-          <label><input type="radio" name="menu-mode" value="grand-prix" checked><span><strong>Grand Prix</strong><small>3 laps · 8 racers · all the action</small></span><b aria-hidden="true">01</b></label>
-          <label><input type="radio" name="menu-mode" value="time-trial"><span><strong>Time Trial</strong><small>One lap. You against your best ghost.</small></span><b aria-hidden="true">02</b></label>
-        </fieldset>
-        <label id="menu-pace-row">Rival pace <select id="menu-pace"><option value="relaxed">Relaxed</option><option value="standard" selected>Standard</option><option value="fast">Fast</option></select></label>
-        <button id="menu-start" autofocus>Start Grand Prix <span aria-hidden="true">→</span></button>
+        <section id="menu-ride-page" aria-label="Choose your ride">
+          <p class="menu-step">Step 1 of 2</p>
+          <fieldset class="mode-cards"><legend>Choose your ride</legend>
+            <label><input type="radio" name="menu-mode" value="grand-prix" checked><span><strong>Grand Prix</strong><small>3 laps · 8 racers · all the action</small></span><b aria-hidden="true">01</b></label>
+            <label><input type="radio" name="menu-mode" value="time-trial"><span><strong>Time Trial</strong><small>One lap. You against your best ghost.</small></span><b aria-hidden="true">02</b></label>
+          </fieldset>
+          <label id="menu-pace-row">Rival pace <select id="menu-pace"><option value="relaxed">Relaxed</option><option value="standard" selected>Standard</option><option value="fast">Fast</option></select></label>
+          <button id="menu-continue" class="menu-primary" autofocus>Choose your car <span aria-hidden="true">→</span></button>
+        </section>
+        <section id="menu-car-page" aria-labelledby="car-step-title" hidden>
+          <div class="car-page-heading">
+            <button id="menu-back">← Change ride</button>
+            <p class="menu-step">Step 2 of 2 · <span id="menu-selected-ride">Grand Prix</span></p>
+          </div>
+          <div class="car-select">
+            <h3 class="car-select-label" id="car-step-title">Choose your car</h3>
+            <div class="car-stage" id="car-stage" aria-live="off">
+              <button type="button" id="car-prev" aria-label="Previous car">‹</button>
+              <button type="button" id="car-next" aria-label="Next car">›</button>
+              <p class="car-hint" aria-hidden="true"><span class="keyboard-guide">Drag to turn · scroll to zoom</span><span class="gesture-guide">Drag to turn · pinch to zoom</span></p>
+            </div>
+            <div class="car-plate">
+              <div class="car-name" id="car-name" role="status"></div>
+              <p class="car-tagline" id="car-tagline"></p>
+              <p class="car-specs" id="car-specs"></p>
+              <dl class="car-stats" id="car-stats"></dl>
+              <div class="car-dots" id="car-dots"></div>
+            </div>
+          </div>
+          <button id="menu-start" class="menu-primary">Start Grand Prix <span aria-hidden="true">→</span></button>
+        </section>
         <button id="menu-resume" hidden>Resume current run</button>
         <div class="menu-options"><button id="menu-graphics">Graphics</button><button id="menu-sound" aria-pressed="true">Sound on</button><a href="audio/CREDITS.txt" target="_blank" rel="noopener">Credits ↗</a></div>
       </section>
@@ -65,8 +91,8 @@
       <button value="close">Back to game</button>
     </form>
   </dialog>
-  <section class="nitro-panel"><div id="tour-banner" role="status" aria-hidden="true"><small></small><strong></strong><p></p></div><div id="clean-reward" role="status" hidden></div><div id="draft-label" role="status" hidden></div><div id="track-hint" hidden></div><div class="drift-tiers" aria-label="Drift charge"><span data-tier="1">I · BLUE</span><span data-tier="2">II · ORANGE</span><span data-tier="3">III · RED</span></div><div id="drift-caption">SLIDE TO CHARGE</div><div class="drift-meter"><div id="drift-fill"></div><i style="left:28%"></i><i style="left:60%"></i></div><div class="eyebrow">NITRO <span id="nitro-label">100%</span></div><div class="meter"><div id="nitro-fill"></div></div><p id="state">Loading physics…</p></section>
-  <section class="speed-panel"><span id="speed">0</span><span class="unit">KM/H</span><aside id="touch-controls" aria-label="Touch gesture guide" hidden>
+  <section class="nitro-panel"><div id="tour-banner" role="status" aria-hidden="true"><small></small><strong></strong><p></p></div><div id="clean-reward" role="status" hidden></div><div id="draft-label" role="status" hidden></div><div id="track-hint" hidden></div><div class="drift-tiers" aria-label="Drift charge"><span data-tier="1">I · BLUE</span><span data-tier="2">II · ORANGE</span><span data-tier="3">III · RED</span></div><div id="drift-caption">SLIDE TO CHARGE</div><div class="drift-meter"><div id="drift-fill"></div><i style="left:28%"></i><i style="left:60%"></i></div><p id="state">Loading physics…</p></section>
+  <section class="speed-panel"><div id="lap-counter"><small>LAP</small><span id="lap-label"><b>1</b><small>/ 3</small></span></div><div class="speed-row"><span id="speed">0</span><span class="unit">KM/H</span></div><div class="boost-label">BOOST <span id="nitro-label">100%</span></div><div class="meter"><div id="nitro-fill"></div></div><aside id="touch-controls" aria-label="Touch gesture guide" hidden>
     <strong>Tilt to steer</strong>
     <span>Tilt: steer</span><span>Auto accelerate</span><span>Brake</span><span>Drift</span><span>Nitro</span>
   </aside><div id="telemetry">4 WHEELS / 60 HZ</div></section>
