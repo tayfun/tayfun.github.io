@@ -58,5 +58,71 @@
     "bytes": 88278,
     "sha256": "429a17d805fafe1ff1a96ea7ddbb5391d34cbf17493b70870692861ce7fcc755",
     "seconds": 2.0
+  },
+  {
+    "file": "radio-peninsula.mp3",
+    "bytes": 540647,
+    "sha256": "b3b7da8ff66c128f45ba98d8d2ed3a3713ba996710a0facb757e9b71454463af",
+    "seconds": 90.0
+  },
+  {
+    "file": "radio-beyoglu.mp3",
+    "bytes": 540647,
+    "sha256": "bf2b97f42594e534e02d11be78a37e682069ad17120e4894a31f3bafc3df0dc7",
+    "seconds": 90.0
+  },
+  {
+    "file": "radio-bosphorus.mp3",
+    "bytes": 540647,
+    "sha256": "0d24f0b189678e8b9df88b8fb322b0fffcea7453f4f01ca3c6cd57bffa62aba9",
+    "seconds": 89.993968
+  },
+  {
+    "file": "radio-uskudar.mp3",
+    "bytes": 540647,
+    "sha256": "ab164a0da3a63f18af53ebf157d45d60d482477b08ec95e74ec5dccd2314255e",
+    "seconds": 90.0
+  },
+  {
+    "file": "menu-theme.mp3",
+    "bytes": 279684,
+    "sha256": "a1beac0c9b6cd84cdb465a66317d3b23131cb85fbadbf7d30201130e060a8d99",
+    "seconds": 46.500091
+  },
+  {
+    "file": "ui-hover.wav",
+    "bytes": 996,
+    "sha256": "d3d7e0caaac9351deebe9eda910aab29556e6962f15290ca3cd0d6ec81318c7c",
+    "seconds": 0.021587
+  },
+  {
+    "file": "ui-select.wav",
+    "bytes": 2616,
+    "sha256": "5979ced970c4d31c1b3ccf239803b186489471e078837f53e54e470af9818d63",
+    "seconds": 0.058322
+  },
+  {
+    "file": "ui-forward.wav",
+    "bytes": 7756,
+    "sha256": "0b53c5b4ce51c3dff2b50a28bc8ab3eb497eb5dfa5c0fd426f8e5fc48ca83033",
+    "seconds": 0.174875
+  },
+  {
+    "file": "ui-back.wav",
+    "bytes": 17718,
+    "sha256": "28f2556a62eacb80670ddcf9a93390568c01adeef127a5cd51db6448319ec068",
+    "seconds": 0.4
+  },
+  {
+    "file": "ui-go.wav",
+    "bytes": 75842,
+    "sha256": "418bc6531e487ca6e105c47bee6172cdd8c8e5e83b1a74189787b8ae367f0b98",
+    "seconds": 1.718776
+  },
+  {
+    "file": "car-rev.wav",
+    "bytes": 140102,
+    "sha256": "3b9644e436a61233b12971376dde5d27dd45694abb07ad199225ac214a89d4ee",
+    "seconds": 3.175918
   }
 ]
