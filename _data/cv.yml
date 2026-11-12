@@ -36,14 +36,21 @@ skills:
 # Most recent position first. Only the current role is shown on the home
 # page; the full list is rendered on cv.html.
 experience:
-  - period: 10/2025 – Present
+  - period: 10/2026 – Present
     role: Founder
-    company: Independent
+    company: StockAndList
+    company_url: https://stockandlist.com/
     location: London, UK
     summary: >-
-      Using agentic software development and AI-based features in my own
-      projects. Solo developer of WalkNicely (Android city guide with a
-      points-of-interest map) and co-founder of an AI deal aggregator.
+      App for resellers that makes listing items on eBay and Vinted easier.
+  - period: 10/2025 – 10/2026
+    role: Founder
+    company: WalkNicely
+    company_url: https://walknicely.com/
+    location: London, UK
+    summary: >-
+      City guide travel app; accepted to the Anthropic Startup Program.
+      Pivoted after concluding travel apps are a tarpit idea.
   - period: 10/2023 – 10/2025
     role: Senior Software Engineer
     company: OakNorth Bank
@@ -176,4 +183,4 @@ open_source:
       - { text: "PR 1", url: "https://github.com/django-extensions/django-extensions/pull/289/files" }
       - { text: "PR 2", url: "https://github.com/django-extensions/django-extensions/pull/292/files" }
 
-last_updated: 2026-08
+last_updated: 2026-11
