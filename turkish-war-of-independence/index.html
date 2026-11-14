@@ -998,28 +998,40 @@ const wallLen=i=>soundOn?Math.max(D[i],ADUR[LANG][i]+2):D[i];
 const narName=i=>LANG+'-'+String(i).padStart(2,'0');
 function narLoad(k){if(narUrl[k])return Promise.resolve(narUrl[k]);return fetch('audio/'+k+'.mp3').then(r=>{if(!r.ok)throw 0;return r.blob();}).then(b=>narUrl[k]=URL.createObjectURL(b)).catch(()=>narUrl[k]='audio/'+k+'.mp3');}
 const MOOD=['dark','hope','resolve','battle','resolve','dark','battle','battle','battle','charge','triumph','resolve','triumph'];
-const BPM={dark:68,hope:94,resolve:98,battle:114,charge:134,triumph:106};
+const BPM={dark:68,hope:94,resolve:98,battle:114,charge:134,triumph:106,outro:92};
 const PROG={dark:[[50,53,57],[50,53,57],[46,50,53],[45,49,52]],hope:[[53,57,60],[48,52,55],[50,53,57],[46,50,53]],resolve:[[50,53,57],[53,57,60],[48,52,55],[50,53,57]],
-  battle:[[50,53,57],[46,50,53],[43,46,50],[45,49,52]],charge:[[50,53,57],[46,50,53],[48,52,55],[45,49,52]],triumph:[[50,54,57],[43,47,50],[47,50,54],[45,49,52]]};
+  battle:[[50,53,57],[46,50,53],[43,46,50],[45,49,52]],charge:[[50,53,57],[46,50,53],[48,52,55],[45,49,52]],triumph:[[50,54,57],[43,47,50],[47,50,54],[45,49,52]],
+  outro:[[50,54,57],[45,49,52],[47,50,54],[43,47,50],[50,54,57],[45,49,52],[43,47,50],[45,49,52]]};
+// closing theme, played on a loop once the story has ended: D major, eight bars, eighth notes (0 = rest)
+const TUNE=[[78,0,81,83,86,0,83,81],[76,0,81,83,85,0,83,81],[78,0,83,86,90,0,86,83],[79,0,83,86,83,0,81,0],[78,0,81,83,86,0,90,88],[88,0,85,81,76,0,81,0],[83,0,86,83,79,0,83,86],[88,0,85,0,81,0,0,0]];
 const hz=m=>440*Math.pow(2,(m-69)/12);
-let mood='dark',step=0,nextStep=0;
+let mood='dark',step=0,nextStep=0,outroBar=0;
 function ambInit(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;actx=new AC();
   const m=actx.createGain();m.gain.value=0;const comp=actx.createDynamicsCompressor();comp.threshold.value=-20;comp.ratio.value=5;comp.attack.value=.01;comp.release.value=.2;m.connect(comp);comp.connect(actx.destination);
   const nb=actx.createBuffer(1,actx.sampleRate*2,actx.sampleRate),ch=nb.getChannelData(0);for(let i=0;i<ch.length;i++)ch[i]=Math.random()*2-1;
   const ns=actx.createBufferSource();ns.buffer=nb;ns.loop=true;const bp=actx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=480;bp.Q.value=.5;const wg=actx.createGain();wg.gain.value=.008;ns.connect(bp);bp.connect(wg);wg.connect(m);ns.start();
-  amb={m,nb};nextStep=actx.currentTime+.1;step=0;}
+  const echo=actx.createDelay(1),fb=actx.createGain(),eg=actx.createGain();echo.delayTime.value=.326;fb.gain.value=.34;eg.gain.value=.5;echo.connect(fb);fb.connect(echo);echo.connect(eg);eg.connect(m);
+  amb={m,nb,echo};nextStep=actx.currentTime+.1;step=0;}
 function env(g,t,peak,a,d){g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(.0004,t+a+d);}
 function drum(t,v){const o=actx.createOscillator(),g=actx.createGain();o.frequency.setValueAtTime(128,t);o.frequency.exponentialRampToValueAtTime(42,t+.2);env(g,t,v,.004,.34);o.connect(g);g.connect(amb.m);o.start(t);o.stop(t+.45);}
 function snare(t,v){const s=actx.createBufferSource();s.buffer=amb.nb;const f=actx.createBiquadFilter();f.type='bandpass';f.frequency.value=1900;f.Q.value=.7;const g=actx.createGain();env(g,t,v,.002,.11);s.connect(f);f.connect(g);g.connect(amb.m);s.start(t,Math.random());s.stop(t+.16);}
 function note(t,midi,dur,v,type,cut){const f=actx.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(cut,t);const g=actx.createGain();env(g,t,v,Math.min(.02,dur*.2),dur);f.connect(g);g.connect(amb.m);
   [-5,5].forEach(d=>{const o=actx.createOscillator();o.type=type;o.frequency.value=hz(midi);o.detune.value=d;o.connect(f);o.start(t);o.stop(t+dur+.1);});}
+function lead(t,midi,dur,v){const f=actx.createBiquadFilter();f.type='lowpass';f.frequency.value=2600;const g=actx.createGain();g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+.03);g.gain.exponentialRampToValueAtTime(v*.5,t+dur*.6);g.gain.exponentialRampToValueAtTime(.0004,t+dur*1.5);f.connect(g);g.connect(amb.m);g.connect(amb.echo);
+  [['triangle',0,1],['sine',12,.35]].forEach(q=>{const o=actx.createOscillator(),og=actx.createGain();o.type=q[0];o.frequency.value=hz(midi+q[1]);og.gain.value=q[2];o.connect(og);og.connect(f);o.start(t);o.stop(t+dur*1.6);});}
 function pad(t,ch,dur,v,cut,sweep){const f=actx.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(cut,t);if(sweep)f.frequency.linearRampToValueAtTime(cut*sweep,t+dur*.6);const g=actx.createGain();g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+dur*.3);g.gain.setValueAtTime(v,t+dur*.75);g.gain.linearRampToValueAtTime(.0001,t+dur*1.05);f.connect(g);g.connect(amb.m);
   ch.forEach((n,i)=>{const o=actx.createOscillator();o.type=sweep?'sawtooth':'triangle';o.frequency.value=hz(n);o.detune.value=(i-1)*6;o.connect(f);o.start(t);o.stop(t+dur*1.1);});}
 function score(){ // schedules a quarter of a second ahead on a sixteenth-note grid
-  while(nextStep<actx.currentTime+.25){const t=nextStep,s=step%16,bar=Math.floor(step/16);if(s===0)mood=MOOD[chNow()];
-    const sp=60/BPM[mood]/4,ch=PROG[mood][bar%4],hot=mood==='battle'||mood==='charge',bright=mood==='triumph';
+  while(nextStep<actx.currentTime+.25){const t=nextStep,s=step%16;if(s===0){const m2=T>=END-.01?'outro':MOOD[chNow()];if(m2==='outro'&&mood!=='outro'){outroBar=0;step=0;}else if(m2==='outro')outroBar++;mood=m2;}
+    const bar=Math.floor(step/16),sp=60/BPM[mood]/4,ch=PROG[mood][bar%PROG[mood].length],hot=mood==='battle'||mood==='charge',bright=mood==='triumph';
     if(s===0){pad(t,ch,sp*16,mood==='dark'?.075:.05,mood==='dark'?520:900,0);if(bright||mood==='charge')pad(t,ch.map(n=>n+12),sp*16,.035,700,2.6);}
-    if(mood==='dark'){if(s===0)drum(t,.5);if(s===3)drum(t,.3);}
+    if(mood==='outro'){const full=outroBar>=4,n=TUNE[outroBar%8][s>>1]; // first four bars are a quiet lead-in, then the band joins and the eight bars loop
+      if(s===0){pad(t,ch,sp*16,.036,900,0);pad(t,ch.map(q=>q+12),sp*16,full?.03:.018,800,2.2);}
+      if(s%2===0)note(t,ch[(s/2)%3]+12+((s/2)%4===3?12:0),sp*1.7,full?.05:.036,'triangle',1500);
+      if(s%8===0)note(t,ch[0]-12,sp*5,.095,'triangle',300);
+      if(s%2===0&&n)lead(t,n-(outroBar<4?12:0),sp*2,full?.14:.1);
+      if(full){if(s===0||s===8)drum(t,.3);if(s===10)drum(t,.16);if(s===4||s===12)snare(t,.07);if(outroBar%8===7&&s>=12)snare(t,.05+.02*(s-12));}}
+    else if(mood==='dark'){if(s===0)drum(t,.5);if(s===3)drum(t,.3);}
     else{if(s%4===0)drum(t,hot?.55:bright?.5:.36);if(hot&&(s===10||(mood==='charge'&&s%2===0)))drum(t,.32);
       if(hot||bright){if(s===4||s===12)snare(t,.2);if(s===7||s===14||s===15)snare(t,.11);if(mood==='charge'&&s%2===1)snare(t,.05);}else if(mood==='resolve'&&(s===4||s===12))snare(t,.09);
       if(s%4===0||(hot&&s%4===2))note(t,ch[0]-12,sp*2.2,.16,'sawtooth',260);
@@ -1031,7 +1043,7 @@ function tone(freqs,type,peak,attack,hold,release,cut){const t=actx.currentTime,
   freqs.forEach(q=>{const o=actx.createOscillator();o.type=type;o.frequency.value=q;o.connect(f);o.start(t);o.stop(t+attack+hold+release+.1);});}
 
 function sound(dt){
-  if(amb){const on=soundOn&&playing&&T<END;amb.m.gain.setTargetAtTime(on?(nar.paused?.9:.5):0,actx.currentTime,.3);if(on)score();else nextStep=actx.currentTime+.15;}
+  if(amb){const on=soundOn&&(playing||T>=END-.01);amb.m.gain.setTargetAtTime(on?(nar.paused?.9:.5):0,actx.currentTime,.3);if(on)score();else nextStep=actx.currentTime+.15;}
   if(!soundOn||!playing||T>=END){if(!nar.paused)nar.pause();return;}
   const i=chNow(),k=narName(i),pos=(T-C[i])/D[i]*wallLen(i)-.7;
   if(amb){let b=false;for(const w of BATTLE)if(T>w[0]&&T<w[1]){b=true;break;}
@@ -1044,7 +1056,7 @@ function sound(dt){
   if(nar.paused&&!nar.ended)nar.play().catch(()=>{});}
 function setSound(on){soundOn=on;const b=$('#bSound');b.classList.remove('invite');b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',tt(on?'Turn sound off':'Turn sound on'));
   $('#iSnd').setAttribute('d',on?'M10.8 5.4q1.9 2.6 0 5.2M12.9 3.6q3.3 4.4 0 8.8':'M10.6 5.6l4 4.8M14.6 5.6l-4 4.8');
-  if(on){if(!actx)ambInit();if(actx&&actx.state==='suspended')actx.resume();narKey='';narSeek=true;if(T>=END-.01)T=0;else seek(C[chNow()]+.01);if(!playing)setPlaying(true);}else nar.pause();}
+  if(on){if(!actx)ambInit();if(actx&&actx.state==='suspended')actx.resume();narKey='';narSeek=true;if(T<END-.01){seek(C[chNow()]+.01);if(!playing)setPlaying(true);}}else nar.pause();}
 $('#bSound').addEventListener('click',()=>setSound(!soundOn));
 
 function loop(t){requestAnimationFrame(loop);if(window.__manual)return;const dt=Math.min(.1,(t-last)/1000);last=t;now+=dt;if(playing){const ci=chNow();let adv=true;
