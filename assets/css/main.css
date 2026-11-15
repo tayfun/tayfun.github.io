@@ -627,6 +627,24 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   font-size: 0.88rem;
 }
 
+.about-page__project {
+  height: 100%;
+  box-sizing: border-box;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.about-page__project:hover,
+.about-page__project:focus-visible {
+  border-color: var(--c-accent);
+  transform: translateY(-1px);
+}
+.about-page__project:hover .about-page__hobby-title,
+.about-page__project:focus-visible .about-page__hobby-title {
+  color: var(--c-accent-strong);
+}
+
 .about-page__footer {
   margin-top: var(--space-6);
   padding-top: var(--space-5);

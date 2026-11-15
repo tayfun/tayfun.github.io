@@ -53,12 +53,14 @@ layout: default
     <h2 id="about-page-side-projects" class="about-page__section-title">Side Projects</h2>
     <ul class="about-page__hobbies">
       {%- for project in cv.side_projects -%}
-        <li class="about-page__hobby">
-          <span class="about-page__hobby-icon" aria-hidden="true">{{ project.icon }}</span>
-          <div class="about-page__hobby-body">
-            <a class="about-page__hobby-title" href="{{ project.url }}">{{ project.title | escape }}</a>
-            <span class="about-page__hobby-blurb">{{ project.blurb | escape }}</span>
-          </div>
+        <li>
+          <a class="about-page__hobby about-page__project" href="{{ project.url }}">
+            <span class="about-page__hobby-icon" aria-hidden="true">{{ project.icon }}</span>
+            <span class="about-page__hobby-body">
+              <span class="about-page__hobby-title">{{ project.title | escape }}</span>
+              <span class="about-page__hobby-blurb">{{ project.blurb | escape }}</span>
+            </span>
+          </a>
         </li>
       {%- endfor -%}
     </ul>
