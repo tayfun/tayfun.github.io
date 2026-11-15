@@ -38,7 +38,7 @@ skills:
 experience:
   - period: 10/2026 – Present
     role: Founder
-    company: StockAndList
+    company: Stock & List
     company_url: https://stockandlist.com/
     location: London, UK
     summary: >-
@@ -143,6 +143,37 @@ education:
 # matching bulleted list on the legacy cv.html). Each item has a single
 # emoji icon, a short title, and a one-line blurb in the author's voice.
 # Order is the display order.
+side_projects:
+  - icon: "🏛️"
+    title: Roman Mersin
+    url: /roman-mersin/
+    blurb: >-
+      A real-elevation 3D map of ancient Cilicia and ten Roman sites in Mersin, narrated in English and Turkish.
+  - icon: "🇹🇷"
+    title: Turkish War of Independence
+    url: /turkish-war-of-independence/
+    blurb: >-
+      An animated 3D relief map of Anatolia following the war of 1918–1923, with narration.
+  - icon: "☩"
+    title: Constantinople
+    url: /konstantinopolis/
+    blurb: >-
+      A tour of the Queen of Cities and its landmarks in 3D.
+  - icon: "🕌"
+    title: Istanbul Landmarks
+    url: /istanbul/
+    blurb: >-
+      A 3D sketch of Istanbul's best-known landmarks.
+  - icon: "🏎️"
+    title: Istanbul Kart
+    url: /istanbul-kart/
+    blurb: >-
+      A kart race around the Golden Horn.
+  - icon: "🐈"
+    title: Kedi Run
+    url: /kedi-run/
+    blurb: >-
+      Leap, slide and dash through İstanbul as Tekir, the city's fastest street cat.
 hobbies:
   - icon: "🚲"
     title: Biking

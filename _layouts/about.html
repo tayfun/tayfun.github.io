@@ -43,10 +43,25 @@ layout: default
     <p class="about-page__up-to">
       I&rsquo;m currently working on a handful of side projects, including
       <a href="https://walknicely.com/" target="_blank" rel="noopener">WalkNicely</a>
-      and a deal aggregator for the Turkish market called
-      <a href="https://firsatport.com/" target="_blank" rel="noopener">FirsatPort</a>.
+      and <a href="https://stockandlist.com/" target="_blank" rel="noopener">Stock &amp; List</a>,
+      an app for resellers that makes listing items on eBay and Vinted a breeze.
       Beyond that, I'm scrambling to keep up with the newest developments in LLMs which is all very interesting.
     </p>
+  </section>
+
+  <section class="about-page__section" aria-labelledby="about-page-side-projects">
+    <h2 id="about-page-side-projects" class="about-page__section-title">Side Projects</h2>
+    <ul class="about-page__hobbies">
+      {%- for project in cv.side_projects -%}
+        <li class="about-page__hobby">
+          <span class="about-page__hobby-icon" aria-hidden="true">{{ project.icon }}</span>
+          <div class="about-page__hobby-body">
+            <a class="about-page__hobby-title" href="{{ project.url }}">{{ project.title | escape }}</a>
+            <span class="about-page__hobby-blurb">{{ project.blurb | escape }}</span>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
   </section>
 
   <section class="about-page__section" aria-labelledby="about-page-hobbies">
