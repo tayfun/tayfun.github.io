@@ -1,7 +1,7 @@
 {%- assign post = include.post -%}
 {%- assign tweet_url = post.tweet_url | default: '' -%}
 {%- assign avatar = post.tweet_avatar | default: 'https://pbs.twimg.com/profile_images/851331378364862464/YfgD54D0_normal.jpg' -%}
-<article class="tweet-card{% if post.tweet_pinned %} tweet-card--pinned{% endif %}" aria-label="Tweet by {{ post.tweet_author | escape }}">
+<article class="tweet-card card-lift{% if post.tweet_pinned %} tweet-card--pinned{% endif %}" aria-label="Tweet by {{ post.tweet_author | escape }}">
   {%- if post.tweet_pinned %}
   <div class="tweet-card__pin" aria-hidden="true">
     <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true" focusable="false">

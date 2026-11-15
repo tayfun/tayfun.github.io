@@ -51,15 +51,16 @@ layout: default
 
   <section class="about-page__section" aria-labelledby="about-page-side-projects">
     <h2 id="about-page-side-projects" class="about-page__section-title">Side Projects</h2>
-    <ul class="about-page__hobbies">
+    <ul class="about-page__hobbies about-page__projects">
       {%- for project in cv.side_projects -%}
         <li>
-          <a class="about-page__hobby about-page__project" href="{{ project.url }}">
+          <a class="about-page__hobby about-page__project card-lift" href="{{ project.url }}">
             <span class="about-page__hobby-icon" aria-hidden="true">{{ project.icon }}</span>
             <span class="about-page__hobby-body">
               <span class="about-page__hobby-title">{{ project.title | escape }}</span>
               <span class="about-page__hobby-blurb">{{ project.blurb | escape }}</span>
             </span>
+            <span class="about-page__project-arrow" aria-hidden="true">&rarr;</span>
           </a>
         </li>
       {%- endfor -%}

@@ -627,18 +627,29 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   font-size: 0.88rem;
 }
 
+.about-page__projects {
+  grid-auto-rows: 1fr;
+}
+.about-page__projects > li {
+  display: flex;
+}
 .about-page__project {
-  height: 100%;
-  box-sizing: border-box;
+  flex: 1;
   color: inherit;
   text-decoration: none;
   border: 1px solid transparent;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  border-left: 3px solid var(--c-accent);
 }
-.about-page__project:hover,
-.about-page__project:focus-visible {
-  border-color: var(--c-accent);
-  transform: translateY(-1px);
+.about-page__project-arrow {
+  margin-left: auto;
+  align-self: center;
+  color: var(--c-accent);
+  font-size: 1.1rem;
+  transition: transform var(--transition);
+}
+.about-page__project:hover .about-page__project-arrow,
+.about-page__project:focus-visible .about-page__project-arrow {
+  transform: translateX(3px);
 }
 .about-page__project:hover .about-page__hobby-title,
 .about-page__project:focus-visible .about-page__hobby-title {
@@ -661,6 +672,20 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
 /* ---------- Post list ---------- */
 .post-list-section { display: contents; }
 
+/* Shared hover/focus "lift to front" effect for cards. */
+.card-lift {
+  position: relative;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+.card-lift:hover,
+.card-lift:focus-visible,
+.card-lift:has(:focus-visible) {
+  z-index: 1;
+  border-color: var(--c-accent);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px) scale(1.03);
+}
+
 .post-card {
   background-color: var(--c-bg-elevated);
   border: 1px solid var(--c-border);
@@ -668,11 +693,6 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   padding: var(--space-5) var(--space-6);
   margin-bottom: var(--space-5);
   box-shadow: var(--shadow-card);
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-.post-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
 }
 .post-card__header {
   margin-bottom: var(--space-3);
@@ -740,15 +760,10 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   padding: var(--space-4);
   margin-bottom: var(--space-5);
   box-shadow: var(--shadow-card);
-  transition: transform var(--transition), box-shadow var(--transition);
   text-align: center;
   margin-left: auto;
   margin-right: auto;
   max-width: 640px;
-}
-.photo-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
 }
 .photo-card__link {
   display: block;
@@ -847,16 +862,15 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
   padding: var(--space-5) var(--space-6);
   margin-bottom: var(--space-5);
   box-shadow: var(--shadow-card);
-  transition: transform var(--transition), box-shadow var(--transition);
   position: relative;
-}
-.tweet-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
 }
 .tweet-card--pinned {
   border-color: var(--c-accent);
   box-shadow: 0 0 0 1px var(--c-accent) inset, var(--shadow-card);
+}
+.tweet-card--pinned.card-lift:hover,
+.tweet-card--pinned.card-lift:has(:focus-visible) {
+  box-shadow: 0 0 0 1px var(--c-accent) inset, var(--shadow-hover);
 }
 .tweet-card--page {
   border-radius: var(--radius-lg);
@@ -1275,7 +1289,7 @@ abbr { border-bottom: 1px dotted var(--c-text-subtle); cursor: help; }
     scroll-behavior: auto !important;
   }
   .about-page__currently-dot { animation: none; }
-  .post-card:hover { transform: none; }
-  .tweet-card:hover { transform: none; }
-  .photo-card:hover { transform: none; }
+  .card-lift:hover,
+  .card-lift:focus-visible,
+  .card-lift:has(:focus-visible) { transform: none; }
 }
