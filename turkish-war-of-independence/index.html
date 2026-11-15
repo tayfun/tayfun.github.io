@@ -274,6 +274,9 @@ for(let j=0;j<GH;j++){const z=Z(LAT1-j/(GH-1)*(LAT1-LAT0));
     HG[k]=Math.max(.06,DEM[k])*VEX*coast*sstep(0,.025,Math.min(u,1-u))*sstep(0,.045,Math.min(v,1-v));
   }}
 
+// level ground for the Assembly building to stand on
+{const cx=X(32.86)+.2,cz=Z(39.93)-.9,R0=5.6,R1=9;let sum=0,n=0;const cell=MW/(GW-1),gi=Math.round((cx+MW/2)/cell),gj=Math.round((cz+MH/2)/cell),rr=Math.ceil(R1/cell);
+  for(let p=0;p<2;p++)for(let j=gj-rr;j<=gj+rr;j++)for(let i=gi-rr;i<=gi+rr;i++){const d=Math.hypot((i-gi)*cell,(j-gj)*cell);if(d>R1)continue;const k=j*GW+i;if(p===0){if(d<R0){sum+=HG[k];n++;}}else HG[k]=lerp(sum/n,HG[k],sstep(R0,R1,d));}}
 function hAt(x,z){let gx=(x+MW/2)/MW*(GW-1),gy=(z+MH/2)/MH*(GH-1);gx=clamp(gx,0,GW-1.001);gy=clamp(gy,0,GH-1.001);
   const i=gx|0,j=gy|0,fx=gx-i,fy=gy-j,a=j*GW+i;return (HG[a]*(1-fx)+HG[a+1]*fx)*(1-fy)+(HG[a+GW]*(1-fx)+HG[a+GW+1]*fx)*fy;}
 const P=(lon,lat,lift=0)=>{const x=X(lon),z=Z(lat);return new THREE.Vector3(x,Math.max(0,hAt(x,z))+lift,z);};
@@ -595,18 +598,176 @@ class Flag{
     p.needsUpdate=true;this.cloth.geometry.computeVertexNormals();}
 }
 
+/* ───────────── model kit: merged meshes, textures and shared shapes ───────────── */
+const MS=(c,r=.8,m=0,o)=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:r,metalness:m},o||{}));
+const M4=new THREE.Matrix4(),UB=new THREE.BoxGeometry(1,1,1);
+function Batch(){this.b={};}
+Batch.prototype.add=function(geo,mat,x=0,y=0,z=0,ry=0,rx=0,rz=0,sx=1,sy=1,sz=1){const g=geo.index?geo.toNonIndexed():geo.clone();
+  M4.compose(new THREE.Vector3(x,y,z),new THREE.Quaternion().setFromEuler(new THREE.Euler(rx,ry,rz,'YXZ')),new THREE.Vector3(sx,sy,sz));g.applyMatrix4(M4);(this.b[mat.uuid]||(this.b[mat.uuid]={mat,g:[]})).g.push(g);return this;};
+Batch.prototype.box=function(mat,w,h,d,x,y,z,ry,rx,rz){return this.add(UB,mat,x,y,z,ry||0,rx||0,rz||0,w,h,d);};
+Batch.prototype.build=function(group,shadow=true,fill=.3){for(const k in this.b){const {mat,g}=this.b[k];if(fill&&!mat.userData.lit&&mat.emissiveIntensity===1&&mat.emissive.getHex()===0){mat.userData.lit=true;if(mat.map){mat.emissive.set(0xffffff);mat.emissiveMap=mat.map;}else mat.emissive.copy(mat.color);mat.emissiveIntensity=fill;}let n=0;g.forEach(q=>n+=q.attributes.position.count);
+    const Pa=new Float32Array(n*3),Na=new Float32Array(n*3),Ua=new Float32Array(n*2);let o=0;
+    g.forEach(q=>{if(!q.attributes.normal)q.computeVertexNormals();Pa.set(q.attributes.position.array,o*3);Na.set(q.attributes.normal.array,o*3);if(q.attributes.uv)Ua.set(q.attributes.uv.array,o*2);o+=q.attributes.position.count;});
+    const bg=new THREE.BufferGeometry();bg.setAttribute('position',new THREE.BufferAttribute(Pa,3));bg.setAttribute('normal',new THREE.BufferAttribute(Na,3));bg.setAttribute('uv',new THREE.BufferAttribute(Ua,2));
+    const m=new THREE.Mesh(bg,mat);m.castShadow=shadow;m.receiveShadow=true;group.add(m);}return group;};
+const ctex=(w,h,draw,rx,ry)=>{const c=mkCanvas(w,h);draw(c.getContext('2d'));const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx||1,ry||1);t.anisotropy=8;return t;};
+// Ankara stone: pinkish andesite ashlar, laid in courses
+const andesite=ctex(256,128,x=>{for(let r=0;r<4;r++)for(let c=0;c<5;c++){const v=hash(r,c+40),off=r%2?26:0;x.fillStyle='rgb('+Math.round(178+v*30)+','+Math.round(146+v*22)+','+Math.round(144+v*20)+')';x.fillRect(c*51.2-off,r*32,51.2,32);if(r%2)x.fillRect(c*51.2-off+256,r*32,51.2,32);}
+  x.strokeStyle='rgba(120,84,74,.5)';x.lineWidth=1.6;for(let r=0;r<=4;r++){x.beginPath();x.moveTo(0,r*32);x.lineTo(256,r*32);x.stroke();for(let c=0;c<6;c++){const xx=c*51.2-(r%2?26:0);x.beginPath();x.moveTo(xx,r*32);x.lineTo(xx,r*32+32);x.stroke();}}
+  for(let i=0;i<2200;i++){x.fillStyle='rgba('+(hash(i,3)>.5?'255,240,235':'70,44,48')+','+(.05+hash(i,5)*.1)+')';x.fillRect(hash(i,7)*256,hash(i,9)*128,1+hash(i,11)*3,1+hash(i,13)*2);}},5,2);
+// Marseille roof tiles
+const tiles=ctex(128,128,x=>{x.fillStyle='#a8482f';x.fillRect(0,0,128,128);for(let r=0;r<8;r++)for(let c=0;c<8;c++){const v=hash(r+9,c);x.fillStyle='rgb('+Math.round(150+v*45)+','+Math.round(62+v*22)+','+Math.round(40+v*16)+')';x.fillRect(c*16+(r%2?8:0)-8,r*16,15,14);}
+  x.fillStyle='rgba(40,14,8,.35)';for(let r=0;r<8;r++)x.fillRect(0,r*16+13,128,3);},9,6);
+const planks=ctex(128,64,x=>{for(let i=0;i<8;i++){const v=hash(i,77);x.fillStyle='rgb('+Math.round(168+v*30)+','+Math.round(132+v*24)+','+Math.round(88+v*18)+')';x.fillRect(0,i*8,128,8);x.fillStyle='rgba(40,24,10,.5)';x.fillRect(0,i*8,128,1);}},6,1);
+const archShape=(w,h)=>{const s=new THREE.Shape();s.moveTo(-w/2,0);s.lineTo(-w/2,h*.58);s.quadraticCurveTo(-w/2,h*.9,0,h);s.quadraticCurveTo(w/2,h*.9,w/2,h*.58);s.lineTo(w/2,0);s.closePath();return s;};
+const archGeo=(w,h)=>new THREE.ShapeGeometry(archShape(w,h),10);
+function hipRoof(w,d,h){const a=w/2,b=d/2,r=Math.max(0,(w-d)/2),v=[],u=[],quad=(p,q,s,t)=>{[p,q,s,p,s,t].forEach(k=>{v.push(k[0],k[1],k[2]);u.push((k[0]+k[2])*1.2,k[1]*2.4+Math.abs(k[2])*.2);});};
+  const A=[-a,0,b],B=[a,0,b],C=[a,0,-b],D=[-a,0,-b],E=[-r,h,0],F=[r,h,0];quad(A,B,F,E);quad(C,D,E,F);quad(B,C,F,F);quad(D,A,E,E);
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(u,2));g.computeVertexNormals();return g;}
+function gableRoof(w,d,h){const a=w/2,v=[],u=[],tri=(p,q,r)=>{[p,q,r].forEach(k=>{v.push(k[0],k[1],k[2]);u.push(k[2]*2.4,k[1]*2.4+Math.abs(k[0])*2.4);});};
+  const A=[-a,0,d/2],B=[a,0,d/2],C=[a,0,-d/2],D=[-a,0,-d/2],E=[0,h,d/2],F=[0,h,-d/2];tri(A,E,F);tri(A,F,D);tri(B,C,F);tri(B,F,E);
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(u,2));g.computeVertexNormals();return g;}
+const triGeo=(w,h)=>{const s=new THREE.Shape();s.moveTo(-w/2,0);s.lineTo(w/2,0);s.lineTo(0,h);s.closePath();return new THREE.ShapeGeometry(s);};
+const CYL=(rt,rb,h,n)=>new THREE.CylinderGeometry(rt,rb,h,n||10);
+// a few dozen standing figures, drawn as one instanced mesh
+const FIG=(()=>{const b=new Batch(),m=MS(0xffffff);b.add(CYL(.03,.019,.055,7),m,0,.022,0,0,0,0,1,1,.62).add(CYL(.017,.019,.05,6),m,0,-.03,0).box(m,.014,.05,.014,.033,.015,0,0,0,.18).box(m,.014,.05,.014,-.033,.015,0,0,0,-.18);const g=new THREE.Group();b.build(g,true,0);return g.children[0].geometry;})();
+function crowd(n,spot,cols){const geo=FIG,m=new THREE.InstancedMesh(geo,MS(0xffffff,.9),n),hd=new THREE.InstancedMesh(new THREE.SphereGeometry(.027,7,6),MS(0xffffff,.55),n),c=new THREE.Color(),g=new THREE.Group();
+  for(let i=0;i<n;i++){const p=spot(i);const hh=.85+hash(i,17)*.3;M4.makeScale(1,hh,1).setPosition(p[0],p[1]+.055*hh,p[2]);m.setMatrixAt(i,M4);m.setColorAt(i,c.set(cols[i%cols.length]));M4.makeTranslation(p[0],p[1]+.012+.113*hh,p[2]);hd.setMatrixAt(i,M4);const hq=hash(i,91);hd.setColorAt(i,c.set(hq>.72?0xf4f0e6:hq>.34?0xc8160e:0x151312));}
+  m.castShadow=true;g.add(m,hd);return g;}
+
+/* The first Grand National Assembly building, Ulus, Ankara (architect Salim Bey, begun 1915 as the Union and Progress club):
+   Ankara stone walls, pointed Ottoman-revival arches, deep timber eaves, a hipped tile roof and an arcaded porch with a balcony above. */
+function buildAssembly(){const g=new THREE.Group(),A=new Batch(),stone=MS(0xffffff,.85,0,{map:andesite}),plinth=MS(0x94807e,.95),pale=MS(0xd2b9b0,.85),glass=MS(0x27323a,.25,.3),frame=MS(0x5a3d28,.8),roofM=MS(0xd9c2b4,.8,0,{map:tiles,side:THREE.DoubleSide}),wood=MS(0x5b3d27,.8),door=MS(0x3c2a1c,.7),earth=MS(0xb49e74,.98),green=MS(0x2f4a2c,.9),iron=MS(0x26282b,.5,.6);
+  const stone2=MS(0xc9a79e,.9);const pad=new THREE.Mesh(CYL(3.3,4.6,.3,40),earth);pad.position.set(0,-.05,.5);pad.scale.set(1,1,.95);pad.receiveShadow=true;g.add(pad);
+  const Y0=.1;
+  A.box(plinth,3.36,.2,1.5,0,Y0+.1,0).box(stone,3.2,.66,1.4,0,Y0+.53,0).box(stone,1.16,.66,1.56,0,Y0+.53,0);
+  A.box(pale,3.24,.03,1.44,0,Y0+.215,0).box(pale,3.24,.035,1.44,0,Y0+.845,0)          // string courses
+  A.box(wood,3.56,.035,1.76,0,Y0+.88,0).box(wood,1.36,.035,.5,0,Y0+.88,.82);                                              // deep eaves
+  A.add(hipRoof(3.56,1.76,.33),roofM,0,Y0+.9,0).add(gableRoof(1.36,1.0,.36),roofM,0,Y0+.9,.55).add(triGeo(1.16,.31),stone,0,Y0+.9,.781).box(pale,1.2,.03,.02,0,Y0+.895,.785).box(pale,.66,.022,.02,-.3,Y0+1.06,.788,0,0,.5).box(pale,.66,.022,.02,.3,Y0+1.06,.788,0,0,-.5);
+  for(let i=0;i<=16;i++){const x=-1.68+i*.21;if(Math.abs(x)>.62)[.82,-.82].forEach(z=>A.box(wood,.03,.07,.11,x,Y0+.835,z));}       // eave brackets
+  [[-1.15,.28],[1.15,.28],[-1.15,-.28],[1.15,-.28],[-.3,-.45],[.3,-.45]].forEach(q=>{const top=Y0+1.16;A.box(plinth,.1,.2,.1,q[0],top,q[1]).box(plinth,.13,.025,.13,q[0],top+.11,q[1]);});
+  const WA=archGeo(.14,.36),WS=archGeo(.2,.41),win=(x,y,z,ry)=>{const dx=Math.sin(ry),dz=Math.cos(ry);A.add(WS,pale,x+dx*.004,y-.02,z+dz*.004,ry).add(WA,glass,x+dx*.008,y,z+dz*.008,ry)
+      .box(frame,.014,.34,.006,x+dx*.012,y+.17,z+dz*.012,ry).box(frame,.14,.014,.006,x+dx*.012,y+.22,z+dz*.012,ry).box(frame,.14,.012,.006,x+dx*.012,y+.12,z+dz*.012,ry).box(pale,.22,.025,.03,x+dx*.012,y-.025,z+dz*.012,ry);};
+  [.8,1.04,1.28,1.5].forEach(x=>[1,-1].forEach(sx=>{win(sx*x,Y0+.33,.7,0);win(sx*x,Y0+.33,-.7,Math.PI);A.box(glass,.12,.08,.01,sx*x,Y0+.1,.752).box(glass,.12,.08,.01,sx*x,Y0+.1,-.752).box(frame,.014,.08,.012,sx*x,Y0+.1,.753).box(pale,.16,.018,.014,sx*x,Y0+.15,.753).box(pale,.16,.018,.014,sx*x,Y0+.052,.753);}));
+  [-.42,0,.42].forEach(z=>{win(1.6,Y0+.33,z,Math.PI/2);win(-1.6,Y0+.33,z,-Math.PI/2);});
+  [-.38,.38].forEach(x=>win(x,Y0+.33,-.78,Math.PI));[-.45,.45].forEach(z=>{win(.58,Y0+.33,z+.3,Math.PI/2);win(-.58,Y0+.33,z+.3,-Math.PI/2);});
+  // arcaded porch, balcony and steps
+  const bay=(()=>{const s=new THREE.Shape();s.moveTo(-.17,0);s.lineTo(.17,0);s.lineTo(.17,.2);s.lineTo(-.17,.2);s.closePath();const h=new THREE.Path();h.moveTo(-.125,0);h.lineTo(-.125,.03);h.quadraticCurveTo(-.11,.11,0,.185);h.quadraticCurveTo(.11,.11,.125,.03);h.lineTo(.125,0);h.closePath();s.holes.push(h);return new THREE.ExtrudeGeometry(s,{depth:.05,bevelEnabled:false,curveSegments:8});})();
+  [-.34,0,.34].forEach(x=>A.add(bay,stone2,x,Y0+.6,1.1));[-.51,-.17,.17,.51].forEach(x=>{A.box(stone2,.085,.4,.085,x,Y0+.4,1.125).box(pale,.105,.03,.105,x,Y0+.6,1.125).box(plinth,.11,.05,.11,x,Y0+.225,1.125);});
+  A.box(stone2,1.12,.03,.4,0,Y0+.785,.975).box(MS(0x8a7570,.95),1.0,.5,.012,0,Y0+.5,.79);[-.51,.51].forEach(x=>A.box(stone2,.085,.2,.3,x,Y0+.7,.95));
+  A.box(wood,1.14,.04,.42,0,Y0+.825,.975).box(plinth,1.12,.2,.4,0,Y0+.1,.975).add(archGeo(.2,.46),door,0,Y0+.2,.785).add(archGeo(.26,.5),pale,0,Y0+.19,.782).add(archGeo(.14,.24),door,0,Y0+.9,.786).add(archGeo(.19,.27),pale,0,Y0+.895,.784);
+  for(let i=0;i<=10;i++)A.box(wood,.014,.11,.014,-.54+i*.108,Y0+.905,1.16);A.box(wood,1.12,.016,.02,0,Y0+.965,1.16).box(wood,1.12,.012,.016,0,Y0+.87,1.16);
+  [-.55,.55].forEach(x=>{A.box(wood,.02,.016,.36,x,Y0+.965,.98);for(let i=0;i<4;i++)A.box(wood,.014,.11,.014,x,Y0+.905,.84+i*.1);});
+  for(let i=0;i<4;i++)A.box(plinth,.9+i*.1,.05,.09,0,Y0+.175-i*.05,1.22+i*.09);
+  // garden wall with gate piers, lamps and poplars
+  const wallAt=(x0,z0,x1,z1)=>{const L=Math.hypot(x1-x0,z1-z0),ry=Math.atan2(-(z1-z0),x1-x0);A.box(stone,L,.11,.05,(x0+x1)/2,Y0+.055,(z0+z1)/2,ry).box(pale,L,.02,.07,(x0+x1)/2,Y0+.12,(z0+z1)/2,ry);for(let k=0;k<=Math.round(L/.42);k++){const t=k/Math.max(1,Math.round(L/.42));A.box(iron,.012,.13,.012,lerp(x0,x1,t),Y0+.19,lerp(z0,z1,t));}A.box(iron,L,.01,.01,(x0+x1)/2,Y0+.25,(z0+z1)/2,ry);};
+  wallAt(-2.0,1.95,-.3,1.95);wallAt(.3,1.95,2.0,1.95);wallAt(-2.0,1.95,-2.0,.2);wallAt(2.0,1.95,2.0,.2);
+  [-.3,.3].forEach(x=>{A.box(stone,.1,.3,.1,x,Y0+.15,1.95).box(pale,.14,.03,.14,x,Y0+.31,1.95).add(CYL(.008,.008,.2,5),iron,x,Y0+.42,1.95);});
+  // opening-day flags: two on the balcony rail, a line of pennants across the porch
+  {const fm=new THREE.MeshStandardMaterial({map:flagTex,side:THREE.DoubleSide,roughness:.8,emissive:0xffffff,emissiveMap:flagTex,emissiveIntensity:.35}),red=MS(0xd0161c,.8,0,{side:THREE.DoubleSide}),wht=MS(0xf2eee2,.8,0,{side:THREE.DoubleSide});
+   [-.42,.42].forEach(x=>{A.add(CYL(.006,.006,.3,4),wood,x,Y0+1.06,1.2,0,.5,0);const f=new THREE.Mesh(new THREE.PlaneGeometry(.24,.16),fm);f.position.set(x,Y0+1.02,1.36);f.rotation.x=.25;g.add(f);});
+   for(let i=0;i<14;i++){const tr=new THREE.BufferGeometry();tr.setAttribute('position',new THREE.Float32BufferAttribute([-.03,0,0,.03,0,0,0,-.07,0],3));tr.setAttribute('uv',new THREE.Float32BufferAttribute([0,0,1,0,.5,1],2));tr.computeVertexNormals();A.add(tr,i%2?wht:red,-.52+i*.08,Y0+.83-Math.sin(i/13*Math.PI)*.05,1.175);}}
+  A.build(g);
+  [-.3,.3].forEach(x=>{const l=new THREE.Mesh(new THREE.BoxGeometry(.045,.06,.045),MS(0xd8d2bc,.4,0,{emissive:0x6a6450,emissiveIntensity:.5}));l.position.set(x,Y0+.54,1.95);g.add(l);const c=new THREE.Mesh(new THREE.ConeGeometry(.04,.03,4),MS(0x26282b,.5));c.position.set(x,Y0+.585,1.95);c.rotation.y=Math.PI/4;g.add(c);});
+  // the street in front, and a few young acacias along it
+  {const B=new Batch(),cob=MS(0xa2927a,.98),leaf=MS(0x5f7a48,.9),trunk=MS(0x4a3a2a,.9);B.box(cob,4.6,.01,.36,0,Y0+.006,2.6);[-2.1,-1.2,1.2,2.1].forEach(x=>{B.add(CYL(.012,.018,.2,5),trunk,x,Y0+.1,2.3).add(new THREE.IcosahedronGeometry(.13,1),leaf,x,Y0+.27,2.3,x,0,0,1,.85,1).add(new THREE.IcosahedronGeometry(.09,1),leaf,x+.07,Y0+.3,2.27,x*2,0,0);});B.build(g);}
+  const cols=[0x2a2622,0x6f6446,0x4a4338,0x7a6c4a,0x1f2428,0x5e5646,0x8a7b55,0x3b3f46,0x6b5a44,0x54483a,0x9a8e74];
+  const people=crowd(190,i=>{if(i>=170){const k=i-170;return k<12?[-.33+(k%6)*.13+(k>5?.06:0),Y0+(k>5?.1:.2),k>5?1.36:1.22]:[-.36+(k-12)*.1,Y0+.845,1.02];}const a=hash(i,31)+hash(i,37)+hash(i,41)-1.5,b=hash(i,53),inside=b<.5,x=clamp(a*(inside?1.3:1.6),-1.85,1.85),z=inside?1.34+hash(i,61)*.5:2.06+Math.pow(hash(i,67),1.6)*.42;return [x,Y0,z];},cols);g.add(people);g.userData.people=people;return g;}
+
+/* SS Bandırma: a 47.7 m cargo steamer built at Paisley in 1878; one funnel, two masts, black hull */
+function buildShip(){const g=new THREE.Group(),A=new Batch(),black=MS(0x17191c,.55),red=MS(0x7e231c,.6),white=MS(0xf1ead8,.6),deck=MS(0xffffff,.8,0,{map:planks}),buff=MS(0xd0a44c,.55),dark=MS(0x1b1b1d,.5),wood=MS(0x5a4634,.8),lit=MS(0xf3dfa0,.4,0,{emissive:0xe0b050,emissiveIntensity:.8}),glass=MS(0x20303a,.2,.4),canvas=MS(0xc9c0a8,.9);
+  const hullS=(k=1)=>{const s=new THREE.Shape();s.moveTo(-1.5*k,-.23*k);s.lineTo(.85*k,-.25*k);s.quadraticCurveTo(1.42*k,-.14*k,1.72*k,0);s.quadraticCurveTo(1.42*k,.14*k,.85*k,.25*k);s.lineTo(-1.5*k,.23*k);s.quadraticCurveTo(-1.74*k,0,-1.5*k,-.23*k);return s;};
+  const ex=(s,d)=>{const q=new THREE.ExtrudeGeometry(s,{depth:d,bevelEnabled:false,curveSegments:10});q.rotateX(-Math.PI/2);return q;};
+  A.add(ex(hullS(),.36),black).add(ex(hullS(1.012),.07),red).add(ex(hullS(1.006),.025),white,0,.315,0).add(ex(hullS(.975),.02),deck,0,.36,0);
+  const part=(x0,x1)=>{const s=new THREE.Shape(),w=x=>x>.85?.25*(1-Math.pow((x-.85)/.87,1.6)):x<-1.5?.23*(1-Math.pow((-1.5-x)/.24,2)):.24;const n=10;for(let i=0;i<=n;i++){const x=lerp(x0,x1,i/n);i?s.lineTo(x,-w(x)):s.moveTo(x,-w(x));}for(let i=n;i>=0;i--){const x=lerp(x0,x1,i/n);s.lineTo(x,w(x));}s.closePath();return s;};
+  A.add(ex(part(1.0,1.7),.11),black,0,.36,0).add(ex(part(1.02,1.66),.012),deck,0,.47,0).add(ex(part(-1.72,-1.2),.09),black,0,.36,0).add(ex(part(-1.69,-1.22),.012),deck,0,.45,0);
+  A.box(white,1.25,.2,.32,-.12,.48,0).box(deck,1.4,.02,.44,-.12,.59,0).box(white,.4,.2,.3,.34,.7,0).box(glass,.405,.07,.305,.34,.73,0).box(wood,.48,.02,.38,.34,.81,0).box(deck,.1,.015,.56,.36,.6,0);
+  A.box(dark,.3,.05,.2,.72,.4,0).box(canvas,.26,.02,.17,.72,.43,0).box(dark,.26,.05,.18,-.98,.4,0).box(canvas,.22,.02,.15,-.98,.43,0);
+  for(let i=0;i<12;i++)[-1,1].forEach(sd=>A.add(new THREE.CircleGeometry(.01,8),glass,-1.3+i*.2,.25,sd*.2475,sd>0?0:Math.PI).add(new THREE.RingGeometry(.01,.015,8),buff,-1.3+i*.2,.25,sd*.2478,sd>0?0:Math.PI));for(let i=0;i<5;i++)[-1,1].forEach(sd=>A.box(glass,.07,.07,.01,-.6+i*.23,.5,sd*.162));
+  A.add(CYL(.085,.1,.66,16),buff,-.2,.93,0,0,0,.09).add(CYL(.09,.088,.16,16),dark,-.228,1.25,0,0,0,.09).add(CYL(.012,.012,.6,5),dark,-.31,.95,0,0,0,.09).add(CYL(.103,.103,.015,16),dark,-.205,.98,0,0,0,.09).add(CYL(.097,.097,.015,16),dark,-.215,1.1,0,0,0,.09);
+  [[1.0,.36],[-1.12,.36]].forEach((q,i)=>{A.add(CYL(.014,.024,1.2,6),wood,q[0],q[1]+.6,0,0,0,.05).box(wood,.012,.012,.36,q[0]-.035,q[1]+.95,0).add(CYL(.01,.012,.62,5),wood,q[0]+(i?.2:-.2),q[1]+.36,0,0,0,i?-.75:.75);});
+  [-.5,.02].forEach(x=>[-1,1].forEach(sd=>{[-.12,.12].forEach(dx=>A.add(CYL(.006,.006,.2,4),dark,x+dx,.7,sd*.25).box(dark,.006,.006,.06,x+dx,.8,sd*.225));A.add(new THREE.SphereGeometry(.5,10,6,0,Math.PI*2,Math.PI/2,Math.PI/2),white,x,.74,sd*.23,0,0,0,.3,.11,.09).box(canvas,.29,.012,.085,x,.742,sd*.23).add(CYL(.006,.006,.16,4),dark,x-.11,.66,sd*.2).add(CYL(.006,.006,.16,4),dark,x+.11,.66,sd*.2);}));
+  [[.58,.14],[.58,-.14],[-.74,.12],[-.74,-.12]].forEach(q=>{A.add(CYL(.022,.022,.2,8),buff,q[0],.69,q[1]).add(new THREE.SphereGeometry(.036,8,6),buff,q[0]+.012,.8,q[1]).add(CYL(.026,.026,.012,8),red,q[0]+.044,.8,q[1],0,0,Math.PI/2);});
+  A.box(dark,.08,.05,.05,1.45,.5,0).add(CYL(.008,.01,.5,5),wood,-1.6,.7,0).add(CYL(.006,.008,.22,5),wood,1.66,.58,0,0,0,-.5);
+  A.build(g);
+  const fl=new THREE.Mesh(new THREE.PlaneGeometry(.2,.133),new THREE.MeshStandardMaterial({map:flagTex,side:THREE.DoubleSide,roughness:.8,emissive:0xffffff,emissiveMap:flagTex,emissiveIntensity:.3}));fl.position.set(-1.705,.87,0);g.add(fl);
+  const lm=new THREE.LineBasicMaterial({color:0x2a211a}),pts=[],seg=(a,b)=>pts.push(new THREE.Vector3(a[0],a[1],a[2]||0),new THREE.Vector3(b[0],b[1],b[2]||0));
+  seg([1.03,1.55],[1.68,.5]);seg([1.03,1.55],[-.2,1.3]);seg([-1.09,1.55],[-.24,1.3]);seg([-1.09,1.55],[-1.6,.48]);[.22,-.22].forEach(z=>{seg([1.02,1.4],[.8,.38,z]);seg([-1.1,1.4],[-.9,.38,z]);seg([1.02,1.2],[1.25,.47,z]);});
+  for(let i=0;i<22;i++){const x=-1.45+i*.11;[.235,-.235].forEach(z=>seg([x,.38,z],[x,.46,z]));}[.235,-.235].forEach(z=>seg([-1.45,.46,z],[.86,.46,z]));
+  g.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),lm));g.userData.funnel=new THREE.Vector3(-.26,1.36,0);return g;}
+
+const ensign=ctex(120,60,x=>{x.fillStyle='#f4f1ea';x.fillRect(0,0,120,60);x.fillStyle='#c8102e';x.fillRect(54,0,12,60);x.fillRect(0,24,120,12);x.fillStyle='#1d2f6f';x.fillRect(66,0,54,24);x.strokeStyle='#f4f1ea';x.lineWidth=5;x.beginPath();x.moveTo(66,0);x.lineTo(120,24);x.moveTo(120,0);x.lineTo(66,24);x.stroke();x.strokeStyle='#c8102e';x.lineWidth=4;x.beginPath();x.moveTo(93,0);x.lineTo(93,24);x.moveTo(66,12);x.lineTo(120,12);x.stroke();},1,1);
+/* Allied battleship of the 1918 occupation fleet: grey, two funnels, twin turrets fore and aft, tripod mast */
+function buildWarship(){const g=new THREE.Group(),A=new Batch(),grey=MS(0x6a727a,.55,.2),dk=MS(0x474d54,.5,.3),deck=MS(0x9a8f78,.8),blk=MS(0x1c1e21,.5),boot=MS(0x5a2a26,.6);
+  const s=new THREE.Shape();s.moveTo(-1.75,-.2);s.lineTo(.9,-.27);s.quadraticCurveTo(1.6,-.16,2.0,0);s.quadraticCurveTo(1.6,.16,.9,.27);s.lineTo(-1.75,.2);s.quadraticCurveTo(-2.0,0,-1.75,-.2);
+  const ex=(d,k)=>{const q=new THREE.ExtrudeGeometry(s,{depth:d,bevelEnabled:false,curveSegments:10});q.rotateX(-Math.PI/2);if(k)q.scale(k,1,k);return q;};
+  A.add(ex(.3),grey).add(ex(.06,1.01),boot).add(ex(.015,.97),deck,0,.3,0).box(grey,1.5,.16,.36,0,.39,0).box(dk,.9,.14,.3,.05,.54,0).box(grey,.3,.2,.26,.55,.6,0).box(dk,.34,.03,.34,.55,.72,0).box(grey,.2,.12,.2,.6,.8,0).box(MS(0x20262c,.3),.205,.04,.205,.6,.82,0).add(CYL(.07,.08,.14,10),dk,.74,.47,0).box(dk,.3,.02,.5,.6,.87,0);
+  [-.02,-.42].forEach(x=>A.add(CYL(.085,.095,.5,14),grey,x,.78,0).add(CYL(.09,.09,.07,14),blk,x,1.0,0));
+  const turret=(x,dir,y)=>{A.add(CYL(.17,.19,.12,14),dk,x,y+.06,0).box(dk,.22,.09,.24,x+dir*.05,y+.16,0);[-.06,.06].forEach(z=>A.add(CYL(.015,.019,.34,8),blk,x+dir*.3,y+.17,z,0,0,Math.PI/2-dir*.06));};
+  turret(1.15,1,.3);turret(.8,1,.42);turret(-1.2,-1,.3);turret(-.85,-1,.42);turret(-.72,-1,.47);for(let i=0;i<5;i++)[-1,1].forEach(sd=>A.box(dk,.09,.06,.02,-.5+i*.26,.2,sd*.255));[-1,1].forEach(sd=>A.box(blk,.05,.07,.015,1.62,.22,sd*.12));
+  for(let i=0;i<4;i++)[-1,1].forEach(sd=>A.add(CYL(.01,.012,.2,6),blk,-.45+i*.3,.37,sd*.24,0,sd*Math.PI/2*.9,0));
+  A.add(CYL(.014,.02,1.0,6),dk,.38,1.1,0).add(CYL(.01,.014,.95,5),dk,.26,1.05,.09,0,.09,-.12).add(CYL(.01,.014,.95,5),dk,.26,1.05,-.09,0,-.09,-.12).add(CYL(.07,.06,.09,10),dk,.36,1.42,0).add(CYL(.012,.016,.8,6),dk,-.75,.95,0)
+   .box(dk,.012,.012,.3,.38,1.25,0);
+  [-.2,.25].forEach(x=>[-1,1].forEach(sd=>A.add(new THREE.SphereGeometry(.5,8,5,0,Math.PI*2,Math.PI/2,Math.PI/2),MS(0xcfd3d6,.6),x,.53,sd*.2,0,0,0,.22,.08,.07)));
+  A.add(CYL(.006,.008,.3,5),dk,-1.85,.45,0);A.build(g);
+  const en=new THREE.Mesh(new THREE.PlaneGeometry(.26,.15),new THREE.MeshStandardMaterial({map:ensign,side:THREE.DoubleSide,roughness:.8,emissive:0xffffff,emissiveMap:ensign,emissiveIntensity:.35}));en.position.set(-1.99,.52,0);g.add(en);return g;}
+
+/* Field gun with shield, spoked wheels, limber and a crew of three */
+function buildGun(){const g=new THREE.Group(),A=new Batch(),steel=MS(0x5f6853,.5,.35),wood=MS(0x80623f,.8),dk=MS(0x2b2d28,.5,.4),khaki=MS(0x7a6f4c,.9);
+  const wheel=(x,z)=>{A.add(new THREE.TorusGeometry(.2,.018,6,20),wood,x,.22,z).add(CYL(.035,.035,.07,8),dk,x,.22,z,0,Math.PI/2);for(let k=0;k<6;k++)A.box(wood,.38,.014,.014,x,.22,z,0,0,k*Math.PI/6);};
+  wheel(0,.2);wheel(0,-.2);A.add(CYL(.012,.012,.42,6),dk,0,.22,0,0,Math.PI/2);
+  A.add(CYL(.024,.036,.7,10),steel,.24,.38,0,0,0,-Math.PI/2+.14).add(CYL(.03,.03,.42,8),dk,.1,.325,0,0,0,-Math.PI/2+.14).box(dk,.3,.03,.07,0,.3,0,0,0,.14);
+  A.box(steel,.02,.34,.24,.1,.36,.15).box(steel,.02,.34,.24,.1,.36,-.15).box(steel,.02,.1,.06,.1,.25,0).box(steel,.02,.06,.54,.1,.51,0).box(steel,.78,.05,.06,-.4,.14,0,0,0,.25).box(dk,.04,.12,.14,-.78,.05,0);
+  wheel(-1.25,.17);wheel(-1.25,-.17);A.box(wood,.34,.2,.3,-1.25,.34,0).box(dk,.36,.02,.32,-1.25,.45,0).box(wood,.5,.03,.03,-.95,.22,0);
+  [[-.3,.32],[-.45,-.3],[-1.0,.42]].forEach(q=>{A.add(FIG,khaki,q[0],.1,q[1],0,0,0,1.5,1.5,1.5).add(new THREE.SphereGeometry(.026,6,5),MS(0xc79a78,.8),q[0],.215,q[1]).add(CYL(.027,.03,.03,8),MS(0x26221f,.8),q[0],.24,q[1]);});
+  A.build(g);return g;}
+
+/* İzmir Clock Tower (1901, Raymond Charles Péré): octagonal, four tiers, 25 m, with four fountains round its base */
+const banded=ctex(64,64,x=>{for(let i=0;i<8;i++){x.fillStyle=i%2?'#e9dcc6':'#cfa58f';x.fillRect(0,i*8,64,8);}x.fillStyle='rgba(60,40,30,.25)';for(let i=0;i<8;i++)x.fillRect(0,i*8,64,1);},1,1);
+function buildClockTower(){const g=new THREE.Group(),A=new Batch(),marble=MS(0xefe8da,.55),stone=MS(0xe6dccb,.7),rose=MS(0xd8c8ae,.6),grn=MS(0xcdbd9f,.6),dk=MS(0x252a2e,.4),lead=MS(0x8a9299,.45,.4),gold=MS(0xd9b25a,.3,.9),face=MS(0xf7f2e4,.4);
+  const oct=(r0,r1,h)=>CYL(r0,r1,h,8),R=Math.PI/8,horse=(w,h)=>{const s=new THREE.Shape();s.moveTo(-w*.38,0);s.lineTo(-w*.38,h*.45);s.absarc(0,h*.62,w*.5,Math.PI*1.12,-Math.PI*.12,true);s.lineTo(w*.38,0);s.closePath();return new THREE.ShapeGeometry(s,12);};
+  A.add(oct(.62,.66,.05),marble,0,.025,0,R).add(oct(.52,.56,.05),marble,0,.075,0,R)
+   .add(oct(.24,.26,.34),stone,0,.27,0,R).add(oct(.285,.285,.035),marble,0,.457,0,R)
+   .add(oct(.2,.215,.34),stone,0,.645,0,R).add(oct(.245,.245,.03),marble,0,.83,0,R)
+   .add(oct(.175,.185,.3),marble,0,.995,0,R).add(oct(.215,.215,.03),marble,0,1.16,0,R)
+   .add(oct(.222,.222,.012),rose,0,.845,0,R).add(oct(.29,.29,.012),grn,0,.478,0,R).add(oct(.115,.125,.17),marble,0,1.26,0,R).add(oct(.155,.155,.025),marble,0,1.357,0,R).add(new THREE.SphereGeometry(.115,12,6,0,Math.PI*2,0,Math.PI/2),lead,0,1.365,0).add(CYL(.005,.012,.14,5),gold,0,1.54,0).add(new THREE.SphereGeometry(.016,6,5),gold,0,1.62,0);
+  for(let j=0;j<8;j++){const b=j*Math.PI/4+R;A.add(CYL(.012,.012,.34,6),rose,Math.sin(b)*.218,.645,Math.cos(b)*.218).add(CYL(.013,.013,.34,6),grn,Math.sin(b)*.262,.27,Math.cos(b)*.262).add(CYL(.007,.007,.17,4),marble,Math.sin(b)*.118,1.26,Math.cos(b)*.118);}
+  for(let k=0;k<8;k++){const a=k*Math.PI/4,sx=Math.sin(a),cz=Math.cos(a);A.add(horse(.1,.22),dk,sx*.193,.5,cz*.193,a).add(horse(.13,.26),rose,sx*.1925,.49,cz*.1925,a).add(horse(.12,.24),dk,sx*.232,.12,cz*.232,a).add(horse(.15,.28),rose,sx*.2315,.11,cz*.2315,a).add(horse(.05,.1),dk,sx*.112,1.2,cz*.112,a);
+    if(k%2===0)A.add(new THREE.CircleGeometry(.078,18),face,sx*.168,1.0,cz*.168,a).add(new THREE.RingGeometry(.078,.084,18),dk,sx*.169,1.0,cz*.169,a).box(dk,.01,.06,.004,sx*.171,1.025,cz*.171,a).box(dk,.01,.045,.004,sx*.171+cz*.015,1.01,cz*.171-sx*.015,a,0,-1.1);}
+  for(let k=0;k<4;k++){const fa=k*Math.PI/2+Math.PI/4,fx=Math.sin(fa)*.44,fz=Math.cos(fa)*.44;for(let j=0;j<6;j++){const b=j*Math.PI/3;A.add(CYL(.009,.009,.17,5),rose,fx+Math.sin(b)*.075,.185,fz+Math.cos(b)*.075);}
+    A.add(CYL(.1,.1,.02,12),marble,fx,.28,fz).add(new THREE.SphereGeometry(.085,10,5,0,Math.PI*2,0,Math.PI/2),lead,fx,.29,fz).add(CYL(.045,.05,.06,8),marble,fx,.13,fz).add(CYL(.004,.006,.05,4),gold,fx,.39,fz);}
+  A.build(g);return g;}
+
+/* İstanbul skyline marker: a domed imperial mosque with four minarets */
+const lime=ctex(128,64,x=>{x.fillStyle='#d6cab0';x.fillRect(0,0,128,64);for(let r=0;r<4;r++)for(let c=0;c<7;c++){const v=hash(r+3,c+71);x.fillStyle='rgb('+Math.round(208+v*22)+','+Math.round(196+v*20)+','+Math.round(170+v*18)+')';x.fillRect(c*21.4-(r%2?10:0),r*16,22,16);}x.strokeStyle='rgba(110,96,70,.4)';for(let r=0;r<=4;r++){x.beginPath();x.moveTo(0,r*16);x.lineTo(128,r*16);x.stroke();}},4,2);
+function buildMosque(){const g=new THREE.Group(),A=new Batch(),wall=MS(0xffffff,.85,0,{map:lime}),lead=MS(0x76828a,.45,.4),pale=MS(0xe4dccb,.7),gold=MS(0xd9b25a,.3,.9),dk=MS(0x2a2f33,.4),hd=(r)=>new THREE.SphereGeometry(r,24,10,0,Math.PI*2,0,Math.PI/2);
+  A.box(MS(0xb9ad98,.9),.84,.5,1.36,0,-.22,.3).box(wall,.62,.26,.62,0,.16,0).add(CYL(.21,.22,.1,24),pale,0,.38,0).add(hd(.2),lead,0,.43,0,0,0,0,1,.78,1).add(CYL(.004,.007,.07,5),gold,0,.61,0).add(new THREE.TorusGeometry(.016,.004,5,12,Math.PI*1.5),gold,0,.66,0,0,0,Math.PI*.75);
+  [[1,0],[-1,0],[0,1],[0,-1]].forEach(q=>A.add(new THREE.SphereGeometry(.14,16,8,-Math.PI/2,Math.PI,0,Math.PI/2),lead,q[0]*.235,.36,q[1]*.235,Math.atan2(q[0],q[1])));
+  for(let k=0;k<16;k++){const b=k*Math.PI/8;A.add(archGeo(.022,.04),dk,Math.sin(b)*.221,.36,Math.cos(b)*.221,b);}
+  [[1,1],[-1,1],[1,-1],[-1,-1]].forEach(q=>{A.box(pale,.09,.36,.09,q[0]*.3,.21,q[1]*.3).add(hd(.05),lead,q[0]*.3,.39,q[1]*.3);});
+  [[1,-1,.74],[-1,-1,.74],[1,1,.56],[-1,1,.56]].forEach(q=>{const x=q[0]*.37,z=q[1]*.37,h=q[2];A.add(CYL(.015,.021,h,10),MS(0xd9d1bf,.75),x,.03+h/2,z).add(CYL(.027,.027,.018,8),pale,x,.03+h*.6,z).add(CYL(.027,.027,.018,8),pale,x,.03+h*.8,z).add(new THREE.ConeGeometry(.021,.15,8),lead,x,.105+h,z);});
+  for(let k=0;k<4;k++){const a=k*Math.PI/2;for(let j=-1;j<=1;j++){const px=Math.sin(a)*.312+Math.cos(a)*j*.15,pz=Math.cos(a)*.312-Math.sin(a)*j*.15;A.add(archGeo(.06,.1),pale,px,.062,pz,a).add(archGeo(.04,.08),dk,px+Math.sin(a)*.002,.07,pz+Math.cos(a)*.002,a).add(new THREE.CircleGeometry(.022,12),pale,px,.215,pz,a).add(new THREE.CircleGeometry(.014,12),dk,px+Math.sin(a)*.002,.215,pz+Math.cos(a)*.002,a);}}
+  // courtyard: an arcade on all three sides, each bay under its own small dome
+  const bayAt=(x,z,ry)=>{A.box(wall,.115,.12,.1,x,.09,z,ry).add(archGeo(.07,.085),dk,x+Math.sin(ry)*.051,.035,z+Math.cos(ry)*.051,ry).add(hd(.048),lead,x,.15,z);};
+  for(let i=0;i<5;i++)bayAt(-.23+i*.115,.9,Math.PI);for(let i=0;i<4;i++){bayAt(.262,.44+i*.115,-Math.PI/2);bayAt(-.262,.44+i*.115,Math.PI/2);}
+  A.add(CYL(.04,.045,.045,8),pale,0,.052,.62).add(hd(.045),lead,0,.075,.62);
+  A.build(g);return g;}
+
+/* Units: a block of infantry behind its standard, or a troop of horsemen (cavalry and mounted militia) */
+const greekFlag=ctex(96,64,x=>{x.fillStyle='#1f5aa8';x.fillRect(0,0,96,64);x.fillStyle='#fff';x.fillRect(40,0,16,64);x.fillRect(0,24,96,16);},1,1);
+function buildUnit(kind){const g=new THREE.Group(),A=new Batch(),tr=kind!=='gr',cloth=MS(tr?0x8b7a50:0x66788a,.9),head=MS(tr?0x2a2420:0x4a5560,.8),base=MS(tr?0x9c1c16:0x1f4f96,.7),skin=MS(0xc79a78,.8),gun=MS(0x2c2622,.6),horse=MS(0x4a3526,.85),pole=MS(0x3a2c20,.8);
+  A.box(base,.98,.5,.64,0,-.22,0).box(MS(0xf2ead8,.7),.98,.012,.03,0,.036,.305).box(MS(0xf2ead8,.7),.98,.012,.03,0,.036,-.305);
+  if(kind==='trc'){for(let r=0;r<2;r++)for(let c=0;c<3;c++){const x=-.28+c*.28+(r?.08:0),z=-.14+r*.28;A.box(horse,.2,.085,.065,x,.14,z).box(horse,.05,.11,.05,x+.1,.2,z,0,0,-.5).box(horse,.075,.04,.045,x+.15,.255,z);
+      [[-.07,.02],[.07,.02],[-.07,-.02],[.07,-.02]].forEach(q=>A.box(horse,.018,.1,.018,x+q[0],.07,z+q[1]));A.add(FIG,cloth,x-.01,.25,z).add(new THREE.SphereGeometry(.02,6,5),head,x-.01,.31,z).box(gun,.008,.14,.008,x-.03,.3,z+.03,0,0,.25);}}
+  else{for(let r=0;r<3;r++)for(let c=0;c<6;c++){const x=-.36+c*.145,z=-.19+r*.19;A.add(FIG,cloth,x,.09,z).add(new THREE.SphereGeometry(.018,6,5),skin,x,.162,z).add(CYL(.019,.021,.022,7),head,x,.182,z).box(gun,.008,.15,.008,x+.028,.15,z,0,0,-.18);}}
+  A.add(CYL(.008,.01,.5,5),pole,.44,.28,.26);A.build(g);
+  const f=new THREE.Mesh(new THREE.PlaneGeometry(.26,.17),new THREE.MeshStandardMaterial({map:tr?flagTex:greekFlag,side:THREE.DoubleSide,roughness:.8,emissive:0xffffff,emissiveMap:tr?flagTex:greekFlag,emissiveIntensity:.3}));f.position.set(.58,.44,.26);g.add(f);return g;}
+const unitProto={};
+function units(kind,list,ok){list.forEach((q,i)=>{const m=(unitProto[kind]||(unitProto[kind]=buildUnit(kind))).clone();m.position.copy(P(q[0],q[1],.06));m.rotation.y=(q[2]||0);scene.add(m);
+  anim.push(T=>{const v=tr(T,ok.map((x,j)=>j%2?x:x+(j<3?i*.12:0)));m.visible=v>.01;if(m.visible)m.scale.setScalar(1.45*back(v));});});}
+
 /* unit counters (infantry = crossed box, cavalry = single diagonal) and field guns */
-const unitMat=(col,cav)=>{const c=mkCanvas(128,84),x=c.getContext('2d');x.fillStyle=col;x.fillRect(0,0,128,84);x.strokeStyle='#fff';x.lineWidth=7;x.strokeRect(6,6,116,72);x.lineWidth=6;x.beginPath();x.moveTo(8,76);x.lineTo(120,8);if(!cav){x.moveTo(8,8);x.lineTo(120,76);}x.stroke();const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return new THREE.MeshStandardMaterial({map:t,roughness:.55});};
-const UM={tr:[unitMat('#c9241c'),new THREE.MeshStandardMaterial({color:0x8c1712,roughness:.6})],trc:[unitMat('#c9241c',true),new THREE.MeshStandardMaterial({color:0x8c1712,roughness:.6})],gr:[unitMat('#2f6cc0'),new THREE.MeshStandardMaterial({color:0x1d4788,roughness:.6})]};
-const unitGeo=new THREE.BoxGeometry(.95,.26,.62);
-function units(kind,list,ok){list.forEach((q,i)=>{const [top,side]=UM[kind],m=new THREE.Mesh(unitGeo,[side,side,top,side,side,side]);m.position.copy(P(q[0],q[1],.24));m.rotation.y=(q[2]||0);m.castShadow=true;scene.add(m);
-  anim.push(T=>{const v=tr(T,ok.map((x,j)=>j%2?x:x+(j<3?i*.12:0)));m.visible=v>.01;if(m.visible)m.scale.setScalar(back(v));});});}
-function buildGun(){const g=new THREE.Group(),M=(c,r,m)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}),steel=M(0x6c7460,.5,.35),wood=M(0x8a6a48,.8,0);
-  const add=(geo,m,x,y,z)=>{const q=new THREE.Mesh(geo,m);q.position.set(x,y,z);q.castShadow=true;g.add(q);return q;};
-  add(new THREE.CylinderGeometry(.04,.06,1.0,10),steel,.24,.36,0).rotation.z=-Math.PI/2+.2;
-  [-.21,.21].forEach(z=>{add(new THREE.CylinderGeometry(.23,.23,.05,18),wood,0,.23,z).rotation.x=Math.PI/2;add(new THREE.CylinderGeometry(.06,.06,.07,10),steel,0,.23,z).rotation.x=Math.PI/2;});
-  add(new THREE.BoxGeometry(.03,.32,.38),steel,.1,.38,0);add(new THREE.BoxGeometry(.74,.05,.07),steel,-.38,.14,0).rotation.z=.26;return g;}
-function guns(list,ok){list.forEach(q=>{const g=buildGun();g.position.copy(P(q[0],q[1],.04));g.rotation.y=q[2];scene.add(g);anim.push(T=>{const v=tr(T,ok);g.visible=v>.01;if(g.visible)g.scale.setScalar(.95*back(v));});});}
+function guns(list,ok){list.forEach(q=>{const g=buildGun();g.position.copy(P(q[0],q[1],.04));g.rotation.y=q[2];{const L=1.56,cx=Math.cos(q[2]),sz=-Math.sin(q[2]),H=(x,z,k)=>Math.max(0,hAt(x-cx*L*k,z-sz*L*k));let best=1e9,bx=g.position.x,bz=g.position.z;for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++){const x=g.position.x+i*.35,z=g.position.z+j*.35,a=H(x,z,0),b=H(x,z,.5),c=H(x,z,1),e=Math.abs(b-(a+c)/2)*3+Math.abs(a-c)+Math.hypot(i,j)*.03;if(e<best){best=e;bx=x;bz=z;}}g.position.set(bx,H(bx,bz,0)+.04,bz);g.rotation.z=Math.atan2(H(bx,bz,0)-H(bx,bz,1),L);}scene.add(g);anim.push(T=>{const v=tr(T,ok);g.visible=v>.01;if(g.visible)g.scale.setScalar(1.25*back(v));});});}
 
 /* ───────────── timeline ───────────── */
 const D=[13,12,14,13.5,12,13.5,11.5,12,15.5,13,15,12,13],NC=D.length,C=[0];D.forEach(d=>C.push(C[C.length-1]+d));const END=C[NC];
@@ -652,17 +813,17 @@ const ev=(lon,lat,kind,title,sub,a,b,stem=34,lift=.6)=>label({lon,lat,lift,cls:'
 const zl=(lon,lat,title,sub,c,a,b)=>label({lon,lat,lift:.4,cls:'zone',c,t:title,s:sub,spans:[[a,b]]});
 const vis=(sp,T)=>{let v=0;for(const s of sp){const q=Math.min(sstep(s[0],s[0]+.32,T),1-sstep(s[1]-.32,s[1],T));if(q>v)v=q;}return v;};
 
-const CITY={ist:['İSTANBUL',28.98,41.01,'t',1],ank:['ANKARA',32.86,39.93,'r',1],izm:['İZMİR',27.14,38.42,'l',1],sam:['SAMSUN',36.33,41.29,'r'],ama:['AMASYA',35.83,40.65,'l'],siv:['SİVAS',37.02,39.75,'b'],erz:['ERZURUM',41.27,39.90,'r'],
+const CITY={ist:['İSTANBUL',28.98,41.01,'t',1],ank:['ANKARA',32.86,39.93,'b',1,.2,2.95],izm:['İZMİR',27.14,38.42,'l',1,-.5,-.1],sam:['SAMSUN',36.33,41.29,'r'],ama:['AMASYA',35.83,40.65,'l'],siv:['SİVAS',37.02,39.75,'b'],erz:['ERZURUM',41.27,39.90,'r'],
  kars:['KARS',43.10,40.60,'l'],gum:['GÜMRÜ',43.85,40.79,'r'],sar:['SARIKAMIŞ',42.59,40.33,'b'],mar:['MARAŞ',36.92,37.58,'l'],ant:['ANTEP',37.38,37.07,'b'],urf:['URFA',38.79,37.16,'r'],ada:['ADANA',35.32,37.00,'b'],
  aty:['ANTALYA',30.71,36.90,'b'],kon:['KONYA',32.48,37.87,'r'],bur:['BURSA',29.06,40.19,'l'],esk:['ESKİŞEHİR',30.52,39.78,'r'],kut:['KÜTAHYA',29.98,39.42,'l'],afy:['AFYON',30.54,38.76,'r'],pol:['POLATLI',32.15,39.58,'t'],
  usk:['UŞAK',29.41,38.68,'b'],tra:['TRABZON',39.72,41.00,'t'],van:['VAN',43.38,38.49,'r'],edi:['EDİRNE',26.56,41.68,'t'],diy:['DİYARBAKIR',40.23,37.91,'b'],kay:['KAYSERİ',35.49,38.72,'b'],kas:['KASTAMONU',33.78,41.38,'t'],man:['MANİSA',27.43,38.61,'t'],hay:['HAYMANA',32.5,39.43,'r'],dum:['DUMLUPINAR',29.98,38.85,'b'],mud:['MUDANYA',28.88,40.38,'b'],ino:['İNÖNÜ',30.14,39.82,'l'],sin:['SİNOP',35.15,42.02,'b'],ine:['İNEBOLU',33.76,41.98,'b']};
 const CITYCH={ist:'*',ank:'*',izm:'*',sam:[1,2,12],ama:[2],siv:[2,4,12],erz:[2,6,12],kars:[6],gum:[6],sar:[6],mar:[3],ant:[3],urf:[3],ada:[0,3,12],aty:[0,12],kon:[0,4,12],bur:[7,8,9],esk:[7,8,9],kut:[8,9],afy:[7,8,9],pol:[8],usk:[9],tra:[4,12],van:[4,12],edi:[10,11,12],diy:[4,12],kay:[4],kas:[4],man:[],hay:[8],dum:[9],mud:[10],ino:[7],sin:[1],ine:[1]};
 const dotMat=new THREE.MeshStandardMaterial({color:0xf6eedc,roughness:.4,emissive:0x8a7a5a,emissiveIntensity:.5}),dotRim=new THREE.MeshStandardMaterial({color:0x1b1410,roughness:.6});
 const dots=[];
-for(const k in CITY){const c=CITY[k],maj=!!c[4],r=maj?.34:.22,p=P(c[1],c[2],0);
+for(const k in CITY){const c=CITY[k],maj=!!c[4],r=maj?.34:.22,p=P(c[1],c[2],0);if(c[5]){p.x+=c[5];p.z+=c[6];p.y=Math.max(0,hAt(p.x,p.z));}
   const rim=new THREE.Mesh(new THREE.CylinderGeometry(r*1.45,r*1.45,.1,24),dotRim),dot=new THREE.Mesh(new THREE.CylinderGeometry(r,r,.16,24),dotMat);rim.position.copy(p).y+=.05;dot.position.copy(p).y+=.08;scene.add(rim,dot);dots.push(rim,dot);
   const ch=CITYCH[k],spans=ch==='*'?[[-1,END+99]]:ch.map(i=>[C[i]-.2,C[i+1]+.2]);
-  if(spans.length)label({lon:c[1],lat:c[2],lift:.15,cls:'city'+(maj?' major':''),html:c[0],spans,side:c[3]});
+  if(spans.length)label({lon:c[1],lat:c[2],lift:.15,p:c[5]?p.clone().setY(p.y+.15):undefined,cls:'city'+(maj?' major':''),html:c[0],spans,side:c[3]});
   anim.push(T=>{rim.userData.a=dot.userData.a=vis(spans,T);});}
 
 /* ═════════════ CHAPTER 0 · occupation ═════════════ */
@@ -678,24 +839,8 @@ ev(27.14,38.42,'foe','GREEK LANDING AT İZMİR','15 May 1919',at(0,9),at(0,11),4
 pulse(27.14,38.42,0x6aa3e6,at(0,9.6),at(0,11.4),6,1.5);
 
 /* ships */
-function buildShip(hullC,upC,funC,fancy){const g=new THREE.Group(),M=(c,r=.7)=>new THREE.MeshStandardMaterial({color:c,roughness:r});
-  const sh=new THREE.Shape();sh.moveTo(-1.5,-.23);sh.lineTo(.85,-.25);sh.quadraticCurveTo(1.42,-.14,1.72,0);sh.quadraticCurveTo(1.42,.14,.85,.25);sh.lineTo(-1.5,.23);sh.quadraticCurveTo(-1.74,0,-1.5,-.23);
-  const hull=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:.36,bevelEnabled:false,curveSegments:8}),M(hullC,.6));hull.rotation.x=-Math.PI/2;g.add(hull);
-  const add=(geo,m,x,y,z)=>{const q=new THREE.Mesh(geo,m);q.position.set(x,y,z||0);q.castShadow=true;g.add(q);return q;};
-  add(new THREE.BoxGeometry(3.0,.035,.5),M(0x9c7b52),-.05,.375);add(new THREE.BoxGeometry(1.35,.22,.32),M(upC),-.15,.49);add(new THREE.BoxGeometry(.4,.2,.36),M(upC),.42,.69);
-  add(new THREE.BoxGeometry(.46,.03,.42),M(0x3a2c22),.42,.8);
-  const f=add(new THREE.CylinderGeometry(.085,.1,.6,14),M(funC),-.2,.88);f.rotation.z=.09;const ft=add(new THREE.CylinderGeometry(.09,.088,.14,14),M(0x15161a),-.226,1.17);ft.rotation.z=.09;
-  [1.0,-1.1].forEach(x=>{const m=add(new THREE.CylinderGeometry(.016,.022,1.1,6),M(0x5a4634),x,.92);m.rotation.z=.05;});
-  add(new THREE.BoxGeometry(.3,.1,.14),M(upC),-.9,.44);hull.castShadow=true;
-  if(fancy){const boot=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:.08,bevelEnabled:false,curveSegments:8}),M(0x8a2a22,.6));boot.rotation.x=-Math.PI/2;boot.scale.set(1.012,1.05,1);g.add(boot);
-    const lit=M(0xf0dfa6,.4);for(let i=0;i<8;i++)[-1,1].forEach(sd=>add(new THREE.BoxGeometry(.055,.05,.012),lit,-1.2+i*.27,.25,sd*.246));
-    [-1,1].forEach(sd=>{add(new THREE.CapsuleGeometry(.045,.22,4,8),M(0xf6f0e2),-.62,.56,sd*.21).rotation.z=Math.PI/2;});
-    for(let i=0;i<4;i++)add(new THREE.BoxGeometry(.07,.07,.33),M(0x2a3138,.4),-.55+i*.26,.5,0);
-    add(new THREE.CylinderGeometry(.01,.012,.52,5),M(0x5a4634),-1.56,.63,0);const fl=new THREE.Mesh(new THREE.PlaneGeometry(.36,.24),new THREE.MeshStandardMaterial({map:flagTex,side:THREE.DoubleSide,roughness:.8}));fl.position.set(-1.75,.76,0);g.add(fl);
-    const lm=new THREE.LineBasicMaterial({color:0x2a211a}),rig=(a,b)=>g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(a[0],a[1],0),new THREE.Vector3(b[0],b[1],0)]),lm));
-    rig([1.0,1.46],[1.68,.4]);rig([1.0,1.46],[-.2,1.2]);rig([-1.1,1.46],[-.24,1.2]);rig([-1.1,1.46],[-1.6,.4]);}g.userData.funnel=new THREE.Vector3(-.24,1.25,0);return g;}
 const shipPath=makeRibbon([[29.14,41.33],[30.2,41.62],[31.6,41.88],[33.0,42.3],[34.5,42.42],[35.4,42.3],[36.1,41.95],[36.44,41.43]],{w:.16,lift:.05,color:0xffffff,dash:.55,n:300});
-const SS=1.5,ship=buildShip(0x1c1e22,0xf1ead8,0xd3ab55,true);ship.scale.setScalar(SS);scene.add(ship);
+const SS=1.5,ship=buildShip();ship.scale.setScalar(SS);scene.add(ship);
 const shipAhead=makeRibbon([[29.14,41.33],[30.2,41.62],[31.6,41.88],[33.0,42.3],[34.5,42.42],[35.4,42.3],[36.1,41.95],[36.44,41.43]],{w:.1,lift:.04,color:0xcfe2e6,dash:.4,n:300});
 const shipS=T=>eio((T-at(1,.8))/8.4), shipV=new THREE.Vector3(),shipV2=new THREE.Vector3();
 const smoke=[];for(let k=0;k<12;k++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:puffTex,color:0x2c2a28,transparent:true,depthWrite:false,fog:false}));s.renderOrder=8;scene.add(s);smoke.push(s);}
@@ -708,9 +853,9 @@ anim.push((T,now)=>{const v=tr(T,[at(0,10.2),0,at(0,11),1,at(2,2.6),1,at(2,3.6),
   const moving=s>.002&&s<.998;smoke.forEach((sp,k)=>{const age=(now*.42+k/12)%1,sb=clamp(s-(moving?age*.02:0)*(1-s*.3));shipPath.at(sb,shipV2);const fn=ship.userData.funnel;
     sp.position.set(shipV2.x+fn.x*Math.cos(ship.rotation.y)*SS-age*1.8,.02+fn.y*SS+age*2.2,shipV2.z-fn.x*Math.sin(-ship.rotation.y)*SS+age*.6);const sc=.5+age*2.2;sp.scale.set(sc,sc,1);sp.material.opacity=v*.75*(1-age)*Math.min(1,age*8);});});
 // Allied warships off İstanbul
-const fleet=[[28.74,40.86,.3],[28.98,40.8,-.2],[28.5,40.76,.5]].map(([lo,la,r],i)=>{const s=buildShip(0x596068,0x8a9098,0x70777f);scene.add(s);
+const fleet=[[28.62,40.9,.25],[28.98,40.74,-.15],[28.2,40.7,.4]].map(([lo,la,r],i)=>{const s=buildWarship();scene.add(s);
   anim.push((T,now)=>{const v=tr(T,[at(0,2.4+i*.3),0,at(0,3.4+i*.3),1,at(11,7.4),1,at(11,10.4),0]),go=sstep(at(11,7),at(11,10.4),T);s.visible=v>.01;if(!s.visible)return;
-    s.position.set(X(lerp(lo,27.25+i*.2,go)),.02+Math.sin(now*1.7+i)*.015,Z(lerp(la,40.6-i*.04,go)));s.rotation.y=lerp(r,Math.PI-.15,sstep(0,.25,go));s.scale.setScalar(.6*v);});return s;});
+    s.position.set(X(lerp(lo,27.25+i*.2,go)),.02+Math.sin(now*1.7+i)*.015,Z(lerp(la,40.6-i*.04,go)));s.rotation.y=lerp(r,Math.PI-.15,sstep(0,.25,go));s.scale.setScalar(.44*v);});return s;});
 
 /* ═════════════ CHAPTER 1 · Samsun ═════════════ */
 ev(36.33,41.29,'','LANDING AT SAMSUN','19 May 1919',at(1,9.3),at(2,2.4),40,1);
@@ -746,26 +891,20 @@ units('trc',[[36.55,37.86,.2],[37.3,37.8,-.2],[38.5,37.5,.1],[39.1,37.36,-.1],[3
 /* ═════════════ Assembly ═════════════ */
 ev(28.98,41.01,'foe','İSTANBUL OCCUPIED','16 March 1920 · parliament closed',at(4,.3),at(4,3.6),40,1);
 pulse(28.98,41.01,0xa678c6,at(4,.4),at(4,2.6),6,1.4);
-const assembly=(function(){const g=new THREE.Group(),M=(c,r=.8)=>new THREE.MeshStandardMaterial({color:c,roughness:r}),stone=M(0xdccba6),roof=M(0x9a4a34,.7),dark=M(0x2c2119);
-  const add=(geo,m,x,y,z,sh=true)=>{const q=new THREE.Mesh(geo,m);q.position.set(x,y,z);q.castShadow=sh;q.receiveShadow=true;g.add(q);return q;};
-  add(new THREE.CylinderGeometry(1.9,2.0,.12,40),M(0xb5a37c),0,.06,0,false);
-  add(new THREE.BoxGeometry(2.6,.72,1.25),stone,0,.5,0);add(new THREE.BoxGeometry(.95,.98,1.42),stone,0,.63,0);
-  const hip=(w,d,h,x,y,z)=>{const cg=new THREE.ConeGeometry(Math.SQRT1_2,h,4);cg.rotateY(Math.PI/4);const q=add(cg,roof,x,y,z);q.scale.set(w,1,d);};
-  hip(2.9,1.5,.42,0,1.07,0);hip(1.15,1.62,.46,0,1.35,0);
-  for(let i=0;i<8;i++){const x=-1.12+i*.32;if(Math.abs(x)<.4)continue;add(new THREE.BoxGeometry(.15,.32,.03),dark,x,.52,.632,false);add(new THREE.CylinderGeometry(.075,.075,.03,10,1,false,0,Math.PI),dark,x,.68,.632,false).rotation.set(Math.PI/2,0,Math.PI/2);}
-  add(new THREE.BoxGeometry(.24,.5,.03),dark,0,.42,.717,false);[-.3,.3].forEach(x=>add(new THREE.CylinderGeometry(.04,.045,.74,8),M(0xefe6cf),x,.51,.76));
-  add(new THREE.BoxGeometry(.86,.06,.34),M(0xcbb994),0,.9,.8);[-.82,.82].forEach(x=>add(new THREE.BoxGeometry(.13,.34,.13),stone,x,1.18,-.18));add(new THREE.BoxGeometry(2.66,.1,1.31),M(0xa8977a),0,.19,0);add(new THREE.BoxGeometry(1.1,.07,.4),M(0xbfae8a),0,.17,.86);add(new THREE.BoxGeometry(1.3,.05,.5),M(0xbfae8a),0,.14,.96);
-  return g;})();
-assembly.position.copy(P(32.86,39.93,0));assembly.position.z-=.9;assembly.position.x+=.2;scene.add(assembly);
-const ankFlag=new Flag(1.5,1.0,3.3);ankFlag.g.position.set(1.75,.14,.55);assembly.add(ankFlag.g);
-anim.push((T,now)=>{const v=tr(T,[at(4,4.2),0,at(4,5.8),1]);assembly.visible=v>.005;if(!assembly.visible)return;const ak=(assembly.userData.k||1)*tr(T,[at(4,11.2),1,at(5,1),.62]);assembly.scale.set(ak,ak*Math.max(.001,back(v)),ak);ankFlag.set(now,tr(T,[at(4,5.6),0,at(4,7.6),1]));});
+const assembly=buildAssembly();
+assembly.position.copy(P(32.86,39.93,0));assembly.position.z-=.9;assembly.position.x+=.2;assembly.position.y=hAt(assembly.position.x,assembly.position.z)-.02;scene.add(assembly);
+// landmarks that stood throughout: İzmir's clock tower and an İstanbul mosque
+const LM=[];{const add=(m,lon,lat,dx,dz,s,ry)=>{m.position.copy(P(lon,lat,.02));m.position.x+=dx;m.position.z+=dz;m.rotation.y=ry||0;m.userData.s=s;scene.add(m);LM.push(m);};
+ add(buildClockTower(),27.14,38.42,-.05,1.25,1.5);{const ct=LM[LM.length-1];ct.userData.sx=.78;}add(buildMosque(),28.98,41.01,-1.7,-.75,1.2,.5);LM[LM.length-1].position.y+=.14;}
+const ankFlag=new Flag(.78,.52,1.15);ankFlag.g.position.set(0,1.88,0);ankFlag.g.children[0].scale.set(.5,1,.5);assembly.add(ankFlag.g);
+anim.push((T,now)=>{const v=tr(T,[at(4,4.2),0,at(4,5.8),1]);assembly.visible=v>.005;if(!assembly.visible)return;const ak=(assembly.userData.k||1)*tr(T,[at(4,11.2),1,at(5,1),.62]);assembly.scale.set(ak,ak*Math.max(.001,back(v)),ak);ankFlag.set(now,tr(T,[at(4,5.6),0,at(4,7.6),1]));assembly.userData.people.visible=T>at(4,5.6)&&T<at(4,12);});
 ev(32.89,40.04,'','GRAND NATIONAL ASSEMBLY','Ankara, 23 April 1920',at(4,5.8),at(4,12.2),24,2.1).dx=-100;
-pulse(32.86,39.93,0xe9bd62,at(4,5.8),at(4,8.2),7,1.6);
+
 // deputies converge on Ankara
-['kon','aty','siv','tra','erz','van','diy','kay','kas','sam','bur','esk','ada','mar','edi'].forEach((k,i)=>{const c=CITY[k],a=P(c[1],c[2],.2),b=P(32.86,39.93,1.0),mid=a.clone().lerp(b,.5);mid.y+=1.2+a.distanceTo(b)*.075;
+['kon','aty','siv','tra','erz','van','diy','kay','kas','sam','bur','esk','ada','mar','edi'].forEach((k,i)=>{const c=CITY[k],a=P(c[1],c[2],.2),b=assembly.position.clone().add(new THREE.Vector3(0,.25,3.4)),mid=a.clone().lerp(b,.5);mid.y+=1.2+a.distanceTo(b)*.075;
   const cv=new THREE.QuadraticBezierCurve3(a,mid,b),geo=new THREE.TubeGeometry(cv,48,.03,5,false),m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:0xf5cd74,transparent:true,depthWrite:false,toneMapped:false,fog:false}));m.frustumCulled=false;m.renderOrder=6;fx.add(m);
   const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffe2a0,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false,transparent:true,fog:false,toneMapped:false}));sp.scale.set(.9,.9,1);sp.renderOrder=9;fx.add(sp);
-  const t0=at(4,2.6)+i*.12;anim.push(T=>{const p=eio((T-t0)/2.4),o=tr(T,[t0,0,t0+.3,1,at(4,10),1,at(4,11.6),0]);m.visible=o>.01&&p>.01;sp.visible=m.visible&&p<.995;if(!m.visible)return;m.material.opacity=o*.6;geo.setDrawRange(0,Math.floor(p*48)*30);if(sp.visible)cv.getPoint(p,sp.position);});});
+  const t0=at(4,2.6)+i*.12;anim.push(T=>{const p=eio((T-t0)/2.4),o=tr(T,[t0,0,t0+.3,1,at(4,7.4),1,at(4,8.8),0]);m.visible=o>.01&&p>.01;sp.visible=m.visible&&p<.995;if(!m.visible)return;m.material.opacity=o*.6;geo.setDrawRange(0,Math.floor(p*48)*30);if(sp.visible)cv.getPoint(p,sp.position);});});
 
 /* ═════════════ CHAPTER 4 · Sèvres ═════════════ */
 ev(28.6,39.6,'foe','GREEK SUMMER OFFENSIVE','June – August 1920 · Bursa, Uşak, Eastern Thrace',at(5,1),at(5,4.4),30,1.2);
@@ -838,8 +977,8 @@ arrow([[29.95,38.5],[29.2,38.1],[28.4,37.9],[27.86,37.86]],{w:.85,head:1.6,arc:1
 /* unit counters (infantry = crossed box, cavalry = single diagonal) */
 
 units('tr',[[40.85,39.66,.3],[40.95,40.14,.3]],[at(6,.8),0,at(6,1.5),1,at(6,10),1,at(6,10.8),0]);
-guns([[30.42,40.0,Math.PI],[30.5,39.68,Math.PI]],[at(7,.8),0,at(7,1.5),1,at(7,11),1,at(7,11.8),0]);
-guns([[32.2,39.82,-2.5],[32.66,39.42,-2.1]],[at(8,4.6),0,at(8,5.4),1,at(8,13),1,at(8,14),0]);
+guns([[30.82,40.0,Math.PI],[30.9,39.7,Math.PI]],[at(7,.8),0,at(7,1.5),1,at(7,11),1,at(7,11.8),0]);
+guns([[32.0,40.14,-2.6],[33.42,39.6,-2.1]],[at(8,4.6),0,at(8,5.4),1,at(8,13),1,at(8,14),0]);
 guns([[30.62,38.56,2.36],[30.78,38.68,2.36]],[at(9,.5),0,at(9,1.2),1,at(9,7),1,at(9,8),0]);
 units('tr',[[30.38,40.12,.4],[30.46,39.86,.4],[30.52,39.56,.4]],[at(7,.8),0,at(7,1.5),1,at(7,11),1,at(7,11.8),0]);
 units('gr',[[28.95,40.36,.3],[29.3,39.86,.3],[29.25,38.56]],[at(7,.8),0,at(7,1.5),1,at(7,11),1,at(7,11.8),0]);
@@ -852,7 +991,7 @@ units('trc',[[31.15,37.95,-.6]],[at(9,.5),0,at(9,1.2),1,at(9,12.2),1,at(9,13),0]
 units('gr',[[30.16,38.92,-.5],[30.06,39.12,-.5],[29.9,38.74,-.5],[30.3,39.3,-.4]],[at(9,.5),0,at(9,1.2),1,at(9,5.2),1,at(9,6.6),0]);
 
 /* ═════════════ CHAPTER 9 · İzmir & Mudanya ═════════════ */
-const izmFlag=new Flag(1.7,1.13,3.8);izmFlag.g.position.copy(P(27.14,38.42,.05));izmFlag.g.position.x+=.35;scene.add(izmFlag.g);
+const izmFlag=new Flag(1.3,.87,2.9);izmFlag.g.children[0].scale.set(.45,1,.45);izmFlag.g.position.copy(P(27.14,38.42,.05));izmFlag.g.position.x+=.35;scene.add(izmFlag.g);
 anim.push((T,now)=>{const v=tr(T,[at(10,1),0,at(10,1.8),1]);izmFlag.g.visible=v>.01;if(!izmFlag.g.visible)return;izmFlag.g.scale.setScalar(back(v));izmFlag.set(now,tr(T,[at(10,1.8),0,at(10,4.4),1]));});
 pulse(27.14,38.42,0xe9bd62,at(10,1.4),at(10,5.6),7,1.5);
 ev(27.14,38.42,'','İZMİR LIBERATED','9 September 1922',at(10,1.6),at(10,7.4),30,2.3).dx=-125;
@@ -907,7 +1046,7 @@ function camAt(T){let i=0;while(i<CK.length-2&&T>CK[i+1][0])i++;const a=CK[i],b=
   const sw=tr(T,[at(1,.4),0,at(1,2),1,at(1,9.4),1,at(1,11),0]);if(sw>0){pose[0]=lerp(pose[0],ship.position.x,sw);pose[1]=lerp(pose[1],ship.position.z+1.5,sw);}
   camera.position.set(pose[0]+d*Math.sin(az)*Math.cos(el),d*Math.sin(el),pose[1]+d*Math.cos(az)*Math.cos(el));camera.lookAt(pose[0],.6,pose[1]);
   const ds=clamp(d/95,.42,1.25);for(const q of dots){const a=ds*(q.userData.a||0);q.visible=a>.02;q.scale.set(a,1,a);}U.uDetail.value=clamp(1.15-d/85);
-  assembly.userData.k=clamp(d/70,1,1.9);assembly.userData.fk=clamp(d/58,1,3);wideNow=wide;scene.fog.near=Math.max(230,d*1.25);scene.fog.far=scene.fog.near+410;
+  assembly.userData.k=clamp(d/70,1,1.9);for(const m of LM){const k=m.userData.fix?1:clamp(d/55,1,2.2);m.scale.setScalar(m.userData.s*k);if(m.userData.sx){m.scale.x*=m.userData.sx;m.scale.z*=m.userData.sx;}m.visible=d<150;}assembly.userData.fk=clamp(d/58,1,3);wideNow=wide;scene.fog.near=Math.max(230,d*1.25);scene.fog.far=scene.fog.near+410;
   {const ox=narrowUI?Math.round(SHt*lerp(.17,.1,wide)):Math.round(SW*lerp(.06,.1,wide));if(ox!==lastOx){lastOx=ox;narrowUI?camera.setViewOffset(SW,SHt,0,ox,SW,SHt):camera.setViewOffset(SW,SHt,-ox,SHt*.035,SW,SHt);camera.updateProjectionMatrix();}}northEl.setAttribute('transform','rotate('+(pose[3]+user.az).toFixed(1)+' 20 20)');}
 
 /* ───────────── HUD ───────────── */
@@ -918,11 +1057,11 @@ let curCh=-1,lastClock='';
 const ARW=c=>'<svg viewBox="0 0 28 12"><path d="M0 4.5h18V1l10 5-10 5V7.5H0z" fill="'+c+'"/></svg>',SWT=(c,solid)=>'<i class="sw'+(solid?' solid':'')+'" style="--c:'+c+'"></i>';
 const LG={tr:[ARW('#e4352b'),'Turkish national forces'],gr:[ARW('#4f8fdc'),'Greek army'],
  ff:['<svg viewBox="0 0 28 12"><path d="M2 11Q14 -5 26 11" fill="none" stroke="#f3ead6" stroke-width="3.4"/></svg>','Front line falling back'],
- ml:['<svg viewBox="0 0 28 12"><rect x="8" y=".6" width="12" height="10.8" fill="#c9241c" stroke="#fff"/><path d="M8 11.4L20 .6" stroke="#fff"/></svg>','Kuva-yi Milliye militia'],
- ut:['<svg viewBox="0 0 28 12"><rect x="8" y=".6" width="12" height="10.8" fill="#c9241c" stroke="#fff"/><path d="M8 .6l12 10.8M20 .6L8 11.4" stroke="#fff"/></svg>','Turkish units'],
+ ml:['<svg viewBox="0 0 28 12"><rect x="9" y="1" width="9" height="6" fill="#c9241c" stroke="#fff" stroke-width=".8"/><path d="M9 .5v11" stroke="#efe7d6" stroke-width="1"/><circle cx="6" cy="10" r="1.3" fill="#efe7d6"/></svg>','Kuva-yi Milliye militia'],
+ ut:['<svg viewBox="0 0 28 12"><rect x="9" y="1" width="9" height="6" fill="#c9241c" stroke="#fff" stroke-width=".8"/><path d="M9 .5v11" stroke="#efe7d6" stroke-width="1"/></svg>','Turkish units'],
  sr:['<svg viewBox="0 0 28 12"><path d="M0 6h28" stroke="#fff" stroke-width="2" stroke-dasharray="5 4"/></svg>','Course of the Bandırma'],
  dp:['<svg viewBox="0 0 28 12"><path d="M0 10Q14 -6 28 10" fill="none" stroke="#f5cd74" stroke-width="1.4"/></svg>','Deputies travelling to Ankara'],
- un:['<svg viewBox="0 0 28 12"><rect x=".6" y=".6" width="12" height="10.8" fill="#c9241c" stroke="#fff"/><path d="M.6.6l12 10.8M12.6.6L.6 11.4" stroke="#fff"/><rect x="15.4" y=".6" width="12" height="10.8" fill="#2f6cc0" stroke="#fff"/><path d="M15.4.6l12 10.8M27.4.6l-12 10.8" stroke="#fff"/></svg>','Army units, Turkish and Greek'],
+ un:['<svg viewBox="0 0 28 12"><rect x="3" y="1" width="9" height="6" fill="#c9241c" stroke="#fff" stroke-width=".8"/><path d="M3 .5v11" stroke="#efe7d6" stroke-width="1"/><rect x="16" y="1" width="9" height="6" fill="#2f6cc0" stroke="#fff" stroke-width=".8"/><path d="M16 .5v11" stroke="#efe7d6" stroke-width="1"/></svg>','Army units, Turkish and Greek'],
  fl:['<svg viewBox="0 0 28 12"><path d="M0 9h28" stroke="#ff4a36" stroke-width="3"/><path d="M0 9V2h28v7" fill="rgba(255,74,54,.3)"/></svg>','Turkish defensive line'],
  zg:[SWT('#4f8fdc'),'Greek occupation'],zb:[SWT('#a678c6'),'Allied occupation, British-led'],zf:[SWT('#3fb3a7'),'French occupation'],zi:[SWT('#79b565'),'Italian occupation'],
  rt:['<svg viewBox="0 0 28 12"><path d="M0 6h28" stroke="#f2c25e" stroke-width="2.4" stroke-dasharray="5 3"/></svg>','Mustafa Kemal’s route'],
