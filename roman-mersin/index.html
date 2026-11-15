@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Roman Mersin — a 3D map of ancient Cilicia</title>
+  <meta name="description" content="Explore ten Roman sites of Mersin province (ancient Cilicia) on a real-elevation 3D map: Soli-Pompeiopolis, Elaiussa Sebaste, Tarsus, Anemurium and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <script type="module" crossorigin src="./assets/index-DbfA3gK-.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DPpo5zcw.css">
+</head>
+<body>
+  <canvas id="scene" aria-label="3D map of Roman-era Mersin province"></canvas>
+  <div id="labels" aria-hidden="true" inert></div>
+
+  <header id="title">
+    <div class="eyebrow">Provincia</div>
+    <h1>CILICIA</h1>
+    <div class="sub">Roman Mersin · ten places</div>
+  </header>
+
+  <nav id="sitelist" aria-label="Sites" inert></nav>
+
+  <aside id="panel" aria-live="polite" hidden>
+    <button class="close" id="panel-close" aria-label="Close">×</button>
+    <div id="panel-body"></div>
+    <div class="panel-nav">
+      <button id="prev" aria-label="Previous site">‹ Prev</button>
+      <span id="counter"></span>
+      <button id="next" aria-label="Next site">Next ›</button>
+    </div>
+  </aside>
+
+  <div id="toolbar" role="toolbar" aria-label="Map controls" inert>
+    <button id="btn-tour" title="Guided tour (T)">▶ Tour</button>
+    <button id="btn-sound" title="Sound &amp; narration (M)" aria-pressed="false">🔇 Sound</button>
+    <button id="btn-dusk" title="Golden hour (G)" aria-pressed="false">☀ Day</button>
+    <button id="btn-roads" title="Roman roads (R)" aria-pressed="true">Roads</button>
+    <button id="btn-home" title="Whole map (H)">⌂ <span class="wide">Overview</span><span class="narrow">Map</span></button>
+    <button id="btn-lang" title="Türkçe (L)">TR</button>
+  </div>
+
+  <div id="compass" title="North"><div id="needle"><span id="north">N</span></div></div>
+
+  <div id="caption" hidden></div>
+
+  <footer id="legend">
+    <span id="legend-text">Real elevation (SRTM), ×2.6 vertical<span class="wide">. Monuments are stylised miniatures, not to scale. Roads are schematic; rivers follow DEM valley floors</span>.</span>
+    <a id="legend-src" href="https://github.com/tayfun/roman-mersin-threejs/blob/main/SOURCES.md" target="_blank" rel="noopener">Sources</a>
+  </footer>
+
+  <div id="intro">
+    <div class="card">
+      <div class="eyebrow" id="intro-eyebrow">A 3D map of Roman Mersin</div>
+      <h1>CILICIA</h1>
+      <p id="intro-text">Pirates, Cleopatra, a city for Pompey and a cave for a monster. Ten Roman places on the real landscape of Türkiye’s Mediterranean coast.</p>
+      <div class="row">
+        <button id="begin-sound" class="primary" disabled>Start the tour with sound</button>
+        <button id="begin-quiet" disabled>Start the tour quietly</button>
+      </div>
+      <button id="intro-lang">Türkçe</button>
+      <div id="loading">Raising the Taurus mountains…</div>
+      <small id="hint">A guided tour starts first — stop it any time to explore. Drag to orbit · scroll to zoom · right-drag to pan · click a beacon</small>
+    </div>
+  </div>
+</body>
+</html>
