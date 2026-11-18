@@ -150,13 +150,59 @@ li {
     margin-top: 2em;
 }
 
+#pdf-download {
+    position: absolute;
+    top: 1em;
+    right: 3em;
+    font-size: 0.8em;
+    padding: 0.25em 0.75em;
+    border: 1px solid #4FA019;
+    border-radius: 3px;
+    color: #4FA019;
+}
+
+#pdf-download:hover, #pdf-download:focus {
+    background-color: #4FA019;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: none;
+}
+
+/* Print / PDF: plain A4 pages with only the CV itself. cv.pdf is generated
+   from this page with headless Chrome at deploy time (see
+   .github/workflows/jekyll.yml), so these rules define the PDF layout. */
+@page {
+  size: A4;
+  margin: 14mm 15mm;
+}
+
 @media print {
+  body {
+    background-color: #fff;
+    width: auto;
+    font-size: 10pt;
+  }
+
   #wrap {
     box-shadow: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #pdf-download {
+    display: none;
+  }
+
+  #info-table tr {
+    break-inside: avoid;
+  }
+
+  #info-table tr:has(.info-section-title) {
+    break-after: avoid;
   }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   body {
     line-height: 1.5;
     font-size: 16px;
@@ -279,11 +325,17 @@ li {
     font-size: 0.8em;
     margin-top: 1.5em;
   }
+
+  #pdf-download {
+    top: 0.6em;
+    right: 1em;
+  }
 }
 </style>
 </head>
 <body>
 <div id="wrap">
+<a id="pdf-download" href="/cv.pdf" download="Tayfun-Sen-CV.pdf" title="Download this CV as a PDF">Download PDF</a>
 <section id="person" itemscope itemtype="https://schema.org/Person">
     <div id="intro">
         <h1 class="name" itemprop="name">Tayfun Sen</h1>
@@ -414,7 +466,7 @@ li {
           </ul>
         </td>
     </tr>
-    <tr style="page-break-after:always">
+    <tr>
         <td data-label="06/2015 – 02/2018">06/2015 – 02/2018</td>
         <td class="info-section-answer"><b>Software Engineer</b>, <a href="https://www.skyscanner.net/" target="_blank" rel="noopener">Skyscanner</a>, Edinburgh, UK<br>
           <ul>
@@ -511,22 +563,22 @@ li {
         <td class="info-section-answer">
           <ul>
             <li>
-              <a href="/roman-mersin/">Roman Mersin</a>: a real-elevation 3D map of ancient Cilicia and ten Roman sites in Mersin, narrated in English and Turkish
+              <a href="https://tayfunsen.com/roman-mersin/">Roman Mersin</a>: a real-elevation 3D map of ancient Cilicia and ten Roman sites in Mersin, narrated in English and Turkish
             </li>
             <li>
-              <a href="/turkish-war-of-independence/">Turkish War of Independence</a>: an animated 3D relief map of Anatolia following the war of 1918–1923, with narration
+              <a href="https://tayfunsen.com/turkish-war-of-independence/">Turkish War of Independence</a>: an animated 3D relief map of Anatolia following the war of 1918–1923, with narration
             </li>
             <li>
-              <a href="/konstantinopolis/">Constantinople</a>: a tour of the Queen of Cities and its landmarks in 3D
+              <a href="https://tayfunsen.com/konstantinopolis/">Constantinople</a>: a tour of the Queen of Cities and its landmarks in 3D
             </li>
             <li>
-              <a href="/istanbul/">Istanbul Landmarks</a>: a 3D sketch of Istanbul&rsquo;s best-known landmarks
+              <a href="https://tayfunsen.com/istanbul/">Istanbul Landmarks</a>: a 3D sketch of Istanbul&rsquo;s best-known landmarks
             </li>
             <li>
-              <a href="/istanbul-kart/">Istanbul Kart</a>: a kart race around the Golden Horn
+              <a href="https://tayfunsen.com/istanbul-kart/">Istanbul Kart</a>: a kart race around the Golden Horn
             </li>
             <li>
-              <a href="/kedi-run/">Kedi Run</a>: leap, slide and dash through İstanbul as Tekir, the city&rsquo;s fastest street cat
+              <a href="https://tayfunsen.com/kedi-run/">Kedi Run</a>: leap, slide and dash through İstanbul as Tekir, the city&rsquo;s fastest street cat
             </li>
           </ul>
         </td>

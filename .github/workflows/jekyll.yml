@@ -41,6 +41,19 @@ jobs:
           source: .
           destination: ./_site
 
+      # cv.pdf is not committed: it is printed from the built cv.html so the
+      # download never goes stale. Layout comes from the print CSS in cv.html.
+      - name: Generate CV PDF
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends fonts-noto-color-emoji
+          google-chrome --headless --no-sandbox --disable-gpu \
+            --no-pdf-header-footer --virtual-time-budget=10000 \
+            --print-to-pdf="$RUNNER_TEMP/cv.pdf" "file://$PWD/_site/cv.html"
+          test -s "$RUNNER_TEMP/cv.pdf"
+          # _site is root-owned (built inside the Jekyll container).
+          sudo cp "$RUNNER_TEMP/cv.pdf" _site/cv.pdf
+
       - name: Upload artifact
       # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3
