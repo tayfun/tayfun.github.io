@@ -159,6 +159,7 @@ li {
     border: 1px solid #4FA019;
     border-radius: 3px;
     color: #4FA019;
+    animation: pdf-download-flash 1.6s ease-in-out infinite;
 }
 
 #pdf-download:hover, #pdf-download:focus {
@@ -166,6 +167,29 @@ li {
     color: #fff;
     text-decoration: none;
     text-shadow: none;
+    animation: none;
+}
+
+/* Draws the eye to the download button: it pulses between outlined and
+   filled, with a soft glow. */
+@keyframes pdf-download-flash {
+  0%, 100% {
+    background-color: transparent;
+    color: #4FA019;
+    box-shadow: 0 0 0 0 rgba(79, 160, 25, 0);
+  }
+  50% {
+    background-color: #4FA019;
+    color: #fff;
+    text-shadow: none;
+    box-shadow: 0 0 10px 3px rgba(79, 160, 25, 0.55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pdf-download {
+    animation: none;
+  }
 }
 
 /* Print / PDF: plain A4 pages with only the CV itself. cv.pdf is generated
